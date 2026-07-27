@@ -13,6 +13,11 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
+  private async userFeatures(userId: string): Promise<string[]> {
+    const grants = await this.prisma.userFeatureGrant.findMany({ where: { userId } });
+    return grants.map((g) => g.feature);
+  }
+
   async validateUser(username: string, password: string) {
     const user = await this.prisma.user.findFirst({
       where: { username, deletedAt: null },
@@ -45,9 +50,10 @@ export class AuthService {
   async login(username: string, password: string) {
     const user = await this.validateUser(username, password);
     const tokens = await this.issueTokens(user);
+    const features = await this.userFeatures(user.id);
     return {
       ...tokens,
-      user: { id: user.id, username: user.username, email: user.email, role: user.role.name },
+      user: { id: user.id, username: user.username, email: user.email, role: user.role.name, features },
     };
   }
 
@@ -83,6 +89,7 @@ export class AuthService {
   async me(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId }, include: { role: true } });
     if (!user) throw new UnauthorizedException();
-    return { id: user.id, username: user.username, email: user.email, role: user.role.name };
+    const features = await this.userFeatures(user.id);
+    return { id: user.id, username: user.username, email: user.email, role: user.role.name, features };
   }
 }

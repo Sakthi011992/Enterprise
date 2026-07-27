@@ -57,6 +57,7 @@ model User {
   auditLogs         AuditLog[]
   themesCreated     Theme[]
   themeAssignments  ThemeAssignment[]
+  featureGrants     UserFeatureGrant[]
 
   @@index([username])
   @@index([email])
@@ -176,6 +177,30 @@ model AuditLog {
   @@index([actorId])
   @@index([entity])
   @@map("audit_logs")
+}
+
+// ---------------------------------------------------------------------------
+// Feature toggles
+// ---------------------------------------------------------------------------
+
+enum AppFeature {
+  DASHBOARD
+  PRODUCTS
+  TAX
+  USERS
+  ORDERS
+  APPEARANCE
+}
+
+model UserFeatureGrant {
+  userId    String
+  feature   AppFeature
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grantedAt DateTime   @default(now())
+
+  @@id([userId, feature])
+  @@index([userId])
+  @@map("user_feature_grants")
 }
 
 // ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
+import { AppFeature, Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationDto, buildMeta } from '../../common/dto/pagination.dto';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
@@ -13,6 +13,7 @@ const SAFE_SELECT = {
   createdAt: true,
   updatedAt: true,
   role: { select: { name: true } },
+  featureGrants: { select: { feature: true } },
 };
 
 @Injectable()
@@ -78,5 +79,22 @@ export class UsersService {
     await this.findOne(id);
     await this.prisma.user.update({ where: { id }, data: { deletedAt: new Date(), isActive: false } });
     return { success: true };
+  }
+
+  async getFeatures(id: string): Promise<AppFeature[]> {
+    await this.findOne(id);
+    const grants = await this.prisma.userFeatureGrant.findMany({ where: { userId: id } });
+    return grants.map((g) => g.feature);
+  }
+
+  async setFeatures(id: string, features: AppFeature[]): Promise<AppFeature[]> {
+    await this.findOne(id);
+    await this.prisma.$transaction([
+      this.prisma.userFeatureGrant.deleteMany({ where: { userId: id } }),
+      this.prisma.userFeatureGrant.createMany({
+        data: features.map((feature) => ({ userId: id, feature })),
+      }),
+    ]);
+    return features;
   }
 }
