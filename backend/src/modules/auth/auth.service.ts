@@ -2,27 +2,24 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from '../../prisma/prisma.service';
+import { AuthRepository } from './auth.repository';
 import { JwtPayload } from './jwt.strategy';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
+    private repo: AuthRepository,
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
 
   private async userFeatures(userId: string): Promise<string[]> {
-    const grants = await this.prisma.userFeatureGrant.findMany({ where: { userId } });
+    const grants = await this.repo.getFeatureGrants(userId);
     return grants.map((g) => g.feature);
   }
 
   async validateUser(username: string, password: string) {
-    const user = await this.prisma.user.findFirst({
-      where: { username, deletedAt: null },
-      include: { role: true },
-    });
+    const user = await this.repo.findUserByUsername(username);
     if (!user || !user.isActive) throw new UnauthorizedException('Invalid credentials');
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) throw new UnauthorizedException('Invalid credentials');
@@ -66,10 +63,7 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
-    const user = await this.prisma.user.findFirst({
-      where: { id: payload.sub, deletedAt: null, isActive: true },
-      include: { role: true },
-    });
+    const user = await this.repo.findActiveUserById(payload.sub);
     if (!user || user.tokenVersion !== payload.tokenVersion) {
       throw new UnauthorizedException('Refresh token revoked');
     }
@@ -80,14 +74,13 @@ export class AuthService {
     return { accessToken };
   }
 
-  /** Revoke all refresh tokens by bumping tokenVersion. */
   async logout(userId: string) {
-    await this.prisma.user.update({ where: { id: userId }, data: { tokenVersion: { increment: 1 } } });
+    await this.repo.revokeTokens(userId);
     return { success: true };
   }
 
   async me(userId: string) {
-    const user = await this.prisma.user.findUnique({ where: { id: userId }, include: { role: true } });
+    const user = await this.repo.findUserById(userId);
     if (!user) throw new UnauthorizedException();
     const features = await this.userFeatures(user.id);
     return { id: user.id, username: user.username, email: user.email, role: user.role.name, features };

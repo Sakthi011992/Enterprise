@@ -46,10 +46,23 @@ class _CashierShell extends ConsumerStatefulWidget {
 
 class _CashierShellState extends ConsumerState<_CashierShell> {
   int _index = 0;
+
+  Future<void> _logout() async {
+    await ref.read(authControllerProvider.notifier).logout();
+    if (mounted) context.go('/login');
+  }
+
   @override
   Widget build(BuildContext context) {
+    final pages = const [BillingScreen(), OrderHistoryScreen()];
     return Scaffold(
-      body: [const BillingScreen(), const OrderHistoryScreen()][_index],
+      appBar: AppBar(
+        title: const Text('POS Billing'),
+        actions: [
+          IconButton(icon: const Icon(Icons.logout), tooltip: 'Logout', onPressed: _logout),
+        ],
+      ),
+      body: pages[_index],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),

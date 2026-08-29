@@ -5,11 +5,12 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import { AuthRepository } from './auth.repository';
 
 @Module({
   imports: [ConfigModule, PassportModule, JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, AuthRepository, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
