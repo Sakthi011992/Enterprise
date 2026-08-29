@@ -12,6 +12,13 @@ import { ReportsModule } from './modules/reports/reports.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { InvoiceModule } from './modules/invoice/invoice.module';
 import { ThemesModule } from './themes/themes.module';
+import { BlobStorageModule } from './common/storage/blob-storage.module';
+import { LocalisationModule } from './modules/localisation/localisation.module';
+import { BrandingModule } from './modules/branding/branding.module';
+import { ProductImagesModule } from './modules/product-images/product-images.module';
+import { KioskModule } from './modules/kiosk/kiosk.module';
+import { LoginMethodModule } from './modules/login-method/login-method.module';
+import { PaymentConfigModule } from './modules/payment-config/payment-config.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -19,6 +26,7 @@ import { RolesGuard } from './common/guards/roles.guard';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
+    BlobStorageModule,
     AuthModule,
     UsersModule,
     ProductsModule,
@@ -29,9 +37,14 @@ import { RolesGuard } from './common/guards/roles.guard';
     UploadsModule,
     InvoiceModule,
     ThemesModule,
+    LocalisationModule,
+    BrandingModule,
+    ProductImagesModule,
+    KioskModule,
+    LoginMethodModule,
+    PaymentConfigModule,
   ],
   providers: [
-    // Global auth + role guards (use @Public() / @Roles() to control access)
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
   ],

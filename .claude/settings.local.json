@@ -34,7 +34,26 @@
       "Bash(flutter devices *)",
       "Bash(rm \"C:\\\\Users\\\\sakth\\\\Apps\\\\Billing App\\\\.claude\\\\launch.json\" 2>&1; mkdir -p \"C:\\\\Users\\\\sakth\\\\Apps\\\\Billing App\\\\frontend\\\\.claude\")",
       "Bash(rm -rf \"C:\\\\Users\\\\sakth\\\\Apps\\\\Billing App\\\\frontend\\\\.claude\")",
-      "Bash(flutter pub *)"
+      "Bash(flutter pub *)",
+      "PowerShell(docker exec billingapp-api-1 npx prisma migrate dev --name add_feature_toggles --schema /app/prisma/schema.prisma 2>&1)",
+      "PowerShell(docker cp billingapp-api-1:/app/prisma/migrations \"C:\\\\Users\\\\sakth\\\\Apps\\\\Billing App\\\\backend\\\\prisma\\\\migrations_new\" 2>&1)",
+      "Bash(python3 -c \"import reportlab, cairosvg, PIL; print\\('ok'\\)\")",
+      "Bash(python -c \"import reportlab, cairosvg, PIL; print\\('ok'\\)\")",
+      "PowerShell(py -c \"import reportlab, cairosvg, PIL; print\\('ok'\\)\" 2>&1)",
+      "PowerShell(Get-Command python, python3, py -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command node, npm -ErrorAction SilentlyContinue)",
+      "PowerShell(node -v 2>&1)",
+      "PowerShell(npm ls -g --depth=0 2>&1)",
+      "Bash(mkdir -p \"/c/Users/sakth/AppData/Local/Temp/claude/C--Users-sakth-Apps-Billing-App/de223abe-f10a-4385-9e92-0f5bb587ce0c/scratchpad/fruitpdf\")",
+      "Read(//c/Users/sakth/AppData/Local/Temp/claude/C--Users-sakth-Apps-Billing-App/de223abe-f10a-4385-9e92-0f5bb587ce0c/scratchpad/**)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "PowerShell(Get-Process \"Docker Desktop\" -ErrorAction SilentlyContinue)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(powershell -command \"Expand-Archive -Path 'C:\\\\Users\\\\sakth\\\\Downloads\\\\all-artifacts-today.zip' -DestinationPath 'C:\\\\Users\\\\sakth\\\\Downloads\\\\all-artifacts-extracted' -Force\")",
+      "Read(//c/Users/sakth/Downloads/**)",
+      "Bash(cat \"C:\\\\Users\\\\sakth\\\\Downloads\\\\all-artifacts-extracted\\\\00-INDEX.md\")"
     ]
   }
 }
