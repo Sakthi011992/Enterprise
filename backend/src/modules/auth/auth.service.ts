@@ -21,7 +21,7 @@ export class AuthService {
   async validateUser(username: string, password: string) {
     const user = await this.repo.findUserByUsername(username);
     if (!user || !user.isActive) throw new UnauthorizedException('Invalid credentials');
-    const ok = await bcrypt.compare(password, user.passwordHash);
+    const ok = user.passwordHash ? await bcrypt.compare(password, user.passwordHash) : false;
     if (!ok) throw new UnauthorizedException('Invalid credentials');
     return user;
   }

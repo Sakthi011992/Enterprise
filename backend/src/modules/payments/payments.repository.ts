@@ -14,7 +14,7 @@ export class PaymentsRepository {
     tx: Prisma.TransactionClient,
     orderId: string,
     amount: Prisma.Decimal,
-    paymentMethod: string,
+    paymentMethod: import('@prisma/client').PaymentMethod,
     paymentStatus: PaymentStatus,
     orderStatus: OrderStatus,
   ) {

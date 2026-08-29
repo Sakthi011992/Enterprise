@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LogoRole, LogoVariant } from '@prisma/client';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BlobStorageService } from '../../common/storage/blob-storage.service';
 

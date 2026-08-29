@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ImageSource } from '@prisma/client';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { PrismaService } from '../../prisma/prisma.service';
 import { BlobStorageService } from '../../common/storage/blob-storage.service';
 import { UnsplashAdapter } from './adapters/unsplash.adapter';
