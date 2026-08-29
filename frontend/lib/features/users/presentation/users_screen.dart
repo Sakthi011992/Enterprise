@@ -393,7 +393,7 @@ class _FeatureDialogState extends ConsumerState<_FeatureDialog> {
               width: 360,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: AppFeature.values.map((f) {
+                children: AppFeature.userGrantable.toList().map((f) {
                   final info = _labels[f]!;
                   return CheckboxListTile(
                     secondary: Icon(info.$2),

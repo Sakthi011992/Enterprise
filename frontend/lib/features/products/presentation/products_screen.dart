@@ -4,6 +4,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_mode_toggle.dart';
 import '../data/product.dart';
 import '../data/products_repository.dart';
+import 'product_images_dialog.dart';
 
 class ProductsScreen extends ConsumerStatefulWidget {
   const ProductsScreen({super.key});
@@ -69,6 +70,14 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   await ref.read(productsRepositoryProvider).setStatus(p.id, v);
                                   ref.invalidate(productsProvider(_search));
                                 },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.photo_library_outlined),
+                                tooltip: 'Manage Images',
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (_) => ProductImagesDialog(productId: p.id, productName: p.name),
+                                ),
                               ),
                               IconButton(icon: const Icon(Icons.edit), onPressed: () => _openForm(p)),
                             ],

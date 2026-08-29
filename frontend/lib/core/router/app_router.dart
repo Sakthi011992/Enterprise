@@ -9,22 +9,34 @@ import '../../features/orders/presentation/order_history_screen.dart';
 import '../../features/themes/presentation/appearance_settings_page.dart';
 import '../../features/themes/presentation/theme_editor_page.dart';
 import '../../features/themes/presentation/themes_list_page.dart';
+import '../../features/kiosk/presentation/kiosk_display_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/login',
     redirect: (context, state) {
       final auth = ref.read(authControllerProvider);
-      final loggingIn = state.matchedLocation == '/login';
+      final loc = state.matchedLocation;
+      final loggingIn = loc == '/login';
+
       if (!auth.isLoggedIn) return loggingIn ? null : '/login';
-      // Logged in but on login page → send to role home.
-      if (loggingIn) return auth.isAdmin ? '/admin' : '/billing';
-      // Cashiers cannot access admin routes.
-      if (state.matchedLocation.startsWith('/admin') && !auth.isAdmin) return '/billing';
+
+      if (loggingIn) {
+        if (auth.role == 'KIOSK') return '/kiosk';
+        return auth.isAdmin ? '/admin' : '/billing';
+      }
+
+      // Kiosk users stay on /kiosk
+      if (auth.role == 'KIOSK' && !loc.startsWith('/kiosk')) return '/kiosk';
+
+      // Cashiers cannot access admin routes
+      if (loc.startsWith('/admin') && !auth.isAdmin) return '/billing';
+
       return null;
     },
     routes: [
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
+      GoRoute(path: '/kiosk', builder: (_, __) => const KioskDisplayScreen()),
       GoRoute(path: '/admin', builder: (_, __) => const AdminShell()),
       GoRoute(path: '/admin/appearance', builder: (_, __) => const AppearanceSettingsPage()),
       GoRoute(path: '/admin/appearance/themes', builder: (_, __) => const ThemesListPage()),
