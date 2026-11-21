@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Support live session</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.pt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;background:#18181B;color:#FAFAFA}
+.pt a{color:#D4D4D8;text-decoration:none;padding:0 12px;height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px}
+.pt a.on{background:#3F3F46;color:#FAFAFA;font-weight:600}
+.btn{height:44px;padding:0 14px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+.act{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F4F4F5;font-size:14px}
+.li{font-size:13px;padding:6px 0;border-bottom:1px solid #F4F4F5;display:flex;gap:10px}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+select,textarea{width:100%;box-sizing:border-box;border:1px solid #D4D4D8;border-radius:8px;padding:10px 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+select{height:44px}textarea{height:96px}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex;flex-direction:column">
+<nav class="pt" aria-label="Platform"><b style="margin-right:12px">Platform console</b><a href="PlatformTenants.dc.html">Tenants</a><a href="PlatformPlans.dc.html">Plans &amp; features</a><a href="PlatformRevenue.dc.html">Usage &amp; revenue</a><a class="on" href="SupportConsole.dc.html">Support</a><span style="margin-left:auto;font-size:13px;color:#A1A1AA">Ravi · Support</span></nav>
+<div role="status" style="background:#052E16;color:#86EFAC;padding:12px 24px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;font-size:14px"><span><b style="color:#FAFAFA">Live session approved by Priya (Your Venue owner)</b> · POS terminal 1 · logs + screen view + restart</span><span>Ends in <b style="color:#FAFAFA">23:41</b> · everything is logged</span></div>
+<main style="padding:24px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+<header><a href="SupportConsole.dc.html" class="mut">Support</a><h1>Ticket #4821 · “POS 1 prints KOTs twice”</h1></header>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section class="card" style="flex:1 1 420px" aria-label="Device and actions">
+<h2>POS terminal 1</h2>
+<div style="height:200px;border-radius:12px;background:#09090B;color:#A1A1AA;display:flex;align-items:center;justify-content:center;font-size:14px;text-align:center;padding:12px">Live screen view (read-only)<br>Order A-1043 · Send KOT/BOT</div>
+<div class="act"><div><b>Refresh config</b><div class="mut">Reload printer routing from the server</div></div><button class="btn">Run</button></div>
+<div class="act"><div><b>Clear print queue</b><div class="mut">3 duplicate KOTs waiting</div></div><button class="btn">Run</button></div>
+<div class="act"><div><b>Restart POS app</b><div class="mut">Open orders are saved first</div></div><button class="btn">Run</button></div>
+<div class="act"><div><b>Verbose logs for 1 hour</b><div class="mut">Allowed by this session</div></div><button class="btn">Turn on</button></div>
+<div class="act" style="border:0"><div><b>Roll back feature flag</b><div class="mut">printing.retry_v2 → off for this tenant</div></div><button class="btn d">Roll back</button></div>
+</section>
+<section class="card" style="flex:1 1 360px" aria-label="Session log">
+<h2>What happened</h2>
+<div class="li"><span class="mut">21:30</span><span>Found: printing.retry_v2 retries before the printer's acknowledgement arrives, so KOTs print twice</span></div>
+<div class="li"><span class="mut">21:32</span><span>Rolled back printing.retry_v2 for Your Venue</span></div>
+<div class="li"><span class="mut">21:33</span><span>Cleared 3 duplicate KOTs from the queue</span></div>
+<div class="li"><span class="mut">21:35</span><span>Test KOT printed once ✓ (confirmed by Arun on site)</span></div>
+<div class="li" style="border:0"><span class="mut">21:36</span><span>Bug filed: ENG-912 (retry timing)</span></div>
+</section>
+<section class="card" style="flex:1 1 360px" aria-label="Close ticket">
+<h2>Close the ticket</h2>
+<div><label for="ct-r">Resolution</label><select id="ct-r"><option>Fixed by config / flag change</option><option>Fixed by restart</option><option>Needs a code fix</option></select></div>
+<div><label for="ct-n">Message to the customer</label><textarea id="ct-n">We turned off a new print-retry setting that caused double KOTs on POS 1. A test print worked. A permanent fix is in the next release.</textarea></div>
+<label style="display:flex;gap:10px;align-items:center;font-weight:400;font-size:14px"><input type="checkbox" checked style="width:20px;height:20px">End live session now</label>
+<div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn">Keep open</button><button class="btn p">Close ticket &amp; notify</button></div>
+<span class="mut">The customer sees this in Monitoring › Support access log.</span>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

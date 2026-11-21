@@ -1,5 +1,8 @@
 # Implementation Roadmap
 
+> The Pub & Resto-Bar ERP expansion (multi-tenant SaaS, queue, signage, AI assistant,
+> monitoring, testing) is specified in [ERP_REQUIREMENTS.md](ERP_REQUIREMENTS.md).
+
 A phased plan. Each phase is independently shippable and testable.
 
 ## Phase 0 — Foundations  ✅ (scaffolded here)

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>iOS owner dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,-apple-system,system-ui,sans-serif}
+.kc{background:#FFFFFF;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.kc .l{font-size:13px;color:#52525B}.kc .v{font-size:22px;font-weight:700}
+.grpd{background:#FFFFFF;border-radius:14px;overflow:hidden}
+.ro{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #F4F4F5;font-size:15px}
+.tb{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:#52525B;background:none;border:0;font-family:inherit;cursor:pointer;min-width:56px}
+.tb.on{color:#18181B;font-weight:600}
+.pb{height:34px;padding:0 14px;border-radius:999px;border:0;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#F4F4F5;color:#18181B;display:flex;flex-direction:column">
+<div style="flex:1;overflow:hidden;padding:56px 16px 12px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end"><span style="font-size:32px;font-weight:700;letter-spacing:-.5px">Today</span><span style="width:36px;height:36px;border-radius:999px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600" aria-label="Profile">AD</span></div>
+<div style="display:flex;background:#E4E4E7;border-radius:9px;padding:2px" role="group" aria-label="Outlet">
+<button style="flex:1;height:30px;border:0;border-radius:7px;background:#FFFFFF;font:inherit;font-size:13px;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)">Main</button>
+<button style="flex:1;height:30px;border:0;border-radius:7px;background:none;font:inherit;font-size:13px">Rooftop</button>
+<button style="flex:1;height:30px;border:0;border-radius:7px;background:none;font:inherit;font-size:13px">All</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+<div class="kc"><span class="l">Net sales</span><span class="v">₹1,84,320</span><span style="font-size:12px;color:#15803D;font-weight:600">+12% vs last Fri</span></div>
+<div class="kc"><span class="l">Covers</span><span class="v">212</span><span style="font-size:12px;color:#52525B">₹869 per cover</span></div>
+<div class="kc"><span class="l">Pour cost</span><span class="v">21.4%</span><span style="font-size:12px;color:#52525B">Target 18–24%</span></div>
+<div class="kc"><span class="l">Queue</span><span class="v">6 waiting</span><span style="font-size:12px;color:#52525B">Avg 18 min</span></div>
+</div>
+<span style="font-size:13px;color:#52525B;text-transform:uppercase;letter-spacing:.4px;padding:0 4px">Needs approval · 2</span>
+<div class="grpd">
+<div class="ro"><div><div style="font-weight:600">Void · R4 · ₹540</div><div style="font-size:13px;color:#52525B">Arun · "Wrong item served"</div></div><div style="display:flex;gap:6px"><button class="pb" style="background:#F4F4F5;color:#18181B">Decline</button><button class="pb" style="background:#18181B;color:#FAFAFA">Approve</button></div></div>
+<div class="ro" style="border:0"><div><div style="font-weight:600">Discount 20% · T7</div><div style="font-size:13px;color:#52525B">Meera · Regular guest</div></div><div style="display:flex;gap:6px"><button class="pb" style="background:#F4F4F5;color:#18181B">Decline</button><button class="pb" style="background:#18181B;color:#FAFAFA">Approve</button></div></div>
+</div>
+<span style="font-size:13px;color:#52525B;text-transform:uppercase;letter-spacing:.4px;padding:0 4px">Alerts</span>
+<div class="grpd">
+<div class="ro"><span>Single Malt 12Y below par</span><span style="font-size:12px;font-weight:600;background:#FEE2E2;color:#7F1D1D;padding:2px 8px;border-radius:999px">Stock</span></div>
+<div class="ro"><span>Vodka variance −140 ml</span><span style="font-size:12px;font-weight:600;background:#FEF3C7;color:#713F12;padding:2px 8px;border-radius:999px">Variance</span></div>
+<div class="ro" style="border:0"><span>Rooftop TV 2 offline</span><span style="font-size:12px;font-weight:600;background:#FEE2E2;color:#7F1D1D;padding:2px 8px;border-radius:999px">Device</span></div>
+</div>
+</div>
+<nav style="display:flex;justify-content:space-around;padding:8px 8px 28px;background:rgba(255,255,255,.96);border-top:1px solid #E4E4E7" aria-label="Tabs">
+<button class="tb on"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"></path></svg>Today</button>
+<button class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>Sales</button>
+<button class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2"></circle><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 20c0-2 1-3 3-3s3 1 3 3"></path></svg>Queue</button>
+<button class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12l4 4L19 6"></path></svg>Approvals</button>
+<button class="tb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>More</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

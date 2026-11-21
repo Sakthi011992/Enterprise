@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tablet device setup, receiving and kitchen</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B}
+.col{display:flex;flex-direction:column;gap:14px}
+.lab{font-size:15px;font-weight:600;color:#3F3F46}
+.tab{width:1024px;height:768px;border-radius:24px;overflow:hidden;border:1px solid #D4D4D8;background:#F4F4F5;box-sizing:border-box;display:flex;gap:16px;padding:24px}
+.p{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;min-width:0}
+.t{font-size:20px;font-weight:700}
+.m{font-size:13px;color:#52525B}
+.b{height:52px;border-radius:10px;border:1px solid #D4D4D8;background:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer;color:#18181B;padding:0 16px}
+.bp{background:#3F3F46;border-color:#3F3F46;color:#fff}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:52px;border:1px solid #D4D4D8;border-radius:10px;padding:0 14px;font:inherit;font-size:16px;background:#fff;color:#18181B}
+.code{width:56px;height:68px;border-radius:12px;border:2px solid #3F3F46;font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;padding:8px 6px;border-bottom:1px solid #E4E4E7}
+td{padding:6px;border-bottom:1px solid #F4F4F5}
+td input{height:44px;width:80px}
+.bd{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
+</style>
+</helmet>
+<div style="width:3296px;height:940px;box-sizing:border-box;padding:64px;background:#FAFAFA;display:flex;gap:48px">
+
+<div class="col"><div class="lab">Outlet Admin · Test print &amp; pair a TV with a code</div>
+<div class="tab">
+<section class="p" style="flex:1" aria-label="Test print">
+<span class="t">Test print</span>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #E4E4E7;border-radius:12px"><div><b>Main bar BOT</b><div class="m">192.168.1.31 · 80 mm</div></div><span class="bd" style="background:#DCFCE7;color:#14532D">Printed ✓</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #E4E4E7;border-radius:12px"><div><b>Kitchen KOT</b><div class="m">192.168.1.32 · 80 mm</div></div><button class="b">Test</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:2px solid #B91C1C;border-radius:12px;background:#FEF2F2"><div><b>Rooftop bar</b><div style="font-size:13px;color:#7F1D1D">Bluetooth printer not found. Turn it on and keep it within 5 m of this tablet.</div></div><button class="b">Retry</button></div>
+</div>
+<div style="height:150px;border-radius:12px;background:#F4F4F5;border:1px dashed #A1A1AA;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#3F3F46;box-sizing:border-box">TEST · Main bar BOT<br>Fri 21 Nov 9:44 pm<br>Ticket language: English<br>Tamil: சோதனை அச்சு<br>------------------------</div>
+</section>
+<section class="p" style="flex:1" aria-label="Pair a TV">
+<span class="t">Pair a TV</span>
+<span class="m">Open the player app on the TV. Enter the code it shows.</span>
+<div style="display:flex;gap:8px" role="group" aria-label="Pairing code"><span class="code">4</span><span class="code">8</span><span class="code">2</span><span class="code">7</span><span class="code" style="border-color:#A1A1AA;color:#A1A1AA">_</span><span class="code" style="border-color:#A1A1AA;color:#A1A1AA">_</span></div>
+<div><label for="pt-n">Screen name</label><input id="pt-n" value="VIP lounge TV"></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><div><label for="pt-z">Zone</label><select id="pt-z"><option>VIP</option></select></div><div><label for="pt-m">Start in mode</label><select id="pt-m"><option>Ads &amp; signage</option></select></div></div>
+<span class="m">Screens left on your plan: 0 of 5. Pairing this one needs an add-on.</span>
+<button class="b bp" style="margin-top:auto">Buy 5-screen pack &amp; pair</button>
+</section>
+</div></div>
+
+<div class="col"><div class="lab">Storekeeper · Receive a delivery with invoice photo</div>
+<div class="tab">
+<section class="p" style="width:340px;flex:none" aria-label="Invoice photo">
+<span class="t">PO-0317</span>
+<span class="m">City Breweries Supply · due today</span>
+<div style="flex:1;border-radius:12px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;text-align:center;color:#52525B;font-size:14px;padding:12px">Photo of vendor invoice<br>INV 88412 · ₹66,900</div>
+<button class="b">Retake photo</button>
+</section>
+<section class="p" style="flex:1" aria-label="Check lines">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="t">Check what arrived</span><span class="bd" style="background:#E4E4E7;color:#27272A">Read from photo</span></div>
+<table>
+<thead><tr><th>Item</th><th>Ordered</th><th>Invoiced</th><th>Received</th><th>Damaged</th></tr></thead>
+<tbody>
+<tr><td>Premium Lager 650 ml</td><td>10 cs</td><td>10 cs</td><td><input aria-label="Received lager" value="10"></td><td><input aria-label="Damaged lager" value="1"></td></tr>
+<tr style="background:#FEF3C7"><td>Wheat beer keg 30 L<div style="font-size:12px;color:#713F12">Invoiced more than ordered</div></td><td>4</td><td>5</td><td><input aria-label="Received kegs" value="4"></td><td><input aria-label="Damaged kegs" value="0"></td></tr>
+<tr><td>Stout 500 ml</td><td>4 cs</td><td>4 cs</td><td><input aria-label="Received stout" value="4"></td><td><input aria-label="Damaged stout" value="0"></td></tr>
+</tbody></table>
+<div style="background:#FEF3C7;color:#713F12;border-radius:10px;padding:12px;font-size:14px">1 keg was invoiced but not received. We'll raise a debit note of ₹7,800 to the vendor when you post this.</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><div><label for="rc-tp">Transport permit</label><input id="rc-tp" value="TP/KA/2026/55120"></div><div><label for="rc-l">Put into</label><select id="rc-l"><option>Cellar</option></select></div></div>
+<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:auto"><button class="b">Save draft</button><button class="b bp">Receive &amp; update stock</button></div>
+</section>
+</div></div>
+
+<div class="col"><div class="lab">Chef · Mark dishes 86 &amp; log wastage</div>
+<div class="tab" style="background:#09090B;border-color:#27272A;color:#FAFAFA">
+<section class="p" style="flex:1;background:#18181B;border-color:#27272A" aria-label="Availability">
+<span class="t">Tonight's availability</span>
+<span style="font-size:13px;color:#A1A1AA">Turning an item off hides it on POS, QR menu, kiosk and delivery apps at once.</span>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #3F3F46;border-radius:12px"><b>Chicken Wings</b><button class="b" style="background:#052E16;color:#86EFAC;border-color:#052E16">Available</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:2px solid #F87171;border-radius:12px"><div><b>Paneer Tikka</b><div style="font-size:12px;color:#FCA5A5">86 since 9:10 pm · 4 orders blocked</div></div><button class="b" style="background:#450A0A;color:#FCA5A5;border-color:#450A0A">Sold out</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #3F3F46;border-radius:12px"><div><b>Fish &amp; Chips</b><div style="font-size:12px;color:#FDE68A">3 portions left</div></div><button class="b" style="background:#422006;color:#FDE68A;border-color:#422006">Low · 3</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #3F3F46;border-radius:12px"><b>Loaded Nachos</b><button class="b" style="background:#052E16;color:#86EFAC;border-color:#052E16">Available</button></div>
+</div>
+</section>
+<section class="p" style="width:360px;flex:none;background:#18181B;border-color:#27272A" aria-label="Log wastage">
+<span class="t">Log kitchen wastage</span>
+<div><label for="kw-i" style="color:#D4D4D8">Ingredient</label><select id="kw-i" style="background:#09090B;color:#FAFAFA;border-color:#3F3F46"><option>Chicken wings</option></select></div>
+<div><label for="kw-q" style="color:#D4D4D8">Amount</label><input id="kw-q" value="1.2 kg" style="background:#09090B;color:#FAFAFA;border-color:#3F3F46"></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px"><button class="b" style="background:#FAFAFA;color:#09090B">Burnt</button><button class="b" style="background:#27272A;color:#FAFAFA;border-color:#3F3F46">Dropped</button><button class="b" style="background:#27272A;color:#FAFAFA;border-color:#3F3F46">Expired</button><button class="b" style="background:#27272A;color:#FAFAFA;border-color:#3F3F46">Returned</button></div>
+<button class="b bp" style="margin-top:auto;background:#D4D4D8;color:#09090B;border-color:#D4D4D8">Log 1.2 kg wastage</button>
+</section>
+</div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":3296,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

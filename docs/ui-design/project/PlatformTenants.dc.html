@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Platform tenants</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.pt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;background:#18181B;color:#FAFAFA}
+.pt a{color:#D4D4D8;text-decoration:none;padding:0 12px;height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px}
+.pt a.on{background:#3F3F46;color:#FAFAFA;font-weight:600}
+.btn{height:40px;padding:0 14px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 8px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+tr.sel td{background:#F4F4F5}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.wa{background:#FEF3C7;color:#713F12}.ba{background:#FEE2E2;color:#7F1D1D}.ne{background:#E4E4E7;color:#27272A}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.ov{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F4F4F5;font-size:14px}
+.sw{width:40px;height:24px;border-radius:999px;background:#3F3F46;position:relative;display:inline-block}
+.sw::after{content:"";position:absolute;top:3px;left:19px;width:18px;height:18px;border-radius:999px;background:#fff}
+.sw.off{background:#D4D4D8}.sw.off::after{left:3px}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex;flex-direction:column">
+<nav class="pt" aria-label="Platform"><b style="margin-right:12px">Platform console</b><a class="on" href="PlatformTenants.dc.html">Tenants</a><a href="PlatformPlans.dc.html">Plans &amp; features</a><a href="PlatformRevenue.dc.html">Usage &amp; revenue</a><a href="SupportConsole.dc.html">Support</a><span style="margin-left:auto;font-size:13px;color:#A1A1AA">Ravi · Super Admin</span></nav>
+<main style="padding:24px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+<header style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h1>Tenants · 248</h1><div style="display:flex;gap:8px"><button class="btn">Export</button><button class="btn p">New tenant</button></div></header>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section class="card" style="flex:999 1 640px">
+<div style="display:flex;flex-wrap:wrap;gap:8px"><input aria-label="Search tenants" placeholder="Search name, GSTIN or email" style="flex:1 1 220px;width:auto"><select aria-label="Plan" style="width:auto"><option>All plans</option></select><select aria-label="Status" style="width:auto"><option>All statuses</option><option>Trial</option><option>Past due</option></select></div>
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Tenant</th><th>Plan</th><th>Outlets</th><th>MRR</th><th>Health</th><th>Status</th><th>Last active</th></tr></thead>
+<tbody>
+<tr class="sel"><td><b>Your Venue</b><div class="mut">Bengaluru</div></td><td>Growth + 2 add-ons</td><td>1</td><td>[PRICE]</td><td><span class="b wa">1 issue</span></td><td><span class="b ok">Active</span></td><td>Now</td></tr>
+<tr><td><b>Hop House</b><div class="mut">Pune</div></td><td>Pro</td><td>2</td><td>[PRICE]</td><td><span class="b ba">Payments failing</span></td><td><span class="b ok">Active</span></td><td>Now</td></tr>
+<tr><td><b>Urban Tap</b><div class="mut">Mumbai</div></td><td>Growth</td><td>1</td><td>[PRICE]</td><td><span class="b ok">OK</span></td><td><span class="b wa">Past due 3 d</span></td><td>2 h</td></tr>
+<tr><td><b>The Brew Lab</b><div class="mut">Chennai</div></td><td>Pro trial</td><td>1</td><td>—</td><td><span class="b ok">OK</span></td><td><span class="b ne">Trial · 9 d left</span></td><td>1 d</td></tr>
+<tr><td><b>Coastline Bars</b><div class="mut">Goa · franchise</div></td><td>Enterprise</td><td>7</td><td>[PRICE]</td><td><span class="b ok">OK</span></td><td><span class="b ok">Active</span></td><td>Now</td></tr>
+</tbody></table></div>
+</section>
+<aside class="card" style="flex:1 1 380px" aria-label="Tenant detail">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>Your Venue</h2><span class="b ok">Active since Jun 2026</span></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><div><label for="t-plan">Plan</label><select id="t-plan"><option>Growth</option><option>Pro</option></select></div><div><label for="t-bill">Billing</label><select id="t-bill"><option>Yearly · renews 1 Apr</option></select></div></div>
+<h2 style="font-size:14px">Overrides for this tenant</h2>
+<div class="ov"><span>Digital signage (add-on)</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="ov"><span>AI Assistant (add-on)</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="ov"><span>Brand campaigns · pilot until 31 Dec</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="ov"><span>Screen limit</span><span><b>5</b> <span class="mut">(plan 5)</span></span></div>
+<div class="ov" style="border:0"><span>Beta: QR ordering v2</span><span class="sw off" role="img" aria-label="Off"></span></div>
+<div style="background:#F4F4F5;border-radius:10px;padding:12px;font-size:13px;color:#3F3F46">Support access: <b>Standard</b> (set by the tenant). Viewing as the tenant needs their approval each time.</div>
+<div style="display:flex;justify-content:space-between;gap:8px;border-top:1px solid #E4E4E7;padding-top:12px"><button class="btn d">Suspend</button><div style="display:flex;gap:8px"><button class="btn">Ask to view as tenant</button><button class="btn p">Save overrides</button></div></div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Leave, tips and payroll</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.rail{flex:0 0 64px;background:#fff;border-right:1px solid #E4E4E7;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 0}
+.rail a{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#3F3F46}
+.rail a.on{background:#18181B;color:#FAFAFA}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}.btn.s{height:36px;padding:0 12px;font-size:13px}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 8px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #E4E4E7;flex-wrap:wrap}
+.tab{padding:10px 14px;min-height:44px;font-size:14px;border:0;background:none;font:inherit;color:#52525B;cursor:pointer;border-bottom:2px solid transparent}
+.tab.on{color:#18181B;font-weight:600;border-bottom-color:#18181B}
+</style>
+</helmet>
+<div style="min-height:1300px;display:flex">
+<nav class="rail" aria-label="Main">
+<a href="Main.dc.html" aria-label="Dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"></path></svg></a>
+<a class="on" href="Staff.dc.html" aria-label="Staff and shifts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></a>
+<a href="Accounting.dc.html" aria-label="Accounting"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path></svg></a>
+<a href="Shell.dc.html" aria-label="Expand menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+</nav>
+<main style="flex:1;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+<header><div class="mut"><a href="Staff.dc.html">Staff &amp; shifts</a> / HR</div><h1>Leave, tips &amp; payroll</h1></header>
+<div class="tabs" role="tablist"><button class="tab">Roster</button><button class="tab">Attendance</button><button class="tab on">Leave</button><button class="tab on">Tips &amp; service charge</button><button class="tab on">Payroll export</button></div>
+
+<section class="card" aria-label="Leave requests">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>Leave requests · 3 waiting</h2><button class="btn s">Leave policy</button></div>
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Staff</th><th>Type</th><th>Dates</th><th>Days</th><th>Balance after</th><th>Clash</th><th>Actions</th></tr></thead>
+<tbody>
+<tr><td>Meera · Bartender</td><td>Casual</td><td>Sun 30 Nov</td><td>1</td><td>5</td><td><span class="b" style="background:#FEE2E2;color:#7F1D1D">Match night · 1 bartender left</span></td><td style="display:flex;gap:6px"><button class="btn s">Decline</button><button class="btn s p">Approve</button></td></tr>
+<tr><td>Ravi · Cashier</td><td>Sick</td><td>Fri 21 Nov</td><td>1</td><td>4</td><td><span class="b" style="background:#DCFCE7;color:#14532D">Cover found: Lena</span></td><td style="display:flex;gap:6px"><button class="btn s">Decline</button><button class="btn s p">Approve</button></td></tr>
+<tr><td>Daniel · Chef</td><td>Earned</td><td>8–12 Dec</td><td>5</td><td>7</td><td><span class="b" style="background:#E4E4E7;color:#27272A">No clash</span></td><td style="display:flex;gap:6px"><button class="btn s">Decline</button><button class="btn s p">Approve</button></td></tr>
+</tbody></table></div>
+</section>
+
+<section class="card" aria-label="Tips and service charge">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>Tips &amp; service charge · 17–23 Nov</h2><span class="b" style="background:#FEF3C7;color:#713F12">Not paid out yet</span></div>
+<div class="g3">
+<div><label for="tp-pool">Pool this week</label><input id="tp-pool" value="₹48,600 (tips ₹21,400 + service ₹27,200)" disabled></div>
+<div><label for="tp-rule">Split by</label><select id="tp-rule"><option>Hours worked × role points</option><option>Equal shares</option><option>Hours only</option></select></div>
+<div><label for="tp-house">House keeps</label><input id="tp-house" value="10% for breakage fund"></div>
+</div>
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Staff</th><th>Role points</th><th>Hours</th><th>Share</th><th>Amount</th></tr></thead>
+<tbody>
+<tr><td>Meera</td><td>1.2</td><td>46</td><td>13.4%</td><td>₹5,861</td></tr>
+<tr><td>Arun</td><td>1.3</td><td>48</td><td>15.1%</td><td>₹6,605</td></tr>
+<tr><td>Daniel</td><td>1.2</td><td>48</td><td>14.0%</td><td>₹6,124</td></tr>
+<tr><td>Ravi</td><td>1.0</td><td>40</td><td>9.7%</td><td>₹4,243</td></tr>
+<tr><td class="mut">+ 8 more staff</td><td></td><td></td><td>47.8%</td><td>₹20,907</td></tr>
+</tbody></table></div>
+<div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn">Adjust</button><button class="btn p">Lock &amp; add to payroll</button></div>
+</section>
+
+<section class="card" aria-label="Payroll export">
+<h2>Payroll export · November</h2>
+<div class="g3">
+<div><label for="py-p">Period</label><select id="py-p"><option>1–30 Nov 2026</option></select></div>
+<div><label for="py-f">Format</label><select id="py-f"><option>Excel (generic)</option><option>Tally payroll</option><option>Zoho Payroll</option></select></div>
+<div><label for="py-o">Outlets</label><select id="py-o"><option>Main outlet</option></select></div>
+</div>
+<div class="g3">
+<div style="background:#F4F4F5;border-radius:12px;padding:14px"><div class="mut">Staff</div><b style="font-size:20px">15</b></div>
+<div style="background:#F4F4F5;border-radius:12px;padding:14px"><div class="mut">Hours · overtime</div><b style="font-size:20px">2,840 · 112</b></div>
+<div style="background:#F4F4F5;border-radius:12px;padding:14px"><div class="mut">Tips &amp; service to pay</div><b style="font-size:20px">₹1,96,400</b></div>
+</div>
+<div style="background:#FEE2E2;color:#7F1D1D;border-radius:10px;padding:12px;font-size:14px">2 staff have missing clock-outs (Arun 14 Nov, Lena 18 Nov). Fix them in Attendance before exporting.</div>
+<div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn">Fix attendance</button><button class="btn p" disabled style="opacity:.5">Export</button></div>
+<span class="mut">Bank account and salary details stay in your payroll software. This app sends hours, overtime and tips only.</span>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

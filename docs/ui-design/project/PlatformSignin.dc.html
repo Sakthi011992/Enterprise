@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Platform sign-in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#18181B}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+input{width:100%;box-sizing:border-box;height:48px;border:1px solid #D4D4D8;border-radius:8px;padding:0 14px;font:inherit;font-size:15px;background:#fff;color:#18181B}
+.btn{height:48px;width:100%;border-radius:8px;border:0;background:#3F3F46;color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.card{background:#fff;border-radius:20px;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;flex:0 1 440px}
+.code{width:52px;height:60px;border-radius:10px;border:2px solid #3F3F46;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.mut{color:#52525B;font-size:13px}
+</style>
+</helmet>
+<div style="min-height:960px;padding:56px 16px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:32px">
+<div style="text-align:center;color:#FAFAFA"><div style="font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:#A1A1AA;font-weight:600">Platform console · staff only</div><div style="font-size:32px;font-weight:700;margin-top:6px">Pub ERP platform</div><div style="font-size:15px;color:#A1A1AA;margin-top:6px">For Super Admins and Support agents. Venue staff sign in at the venue app.</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;width:100%">
+<section class="card" aria-label="Step 1, password">
+<span class="mut" style="font-weight:600">Step 1 of 2</span>
+<h1 style="margin:0;font-size:24px">Sign in</h1>
+<div><label for="ps-e">Work email</label><input id="ps-e" value="ravi@[your-company]"></div>
+<div><label for="ps-p">Password</label><input id="ps-p" type="password" value="password123"></div>
+<button class="btn">Continue</button>
+<span class="mut">Single sign-on with your company account is also supported.</span>
+</section>
+<section class="card" aria-label="Step 2, two-factor code">
+<span class="mut" style="font-weight:600">Step 2 of 2</span>
+<h1 style="margin:0;font-size:24px">Enter your 6-digit code</h1>
+<span class="mut">From your authenticator app. Codes change every 30 seconds.</span>
+<div style="display:flex;gap:8px" role="group" aria-label="Code"><span class="code">3</span><span class="code">9</span><span class="code">1</span><span class="code">0</span><span class="code">7</span><span class="code" style="border-color:#B91C1C;color:#B91C1C">5</span></div>
+<div role="alert" style="background:#FEF2F2;color:#7F1D1D;border-radius:8px;padding:10px 12px;font-size:14px">That code didn't work. Check your device's clock and try the new code.</div>
+<label style="display:flex;gap:10px;align-items:center;font-weight:400"><input type="checkbox" style="width:20px;height:20px">Trust this browser for 12 hours</label>
+<button class="btn">Verify &amp; sign in</button>
+<span class="mut">Lost your device? Another Super Admin must reset your 2FA.</span>
+</section>
+</div>
+<span style="font-size:13px;color:#A1A1AA">Every platform sign-in is logged. Access needs company VPN or an approved IP.</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

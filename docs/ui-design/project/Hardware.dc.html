@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hardware setup</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.rail{flex:0 0 64px;background:#fff;border-right:1px solid #E4E4E7;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 0}
+.rail a{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#3F3F46}
+.rail a.on{background:#18181B;color:#FAFAFA}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #E4E4E7;flex-wrap:wrap}
+.tab{padding:10px 14px;font-size:14px;border:0;background:none;font:inherit;color:#52525B;cursor:pointer;border-bottom:2px solid transparent;min-height:44px}
+.tab.on{color:#18181B;font-weight:600;border-bottom-color:#18181B}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 8px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+td select{height:40px;width:auto}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.warn{background:#FEF3C7;color:#713F12}.bad{background:#FEE2E2;color:#7F1D1D}.neu{background:#E4E4E7;color:#27272A}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.err input{border:2px solid #B91C1C;background:#FEF2F2}
+.em{font-size:13px;color:#B91C1C;margin-top:6px;font-weight:500}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.disc{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid #E4E4E7;border-radius:10px;font-size:14px}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex">
+<nav class="rail" aria-label="Main">
+<a href="Main.dc.html" aria-label="Dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"></path></svg></a>
+<a href="POS.dc.html" aria-label="POS"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8"></path></svg></a>
+<a class="on" href="Settings.dc.html" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg></a>
+<a href="Shell.dc.html" aria-label="Expand menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+</nav>
+<main style="flex:1;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+<header style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+<div><div class="mut">Settings / Hardware</div><h1>Printers, routing &amp; terminals</h1></div>
+<div style="display:flex;gap:8px"><button class="btn">Test all</button><button class="btn p">Add printer</button></div>
+</header>
+<div class="tabs" role="tablist"><button class="tab on">Printers</button><button class="tab">Ticket routing</button><button class="tab">Card terminals</button><button class="tab">Cash drawers</button><button class="tab">KDS stations</button><button class="tab">Scales &amp; scanners</button></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:999 1 620px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<section class="card" aria-label="Printers">
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Printer</th><th>Connection</th><th>Paper</th><th>Prints</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody>
+<tr><td>Counter receipt</td><td>LAN · 192.168.1.30</td><td>80 mm</td><td>Bills, X/Z reports</td><td><span class="b ok">Ready</span></td><td style="display:flex;gap:6px"><button class="btn">Test</button><button class="btn">Edit</button></td></tr>
+<tr><td>Main bar BOT</td><td>LAN · 192.168.1.31</td><td>80 mm</td><td>Bar tickets</td><td><span class="b warn">Paper low</span></td><td style="display:flex;gap:6px"><button class="btn">Test</button><button class="btn">Edit</button></td></tr>
+<tr><td>Kitchen KOT</td><td>LAN · 192.168.1.32</td><td>80 mm</td><td>Kitchen tickets</td><td><span class="b ok">Ready</span></td><td style="display:flex;gap:6px"><button class="btn">Test</button><button class="btn">Edit</button></td></tr>
+<tr><td>Rooftop bar</td><td>Bluetooth · tablet 3</td><td>58 mm</td><td>Bar tickets</td><td><span class="b bad">Offline</span></td><td style="display:flex;gap:6px"><button class="btn">Retry</button><button class="btn">Edit</button></td></tr>
+</tbody></table></div>
+</section>
+<section class="card" aria-label="Ticket routing">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>Ticket routing</h2><span class="mut">Where each category's tickets go</span></div>
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Category</th><th>Station</th><th>Screen</th><th>Printer</th><th>If printer fails</th></tr></thead>
+<tbody>
+<tr><td>Spirits, beer, cocktails</td><td>Main bar</td><td><select aria-label="Screen for drinks"><option>Bar KDS</option></select></td><td><select aria-label="Printer for drinks"><option>Main bar BOT</option></select></td><td><select aria-label="Fallback for drinks"><option>Screen only + alert</option></select></td></tr>
+<tr><td>Rooftop drinks</td><td>Rooftop bar</td><td><select aria-label="Screen for rooftop"><option>None</option></select></td><td><select aria-label="Printer for rooftop"><option>Rooftop bar</option></select></td><td><select aria-label="Fallback for rooftop"><option>Main bar BOT</option></select></td></tr>
+<tr><td>Bar bites, mains</td><td>Kitchen</td><td><select aria-label="Screen for food"><option>Kitchen KDS</option></select></td><td><select aria-label="Printer for food"><option>Kitchen KOT</option></select></td><td><select aria-label="Fallback for food"><option>Counter receipt</option></select></td></tr>
+<tr><td>Tandoor items</td><td>Tandoor</td><td><select aria-label="Screen for tandoor"><option>Kitchen KDS · tandoor tab</option></select></td><td><select aria-label="Printer for tandoor"><option>Kitchen KOT</option></select></td><td><select aria-label="Fallback for tandoor"><option>Screen only + alert</option></select></td></tr>
+</tbody></table></div>
+</section>
+<div style="display:flex;flex-wrap:wrap;gap:20px">
+<section class="card" style="flex:1 1 260px" aria-label="Card terminal"><h2>Card terminal</h2><div style="display:flex;justify-content:space-between;font-size:14px"><span>Counter EDC · paired to POS 1</span><span class="b ok">Ready</span></div><span class="mut">Amount is sent to the terminal, so staff never type it twice.</span></section>
+<section class="card" style="flex:1 1 260px" aria-label="Cash drawer"><h2>Cash drawer</h2><div style="display:flex;justify-content:space-between;font-size:14px"><span>Opens via Counter receipt printer</span><span class="b ok">Ready</span></div><span class="mut">Opens on cash payment and "No sale" (logged, needs reason).</span></section>
+</div>
+</div>
+<aside class="card" style="flex:1 1 340px" aria-label="Add printer">
+<h2>Add printer</h2>
+<button class="btn">Search the network</button>
+<div class="disc"><span>EPSON TM-T82 · 192.168.1.40</span><button class="btn">Use</button></div>
+<div class="disc"><span>Unknown ESC/POS · 192.168.1.41</span><button class="btn">Use</button></div>
+<div><label for="h-name">Name *</label><input id="h-name" value="VIP lounge bar"></div>
+<div class="g2"><div><label for="h-con">Connection</label><select id="h-con"><option>LAN (IP)</option><option>USB</option><option>Bluetooth</option></select></div><div><label for="h-paper">Paper</label><select id="h-paper"><option>80 mm</option><option>58 mm</option></select></div></div>
+<div class="err"><label for="h-ip">IP address *</label><input id="h-ip" value="192.168.1.40" aria-invalid="true" aria-describedby="h-ip-e"><div class="em" id="h-ip-e">Can't reach this printer. Check it's on and on the same Wi-Fi as this POS.</div></div>
+<div class="g2"><div><label for="h-copies">Copies</label><select id="h-copies"><option>1</option><option>2</option></select></div><div><label for="h-lang">Ticket language</label><select id="h-lang"><option>English</option><option>Tamil</option></select></div></div>
+<div style="display:flex;justify-content:space-between;border-top:1px solid #E4E4E7;padding-top:12px"><button class="btn">Test print</button><div style="display:flex;gap:8px"><button class="btn">Cancel</button><button class="btn p">Save</button></div></div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

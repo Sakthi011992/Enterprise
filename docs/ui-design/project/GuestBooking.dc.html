@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Book a table</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#FFFFFF}
+a{color:#18181B}a:hover{color:#3F3F46}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:48px;border:1px solid #D4D4D8;border-radius:10px;padding:0 14px;font:inherit;font-size:15px;background:#fff;color:#18181B}
+.err input{border:2px solid #B91C1C;background:#FEF2F2}
+.em{font-size:13px;color:#B91C1C;margin-top:6px;font-weight:500}
+.ch{height:44px;padding:0 16px;border-radius:10px;border:1px solid #D4D4D8;background:#fff;font:inherit;font-size:14px;cursor:pointer;color:#18181B}
+.ch.on{background:#18181B;color:#FAFAFA;border-color:#18181B;font-weight:600}
+.ch[disabled]{color:#A1A1AA;text-decoration:line-through;cursor:not-allowed}
+.mut{color:#52525B;font-size:14px}
+.btn{height:52px;padding:0 24px;border-radius:10px;border:0;background:#3F3F46;color:#fff;font:inherit;font-size:16px;font-weight:600;cursor:pointer}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex;flex-direction:column">
+<header style="display:flex;justify-content:space-between;align-items:center;padding:20px 48px;border-bottom:1px solid #E4E4E7;flex-wrap:wrap;gap:12px"><div style="display:flex;gap:12px;align-items:center"><span style="width:40px;height:40px;border-radius:10px;background:#18181B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">YV</span><b style="font-size:18px">Your Venue</b></div><nav style="display:flex;gap:20px;font-size:15px" aria-label="Site"><a href="#">Menu</a><a href="#">Events</a><a href="#">Find us</a><span>EN ▾</span></nav></header>
+<main style="flex:1;display:flex;flex-wrap:wrap;gap:40px;padding:40px 48px;box-sizing:border-box;max-width:1280px;width:100%;margin:0 auto">
+<section style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:22px" aria-label="Book a table">
+<div><h1 style="margin:0;font-size:36px;font-weight:700;letter-spacing:-.5px">Book a table</h1><p class="mut" style="margin:6px 0 0">Walk-ins welcome too: we'll put you on the waiting list.</p></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+<div><label for="bk-d">Date</label><select id="bk-d"><option>Sat 22 Nov</option></select></div>
+<div><label for="bk-p">Guests</label><select id="bk-p"><option>4 people</option></select></div>
+<div><label for="bk-a">Area</label><select id="bk-a"><option>Rooftop</option><option>Indoor</option><option>Bar counter</option></select></div>
+</div>
+<div><div style="font-size:14px;font-weight:500;margin-bottom:8px">Time</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Time"><button class="ch">7:00</button><button class="ch" disabled>7:30</button><button class="ch on">8:00</button><button class="ch">8:30</button><button class="ch" disabled>9:00</button><button class="ch">9:30</button><button class="ch">10:00</button></div>
+<p class="mut" style="margin:8px 0 0;font-size:13px">Struck-out times are full. Table kept for 15 min after your time.</p></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+<div><label for="bk-n">Name</label><input id="bk-n" value="Arjun N"></div>
+<div class="err"><label for="bk-ph">Mobile (WhatsApp)</label><input id="bk-ph" value="98765 4321" aria-invalid="true" aria-describedby="bk-ph-e"><div class="em" id="bk-ph-e">Enter a 10-digit mobile number</div></div>
+</div>
+<div><label for="bk-o">Occasion (optional)</label><select id="bk-o"><option>Birthday</option><option>None</option></select></div>
+<label style="display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:14px"><input type="checkbox" checked style="width:20px;height:20px;flex:none">Send my booking and reminders on WhatsApp</label>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn">Pay ₹1,000 deposit &amp; book</button><span class="mut" style="font-size:13px">Deposit is taken off your bill. Free cancellation up to 4 hours before.</span></div>
+</section>
+<aside style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:16px" aria-label="Venue information">
+<div style="height:220px;border-radius:16px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;color:#52525B">Rooftop photo</div>
+<div style="border:1px solid #E4E4E7;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px"><b>Sat 22 Nov · Live band from 8 pm</b><span class="mut">Cover ₹500 per person, redeemable on drinks.</span></div>
+<div style="border:1px solid #E4E4E7;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:6px"><b>Good to know</b><span class="mut">21+ only after 8 pm. ID may be checked.</span><span class="mut">Groups of 10+: call us for packages.</span></div>
+</aside>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

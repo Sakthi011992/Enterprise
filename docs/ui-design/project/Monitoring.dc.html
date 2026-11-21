@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Monitoring &amp; support</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600}
+.app{display:flex;flex-wrap:wrap;min-height:960px}
+.side{flex:1 1 232px;background:#fff;border-right:1px solid #E4E4E7;padding:12px 10px;box-sizing:border-box}
+.side a{display:flex;align-items:center;gap:8px;min-height:34px;padding:0 10px;border-radius:8px;text-decoration:none;color:#3F3F46;font-size:14px}
+.side a:hover{background:#F4F4F5;color:#18181B}
+.side a.on{background:#18181B;color:#FAFAFA}
+.side a.ai{border:1px solid #D4D4D8;font-weight:600;margin-top:12px;min-height:44px}
+.side .tag{margin-left:auto;font-size:11px;font-weight:600;background:#E4E4E7;color:#27272A;padding:1px 6px;border-radius:999px}
+.side a.on .tag{background:#3F3F46;color:#FAFAFA}
+.side .grp svg{vertical-align:-2px;margin-right:6px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:16px;border-bottom:1px solid #E4E4E7}
+.gtop button{height:44px;min-width:44px;padding:0 12px;border:1px solid #D4D4D8;border-radius:8px;background:#fff;font:inherit;font-size:14px;color:#18181B;display:inline-flex;align-items:center;gap:8px;cursor:pointer;position:relative}
+.gtop .gs{flex:1 1 260px;max-width:440px;color:#52525B}
+.gdot{position:absolute;top:3px;right:3px;min-width:18px;height:18px;border-radius:999px;background:#B91C1C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.main .btn.s{height:36px;padding:0 12px}
+.grp{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:#52525B;margin:14px 12px 4px;font-weight:600}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px}
+.logo{width:36px;height:36px;border-radius:8px;background:#18181B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.main{flex:999 1 560px;min-width:0;padding:24px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.crumb{font-size:13px;color:#52525B;margin-bottom:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:999px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.btn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}.btn.s{height:32px;padding:0 10px;font-size:13px}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 12px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+.b{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.warn{background:#FEF3C7;color:#713F12}.bad{background:#FEE2E2;color:#7F1D1D}.neu{background:#E4E4E7;color:#27272A}.inf{background:#18181B;color:#FAFAFA}
+.split{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}.grow{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:20px}.drawer{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.mut{color:#52525B;font-size:13px}
+.lv{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.lvc{border:1px solid #D4D4D8;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;text-align:left;background:#fff;font:inherit;cursor:pointer}
+.lvc.on{border:2px solid #18181B;background:#FAFAFA}
+.lvc b{font-size:14px}.lvc span{font-size:12px;color:#52525B}
+.hs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.hc{border:1px solid #E4E4E7;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.li{font-size:13px;padding:6px 0;border-bottom:1px solid #F4F4F5;display:flex;gap:8px;align-items:center}
+</style>
+</helmet>
+<div class="app">
+<nav class="side" aria-label="Main">
+<div class="grp">Pinned</div>
+<a href="Main.dc.html">Dashboard</a><a href="POS.dc.html">POS billing</a><a href="QueueHost.dc.html">Walk-in queue<span class="tag">6</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path></svg>Sales</div>
+<a href="Orders.dc.html">Orders &amp; invoices</a><a href="BarTabs.dc.html">Bar tabs</a><a href="FloorPlan.dc.html">Floor plan</a><a href="KDS.dc.html">Kitchen display</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path></svg>Menu &amp; stock</div>
+<a href="Menu.dc.html">Menu &amp; products</a><a href="Inventory.dc.html">Inventory</a><a href="Procurement.dc.html">Procurement</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg>Guests &amp; displays</div>
+<a href="Customers.dc.html">Customers &amp; bookings</a><a href="DisplayControl.dc.html">Display control</a><a href="Campaigns.dc.html">Campaigns<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>People &amp; money</div>
+<a href="Users.dc.html">Users &amp; roles</a><a href="Staff.dc.html">Staff &amp; shifts</a><a href="Accounting.dc.html">Accounting<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>Settings</div>
+<a href="Settings.dc.html">Tax, invoice &amp; payments</a><a href="Hardware.dc.html">Hardware</a><a href="Permissions.dc.html">Permissions</a><a href="Themes.dc.html">Themes &amp; branding</a><a href="Localisation.dc.html">Localisation</a><a href="Subscription.dc.html">Subscription</a><a class="on" href="Monitoring.dc.html">Monitoring</a>
+<a class="ai" href="AIAssistant.dc.html">AI Assistant</a>
+</nav>
+<main class="main">
+<div class="gtop"><span class="logo" aria-hidden="true">YV</span><button class="gs" aria-label="Search or jump to"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search or jump to…<span style="margin-left:auto;font-size:11px;border:1px solid #D4D4D8;border-radius:4px;padding:1px 5px">Ctrl K</span></button><span style="flex:1"></span><button>Main outlet ▾</button><button>EN ▾</button><button aria-label="Switch to dark mode">Dark</button><button aria-label="Notifications, 3 new"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"></path></svg><span class="gdot">3</span></button></div>
+<header class="top">
+<div><div class="crumb">Settings</div><h1>Monitoring &amp; support</h1></div>
+<div class="tools"><button class="btn">Download my logs</button><button class="btn p">Raise a ticket with logs</button><span class="avatar" aria-label="Signed in as Admin">AD</span></div>
+</header>
+<section class="card">
+<div class="bar" style="justify-content:space-between;margin-bottom:12px"><h2>What can our support team see?</h2><span class="mut">You can change or revoke this at any time. Every change is logged.</span></div>
+<div class="lv" role="radiogroup" aria-label="Diagnostics level">
+<button class="lvc" role="radio" aria-checked="false"><b>Off</b><span>Nothing is sent</span></button>
+<button class="lvc" role="radio" aria-checked="false"><b>Errors only</b><span>Crashes and failed requests</span></button>
+<button class="lvc on" role="radio" aria-checked="true"><b>Standard</b><span>Errors, speed and device health</span></button>
+<button class="lvc" role="radio" aria-checked="false"><b>Full diagnostic</b><span>Detailed logs for 24 hours</span></button>
+<button class="lvc" role="radio" aria-checked="false"><b>Live support session</b><span>Support views a device live, approved each time</span></button>
+</div>
+<p class="mut" style="margin:12px 0 0">Always masked before it leaves your venue: names, phone numbers, emails, card details, PINs and passwords.</p>
+</section>
+<div class="split">
+<div class="grow">
+<section class="card">
+<div class="bar" style="justify-content:space-between;margin-bottom:12px"><h2>System health</h2><span class="b ok">All systems normal</span></div>
+<div class="hs">
+<div class="hc"><span>POS sync</span><span class="b ok">OK</span></div>
+<div class="hc"><span>Printers (4)</span><span class="b warn">1 paper low</span></div>
+<div class="hc"><span>Payments</span><span class="b ok">OK</span></div>
+<div class="hc"><span>WhatsApp</span><span class="b ok">OK</span></div>
+<div class="hc"><span>Screens (13)</span><span class="b bad">1 offline</span></div>
+<div class="hc"><span>Offline queue</span><span class="b ok">0 pending</span></div>
+</div>
+</section>
+<section class="card">
+<div class="bar" style="justify-content:space-between;margin-bottom:8px"><h2>Recent issues</h2><select aria-label="Device" style="height:32px;border:1px solid #D4D4D8;border-radius:8px;padding:0 8px;font:inherit"><option>All devices</option></select></div>
+<div class="tw"><table>
+<thead><tr><th>Time</th><th>Device</th><th>Issue</th><th>Count</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody>
+<tr><td>9:31 pm</td><td>Rooftop TV 2</td><td>Lost connection to server</td><td>1</td><td><span class="b bad">Open</span></td><td class="bar"><button class="btn s">Restart device</button></td></tr>
+<tr><td>9:12 pm</td><td>Bar printer</td><td>KOT print failed, retried OK</td><td>3</td><td><span class="b ok">Auto-fixed</span></td><td class="bar"><button class="btn s">Details</button></td></tr>
+<tr><td>8:47 pm</td><td>Captain tablet 2</td><td>App closed unexpectedly</td><td>1</td><td><span class="b warn">Sent to support</span></td><td class="bar"><button class="btn s">Details</button></td></tr>
+<tr><td>7:05 pm</td><td>POS terminal 1</td><td>Payment gateway slow (4.2 s)</td><td>6</td><td><span class="b ok">Resolved</span></td><td class="bar"><button class="btn s">Details</button></td></tr>
+</tbody></table></div>
+</section>
+</div>
+<aside class="drawer">
+<section class="card" aria-label="Automatic checks">
+<div class="bar" style="justify-content:space-between;margin-bottom:6px"><h2>Automatic checks</h2><span class="mut">Every 10 min</span></div>
+<div class="li"><span class="b ok">Pass</span>Login and open POS · 1.1 s</div>
+<div class="li"><span class="b ok">Pass</span>Create order and print KOT · 1.8 s</div>
+<div class="li"><span class="b ok">Pass</span>Invoice PDF · 2.4 s</div>
+<div class="li"><span class="b ok">Pass</span>Queue token and WhatsApp send · 3.1 s</div>
+<div class="li" style="border:0"><span class="b bad">Fail</span>Screen heartbeat: Rooftop TV 2</div>
+<p class="mut" style="margin:8px 0 0">App version 3.8.2, released 18 Nov. All tests passed before release.</p>
+</section>
+<section class="card" aria-label="Support access log">
+<h2 style="margin-bottom:6px">Support access log</h2>
+<div class="li">18 Nov · Support viewed error logs · ticket #4821</div>
+<div class="li">12 Nov · Live session on POS 1 · approved by Priya · 14 min</div>
+<div class="li" style="border:0">2 Nov · Level changed to Standard by Admin</div>
+<div class="bar" style="margin-top:10px"><button class="btn d">End all support access</button></div>
+</section>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

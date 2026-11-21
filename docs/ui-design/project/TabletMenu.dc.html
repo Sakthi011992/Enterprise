@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tablet portrait menu admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif}
+.ib{width:48px;height:48px;border-radius:10px;border:1px solid #D4D4D8;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#18181B}
+.ch{height:40px;padding:0 14px;border-radius:999px;border:1px solid #D4D4D8;background:#fff;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer;color:#18181B}
+.ch.on{background:#18181B;color:#FAFAFA;border-color:#18181B;font-weight:600}
+.it{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid #E4E4E7;border-radius:14px;padding:14px}
+.th{width:56px;height:56px;border-radius:10px;background:#E4E4E7;flex:none}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.mut{color:#52525B;font-size:13px}
+</style>
+</helmet>
+<div style="width:768px;height:1024px;box-sizing:border-box;background:#F4F4F5;color:#18181B;display:flex;flex-direction:column;position:relative">
+<header style="display:flex;align-items:center;gap:12px;padding:20px 20px 12px;background:#fff;border-bottom:1px solid #E4E4E7">
+<button class="ib" aria-label="Open menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+<div style="flex:1"><div class="mut">Menu &amp; stock</div><div style="font-size:22px;font-weight:700">Menu &amp; products</div></div>
+<button class="ib" aria-label="Notifications, 3 new" style="position:relative"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"></path></svg><span style="position:absolute;top:4px;right:4px;min-width:18px;height:18px;border-radius:999px;background:#B91C1C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span></button>
+</header>
+<div style="padding:14px 20px;display:flex;flex-direction:column;gap:12px">
+<label for="tm-s" style="position:absolute;left:-9999px">Search items</label>
+<input id="tm-s" placeholder="Search name, SKU or barcode" style="width:100%;box-sizing:border-box;height:48px;border:1px solid #D4D4D8;border-radius:10px;padding:0 14px;font:inherit;font-size:15px;background:#fff;color:#18181B">
+<div style="display:flex;gap:8px;overflow:hidden"><button class="ch on">All 186</button><button class="ch">Spirits</button><button class="ch">Beer</button><button class="ch">Cocktails</button><button class="ch">86'd (2)</button><button class="ch">Filters</button></div>
+</div>
+<div style="flex:1;overflow:hidden;padding:0 20px;display:flex;flex-direction:column;gap:10px">
+<div class="it"><span class="th" aria-hidden="true"></span><div style="flex:1"><b style="font-size:16px">Single Malt 12Y</b><div class="mut">Spirits · 30/60 ml, bottle · from ₹280</div></div><span class="b" style="background:#DCFCE7;color:#14532D">Active</span><button class="btn">Edit</button></div>
+<div class="it"><span class="th" aria-hidden="true"></span><div style="flex:1"><b style="font-size:16px">Premium Lager 650ml</b><div class="mut">Beer · bottle, bucket · from ₹300</div></div><span class="b" style="background:#DCFCE7;color:#14532D">Active</span><button class="btn">Edit</button></div>
+<div class="it"><span class="th" aria-hidden="true"></span><div style="flex:1"><b style="font-size:16px">Aged Cognac</b><div class="mut">Spirits · 30/60 ml · from ₹650</div></div><span class="b" style="background:#FEE2E2;color:#7F1D1D">86'd</span><button class="btn">Edit</button></div>
+<div class="it"><span class="th" aria-hidden="true"></span><div style="flex:1"><b style="font-size:16px">Classic Mojito</b><div class="mut">Cocktails · recipe linked · ₹350</div></div><span class="b" style="background:#DCFCE7;color:#14532D">Active</span><button class="btn">Edit</button></div>
+<div class="it"><span class="th" aria-hidden="true"></span><div style="flex:1"><b style="font-size:16px">Virgin Colada</b><div class="mut">Mocktails · ₹220</div></div><span class="b" style="background:#E4E4E7;color:#27272A">Inactive</span><button class="btn">Edit</button></div>
+<div class="it"><span class="th" aria-hidden="true"></span><div style="flex:1"><b style="font-size:16px">Chicken Wings (8 pc)</b><div class="mut">Bar bites · regular, large · from ₹350</div></div><span class="b" style="background:#DCFCE7;color:#14532D">Active</span><button class="btn">Edit</button></div>
+</div>
+<p class="mut" style="margin:0;padding:12px 20px 24px">Below 1024 px wide, tables become cards and the edit panel opens full screen. The menu becomes a drawer.</p>
+<button style="position:absolute;right:24px;bottom:72px;height:56px;padding:0 22px;border-radius:16px;border:0;background:#3F3F46;color:#fff;font:inherit;font-size:16px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.2);cursor:pointer">New item</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":768,"height":1024}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

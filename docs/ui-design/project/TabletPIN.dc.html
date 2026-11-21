@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tablet PIN sign-in and clock-in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#FAFAFA}
+.col{display:flex;flex-direction:column;gap:14px}
+.lab{font-size:15px;font-weight:600;color:#3F3F46}
+.tab{width:1024px;height:768px;border-radius:24px;overflow:hidden;border:1px solid #3F3F46;background:#09090B;box-sizing:border-box;display:flex}
+.st{width:100%;min-height:96px;border-radius:14px;border:1px solid #3F3F46;background:#18181B;color:#FAFAFA;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.st i{width:44px;height:44px;border-radius:999px;background:#3F3F46;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700}
+.st span{font-size:12px;color:#A1A1AA}
+.st.on{border:2px solid #FAFAFA;background:#27272A}
+.k{height:72px;border-radius:14px;border:1px solid #3F3F46;background:#18181B;color:#FAFAFA;font:inherit;font-size:28px;cursor:pointer}
+.m{font-size:14px;color:#A1A1AA}
+.b{height:56px;border-radius:12px;border:0;font:inherit;font-size:17px;font-weight:600;cursor:pointer}
+</style>
+</helmet>
+<div style="width:2224px;height:940px;box-sizing:border-box;padding:64px;background:#FAFAFA;display:flex;gap:48px">
+
+<div class="col"><div class="lab">Shared tablet PIN sign-in · used by Captain, Bartender, Host, Cashier</div>
+<div class="tab">
+<section style="flex:1;padding:32px;display:flex;flex-direction:column;gap:18px" aria-label="Choose your name">
+<div><div class="m">Bar tablet · Main bar · Shift 2</div><div style="font-size:28px;font-weight:700">Who's signing in?</div></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+<button class="st on"><i>MN</i>Meera<span>Bartender</span></button>
+<button class="st"><i>AK</i>Arun<span>Captain</span></button>
+<button class="st"><i>RS</i>Ravi<span>Cashier</span></button>
+<button class="st"><i>SV</i>Sanjay<span>Host</span></button>
+<button class="st"><i>PR</i>Priya<span>Manager</span></button>
+<button class="st"><i>DA</i>Daniel<span>Chef</span></button>
+<button class="st"><i>LK</i>Lena<span>Waiter</span></button>
+<button class="st"><i>+</i>Someone else<span>Type name</span></button>
+</div>
+<div style="margin-top:auto;display:flex;gap:12px;align-items:center" class="m"><span>Only staff clocked in on this outlet are shown.</span></div>
+</section>
+<section style="width:380px;background:#18181B;padding:32px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px" aria-label="Enter PIN">
+<div style="text-align:center"><div style="font-size:20px;font-weight:700">Meera</div><div class="m">Enter your 4-digit PIN</div></div>
+<div style="display:flex;gap:16px;justify-content:center" role="img" aria-label="2 of 4 digits entered"><span style="width:18px;height:18px;border-radius:999px;background:#FAFAFA"></span><span style="width:18px;height:18px;border-radius:999px;background:#FAFAFA"></span><span style="width:18px;height:18px;border-radius:999px;border:2px solid #71717A;box-sizing:border-box"></span><span style="width:18px;height:18px;border-radius:999px;border:2px solid #71717A;box-sizing:border-box"></span></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+<button class="k">1</button><button class="k">2</button><button class="k">3</button><button class="k">4</button><button class="k">5</button><button class="k">6</button><button class="k">7</button><button class="k">8</button><button class="k">9</button><button class="k" style="font-size:15px">Clear</button><button class="k">0</button><button class="k" style="font-size:15px" aria-label="Delete digit">Delete</button>
+</div>
+<span class="m" style="text-align:center">Signs out after 2 min idle. 5 wrong tries locks the PIN for 5 min.</span>
+</section>
+</div></div>
+
+<div class="col"><div class="lab">HR · Staff clock-in kiosk (staff entrance)</div>
+<div class="tab" style="flex-direction:column;padding:40px;gap:24px;align-items:center;justify-content:center">
+<div style="text-align:center"><div class="m">Fri 21 Nov · Main outlet</div><div style="font-size:72px;font-weight:700;letter-spacing:-1px">6:52 pm</div></div>
+<div style="width:560px;background:#052E16;color:#86EFAC;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center" role="status">
+<div style="font-size:26px;font-weight:700;color:#FAFAFA">Welcome, Meera</div>
+<div style="font-size:18px">Clocked in · on time</div>
+<div style="font-size:15px;color:#D4D4D8">Shift 7:00 pm – 2:00 am · Main bar · break 30 min</div>
+</div>
+<div style="display:flex;gap:12px;width:560px"><button class="b" style="flex:1;background:#27272A;color:#FAFAFA;border:1px solid #3F3F46">Start break</button><button class="b" style="flex:1;background:#27272A;color:#FAFAFA;border:1px solid #3F3F46">Not me</button></div>
+<div style="width:560px;background:#18181B;border:1px solid #3F3F46;border-radius:14px;padding:14px 18px;font-size:14px;color:#D4D4D8">Next person: tap your name and enter your PIN. Late by more than 10 min? The manager is told automatically. Optional: take a selfie to stop buddy punching.</div>
+</div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2224,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Support console</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.pt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;background:#18181B;color:#FAFAFA}
+.pt a{color:#D4D4D8;text-decoration:none;padding:0 12px;height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px}
+.pt a.on{background:#3F3F46;color:#FAFAFA;font-weight:600}
+.btn{height:40px;padding:0 14px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.wa{background:#FEF3C7;color:#713F12}.ba{background:#FEE2E2;color:#7F1D1D}.ne{background:#E4E4E7;color:#27272A}
+.tn{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;border:1px solid #E4E4E7;font-size:14px;background:#fff;width:100%;font-family:inherit;text-align:left;cursor:pointer;color:#18181B}
+.tn.on{border:2px solid #18181B}
+.log{background:#09090B;color:#D4D4D8;border-radius:12px;padding:14px;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.7;overflow:hidden}
+.log .e{color:#FCA5A5}.log .w{color:#FDE68A}.log .m{color:#71717A}
+select,input{height:40px;border:1px solid #D4D4D8;border-radius:8px;padding:0 10px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex;flex-direction:column">
+<nav class="pt" aria-label="Platform"><b style="margin-right:12px">Platform console</b><a href="PlatformTenants.dc.html">Tenants</a><a href="PlatformPlans.dc.html">Plans &amp; features</a><a href="PlatformRevenue.dc.html">Usage &amp; revenue</a><a class="on" href="SupportConsole.dc.html">Support</a><span style="margin-left:auto;font-size:13px;color:#A1A1AA">Ravi · Support · on call</span></nav>
+<main style="padding:24px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+<header style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h1>Tenant health</h1><div style="display:flex;gap:8px;align-items:center"><span class="b ba">1 P1 incident</span><span class="b wa">6 tickets open</span></div></header>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<aside class="card" style="flex:1 1 300px" aria-label="Tenants">
+<input aria-label="Search tenant" placeholder="Search tenant or ticket" style="width:100%;box-sizing:border-box">
+<button class="tn on"><span><b>Hop House</b><br><span class="mut">Payments failing · ticket #4830</span></span><span class="b ba">P1</span></button>
+<button class="tn"><span><b>Your Venue</b><br><span class="mut">KOT prints twice · #4821</span></span><span class="b wa">P3</span></button>
+<button class="tn"><span><b>Urban Tap</b><br><span class="mut">Payments failing · #4831</span></span><span class="b ba">P1</span></button>
+<button class="tn"><span><b>Coastline Bars</b><br><span class="mut">Healthy · 7 outlets</span></span><span class="b ok">OK</span></button>
+</aside>
+<section class="card" style="flex:999 1 720px" aria-label="Hop House detail">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div><h2>Hop House · Pune · 2 outlets</h2><span class="mut">Plan Pro · app 3.8.2 · access level <b>Standard</b> (set by tenant)</span></div><div style="display:flex;gap:8px"><a href="SupportSession.dc.html" class="btn p" style="display:inline-flex;align-items:center;text-decoration:none;color:#fff">Request live session</a></div></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">
+<div style="background:#F4F4F5;border-radius:10px;padding:12px"><div class="mut">Error rate</div><b style="font-size:20px">18%</b></div>
+<div style="background:#F4F4F5;border-radius:10px;padding:12px"><div class="mut">Failed payments</div><b style="font-size:20px">7</b></div>
+<div style="background:#F4F4F5;border-radius:10px;padding:12px"><div class="mut">Devices online</div><b style="font-size:20px">14 / 14</b></div>
+<div style="background:#F4F4F5;border-radius:10px;padding:12px"><div class="mut">Sync backlog</div><b style="font-size:20px">0</b></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><h2 style="margin-right:auto">Live logs</h2><select aria-label="Level"><option>Errors &amp; warnings</option></select><select aria-label="Device"><option>All devices</option></select><input aria-label="Filter logs" placeholder="Filter, e.g. payment"></div>
+<div class="log" role="log" aria-label="Live log stream">
+<div><span class="m">21:44:02</span> <span class="e">ERROR</span> payments.razorpay checkout failed · code GATEWAY_TIMEOUT · order A-2211 · trace 7f3a21</div>
+<div><span class="m">21:44:05</span> <span class="w">WARN </span> payments retry 1/3 · latency 4.2 s</div>
+<div><span class="m">21:44:09</span> <span class="e">ERROR</span> payments.razorpay checkout failed · code GATEWAY_TIMEOUT · order A-2212</div>
+<div><span class="m">21:44:11</span> INFO  pos.order paid by UPI after card failure · guest ••••7720 · amount ₹•••</div>
+<div><span class="m">21:44:20</span> <span class="w">WARN </span> gateway status page: degraded (external)</div>
+<div><span class="m">21:44:31</span> INFO  feature flag payments.fallback_upi_prompt = on</div>
+</div>
+<span class="mut">Names, phone numbers and amounts are masked before they leave the venue. Card data never reaches logs.</span>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

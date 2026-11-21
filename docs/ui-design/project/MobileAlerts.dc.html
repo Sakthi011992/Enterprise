@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Android alerts and remote fixes</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,Roboto,system-ui,sans-serif;color:#18181B}
+.col{display:flex;flex-direction:column;gap:14px}
+.lab{font-size:15px;font-weight:600;color:#3F3F46}
+.ph{width:390px;height:844px;border-radius:28px;overflow:hidden;border:1px solid #D4D4D8;background:#FAFAFA;box-sizing:border-box;padding:40px 16px 24px;display:flex;flex-direction:column;gap:12px;position:relative}
+.t{font-size:22px;font-weight:600}
+.m{font-size:13px;color:#52525B}
+.c{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.r{display:flex;justify-content:space-between;align-items:center;font-size:14px;padding:4px 0}
+.b{height:48px;border-radius:999px;border:0;font:inherit;font-size:15px;font-weight:600;cursor:pointer;padding:0 18px}
+.bp{background:#3F3F46;color:#fff}.bs{background:#fff;color:#18181B;border:1px solid #71717A}
+.opt{display:flex;gap:12px;align-items:center;min-height:56px;padding:0 4px;border-bottom:1px solid #E4E4E7;font-size:16px;background:none;border-left:0;border-right:0;border-top:0;font-family:inherit;text-align:left;cursor:pointer;color:#18181B}
+.bd{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
+</style>
+</helmet>
+<div style="width:1400px;height:1020px;box-sizing:border-box;padding:64px;background:#FAFAFA;display:flex;gap:48px">
+
+<div class="col"><div class="lab">Outlet Admin · Screen offline alert</div>
+<div class="ph">
+<span class="t">Rooftop TV 2 is offline</span>
+<span class="m">Last seen 12 minutes ago · Rooftop zone · Ads &amp; signage</span>
+<div style="height:180px;border-radius:12px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;color:#52525B;font-size:14px;text-align:center;padding:12px">Last screenshot, 9:31 pm<br>“Malt Fridays” playing</div>
+<div class="c">
+<b style="font-size:15px">Likely causes</b>
+<span style="font-size:14px">• Wi-Fi dropped on the rooftop (2 other devices also slow)</span>
+<span style="font-size:14px">• TV switched off at the wall</span>
+</div>
+<div class="c"><div class="r"><span>Other rooftop screens</span><span class="bd" style="background:#DCFCE7;color:#14532D">1 online</span></div><div class="r"><span>Missed plays so far</span><span>34 (Malt Fridays)</span></div></div>
+<div style="display:flex;gap:10px;margin-top:auto"><button class="b bs" style="flex:1">Mute alert 1 h</button><button class="b bp" style="flex:1">Fix it</button></div>
+</div></div>
+
+<div class="col"><div class="lab">Outlet Admin · Restart a screen remotely</div>
+<div class="ph">
+<span class="t">Rooftop TV 2</span>
+<div class="c" style="padding:4px 14px">
+<button class="opt"><b style="flex:1">Refresh content</b><span class="m">10 s</span></button>
+<button class="opt"><b style="flex:1">Restart the player app</b><span class="m">30 s</span></button>
+<button class="opt"><b style="flex:1">Reboot the TV stick</b><span class="m">2 min</span></button>
+<button class="opt" style="border:0"><b style="flex:1">Move its playlist to Rooftop TV 1</b><span class="m">Now</span></button>
+</div>
+<div class="c" role="status" style="background:#DCFCE7;border-color:#DCFCE7;color:#14532D"><b style="font-size:15px">Back online at 9:44 pm</b><span style="font-size:14px">Restarted the player app. The screen confirmed it's playing again. Missed plays are added to the end of tonight's loop.</span></div>
+<div class="c" style="background:#FEF2F2;border-color:#FEE2E2;color:#7F1D1D"><b style="font-size:14px">If it doesn't come back</b><span style="font-size:13px">After 2 failed tries we stop and suggest checking power and Wi-Fi on site.</span></div>
+<button class="b bs" style="margin-top:auto">Open Display Control</button>
+</div></div>
+
+<div class="col"><div class="lab">Support agent · On-call alert</div>
+<div class="ph" style="background:#18181B;color:#FAFAFA">
+<span class="bd" style="background:#F87171;color:#09090B;align-self:flex-start">P1 · 4 min ago</span>
+<span class="t">Payment failures rising</span>
+<span style="font-size:14px;color:#D4D4D8">3 tenants · Razorpay checkout · 18% of payments failing since 9:40 pm</span>
+<div class="c" style="background:#27272A;border-color:#3F3F46">
+<div class="r"><span>Your Venue · Main</span><span>11 failed</span></div>
+<div class="r"><span>Hop House · 2 outlets</span><span>7 failed</span></div>
+<div class="r"><span>Urban Tap</span><span>4 failed</span></div>
+</div>
+<div class="c" style="background:#27272A;border-color:#3F3F46"><span style="font-size:13px;color:#D4D4D8">All 3 tenants allow "Errors only" or higher, so logs are available. No live access is needed yet.</span></div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:auto"><button class="b" style="background:#FAFAFA;color:#09090B">Acknowledge &amp; open console</button><button class="b" style="background:#27272A;color:#FAFAFA;border:1px solid #52525B">Escalate to payments team</button></div>
+</div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1400,"height":1020}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

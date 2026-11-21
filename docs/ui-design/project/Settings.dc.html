@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tax, invoice &amp; payments</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600}
+.app{display:flex;flex-wrap:wrap;min-height:960px;position:relative}
+.side{flex:1 1 232px;background:#fff;border-right:1px solid #E4E4E7;padding:12px 10px;box-sizing:border-box}
+.side a{display:flex;align-items:center;gap:8px;min-height:34px;padding:0 10px;border-radius:8px;text-decoration:none;color:#3F3F46;font-size:14px}
+.side a:hover{background:#F4F4F5;color:#18181B}
+.side a.on{background:#18181B;color:#FAFAFA}
+.side a.ai{border:1px solid #D4D4D8;font-weight:600;margin-top:12px;min-height:44px}
+.side .tag{margin-left:auto;font-size:11px;font-weight:600;background:#E4E4E7;color:#27272A;padding:1px 6px;border-radius:999px}
+.side a.on .tag{background:#3F3F46;color:#FAFAFA}
+.side .grp svg{vertical-align:-2px;margin-right:6px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:16px;border-bottom:1px solid #E4E4E7}
+.gtop button{height:44px;min-width:44px;padding:0 12px;border:1px solid #D4D4D8;border-radius:8px;background:#fff;font:inherit;font-size:14px;color:#18181B;display:inline-flex;align-items:center;gap:8px;cursor:pointer;position:relative}
+.gtop .gs{flex:1 1 260px;max-width:440px;color:#52525B}
+.gdot{position:absolute;top:3px;right:3px;min-width:18px;height:18px;border-radius:999px;background:#B91C1C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.main .btn.s{height:36px;padding:0 12px}
+.grp{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:#52525B;margin:14px 12px 4px;font-weight:600}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px}
+.logo{width:36px;height:36px;border-radius:8px;background:#18181B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.main{flex:999 1 560px;min-width:0;padding:24px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.crumb{font-size:13px;color:#52525B;margin-bottom:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:999px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.btn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}.btn.dd{background:#B91C1C;border-color:#B91C1C;color:#fff}.btn.s{height:32px;padding:0 10px;font-size:13px}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 12px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+.b{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.warn{background:#FEF3C7;color:#713F12}.bad{background:#FEE2E2;color:#7F1D1D}.neu{background:#E4E4E7;color:#27272A}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:40px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.split{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}.grow{flex:999 1 520px;min-width:0}.drawer{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.mut{color:#52525B;font-size:13px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #E4E4E7;flex-wrap:wrap}
+.tab{padding:10px 14px;font-size:14px;border:0;background:none;font:inherit;color:#52525B;cursor:pointer;border-bottom:2px solid transparent}
+.tab.on{color:#18181B;font-weight:600;border-bottom-color:#18181B}
+.pm{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #F4F4F5;font-size:14px}
+.sw{width:40px;height:24px;border-radius:999px;background:#3F3F46;position:relative;display:inline-block}
+.sw::after{content:"";position:absolute;top:3px;left:19px;width:18px;height:18px;border-radius:999px;background:#fff}
+.sw.off{background:#D4D4D8}.sw.off::after{left:3px}
+.scrim{position:absolute;inset:0;background:rgba(9,9,11,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.dlg{background:#fff;border-radius:16px;padding:24px;max-width:440px;width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 32px rgba(0,0,0,.25)}
+</style>
+</helmet>
+<div class="app">
+<nav class="side" aria-label="Main">
+<div class="grp">Pinned</div>
+<a href="Main.dc.html">Dashboard</a><a href="POS.dc.html">POS billing</a><a href="QueueHost.dc.html">Walk-in queue<span class="tag">6</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path></svg>Sales</div>
+<a href="Orders.dc.html">Orders &amp; invoices</a><a href="BarTabs.dc.html">Bar tabs</a><a href="FloorPlan.dc.html">Floor plan</a><a href="KDS.dc.html">Kitchen display</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path></svg>Menu &amp; stock</div>
+<a href="Menu.dc.html">Menu &amp; products</a><a href="Inventory.dc.html">Inventory</a><a href="Procurement.dc.html">Procurement</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg>Guests &amp; displays</div>
+<a href="Customers.dc.html">Customers &amp; bookings</a><a href="DisplayControl.dc.html">Display control</a><a href="Campaigns.dc.html">Campaigns<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>People &amp; money</div>
+<a href="Users.dc.html">Users &amp; roles</a><a href="Staff.dc.html">Staff &amp; shifts</a><a href="Accounting.dc.html">Accounting<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>Settings</div>
+<a class="on" href="Settings.dc.html">Tax, invoice &amp; payments</a><a href="Hardware.dc.html">Hardware</a><a href="Permissions.dc.html">Permissions</a><a href="Themes.dc.html">Themes &amp; branding</a><a href="Localisation.dc.html">Localisation</a><a href="Subscription.dc.html">Subscription</a><a href="Monitoring.dc.html">Monitoring</a>
+<a class="ai" href="AIAssistant.dc.html">AI Assistant</a>
+</nav>
+<main class="main">
+<div class="gtop"><span class="logo" aria-hidden="true">YV</span><button class="gs" aria-label="Search or jump to"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search or jump to…<span style="margin-left:auto;font-size:11px;border:1px solid #D4D4D8;border-radius:4px;padding:1px 5px">Ctrl K</span></button><span style="flex:1"></span><button>Main outlet ▾</button><button>EN ▾</button><button aria-label="Switch to dark mode">Dark</button><button aria-label="Notifications, 3 new"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"></path></svg><span class="gdot">3</span></button></div>
+<header class="top">
+<div><div class="crumb">Settings</div><h1>Tax, invoice &amp; payments</h1></div>
+<div class="tools"><button class="btn p">New tax rule</button><span class="avatar" aria-label="Signed in as Admin">AD</span></div>
+</header>
+<div class="tabs" role="tablist"><button class="tab on">Tax rules</button><button class="tab">Invoice profile</button><button class="tab">Payment methods</button><button class="tab">Gateways</button><button class="tab">Service charge &amp; rounding</button><button class="tab">Licences &amp; dry days</button></div>
+<div class="split">
+<section class="card grow">
+<div class="bar" style="justify-content:space-between;margin-bottom:8px"><h2>Tax rules</h2><span class="mut">Applied per product tax category</span></div>
+<div class="tw"><table>
+<thead><tr><th>Name</th><th>Applies to</th><th>Rate</th><th>Breakdown</th><th>Inclusive</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody>
+<tr><td>GST 5% (restaurant)</td><td>Food, soft drinks</td><td>5%</td><td>CGST 2.5 + SGST 2.5</td><td>No</td><td><span class="b ok">Active</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s d">Delete</button></td></tr>
+<tr><td>VAT liquor (state)</td><td>Spirits, beer, wine</td><td>20%</td><td>VAT</td><td>No</td><td><span class="b ok">Active</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s d">Delete</button></td></tr>
+<tr><td>GST 18% (packaged)</td><td>Merchandise</td><td>18%</td><td>CGST 9 + SGST 9</td><td>Yes</td><td><span class="b ok">Active</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s d">Delete</button></td></tr>
+<tr><td>Old cess 1%</td><td>—</td><td>1%</td><td>Cess</td><td>No</td><td><span class="b neu">Inactive</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s d">Delete</button></td></tr>
+</tbody></table></div>
+<div style="margin-top:20px;display:flex;flex-direction:column;gap:12px">
+<h2>Invoice profile</h2>
+<div class="g2">
+<div><label for="i-country">Country profile</label><select id="i-country"><option>India (GST)</option></select></div>
+<div><label for="i-prefix">Number format</label><input id="i-prefix" value="INV/{FY}/{#####}"></div>
+<div><label for="i-reset">Number resets</label><select id="i-reset"><option>Every financial year</option><option>Monthly</option><option>Never</option></select></div>
+<div><label for="i-gstin">GSTIN</label><input id="i-gstin" placeholder="[YOUR GSTIN]"></div>
+</div>
+<div class="bar"><button class="btn">Preview A4</button><button class="btn">Preview 80 mm</button><button class="btn p">Save profile</button></div>
+</div>
+</section>
+<aside class="card drawer" aria-label="Payment methods">
+<h2>Payment methods</h2>
+<div>
+<div class="pm"><span>Cash</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="pm"><span>Card (EDC terminal)</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="pm"><span>UPI QR</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="pm"><span>Split tender</span><span class="sw" role="img" aria-label="On"></span></div>
+<div class="pm"><span>House account (credit)</span><span class="sw off" role="img" aria-label="Off"></span></div>
+<div class="pm"><span>Gift card</span><span class="sw off" role="img" aria-label="Off"></span></div>
+</div>
+<div><label for="p-gw">Online gateway</label><select id="p-gw"><option>Razorpay (test mode)</option><option>Stripe</option></select></div>
+<div class="bar"><button class="btn">Test connection</button><button class="btn p">Save</button></div>
+</aside>
+</div>
+</main>
+<div class="scrim">
+<div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-t">
+<h2 id="dlg-t">Delete tax rule "Old cess 1%"?</h2>
+<p class="mut" style="margin:0;font-size:14px">No active products use this rule. Past invoices keep their tax snapshot, so they are not affected. This action is logged.</p>
+<div><label for="dlg-pin">Admin PIN</label><input id="dlg-pin" type="password" placeholder="Enter PIN to confirm"></div>
+<div class="bar" style="justify-content:flex-end"><button class="btn">Cancel</button><button class="btn dd">Delete rule</button></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

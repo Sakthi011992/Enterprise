@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>iOS staff PIN login</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,-apple-system,system-ui,sans-serif}
+.k{height:64px;border-radius:999px;border:0;background:#F4F4F5;font:inherit;font-size:26px;font-weight:500;color:#18181B;cursor:pointer}
+.st{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:#3F3F46;background:none;border:0;font-family:inherit;cursor:pointer}
+.st span{width:52px;height:52px;border-radius:999px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;color:#18181B}
+.st.on span{background:#18181B;color:#FAFAFA;outline:3px solid #A1A1AA;outline-offset:2px}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FFFFFF;color:#18181B;padding:56px 24px 28px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;color:#52525B">Main outlet</span><button style="border:0;background:none;font:inherit;font-size:15px;color:#18181B;font-weight:600;cursor:pointer">Switch</button></div>
+<div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:32px;font-weight:700;letter-spacing:-.5px">Sign in</span><span style="font-size:15px;color:#52525B">Tap your name, then enter your PIN</span></div>
+<div style="display:flex;justify-content:space-between" role="group" aria-label="Staff">
+<button class="st"><span>AK</span>Arun</button><button class="st on"><span>MN</span>Meera</button><button class="st"><span>RS</span>Ravi</button><button class="st"><span>PR</span>Priya</button><button class="st"><span>+</span>Other</button>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:4px">
+<div style="display:flex;gap:16px" role="img" aria-label="4 digits entered, PIN incorrect">
+<span style="width:16px;height:16px;border-radius:999px;background:#B91C1C"></span><span style="width:16px;height:16px;border-radius:999px;background:#B91C1C"></span><span style="width:16px;height:16px;border-radius:999px;background:#B91C1C"></span><span style="width:16px;height:16px;border-radius:999px;background:#B91C1C"></span>
+</div>
+<div role="alert" style="display:flex;gap:8px;align-items:center;background:#FEF2F2;color:#7F1D1D;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:500">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg>
+Wrong PIN. 2 tries left before lock.
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:auto">
+<button class="k">1</button><button class="k">2</button><button class="k">3</button>
+<button class="k">4</button><button class="k">5</button><button class="k">6</button>
+<button class="k">7</button><button class="k">8</button><button class="k">9</button>
+<button class="k" style="background:none;font-size:15px">Face ID</button><button class="k">0</button><button class="k" style="background:none;font-size:15px" aria-label="Delete digit">Delete</button>
+</div>
+<button style="border:0;background:none;font:inherit;font-size:15px;color:#18181B;text-decoration:underline;cursor:pointer">Use password instead</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

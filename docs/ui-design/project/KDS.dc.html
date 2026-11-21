@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kitchen &amp; bar display</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:#09090B;color:#FAFAFA}
+a{color:#FAFAFA}a:hover{color:#D4D4D8}
+h2{margin:0;font-size:15px;font-weight:600;color:#A1A1AA;text-transform:uppercase;letter-spacing:.5px}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.on{background:#FAFAFA;color:#09090B;border-color:#FAFAFA}
+.btn.p{background:#D4D4D8;color:#09090B;border-color:#D4D4D8}
+.col{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.tk{background:#18181B;border:1px solid #27272A;border-radius:12px;overflow:hidden}
+.tk .hd{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-weight:700}
+.tk .bd{padding:10px 14px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.tk .ft{display:flex;gap:8px;padding:10px 14px;border-top:1px solid #27272A}
+.g{background:#4ADE80;color:#09090B}.y{background:#FBBF24;color:#09090B}.r{background:#F87171;color:#09090B}
+.mod{color:#A1A1AA;font-size:13px;padding-left:16px}
+.void{text-decoration:line-through;color:#F87171}
+.mut{color:#A1A1AA;font-size:13px}
+.ad{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #27272A;font-size:15px}
+</style>
+</helmet>
+<div style="min-height:960px;padding:12px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+<header style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center">
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<a href="Main.dc.html" class="btn" style="display:inline-flex;align-items:center;text-decoration:none">Back</a>
+<div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="Station">
+<button class="btn">All</button><button class="btn">Kitchen</button><button class="btn on">Bar</button><button class="btn">Grill</button><button class="btn">Tandoor</button>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<span class="mut">Green under 5 min · amber 5–10 · red over 10</span>
+<button class="btn">Recall last</button><button class="btn">Stations</button>
+<span style="font-size:20px;font-weight:700">9:44 pm</span>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:12px;flex:1;align-items:flex-start">
+<section class="col" aria-label="New tickets">
+<h2>New · 3</h2>
+<article class="tk"><div class="hd g"><span>BOT 2291 · R4</span><span>0:42</span></div><div class="bd"><div>1 × Single Malt 12Y 60 ml</div><div class="mod">On the rocks · seat 2</div><div>2 × Classic Mojito</div><div class="mod">Happy hour</div></div><div class="ft"><button class="btn">Start</button><button class="btn p">Bump</button></div></article>
+<article class="tk"><div class="hd g"><span>BOT 2292 · Tab T-08</span><span>1:10</span></div><div class="bd"><div>1 × Beer Tower 3L</div><div>4 × Tequila shot</div><div class="mod">Salt &amp; lime</div></div><div class="ft"><button class="btn">Start</button><button class="btn p">Bump</button></div></article>
+<article class="tk"><div class="hd g"><span>BOT 2293 · Bar seat 7</span><span>2:05</span></div><div class="bd"><div>1 × London Dry Gin 60 ml</div><div class="mod">Tonic, cucumber</div></div><div class="ft"><button class="btn">Start</button><button class="btn p">Bump</button></div></article>
+</section>
+<section class="col" aria-label="Preparing">
+<h2>Preparing · 3</h2>
+<article class="tk"><div class="hd y"><span>BOT 2287 · R1</span><span>6:30</span></div><div class="bd"><div>3 × Long Island Iced Tea</div><div>2 × Virgin Colada</div><div class="void">1 × Old Fashioned · cancelled</div></div><div class="ft"><button class="btn p">Bump</button></div></article>
+<article class="tk"><div class="hd r"><span>BOT 2284 · VIP 2</span><span>11:20</span></div><div class="bd"><div>1 × Whisky Bottle Service</div><div class="mod">Ice bucket, soda × 4, nuts</div></div><div class="ft"><button class="btn p">Bump</button></div></article>
+<article class="tk"><div class="hd y"><span>BOT 2289 · T7</span><span>5:15</span></div><div class="bd"><div>2 × Premium Lager 650ml</div><div>1 × Sangria pitcher</div></div><div class="ft"><button class="btn p">Bump</button></div></article>
+</section>
+<section class="col" aria-label="Ready">
+<h2>Ready to serve · 2</h2>
+<article class="tk"><div class="hd" style="background:#27272A"><span>BOT 2283 · R2</span><span>Ready 1 min</span></div><div class="bd"><div>2 × House Whisky 60 ml</div><div class="mod">Waiter Arun notified</div></div><div class="ft"><button class="btn">Recall</button><button class="btn p">Served</button></div></article>
+<article class="tk"><div class="hd" style="background:#27272A"><span>BOT 2280 · Takeaway</span><span>Ready 3 min</span></div><div class="bd"><div>6 × Craft beer cans (packed)</div></div><div class="ft"><button class="btn">Recall</button><button class="btn p">Served</button></div></article>
+</section>
+<aside class="col" style="flex:1 1 240px;background:#18181B;border:1px solid #27272A;border-radius:12px;padding:14px;box-sizing:border-box" aria-label="All-day counts">
+<h2>All day · bar</h2>
+<div><div class="ad"><span>Premium Lager</span><span>148</span></div><div class="ad"><span>House Whisky</span><span>96</span></div><div class="ad"><span>Classic Mojito</span><span>61</span></div><div class="ad"><span>Tequila shot</span><span>44</span></div><div class="ad"><span>Beer Tower</span><span>12</span></div></div>
+<p class="mut" style="margin:0">Avg ticket time today 4:52</p>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

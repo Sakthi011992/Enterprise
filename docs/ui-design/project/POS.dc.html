@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>POS Billing</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:#09090B;color:#FAFAFA}
+a{color:#FAFAFA}a:hover{color:#D4D4D8}
+h2{margin:0;font-size:16px;font-weight:600}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#D4D4D8;border-color:#D4D4D8;color:#09090B}
+.btn.on{background:#FAFAFA;color:#09090B;border-color:#FAFAFA}
+.mut{color:#A1A1AA;font-size:13px}
+.panel{background:#18181B;border:1px solid #27272A;border-radius:16px;padding:16px;box-sizing:border-box;min-width:0}
+.cat{display:block;width:100%;text-align:left;height:48px;padding:0 14px;border-radius:8px;border:0;background:transparent;color:#D4D4D8;font:inherit;font-size:15px;cursor:pointer}
+.cat.on{background:#27272A;color:#FAFAFA;font-weight:600}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.it{background:#27272A;border:1px solid #3F3F46;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:120px;box-sizing:border-box;text-align:left;color:#FAFAFA;font:inherit;cursor:pointer}
+.it .n{font-size:15px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:4px 10px;border-radius:999px;border:1px solid #52525B;font-size:12px;color:#D4D4D8}
+.chip.on{background:#FAFAFA;color:#09090B;border-color:#FAFAFA;font-weight:600}
+.line{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid #27272A;font-size:14px}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+.k{background:#3F3F46;color:#FAFAFA}.hh{background:#FBBF24;color:#09090B}.sent{background:#4ADE80;color:#09090B}
+.qty{display:flex;gap:6px;align-items:center}
+.qb{width:32px;height:32px;border-radius:8px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font-size:16px;cursor:pointer}
+input{width:100%;box-sizing:border-box;height:44px;border:1px solid #3F3F46;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#18181B;color:#FAFAFA}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex;flex-direction:column;gap:12px;padding:12px;box-sizing:border-box">
+<header style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<a href="Main.dc.html" class="btn" style="display:inline-flex;align-items:center;text-decoration:none">Back</a>
+<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Order type">
+<button class="btn on">Dine-in</button><button class="btn">Bar counter</button><button class="btn">Takeaway</button><button class="btn">Delivery</button>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<span class="tag hh" style="font-size:13px;padding:6px 12px">Happy hour ends 8:00 pm</span>
+<a href="FloorPlan.dc.html" class="btn" style="display:inline-flex;align-items:center;text-decoration:none">Table R4 · 4 covers</a>
+<span class="mut">Waiter: Arun · Shift 2</span>
+</div>
+</header>
+
+<div style="display:flex;flex-wrap:wrap;gap:12px;flex:1">
+<nav class="panel" style="flex:1 1 180px;max-width:100%;display:flex;flex-direction:column;gap:4px" aria-label="Categories">
+<button class="cat">Favourites</button>
+<button class="cat on">Spirits</button>
+<button class="cat">Beer &amp; draught</button>
+<button class="cat">Cocktails</button>
+<button class="cat">Wine</button>
+<button class="cat">Mocktails &amp; soft</button>
+<button class="cat">Bar bites</button>
+<button class="cat">Mains</button>
+<button class="cat">Desserts</button>
+<button class="cat">Combos &amp; buckets</button>
+</nav>
+
+<section style="flex:999 1 480px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<label for="pos-search" style="position:absolute;left:-9999px">Search menu</label>
+<input id="pos-search" placeholder="Search items or scan barcode">
+<div class="items">
+<button class="it"><span class="n">House Whisky</span><span class="chips"><span class="chip on">30 ml</span><span class="chip">60 ml</span><span class="chip">Bottle</span></span><span class="mut">₹180 / 30 ml</span></button>
+<button class="it"><span class="n">Single Malt 12Y</span><span class="chips"><span class="chip">30 ml</span><span class="chip on">60 ml</span><span class="chip">Bottle</span></span><span class="mut">₹540 / 60 ml</span></button>
+<button class="it"><span class="n">Premium Vodka</span><span class="chips"><span class="chip on">30 ml</span><span class="chip">60 ml</span></span><span class="mut">₹220 / 30 ml</span></button>
+<button class="it"><span class="n">Dark Rum</span><span class="chips"><span class="chip on">30 ml</span><span class="chip">60 ml</span></span><span class="mut">₹160 / 30 ml</span></button>
+<button class="it"><span class="n">London Dry Gin</span><span class="chips"><span class="chip on">30 ml</span><span class="chip">60 ml</span></span><span class="mut">₹240 / 30 ml</span></button>
+<button class="it"><span class="n">Blanco Tequila</span><span class="chips"><span class="chip on">Shot</span><span class="chip">Bottle</span></span><span class="mut">₹260 / shot</span></button>
+<button class="it" style="opacity:.55" disabled><span class="n">Aged Cognac</span><span class="chips"><span class="chip">Out of stock</span></span><span class="mut">Marked 86 by bar</span></button>
+<button class="it"><span class="n">Whisky Bottle Service</span><span class="chips"><span class="chip">750 ml</span><span class="chip">+ mixers</span></span><span class="mut">₹5,400 · bottle locker</span></button>
+</div>
+
+<div class="panel" style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2>Single Malt 12Y · 60 ml</h2><span class="mut">Modifiers &amp; notes</span></div>
+<div class="chips"><span class="chip on">On the rocks</span><span class="chip">Neat</span><span class="chip">With soda +₹40</span><span class="chip">With water</span><span class="chip">Large ice cube</span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><input aria-label="Kitchen or bar note" placeholder="Note for bar (optional)" style="flex:1 1 220px"><button class="btn">Seat 2</button><button class="btn p">Add to order</button></div>
+</div>
+</section>
+
+<aside class="panel" style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:8px" aria-label="Current order">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>Order #A-1043</h2><span class="tag k">Open</span></div>
+<div class="mut">Table R4 · Rooftop · opened 7:12 pm</div>
+<div style="flex:1">
+<div class="line"><div><div>Premium Lager 650ml × 2</div><div class="mut">Seat 1 <span class="tag sent">BOT sent</span></div></div><div>₹600</div></div>
+<div class="line"><div><div>Chicken Wings (8 pc)</div><div class="mut">Extra spicy <span class="tag sent">KOT sent</span></div></div><div>₹350</div></div>
+<div class="line"><div><div>Classic Mojito</div><div class="mut"><span class="tag hh">Happy hour −30%</span></div></div><div>₹245</div></div>
+<div class="line"><div><div>Single Malt 12Y · 60 ml</div><div class="mut">On the rocks · Seat 2 <span class="tag k">New</span></div></div><div class="qty"><button class="qb" aria-label="Decrease">−</button><span>1</span><button class="qb" aria-label="Increase">+</button><span style="margin-left:6px">₹540</span></div></div>
+</div>
+<div class="line" style="border:0;padding:4px 0"><span class="mut">Subtotal</span><span>₹1,735</span></div>
+<div class="line" style="border:0;padding:4px 0"><span class="mut">Service charge 5%</span><span>₹87</span></div>
+<div class="line" style="border:0;padding:4px 0"><span class="mut">GST (food) · VAT (liquor)</span><span>₹212</span></div>
+<div class="line" style="border:0;padding:6px 0;font-size:18px;font-weight:700"><span>Total</span><span>₹2,034</span></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+<button class="btn">Hold</button><button class="btn">Split</button><button class="btn">Discount</button>
+<button class="btn">Transfer</button><button class="btn">Void item</button><button class="btn">Print bill</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+<button class="btn">Send KOT/BOT</button><button class="btn p">Pay ₹2,034</button>
+</div>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
