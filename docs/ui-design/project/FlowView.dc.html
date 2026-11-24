@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Persona flow</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width:1440px;min-height:1200px;box-sizing:border-box;padding:64px;background:#F4F4F5;color:#18181B;font-family:Inter,system-ui,sans-serif;display:flex;flex-direction:column;gap:20px">
+
+<sc-if value="{{isIndex}}" hint-placeholder-val="{{false}}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div><div style="font-size:13px;color:#52525B">Pub ERP · end-to-end flows</div><h1 style="margin:4px 0 0;font-size:36px;font-weight:700;letter-spacing:-.5px">Personas and their flows on web, tablet and mobile</h1><p style="margin:8px 0 0;font-size:15px;color:#52525B">Open a persona to see each step on each device. Solid cards link to a designed screen. Dashed cards still need a screen.</p></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:14px"><span style="background:#fff;border:1px solid #E4E4E7;border-radius:999px;padding:6px 14px"><b>{{allDesigned}}</b> steps designed</span><span style="background:#fff;border:1px dashed #A1A1AA;border-radius:999px;padding:6px 14px"><b>{{allTodo}}</b> steps to design</span><span style="background:#fff;border:1px solid #E4E4E7;border-radius:999px;padding:6px 14px"><b>{{count}}</b> personas</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px">
+<sc-for list="{{cards}}" as="p" hint-placeholder-count="16">
+<a href="{{p.href}}" style="background:#fff;border:1px solid #E4E4E7;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:#18181B;min-height:150px;box-sizing:border-box">
+<span style="font-size:12px;color:#52525B;text-transform:uppercase;letter-spacing:.4px;font-weight:600">{{p.group}}</span>
+<b style="font-size:17px">{{p.name}}</b>
+<span style="font-size:13px;color:#52525B">{{p.devices}}</span>
+<span style="height:6px;border-radius:999px;background:#E4E4E7;overflow:hidden;margin-top:auto"><span style="{{p.bar}}"></span></span>
+<span style="font-size:12px;color:#52525B">{{p.cover}}</span>
+</a>
+</sc-for>
+</div>
+<div style="background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;overflow-x:auto">
+<h2 style="margin:0 0 10px;font-size:18px">Steps per device</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid #E4E4E7;color:#52525B;font-size:12px">Persona</th><th style="text-align:left;padding:8px;border-bottom:1px solid #E4E4E7;color:#52525B;font-size:12px">Web</th><th style="text-align:left;padding:8px;border-bottom:1px solid #E4E4E7;color:#52525B;font-size:12px">Tablet</th><th style="text-align:left;padding:8px;border-bottom:1px solid #E4E4E7;color:#52525B;font-size:12px">Mobile</th><th style="text-align:left;padding:8px;border-bottom:1px solid #E4E4E7;color:#52525B;font-size:12px">Venue screen</th><th style="text-align:left;padding:8px;border-bottom:1px solid #E4E4E7;color:#52525B;font-size:12px">Sign-in</th></tr></thead>
+<tbody>
+<sc-for list="{{cards}}" as="p" hint-placeholder-count="16">
+<tr><td style="padding:8px;border-bottom:1px solid #F4F4F5"><a href="{{p.href}}" style="color:#18181B;font-weight:600">{{p.name}}</a></td><td style="padding:8px;border-bottom:1px solid #F4F4F5">{{p.web}}</td><td style="padding:8px;border-bottom:1px solid #F4F4F5">{{p.tablet}}</td><td style="padding:8px;border-bottom:1px solid #F4F4F5">{{p.mobile}}</td><td style="padding:8px;border-bottom:1px solid #F4F4F5">{{p.screen}}</td><td style="padding:8px;border-bottom:1px solid #F4F4F5;color:#52525B">{{p.login}}</td></tr>
+</sc-for>
+</tbody></table>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isFlow}}" hint-placeholder-val="{{true}}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end">
+<div style="max-width:860px"><a href="Flow-index.dc.html" style="font-size:13px;color:#52525B">All personas</a><span style="font-size:13px;color:#52525B"> · {{f.group}}</span><h1 style="margin:4px 0 0;font-size:36px;font-weight:700;letter-spacing:-.5px">{{f.name}}</h1><p style="margin:8px 0 0;font-size:16px;color:#3F3F46">{{f.goal}}</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-size:14px"><span style="background:#fff;border:1px solid #E4E4E7;border-radius:999px;padding:6px 14px">Sign-in: {{f.login}}</span><span style="background:#fff;border:1px solid #E4E4E7;border-radius:999px;padding:6px 14px"><b>{{f.designed}}</b> designed · <b>{{f.todo}}</b> to design</span></div>
+</div>
+<sc-for list="{{f.lanes}}" as="ln" hint-placeholder-count="3">
+<section style="background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:10px;align-items:center"><span style="{{ln.pill}}">{{ln.device}}</span><span style="font-size:13px;color:#52525B">{{ln.sub}}</span></div>
+<sc-if value="{{ln.empty}}" hint-placeholder-val="{{false}}"><span style="font-size:14px;color:#52525B">This persona doesn't use this device.</span></sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<sc-for list="{{ln.steps}}" as="s" hint-placeholder-count="5">
+<sc-if value="{{s.has}}" hint-placeholder-val="{{true}}"><a href="{{s.href}}" style="width:188px;min-height:104px;box-sizing:border-box;padding:12px;border-radius:12px;background:#FFFFFF;border:2px solid #18181B;display:flex;flex-direction:column;gap:4px;text-decoration:none;color:#18181B"><span style="font-size:12px;color:#52525B">Step {{s.num}}</span><b style="font-size:14px;line-height:1.3">{{s.t}}</b><span style="margin-top:auto;font-size:12px;font-weight:600;color:#18181B">Open screen →</span></a></sc-if>
+<sc-if value="{{s.todo}}" hint-placeholder-val="{{false}}"><div style="width:188px;min-height:104px;box-sizing:border-box;padding:12px;border-radius:12px;background:#FAFAFA;border:2px dashed #A1A1AA;display:flex;flex-direction:column;gap:4px;color:#18181B"><span style="font-size:12px;color:#52525B">Step {{s.num}}</span><b style="font-size:14px;line-height:1.3">{{s.t}}</b><span style="margin-top:auto;font-size:12px;font-weight:600;color:#713F12;background:#FEF3C7;border-radius:999px;padding:2px 8px;align-self:flex-start">To design</span></div></sc-if>
+<sc-if value="{{s.more}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#71717A" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></sc-if>
+</sc-for>
+</div>
+</section>
+</sc-for>
+<section style="background:#18181B;color:#FAFAFA;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+<b style="font-size:15px">Hand-offs to other personas</b>
+<sc-for list="{{f.handoffs}}" as="h" hint-placeholder-count="3"><span style="font-size:14px;color:#D4D4D8">→ {{h.t}}</span></sc-for>
+</section>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"persona":{"editor":"enum","options":["all","owner","outletadmin","manager","accountant","storekeeper","hr","marketing","cashier","captain","waiter","bartender","host","chef","guest","superadmin","support"],"default":"all"},"$preview":{"width":1440,"height":1600}}'>
+class Component extends DCLogic {
+  data() {
+    const s = (t, f) => ({ t: t, f: f || null });
+    return [
+      { k: 'owner', name: 'Owner / Tenant Admin', group: 'Venue back office', login: 'Password or Google · Face ID on iOS', goal: 'Set up the business, watch performance across outlets and approve exceptions from anywhere.',
+        web: [s('Sign in', 'Login'), s('Choose “All outlets”', 'OutletPicker'), s('Dashboard', 'Main'), s('Set up with AI Assistant', 'AIAssistant'), s('Plan & features', 'Subscription'), s('Persona permissions', 'Permissions')],
+        tablet: [s('Review menu on iPad', 'TabletMenu'), s('Theme & branding', 'Themes'), s('Approvals inbox', 'Shell')],
+        mobile: [s('Face ID / PIN sign-in', 'MobileLogin'), s('Today dashboard', 'MobileOwner'), s('Approve void or discount', 'MobileOwner'), s('Day-close summary', 'MobileSummaries'), s('Approve support access', 'MobileSummaries')],
+        screen: [],
+        handoffs: ['Receives approval requests from Manager, Captain and Cashier', 'Approves live support sessions requested by the Support agent', 'Gets the Z-report when the Manager locks the day'] },
+      { k: 'outletadmin', name: 'Outlet Admin', group: 'Venue back office', login: 'Password', goal: 'Configure one outlet: taxes, printers, tables, screens and staff.',
+        web: [s('Sign in', 'Login'), s('Choose outlet', 'OutletPicker'), s('Tax, invoice & payments', 'Settings'), s('Printers & routing', 'Hardware'), s('Sections & tables', 'FloorPlan'), s('Pair & assign screens', 'DisplayControl')],
+        tablet: [s('Menu on tablet', 'TabletMenu'), s('Test print from tablet', 'TabletOps'), s('Pair a TV with a code', 'TabletOps')],
+        mobile: [s('Screen offline alert', 'MobileAlerts'), s('Restart a screen remotely', 'MobileAlerts')],
+        screen: [],
+        handoffs: ['Adds staff accounts used by Manager, HR and floor staff', 'Sets the routing that Chef and Bartender screens receive'] },
+      { k: 'manager', name: 'Manager', group: 'Venue back office', login: 'Password + approval PIN', goal: 'Run the shift: keep service moving, approve exceptions, control stock and close the day.',
+        web: [s('Sign in', 'Login'), s('Pick outlet & role', 'OutletPicker'), s('Dashboard', 'Main'), s('Approvals inbox', 'Shell'), s('Roster', 'Staff'), s('Stock variance check', 'Inventory')],
+        tablet: [s('Live floor view', 'FloorPlan'), s('Approve with PIN at POS', 'POSApprove'), s('Queue at peak hours', 'QueueHost'), s('Day close & Z-report', 'Accounting')],
+        mobile: [s('PIN sign-in', 'MobileLogin'), s('Approve a remote request', 'MobileOwner'), s('Spot stock count', 'MobileStock'), s('End-of-shift summary', 'MobileSummaries')],
+        screen: [],
+        handoffs: ['Approves discount and void requests from Captain, Cashier and Bartender', 'Publishes the roster to all staff', 'Sends the locked day to Owner and Accountant'] },
+      { k: 'accountant', name: 'Accountant', group: 'Venue back office', login: 'Google or password', goal: 'Keep the books right: reconcile days, invoices, vendor bills and tax.',
+        web: [s('Sign in', 'Login'), s('Review locked days', 'Accounting'), s('Invoices & refunds', 'Orders'), s('Vendor invoices & payables', 'Procurement'), s('Tax rules', 'Settings'), s('Export to Tally / Xero', 'Accounting')],
+        tablet: [],
+        mobile: [s('Monthly P&L glance', 'MobileSummaries')],
+        screen: [],
+        handoffs: ['Receives locked days from the Manager', 'Matches vendor invoices against goods the Storekeeper received'] },
+      { k: 'storekeeper', name: 'Storekeeper', group: 'Venue back office', login: 'PIN',
+        goal: 'Keep stock right: order, receive, count and record wastage.',
+        web: [s('Purchase orders', 'Procurement'), s('Receive a delivery (GRN)', 'GRN'), s('Stock & par levels', 'Inventory'), s('Transfer stock to the bar', 'Inventory')],
+        tablet: [s('Receive with invoice photo', 'TabletOps'), s('Recipe reference', 'MenuEditors')],
+        mobile: [s('PIN sign-in', 'MobileLogin'), s('Stock count, works offline', 'MobileStock'), s('Log wastage', 'MobileStaff'), s('Request a reorder', 'MobileStaff')],
+        screen: [],
+        handoffs: ['Sends purchase orders to the Manager for approval', 'Suppliers get the PO by email or WhatsApp', 'Counts feed the Manager’s variance report'] },
+      { k: 'hr', name: 'HR / Payroll', group: 'Venue back office', login: 'Password', goal: 'Plan shifts, track attendance and pay staff correctly.',
+        web: [s('Sign in', 'Login'), s('Build the roster', 'Staff'), s('Attendance', 'Staff'), s('Leave requests', 'HRScreens'), s('Tips & service-charge split', 'HRScreens'), s('Payroll export', 'HRScreens')],
+        tablet: [s('Staff clock-in kiosk', 'TabletPIN')],
+        mobile: [s('Staff app: my shifts & swaps', 'MobileStaff')],
+        screen: [],
+        handoffs: ['Roster goes to every staff member on WhatsApp', 'Attendance comes from PIN clock-in on the POS'] },
+      { k: 'marketing', name: 'Marketing / Brand manager', group: 'Venue back office', login: 'Password', goal: 'Fill the venue and earn from sponsors: campaigns, screens and loyalty.',
+        web: [s('Sponsors & campaigns', 'Campaigns'), s('Approve creatives', 'Campaigns'), s('Playlists & zones', 'DisplayControl'), s('Loyalty & offers', 'Customers'), s('Translate offers', 'Localisation'), s('Proof of play for the sponsor', 'Campaigns')],
+        tablet: [],
+        mobile: [s('Campaign results glance', 'MobileSummaries')],
+        screen: [],
+        handoffs: ['Screens show campaigns to Guests', 'Sponsors get proof-of-play reports', 'Sponsor rebates appear on the Storekeeper’s POs'] },
+      { k: 'cashier', name: 'Cashier', group: 'Floor staff', login: '4-digit PIN', goal: 'Take payments quickly and accurately, and hand over a clean drawer.',
+        web: [s('PIN sign-in on POS terminal', 'TabletPIN'), s('Open table or bill', 'POS'), s('Pay & split', 'POSPay'), s('Reprint or send bill', 'Orders'), s('Request refund approval', 'POSApprove'), s('Shift X-report', 'Accounting')],
+        tablet: [s('Counter tablet POS', 'TabletPOS'), s('Pay & split', 'POSPay')],
+        mobile: [],
+        screen: [],
+        handoffs: ['Refunds and large discounts go to the Manager', 'The drawer count feeds the day close'] },
+      { k: 'captain', name: 'Captain', group: 'Floor staff', login: '4-digit PIN', goal: 'Run a section: seat guests, take orders and settle tables.',
+        web: [],
+        tablet: [s('PIN sign-in on tablet', 'TabletPIN'), s('Tables', 'FloorPlan'), s('Take the order', 'TabletPOS'), s('Discount, void or move table', 'POSApprove'), s('Split & pay at the table', 'POSPay')],
+        mobile: [s('PIN sign-in', 'MobileLogin'), s('Tables on phone', 'MobileStaff'), s('Take the order', 'MobileCaptain'), s('Add a walk-in token', 'MobileQueue')],
+        screen: [],
+        handoffs: ['KOT/BOT go to the Chef and Bartender screens', 'Approval requests go to the Manager’s phone', 'Seats guests the Host calls from the queue'] },
+      { k: 'waiter', name: 'Waiter / Server', group: 'Floor staff', login: '4-digit PIN', goal: 'Take orders and serve fast without walking back to the POS.',
+        web: [],
+        tablet: [s('Shared captain tablet', 'TabletPOS')],
+        mobile: [s('PIN sign-in', 'MobileLogin'), s('My tables', 'MobileStaff'), s('Take the order', 'MobileCaptain'), s('“Ready to serve” alert', 'MobileStaff'), s('Mark served', 'MobileStaff')],
+        screen: [],
+        handoffs: ['Gets ready alerts from the kitchen and bar screens', 'Hands the bill to the Captain or Cashier'] },
+      { k: 'bartender', name: 'Bartender', group: 'Floor staff', login: '4-digit PIN', goal: 'Pour, run tabs and keep the bar ticket queue moving.',
+        web: [],
+        tablet: [s('PIN sign-in on bar tablet', 'TabletPIN'), s('Bar counter POS', 'POS'), s('Open & manage tabs', 'BarTabs'), s('Mark an item 86', 'Menu'), s('Close tab & pay', 'POSPay')],
+        mobile: [s('Tab & pay on phone', 'MobileTab')],
+        screen: [s('Bar ticket screen', 'KDS'), s('Bump when ready', 'KDS')],
+        handoffs: ['Receives BOTs from the Captain and Waiter', 'Stores bottles in the bottle locker for Customers', 'Void requests go to the Manager'] },
+      { k: 'host', name: 'Host / Reception', group: 'Floor staff', login: '4-digit PIN', goal: 'Greet guests, manage the walk-in queue and bookings, and seat people quickly.',
+        web: [s('Queue on the front-desk PC', 'QueueHost'), s('Reservations', 'Customers')],
+        tablet: [s('PIN sign-in on host tablet', 'TabletPIN'), s('Walk-in queue', 'QueueHost'), s('Create token + WhatsApp', 'QueueHost'), s('Call the guest', 'QueueHost'), s('Seat at a table', 'FloorPlan')],
+        mobile: [s('New token on phone, with checks', 'MobileQueue')],
+        screen: [s('Waiting-area monitor', 'QueueMonitor'), s('Queue band on bar TV', 'SignageTV')],
+        handoffs: ['Guests get the token and call on WhatsApp', 'The Captain takes over once the guest is seated', 'The Bartender can open a tab while the guest waits'] },
+      { k: 'chef', name: 'Chef / Kitchen', group: 'Floor staff', login: 'PIN, or none on the kitchen screen', goal: 'Cook tickets in order and flag what has run out.',
+        web: [s('Recipes & costing (view)', 'MenuEditors')],
+        tablet: [s('Mark dish 86 & log wastage', 'TabletOps')],
+        mobile: [],
+        screen: [s('Kitchen tickets', 'KDS'), s('Bump or recall', 'KDS')],
+        handoffs: ['Receives KOTs from the Captain and Waiter', 'Ready alerts go to the Waiter', 'Wastage updates the Storekeeper’s stock'] },
+      { k: 'guest', name: 'Guest / Customer', group: 'External', login: 'No account (WhatsApp number when needed)', goal: 'Get a table, order and pay without waiting on staff.',
+        web: [s('Online booking page', 'GuestBooking')],
+        tablet: [s('Self-order kiosk', 'Kiosk')],
+        mobile: [s('Scan the table QR', 'GuestMobile'), s('Order from the QR menu', 'GuestMobile'), s('Join the queue on WhatsApp', 'GuestMobile'), s('Token & “table ready” on WhatsApp', 'GuestMobile'), s('Pay by UPI link', 'GuestMobile'), s('Leave feedback', 'GuestMobile')],
+        screen: [s('Waiting-area monitor', 'QueueMonitor'), s('Bar TV promos & order QR', 'SignageTV')],
+        handoffs: ['The Host creates tokens for walk-ins', 'QR orders go straight to the kitchen and bar screens', 'Points are added to their Customers profile'] },
+      { k: 'superadmin', name: 'Super Admin (platform)', group: 'Platform team', login: 'Password + two-factor', goal: 'Run the SaaS: tenants, plans, feature releases and revenue.',
+        web: [s('Platform sign-in with 2FA', 'PlatformSignin'), s('Tenants list', 'PlatformTenants'), s('Tenant detail & overrides', 'PlatformTenants'), s('Plans & pricing', 'PlatformPlans'), s('Feature rollout & beta', 'PlatformPlans'), s('Usage & revenue', 'PlatformRevenue')],
+        tablet: [],
+        mobile: [],
+        screen: [],
+        handoffs: ['Plan changes show on the Owner’s Subscription page', 'Feature flags turn modules on per tenant'] },
+      { k: 'support', name: 'Support agent (platform)', group: 'Platform team', login: 'Password + two-factor', goal: 'Find and fix customer issues fast, within the access the customer allows.',
+        web: [s('Support console sign-in', 'PlatformSignin'), s('Tenant health', 'SupportConsole'), s('Request a live session', 'SupportConsole'), s('Live logs & traces', 'SupportConsole'), s('Remote fix: restart, refresh', 'SupportSession'), s('Close the ticket', 'SupportSession')],
+        tablet: [],
+        mobile: [s('On-call alert', 'MobileAlerts')],
+        screen: [],
+        handoffs: ['The Owner sets and approves the access level in Monitoring', 'Every action shows in the Owner’s support access log'] }
+    ];
+  }
+  lanes(p) {
+    const defs = [
+      ['web', 'Web', 'Browser or POS terminal', 'background:#18181B;color:#FAFAFA'],
+      ['tablet', 'Tablet', 'iPad or Android tablet, 768–1024 px', 'background:#3F3F46;color:#FAFAFA'],
+      ['mobile', 'Mobile', 'iOS or Android phone', 'background:#D4D4D8;color:#18181B'],
+      ['screen', 'Venue screen', 'KDS, TV or monitor', 'background:#FFFFFF;color:#18181B;border:1px solid #A1A1AA']
+    ];
+    return defs.filter((d) => d[0] !== 'screen' || p.screen.length).map((d) => {
+      const list = p[d[0]];
+      return {
+        device: d[1], sub: d[2],
+        pill: 'padding:5px 12px;border-radius:999px;font-size:13px;font-weight:700;' + d[3],
+        empty: list.length === 0,
+        steps: list.map((x, i) => ({ num: i + 1, t: x.t, has: !!x.f, todo: !x.f, href: x.f ? x.f + '.dc.html' : '', more: i < list.length - 1 }))
+      };
+    });
+  }
+  renderVals() {
+    const key = this.props.persona ?? 'all';
+    const all = this.data();
+    const stepsOf = (p) => p.web.concat(p.tablet, p.mobile, p.screen);
+    const cnt = (l) => l.length ? l.length + ' steps' : '—';
+    const cards = all.map((p) => {
+      const st = stepsOf(p); const d = st.filter((x) => x.f).length;
+      const devs = [['Web', p.web], ['Tablet', p.tablet], ['Mobile', p.mobile], ['Screen', p.screen]].filter((x) => x[1].length).map((x) => x[0]).join(' · ');
+      return { name: p.name, group: p.group, devices: devs, href: 'Flow-' + p.k + '.dc.html', login: p.login,
+        cover: d + ' of ' + st.length + ' steps designed',
+        bar: 'display:block;height:100%;background:#3F3F46;width:' + Math.round(d / st.length * 100) + '%',
+        web: cnt(p.web), tablet: cnt(p.tablet), mobile: cnt(p.mobile), screen: cnt(p.screen) };
+    });
+    const allSteps = all.reduce((a, p) => a.concat(stepsOf(p)), []);
+    const p = all.find((x) => x.k === key) || all[0];
+    const st = stepsOf(p);
+    return {
+      isIndex: key === 'all',
+      isFlow: key !== 'all',
+      count: all.length,
+      allDesigned: allSteps.filter((x) => x.f).length,
+      allTodo: allSteps.filter((x) => !x.f).length,
+      cards,
+      f: { name: p.name, group: p.group, goal: p.goal, login: p.login,
+        designed: st.filter((x) => x.f).length, todo: st.filter((x) => !x.f).length,
+        lanes: this.lanes(p), handoffs: p.handoffs.map((t) => ({ t })) }
+    };
+  }
+}
+</script>
+</body>
+</html>

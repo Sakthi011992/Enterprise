@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, LoginMethod, PaymentMethod } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -14,6 +14,11 @@ async function main() {
     where: { name: 'USER' },
     update: {},
     create: { name: 'USER', description: 'Cashier — billing only' },
+  });
+  await prisma.role.upsert({
+    where: { name: 'KIOSK' },
+    update: {},
+    create: { name: 'KIOSK', description: 'Kiosk display device' },
   });
 
   // Default admin
@@ -44,6 +49,64 @@ async function main() {
   for (const p of sample) {
     const exists = await prisma.product.findFirst({ where: { name: p.name, deletedAt: null } });
     if (!exists) await prisma.product.create({ data: p });
+  }
+
+  // Login methods (STATIC enabled by default, GOOGLE disabled)
+  for (const [method, enabled] of [[LoginMethod.STATIC, true], [LoginMethod.GOOGLE, false]] as const) {
+    await prisma.loginMethodConfig.upsert({
+      where: { method },
+      create: { method, enabled },
+      update: {},
+    });
+  }
+
+  // Payment methods (all disabled by default — admin must enable per store)
+  for (const method of [PaymentMethod.CASH, PaymentMethod.UPI, PaymentMethod.CARD]) {
+    await prisma.paymentMethodConfig.upsert({
+      where: { storeId_method: { storeId: 'default', method } },
+      create: { storeId: 'default', method, enabled: method === PaymentMethod.CASH },
+      update: {},
+    });
+  }
+
+  // Invoice country profiles
+  const profiles = [
+    { countryCode: 'IN', numberPrefix: 'GST', resetPeriod: 'FINANCIAL_YEAR' as const, taxBreakdownMode: 'SPLIT_COMPONENTS' as const, roundingRule: 'ROUND_PER_LINE' as const, retentionYears: 8, requiredFields: ['gstin'] },
+    { countryCode: 'US', numberPrefix: 'INV', resetPeriod: 'CALENDAR_YEAR' as const, taxBreakdownMode: 'SINGLE_LINE' as const, roundingRule: 'ROUND_TOTAL' as const, retentionYears: 7, requiredFields: [] },
+    { countryCode: 'JP', numberPrefix: 'REC', resetPeriod: 'CALENDAR_YEAR' as const, taxBreakdownMode: 'SINGLE_LINE' as const, roundingRule: 'ROUND_TOTAL' as const, retentionYears: 7, requiredFields: [] },
+  ];
+  for (const p of profiles) {
+    await prisma.invoiceCountryProfile.upsert({
+      where: { countryCode: p.countryCode },
+      create: p,
+      update: {},
+    });
+  }
+
+  // Seed localisation keys (English baseline)
+  const i18nKeys = [
+    { key: 'app.title', description: 'Application title' },
+    { key: 'nav.dashboard', description: 'Dashboard nav label' },
+    { key: 'nav.products', description: 'Products nav label' },
+    { key: 'nav.orders', description: 'Orders nav label' },
+    { key: 'nav.users', description: 'Users nav label' },
+    { key: 'nav.tax', description: 'Tax nav label' },
+    { key: 'nav.appearance', description: 'Appearance nav label' },
+  ];
+  const i18nValues = [
+    'POS Billing', 'Dashboard', 'Products', 'Orders', 'Users', 'Tax', 'Appearance',
+  ];
+  for (let i = 0; i < i18nKeys.length; i++) {
+    const keyRow = await prisma.translationKey.upsert({
+      where: { key: i18nKeys[i].key },
+      create: i18nKeys[i],
+      update: {},
+    });
+    await prisma.translationValue.upsert({
+      where: { keyId_locale: { keyId: keyRow.id, locale: 'en' } },
+      create: { keyId: keyRow.id, locale: 'en', value: i18nValues[i] },
+      update: {},
+    });
   }
 
   console.log(`Seed complete. Admin login: ${username} / ${password}`);

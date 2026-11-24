@@ -1,17 +1,16 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, PaymentStatus, OrderStatus } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
 import { round2 } from '../../common/utils/money.util';
 import { CreatePaymentDto } from './dto/payment.dto';
+import { PaymentsRepository } from './payments.repository';
 
 @Injectable()
 export class PaymentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private repo: PaymentsRepository) {}
 
-  /** Record a payment and recompute order status from total paid. */
   async create(dto: CreatePaymentDto) {
-    return this.prisma.$transaction(async (tx) => {
-      const order = await tx.order.findUnique({ where: { id: dto.orderId }, include: { payments: true } });
+    return this.repo.withTransaction(async (tx) => {
+      const order = await this.repo.findOrderWithPayments(dto.orderId);
       if (!order) throw new NotFoundException('Order not found');
       if (order.status === 'REFUNDED') throw new BadRequestException('Order is refunded');
 
@@ -35,29 +34,27 @@ export class PaymentsService {
         paymentStatus = PaymentStatus.PARTIALLY_PAID;
       }
 
-      const payment = await tx.payment.create({
-        data: {
-          orderId: dto.orderId,
-          amount: new Prisma.Decimal(dto.amount),
-          paymentMethod: dto.paymentMethod,
-          status: paymentStatus,
-        },
-      });
-      await tx.order.update({ where: { id: dto.orderId }, data: { status: orderStatus } });
+      const [payment] = await this.repo.createPaymentAndUpdateOrder(
+        tx,
+        dto.orderId,
+        new Prisma.Decimal(dto.amount),
+        dto.paymentMethod,
+        paymentStatus,
+        orderStatus,
+      );
       return { payment, order: { id: order.id, status: orderStatus, paid: newPaid.toFixed(2), grandTotal: grand.toFixed(2) } };
     });
   }
 
   findByOrder(orderId: string) {
-    return this.prisma.payment.findMany({ where: { orderId }, orderBy: { createdAt: 'asc' } });
+    return this.repo.findByOrder(orderId);
   }
 
   async refund(paymentId: string) {
-    const payment = await this.prisma.payment.findUnique({ where: { id: paymentId } });
+    const payment = await this.repo.findPayment(paymentId);
     if (!payment) throw new NotFoundException('Payment not found');
-    return this.prisma.$transaction(async (tx) => {
-      const updated = await tx.payment.update({ where: { id: paymentId }, data: { status: PaymentStatus.REFUNDED } });
-      await tx.order.update({ where: { id: payment.orderId }, data: { status: OrderStatus.REFUNDED } });
+    return this.repo.withTransaction(async (tx) => {
+      const [updated] = await this.repo.refundPaymentAndOrder(tx, paymentId, payment.orderId);
       return updated;
     });
   }

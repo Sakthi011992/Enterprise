@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Persona permission matrix</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.rail{flex:0 0 64px;background:#fff;border-right:1px solid #E4E4E7;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 0}
+.rail a{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#3F3F46}
+.rail a.on{background:#18181B;color:#FAFAFA}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+table{border-collapse:collapse;font-size:13px;width:100%}
+th{font-size:12px;color:#52525B;font-weight:600;padding:8px;border-bottom:1px solid #E4E4E7;text-align:center;white-space:nowrap}
+th.l,td.l{text-align:left}
+td{padding:4px;border-bottom:1px solid #F4F4F5;text-align:center;white-space:nowrap}
+td.l{padding:8px;font-size:14px}
+tr.gh td{background:#F4F4F5;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:#52525B;padding:8px;text-align:left}
+.c{display:inline-flex;align-items:center;justify-content:center;min-width:64px;height:36px;border-radius:8px;font-size:12px;font-weight:600;border:0;font-family:inherit;cursor:pointer}
+.e{background:#18181B;color:#FAFAFA}.v{background:#E4E4E7;color:#27272A}.n{background:transparent;color:#71717A;border:1px dashed #D4D4D8}.lm{background:#FEF3C7;color:#713F12}
+col.sel{background:#FAFAFA}
+th.sel{color:#18181B;border-bottom:2px solid #18181B}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex">
+<nav class="rail" aria-label="Main">
+<a href="Main.dc.html" aria-label="Dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"></path></svg></a>
+<a class="on" href="Users.dc.html" aria-label="Users and roles"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg></a>
+<a href="Settings.dc.html" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg></a>
+<a href="Shell.dc.html" aria-label="Expand menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+</nav>
+<main style="flex:1;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+<header style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+<div><div class="mut"><a href="Users.dc.html">Users &amp; roles</a> / Personas &amp; permissions</div><h1>Persona permission matrix</h1></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn">Reset to defaults</button><button class="btn">Duplicate persona</button><button class="btn p">New persona</button></div>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center" class="mut"><span>Tap a cell to change it:</span><span class="c e">Edit</span><span class="c v">View</span><span class="c lm">Limited</span><span class="c n">None</span><span>Features not in the plan are hidden here.</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section class="card" style="flex:999 1 720px" aria-label="Permission matrix">
+<div style="overflow-x:auto"><table>
+<colgroup><col><col><col><col><col><col><col class="sel"><col><col></colgroup>
+<thead><tr><th class="l">Permission</th><th>Admin</th><th>Manager</th><th>Cashier</th><th>Captain</th><th>Waiter</th><th class="sel">Bartender</th><th>Chef</th><th>Storekeeper</th></tr></thead>
+<tbody>
+<tr class="gh"><td colspan="9">Sales</td></tr>
+<tr><td class="l">Take orders &amp; send KOT/BOT</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><button class="c e">Edit</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr><td class="l">Take payment &amp; close bill</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c v">View</span></td><td><span class="c n">None</span></td><td><button class="c e">Edit</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr><td class="l">Give discount</td><td><span class="c e">Any</span></td><td><span class="c lm">≤ 30%</span></td><td><span class="c lm">≤ 10%</span></td><td><span class="c lm">≤ 10%</span></td><td><span class="c n">None</span></td><td><button class="c lm">≤ 5%</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr><td class="l">Void item / bill</td><td><span class="c e">Edit</span></td><td><span class="c e">Approve</span></td><td><span class="c lm">Request</span></td><td><span class="c lm">Request</span></td><td><span class="c lm">Request</span></td><td><button class="c lm">Request</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr><td class="l">Open bar tab</td><td><span class="c e">Any</span></td><td><span class="c e">Any</span></td><td><span class="c lm">≤ ₹5,000</span></td><td><span class="c lm">≤ ₹5,000</span></td><td><span class="c n">None</span></td><td><button class="c lm">≤ ₹10,000</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr class="gh"><td colspan="9">Menu &amp; stock</td></tr>
+<tr><td class="l">Edit menu &amp; prices</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c v">View</span></td><td><span class="c v">View</span></td><td><span class="c v">View</span></td><td><button class="c v">View</button></td><td><span class="c v">View</span></td><td><span class="c v">View</span></td></tr>
+<tr><td class="l">Mark item out of stock (86)</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c n">None</span></td><td><span class="c e">Edit</span></td><td><span class="c n">None</span></td><td><button class="c e">Edit</button></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td></tr>
+<tr><td class="l">Stock count &amp; wastage</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><button class="c e">Edit</button></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td></tr>
+<tr><td class="l">Purchase orders</td><td><span class="c e">Edit</span></td><td><span class="c e">Approve</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><button class="c n">None</button></td><td><span class="c lm">Request</span></td><td><span class="c e">Edit</span></td></tr>
+<tr class="gh"><td colspan="9">Guests, displays &amp; admin</td></tr>
+<tr><td class="l">Walk-in queue</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c v">View</span></td><td><button class="c v">View</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr><td class="l">Display Control Center</td><td><span class="c e">Edit</span></td><td><span class="c lm">Message only</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><button class="c n">None</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+<tr><td class="l">Reports &amp; day close</td><td><span class="c e">Edit</span></td><td><span class="c e">Edit</span></td><td><span class="c lm">X-report</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><button class="c n">None</button></td><td><span class="c n">None</span></td><td><span class="c v">Stock only</span></td></tr>
+<tr><td class="l">Users, plan &amp; monitoring</td><td><span class="c e">Edit</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td><td><button class="c n">None</button></td><td><span class="c n">None</span></td><td><span class="c n">None</span></td></tr>
+</tbody></table></div>
+</section>
+<aside class="card" style="flex:1 1 320px" aria-label="Bartender persona">
+<div class="row"><h2>Bartender</h2><span class="mut">4 users</span></div>
+<div><label for="p-n">Persona name</label><input id="p-n" value="Bartender"></div>
+<div><label for="p-d">Home screen</label><select id="p-d"><option>POS · Bar counter</option></select></div>
+<div><label for="p-disc">Discount limit</label><input id="p-disc" value="5%"></div>
+<div><label for="p-tab">Tab limit without approval</label><input id="p-tab" value="₹10,000"></div>
+<div><label for="p-login">Login</label><select id="p-login"><option>4-digit PIN on shared POS</option></select></div>
+<div style="background:#FEF3C7;color:#713F12;border-radius:10px;padding:12px;font-size:13px">You changed 2 permissions. They apply to all 4 Bartenders the next time they sign in.</div>
+<div class="row" style="border-top:1px solid #E4E4E7;padding-top:12px"><button class="btn d">Delete persona</button><div style="display:flex;gap:8px"><button class="btn">Cancel</button><button class="btn p">Save</button></div></div>
+<p class="mut" style="margin:0">A persona with users can't be deleted. Move its users first. Admin can't be edited.</p>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

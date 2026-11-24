@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
 
-export type AppRole = 'ADMIN' | 'USER';
+export type AppRole = 'ADMIN' | 'USER' | 'KIOSK';
 export const ROLES_KEY = 'roles';
 export const Roles = (...roles: AppRole[]) => SetMetadata(ROLES_KEY, roles);

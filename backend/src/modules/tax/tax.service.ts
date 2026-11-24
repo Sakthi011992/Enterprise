@@ -1,39 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
+import { TaxRepository } from './tax.repository';
 
 @Injectable()
 export class TaxService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private repo: TaxRepository) {}
 
   async getGlobalTax() {
-    const tax = await this.prisma.globalTaxSetting.findFirst({
-      where: { isActive: true },
-      orderBy: { updatedAt: 'desc' },
-    });
+    const tax = await this.repo.getActiveTax();
     return tax ?? { percentage: new Prisma.Decimal(0), isActive: true };
   }
 
-  /** Replace the active global tax setting. */
   async setGlobalTax(percentage: number) {
-    await this.prisma.globalTaxSetting.updateMany({ where: { isActive: true }, data: { isActive: false } });
-    return this.prisma.globalTaxSetting.create({
-      data: { percentage: new Prisma.Decimal(percentage), isActive: true },
-    });
+    await this.repo.deactivateAll();
+    return this.repo.createTax(new Prisma.Decimal(percentage));
   }
 
   async setProductTax(productId: string, taxPercentage: number | null) {
-    const product = await this.prisma.product.findFirst({ where: { id: productId, deletedAt: null } });
+    const product = await this.repo.findProduct(productId);
     if (!product) throw new NotFoundException('Product not found');
-    return this.prisma.product.update({
-      where: { id: productId },
-      data: { taxPercentage: taxPercentage === null ? null : new Prisma.Decimal(taxPercentage) },
-    });
+    return this.repo.updateProductTax(
+      productId,
+      taxPercentage === null ? null : new Prisma.Decimal(taxPercentage),
+    );
   }
 
-  /**
-   * Tax resolution: product override takes priority, else global tax.
-   */
   resolveRate(productTax: Prisma.Decimal | null | undefined, globalTax: Prisma.Decimal): Prisma.Decimal {
     return productTax !== null && productTax !== undefined ? productTax : globalTax;
   }

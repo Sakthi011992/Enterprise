@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Theme switcher</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600}
+.btn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:14px}
+.mut{color:#52525B;font-size:13px}
+.thm{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border-radius:10px;background:#fff;font:inherit;font-size:14px;cursor:pointer;color:#18181B}
+.dots{display:flex;gap:3px}.dots span{width:16px;height:16px;border-radius:999px;border:1px solid rgba(0,0,0,.1)}
+.cp{display:flex;align-items:center;gap:12px}
+.cp input[type=color]{width:52px;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:2px;background:#fff;cursor:pointer}
+.seg{display:flex;background:#E4E4E7;border-radius:10px;padding:3px}
+.seg button{flex:1;height:36px;border:0;border-radius:8px;font:inherit;font-size:14px;cursor:pointer}
+.sw{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.swi{border:1px solid #E4E4E7;border-radius:10px;overflow:hidden;font-size:12px}
+.swi div{height:44px}
+.swi p{margin:0;padding:6px 8px}
+.ck{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;padding:6px 0;border-bottom:1px solid #F4F4F5}
+.bdg{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+input[type=text]{width:100%;box-sizing:border-box;height:40px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px}
+</style>
+</helmet>
+<div style="min-height:960px;padding:24px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+<header style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+<div><div class="mut"><a href="Themes.dc.html">Themes &amp; branding</a> / Theme switcher</div><h1>Build a theme from your brand colours</h1></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span class="mut">Active: <b>{{activeName}}</b> · {{modeLabel}}</span><button class="btn p" onClick="{{applyTheme}}">{{applyLabel}}</button></div>
+</header>
+
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<section class="card" aria-label="Saved themes">
+<h2>Themes</h2>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{themeList}}" as="th" hint-placeholder-count="5">
+<button class="thm" style="{{th.style}}" onClick="{{th.pick}}" aria-pressed="{{th.pressed}}"><span class="dots" aria-hidden="true"><span style="{{th.d1}}"></span><span style="{{th.d2}}"></span><span style="{{th.d3}}"></span></span><span style="flex:1">{{th.name}}</span></button>
+</sc-for>
+</div>
+<div><label for="ts-name" style="display:block;font-size:13px;font-weight:500;margin-bottom:6px">Save current colours as</label><input id="ts-name" type="text" value="{{newName}}" onChange="{{setName}}" placeholder="e.g. Diwali night"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onClick="{{saveNew}}">Save as new theme</button><button class="btn d" onClick="{{removeTheme}}">Delete</button></div>
+</section>
+<section class="card" aria-label="Brand colours">
+<h2>Brand colours</h2>
+<p class="mut" style="margin:0">Pick up to three. Everything else (backgrounds, text, borders, button text) is worked out for you and checked for readability.</p>
+<div class="cp"><input type="color" aria-label="Primary brand colour" value="{{c1}}" onChange="{{setC1}}"><div><h3>Primary</h3><span class="mut">Buttons, links, selected items · {{c1}}</span></div></div>
+<div class="cp"><input type="color" aria-label="Accent colour" value="{{c2}}" onChange="{{setC2}}"><div><h3>Accent</h3><span class="mut">Highlights, badges, queue call · {{c2}}</span></div></div>
+<div class="cp"><input type="color" aria-label="Neutral base colour" value="{{c3}}" onChange="{{setC3}}"><div><h3>Neutral base</h3><span class="mut">Tints backgrounds and text · {{c3}}</span></div></div>
+<div class="seg" role="group" aria-label="Mode"><button style="{{lightBtn}}" onClick="{{toLight}}">Light</button><button style="{{darkBtn}}" onClick="{{toDark}}">Dark</button></div>
+</section>
+</aside>
+
+<section style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<div class="card" aria-label="Live preview">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2>Live preview</h2><span class="mut">POS, queue banner and form, drawn with the generated tokens</span></div>
+<div style="{{pvCanvas}}">
+<div style="{{pvBar}}"><b>Your Venue · POS</b><span style="{{pvMuted}}">Table R4 · 4 covers</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px">
+<div style="flex:2 1 300px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="{{pvChipOn}}">Spirits</span><span style="{{pvChip}}">Beer</span><span style="{{pvChip}}">Cocktails</span><span style="{{pvHighlight}}">Happy hour −30%</span></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+<div style="{{pvTile}}"><b>House Whisky</b><span style="{{pvMuted}}">₹180 / 30 ml</span></div>
+<div style="{{pvTileSel}}"><b>Single Malt 12Y</b><span style="{{pvMuted}}">₹540 / 60 ml</span></div>
+<div style="{{pvTile}}"><b>Premium Vodka</b><span style="{{pvMuted}}">₹220 / 30 ml</span></div>
+</div>
+<div style="{{pvField}}"><span style="{{pvMuted}}">Guest name</span><span>Rahul S.</span></div>
+<div style="{{pvError}}">Enter a 10-digit mobile number</div>
+</div>
+<div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:10px">
+<div style="{{pvCard}}"><span style="{{pvMuted}}">Total</span><b style="font-size:22px">₹2,034</b></div>
+<button style="{{pvPrimary}}">Pay ₹2,034</button>
+<button style="{{pvSecondary}}">Send KOT</button>
+<div style="{{pvCall}}"><span style="font-size:12px;font-weight:700;letter-spacing:1px">NOW CALLING</span><b style="font-size:24px">W-008 · Rahul</b></div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div class="card" style="flex:3 1 380px" aria-label="Generated tokens">
+<h2>Generated tokens · {{modeLabel}}</h2>
+<div class="sw">
+<sc-for list="{{swatches}}" as="s" hint-placeholder-count="8">
+<div class="swi"><div style="{{s.style}}"></div><p><b>{{s.name}}</b><br><span class="mut">{{s.hex}}</span></p></div>
+</sc-for>
+</div>
+<sc-if value="{{adjusted}}" hint-placeholder-val="{{false}}"><p class="mut" style="margin:0">Your primary colour was adjusted slightly ({{c1}} → {{accentHex}}) so buttons stay visible on this background.</p></sc-if>
+</div>
+<div class="card" style="flex:2 1 280px" aria-label="Contrast checks">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2>Readability</h2><span class="bdg" style="{{summaryStyle}}">{{summary}}</span></div>
+<div>
+<sc-for list="{{checks}}" as="c" hint-placeholder-count="6">
+<div class="ck"><span>{{c.label}}</span><span><span class="mut">{{c.ratio}}</span> <span class="bdg" style="{{c.badge}}">{{c.result}}</span></span></div>
+</sc-for>
+</div>
+<p class="mut" style="margin:0">WCAG AA: text needs 4.5:1, buttons and borders 3:1.</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      themes: [
+        { name: 'Billing App default', colors: ['#3F3F46', '#2563EB', '#71717A'] },
+        { name: 'Neon sports bar', colors: ['#F5B841', '#36D6C4', '#2A2540'] },
+        { name: 'Brewery warm', colors: ['#7A3E1D', '#D9A441', '#6B5B4E'] },
+        { name: 'Rooftop lime', colors: ['#3F7D20', '#E2F26B', '#4B5563'] },
+        { name: 'Royal lounge', colors: ['#4C2A85', '#C9A227', '#3B3646'] }
+      ],
+      active: 1,
+      applied: 1,
+      mode: 'dark',
+      newName: ''
+    };
+  }
+  rgb(h) { const x = h.replace('#', ''); return [0, 2, 4].map((i) => parseInt(x.substr(i, 2), 16)); }
+  hex(c) { return '#' + c.map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('').toUpperCase(); }
+  mix(a, b, t) { const A = this.rgb(a), B = this.rgb(b); return this.hex(A.map((v, i) => v * (1 - t) + B[i] * t)); }
+  lum(h) { return this.rgb(h).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }).reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0); }
+  cr(a, b) { const x = this.lum(a), y = this.lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  ensure(fg, bg, min, toward) { let c = fg; for (let i = 0; i < 12 && this.cr(c, bg) < min; i++) c = this.mix(c, toward, 0.15); return c; }
+  on(bg) { return this.cr('#FFFFFF', bg) >= 4.5 ? '#FFFFFF' : '#09090B'; }
+  tokens(cols, mode) {
+    const [p, a, n] = cols;
+    const d = mode === 'dark';
+    const ink = d ? '#FFFFFF' : '#000000';
+    const base = d ? '#000000' : '#FFFFFF';
+    const canvas = this.mix(n, base, d ? 0.86 : 0.96);
+    const surface = this.mix(n, base, d ? 0.78 : 0.90);
+    const raised = d ? this.mix(n, base, 0.68) : '#FFFFFF';
+    const border = this.mix(n, base, d ? 0.5 : 0.72);
+    const text = this.ensure(this.mix(n, ink, d ? 0.92 : 0.8), canvas, 7, ink);
+    const muted = this.ensure(this.mix(n, ink, d ? 0.55 : 0.4), canvas, 4.5, ink);
+    const accent = this.ensure(p, canvas, 3, ink);
+    const highlight = a;
+    const danger = d ? '#F87171' : '#B91C1C';
+    return { canvas, surface, raised, border, text, muted, accent, onAccent: this.on(accent), highlight, onHighlight: this.on(highlight), danger, adjusted: accent !== p.toUpperCase() };
+  }
+  setColor(i, v) {
+    const themes = this.state.themes.map((t, k) => k === this.state.active ? { ...t, colors: t.colors.map((c, j) => j === i ? v.toUpperCase() : c) } : t);
+    this.setState({ themes });
+  }
+  renderVals() {
+    const s = this.state;
+    const th = s.themes[s.active];
+    const t = this.tokens(th.colors, s.mode);
+    const checks = [
+      ['Body text on background', t.text, t.canvas, 4.5],
+      ['Body text on cards', t.text, t.raised, 4.5],
+      ['Secondary text', t.muted, t.canvas, 4.5],
+      ['Button text on primary', t.onAccent, t.accent, 4.5],
+      ['Primary on background', t.accent, t.canvas, 3],
+      ['Text on accent highlight', t.onHighlight, t.highlight, 4.5]
+    ].map(([label, f, b, min]) => {
+      const r = this.cr(f, b);
+      const pass = r >= min;
+      return { label, ratio: r.toFixed(1) + ':1', result: pass ? 'Pass' : 'Fail', pass, badge: pass ? 'background:#DCFCE7;color:#14532D' : 'background:#FEE2E2;color:#7F1D1D' };
+    });
+    const fails = checks.filter((c) => !c.pass).length;
+    const sw = [['Background', t.canvas], ['Surface', t.surface], ['Card', t.raised], ['Border', t.border], ['Text', t.text], ['Secondary text', t.muted], ['Primary', t.accent], ['Accent', t.highlight]];
+    const pill = 'padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;';
+    return {
+      activeName: s.themes[s.applied] ? s.themes[s.applied].name : th.name,
+      modeLabel: s.mode === 'dark' ? 'Dark mode' : 'Light mode',
+      applyLabel: s.applied === s.active ? 'Applied to POS & screens' : 'Switch to “' + th.name + '”',
+      applyTheme: () => this.setState({ applied: s.active }),
+      themeList: s.themes.map((x, i) => ({
+        name: x.name + (i === s.applied ? ' · live' : ''),
+        pressed: i === s.active ? 'true' : 'false',
+        style: i === s.active ? 'border:2px solid #18181B;font-weight:600' : 'border:1px solid #E4E4E7',
+        d1: 'background:' + x.colors[0], d2: 'background:' + x.colors[1], d3: 'background:' + x.colors[2],
+        pick: () => this.setState({ active: i })
+      })),
+      newName: s.newName,
+      setName: (e) => this.setState({ newName: e.target.value }),
+      saveNew: () => {
+        const name = (s.newName || '').trim() || 'Custom theme ' + (s.themes.length + 1);
+        const themes = s.themes.concat([{ name, colors: th.colors.slice() }]);
+        this.setState({ themes, active: themes.length - 1, newName: '' });
+      },
+      removeTheme: () => {
+        if (s.themes.length <= 1) return;
+        const themes = s.themes.filter((_, i) => i !== s.active);
+        let applied = s.applied === s.active ? 0 : (s.applied > s.active ? s.applied - 1 : s.applied);
+        this.setState({ themes, active: 0, applied });
+      },
+      c1: th.colors[0], c2: th.colors[1], c3: th.colors[2],
+      setC1: (e) => this.setColor(0, e.target.value),
+      setC2: (e) => this.setColor(1, e.target.value),
+      setC3: (e) => this.setColor(2, e.target.value),
+      lightBtn: s.mode === 'light' ? 'background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.15)' : 'background:transparent',
+      darkBtn: s.mode === 'dark' ? 'background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.15)' : 'background:transparent',
+      toLight: () => this.setState({ mode: 'light' }),
+      toDark: () => this.setState({ mode: 'dark' }),
+      swatches: sw.map(([name, hex]) => ({ name, hex, style: 'background:' + hex })),
+      adjusted: t.adjusted,
+      accentHex: t.accent,
+      checks,
+      summary: fails === 0 ? 'All pass' : fails + ' to fix',
+      summaryStyle: fails === 0 ? 'background:#DCFCE7;color:#14532D' : 'background:#FEE2E2;color:#7F1D1D',
+      pvCanvas: 'background:' + t.canvas + ';color:' + t.text + ';border-radius:14px;overflow:hidden;border:1px solid ' + t.border,
+      pvBar: 'background:' + t.surface + ';padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid ' + t.border,
+      pvMuted: 'color:' + t.muted + ';font-size:13px',
+      pvChip: pill + 'border:1px solid ' + t.border + ';background:' + t.raised,
+      pvChipOn: pill + 'background:' + t.accent + ';color:' + t.onAccent,
+      pvHighlight: pill + 'background:' + t.highlight + ';color:' + t.onHighlight,
+      pvTile: 'background:' + t.raised + ';border:1px solid ' + t.border + ';border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;font-size:14px',
+      pvTileSel: 'background:' + t.raised + ';border:2px solid ' + t.accent + ';border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;font-size:14px',
+      pvField: 'background:' + t.raised + ';border:2px solid ' + t.danger + ';border-radius:8px;padding:8px 12px;display:flex;flex-direction:column;gap:2px;font-size:14px',
+      pvError: 'color:' + t.danger + ';font-size:13px;font-weight:600',
+      pvCard: 'background:' + t.raised + ';border:1px solid ' + t.border + ';border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center',
+      pvPrimary: 'height:48px;border:0;border-radius:10px;background:' + t.accent + ';color:' + t.onAccent + ';font:inherit;font-size:16px;font-weight:700;cursor:pointer',
+      pvSecondary: 'height:44px;border-radius:10px;background:transparent;border:1px solid ' + t.border + ';color:' + t.text + ';font:inherit;font-size:15px;font-weight:600;cursor:pointer',
+      pvCall: 'background:' + t.highlight + ';color:' + t.onHighlight + ';border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:2px'
+    };
+  }
+}
+</script>
+</body>
+</html>

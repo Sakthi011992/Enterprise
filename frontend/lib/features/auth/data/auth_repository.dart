@@ -18,12 +18,15 @@ class AuthRepository {
       'password': password,
     });
     final data = res.data as Map;
+    final user = Map<String, dynamic>.from(data['user'] as Map);
+    // Normalise features to List<String> so Hive round-trips it cleanly.
+    user['features'] = ((user['features'] as List?) ?? []).map((e) => e.toString()).toList();
     await _session.save(
-      accessToken: data['accessToken'],
-      refreshToken: data['refreshToken'],
-      user: data['user'] as Map,
+      accessToken: data['accessToken'] as String,
+      refreshToken: data['refreshToken'] as String,
+      user: user,
     );
-    return data['user'] as Map;
+    return user;
   }
 
   Future<void> logout() async {

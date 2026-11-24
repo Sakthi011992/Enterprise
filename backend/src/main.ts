@@ -10,7 +10,8 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // Raw body needed for Razorpay webhook signature verification — must come before JSON parser
+  const app = await NestFactory.create(AppModule, { rawBody: true });
   const config = app.get(ConfigService);
 
   const apiPrefix = config.get<string>('API_PREFIX', 'api');
@@ -33,6 +34,10 @@ async function bootstrap() {
   // Serve uploaded files
   const uploadDir = config.get<string>('UPLOAD_DIR', './uploads');
   app.use('/uploads', express.static(join(process.cwd(), uploadDir.replace('./', ''))));
+
+  // Serve local blob store (dev only — use CDN/signed URLs in production)
+  const blobPath = config.get<string>('BLOB_STORAGE_PATH', join(process.cwd(), 'blob-store'));
+  app.use('/blobs', express.static(blobPath));
 
   // Swagger
   const swaggerConfig = new DocumentBuilder()

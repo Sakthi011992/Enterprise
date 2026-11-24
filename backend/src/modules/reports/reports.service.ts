@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, OrderStatus } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
-
-const COUNTED: OrderStatus[] = [OrderStatus.PAID, OrderStatus.PARTIALLY_PAID];
+import { ReportsRepository } from './reports.repository';
 
 @Injectable()
 export class ReportsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private repo: ReportsRepository) {}
 
   private startOfDay(d = new Date()) {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -16,11 +13,7 @@ export class ReportsService {
   }
 
   private async aggregate(from: Date) {
-    const result = await this.prisma.order.aggregate({
-      where: { createdAt: { gte: from }, status: { in: COUNTED } },
-      _sum: { grandTotal: true, taxAmount: true },
-      _count: { _all: true },
-    });
+    const result = await this.repo.aggregate(from);
     return {
       orders: result._count._all,
       revenue: Number(result._sum.grandTotal ?? 0),
@@ -38,12 +31,7 @@ export class ReportsService {
   }
 
   async topProducts(limit = 10) {
-    const grouped = await this.prisma.orderItem.groupBy({
-      by: ['productId', 'productName'],
-      _sum: { quantity: true, lineTotal: true },
-      orderBy: { _sum: { quantity: 'desc' } },
-      take: limit,
-    });
+    const grouped = await this.repo.topProducts(limit);
     return grouped.map((g) => ({
       productId: g.productId,
       productName: g.productName,
@@ -52,11 +40,7 @@ export class ReportsService {
     }));
   }
 
-  async recentOrders(limit = 10) {
-    return this.prisma.order.findMany({
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-      include: { cashier: { select: { username: true } } },
-    });
+  recentOrders(limit = 10) {
+    return this.repo.recentOrders(limit);
   }
 }

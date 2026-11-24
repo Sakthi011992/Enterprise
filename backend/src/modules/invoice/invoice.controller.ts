@@ -1,30 +1,56 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import type { Response } from 'express';
+import {
+  Body, Controller, Get, Param, Post, Query, Req, Res, UseGuards,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Response, Request } from 'express';
 import { InvoiceService } from './invoice.service';
+import { GenerateInvoiceDto, AuditQueryDto } from './dto/invoice.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
-@ApiTags('invoice')
-@ApiBearerAuth()
-@Controller('invoice')
+@ApiTags('invoices')
+@Controller('invoices')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class InvoiceController {
-  constructor(private readonly invoice: InvoiceService) {}
+  constructor(private svc: InvoiceService) {}
 
-  @Get(':orderId/thermal')
-  @ApiOperation({ summary: 'Printer-friendly 80mm thermal receipt (HTML)' })
-  async thermal(@Param('orderId') orderId: string, @Res() res: Response) {
-    const html = await this.invoice.thermalHtml(orderId);
-    res.set({ 'Content-Type': 'text/html; charset=utf-8' });
-    res.send(html);
+  @Roles('ADMIN', 'USER')
+  @Post('generate')
+  generate(@Body() dto: GenerateInvoiceDto, @CurrentUser('userId') userId: string) {
+    return this.svc.generate(dto, userId);
   }
 
-  @Get(':orderId/pdf')
-  @ApiOperation({ summary: 'Downloadable A4 PDF invoice' })
-  async pdf(@Param('orderId') orderId: string, @Res() res: Response) {
-    const buf = await this.invoice.pdf(orderId);
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="invoice-${orderId}.pdf"`,
-    });
-    res.send(buf);
+  @Roles('ADMIN')
+  @Post(':id/void')
+  void(@Param('id') id: string) {
+    return this.svc.voidInvoice(id);
+  }
+
+  @Roles('ADMIN')
+  @Get('audit')
+  audit(@Query() q: AuditQueryDto) {
+    return this.svc.findAudit(q);
+  }
+
+  @Roles('ADMIN', 'USER')
+  @Get(':id/download')
+  async download(
+    @Param('id') id: string,
+    @CurrentUser('userId') userId: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    const { buffer, invoiceNumber } = await this.svc.download(id, userId, req.ip);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${invoiceNumber}.pdf"`);
+    res.send(buffer);
+  }
+
+  @Roles('ADMIN')
+  @Post('audit/export')
+  bulkExport(@Body() body: { ids: string[] }) {
+    return this.svc.bulkExport(body.ids);
   }
 }

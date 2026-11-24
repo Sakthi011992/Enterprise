@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>POS approvals, void and transfer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:#09090B;color:#FAFAFA}
+h2{margin:0;font-size:18px;font-weight:600}h3{margin:0;font-size:13px;font-weight:600;color:#A1A1AA;text-transform:uppercase;letter-spacing:.4px}
+.btn{height:52px;padding:0 16px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#D4D4D8;border-color:#D4D4D8;color:#09090B}
+.btn.on{background:#FAFAFA;color:#09090B;border-color:#FAFAFA}
+.btn.d{background:#F87171;border-color:#F87171;color:#09090B}
+.pnl{background:#18181B;border:1px solid #27272A;border-radius:16px;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;min-width:0;flex:1 1 380px}
+.mut{color:#A1A1AA;font-size:13px}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#D4D4D8}
+select,input{width:100%;box-sizing:border-box;height:52px;border:1px solid #3F3F46;border-radius:10px;padding:0 14px;font:inherit;font-size:16px;background:#09090B;color:#FAFAFA}
+.err input{border:2px solid #F87171}
+.em{font-size:13px;color:#FCA5A5;margin-top:6px;font-weight:500}
+.al{border-radius:10px;padding:12px 14px;font-size:14px}
+.wt{background:#422006;color:#FDE68A}.bd{background:#450A0A;color:#FCA5A5}.ok{background:#052E16;color:#86EFAC}
+.it{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid #3F3F46;border-radius:10px;font-size:15px}
+.it input{width:22px;height:22px}
+.tg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.t{height:64px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font:inherit;font-size:15px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.t span{font-size:11px;font-weight:500;color:#A1A1AA}
+.t.on{background:#FAFAFA;color:#09090B}.t.on span{color:#3F3F46}
+.t[disabled]{opacity:.45;cursor:not-allowed}
+</style>
+</helmet>
+<div style="min-height:960px;padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+<header style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center"><div style="display:flex;gap:12px;align-items:center"><a href="POS.dc.html" class="btn" style="display:inline-flex;align-items:center;text-decoration:none">Back to order</a><div><div style="font-size:20px;font-weight:700">Order A-1043 · Table R4</div><div class="mut">Arun (Captain) · discounts over 10% and all voids need a manager</div></div></div></header>
+<div style="display:flex;flex-wrap:wrap;gap:14px;flex:1;align-items:stretch">
+
+<section class="pnl" aria-label="Discount">
+<h2>Discount</h2>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px" role="group" aria-label="Discount type"><button class="btn on">Percent</button><button class="btn">Flat ₹</button></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px" role="group" aria-label="Amount"><button class="btn">5%</button><button class="btn">10%</button><button class="btn on">20%</button><button class="btn">Other</button></div>
+<div><label for="ds-on">Apply to</label><select id="ds-on"><option>Whole bill (food only, liquor excluded by law)</option><option>Selected items</option></select></div>
+<div><label for="ds-r">Reason</label><select id="ds-r"><option>Regular guest</option><option>Service delay</option><option>Staff meal</option></select></div>
+<div class="al wt">20% is above your 10% limit. A manager must approve.</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<button class="btn">Manager enters PIN here</button>
+<button class="btn p">Send to manager's phone</button>
+</div>
+<div class="al ok" role="status">Sent to Priya. Waiting for approval… You can keep taking orders.</div>
+</section>
+
+<section class="pnl" aria-label="Void items">
+<h2>Void items</h2>
+<div style="display:flex;flex-direction:column;gap:8px">
+<label class="it" style="margin:0;color:#FAFAFA"><input type="checkbox" checked>Single Malt 12Y 60 ml · ₹540 <span class="mut" style="margin-left:auto">BOT sent</span></label>
+<label class="it" style="margin:0;color:#FAFAFA"><input type="checkbox">Classic Mojito · ₹245</label>
+<label class="it" style="margin:0;color:#FAFAFA"><input type="checkbox">Chicken Wings · ₹350 <span class="mut" style="margin-left:auto">KOT sent</span></label>
+</div>
+<div><label for="v-r">Reason (required)</label><select id="v-r"><option>Wrong item served</option><option>Guest changed mind (not served)</option><option>Spilled / broken</option></select></div>
+<div class="al wt">The drink was already sent to the bar. A cancellation ticket will print there, and the stock is logged as wastage.</div>
+<div class="err"><label for="v-pin">Manager PIN</label><input id="v-pin" type="password" value="1234" aria-invalid="true" aria-describedby="v-pin-e"><div class="em" id="v-pin-e">Wrong PIN. 2 tries left before a 5-minute lock.</div></div>
+<button class="btn d">Void ₹540</button>
+</section>
+
+<section class="pnl" aria-label="Transfer or merge">
+<h2>Move or merge table</h2>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px" role="group" aria-label="Move what"><button class="btn on">Whole table</button><button class="btn">Some items</button><button class="btn">Merge</button></div>
+<h3>Move R4 to</h3>
+<div class="tg">
+<button class="t" disabled>R1<span>Occupied</span></button><button class="t" disabled>R2<span>Occupied</span></button><button class="t" disabled>R3<span>Bill printed</span></button><button class="t on">R5<span>Free · 2 seats</span></button>
+<button class="t" disabled>R6<span>Cleaning</span></button><button class="t">R9<span>Free · 6 seats</span></button><button class="t">T3<span>Free · 4</span></button><button class="t">Bar 5<span>Free</span></button>
+</div>
+<div class="al bd" role="alert">R5 has 2 seats but R4 has 4 guests. Pick a bigger table or merge R5 with R6.</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:auto"><button class="btn">Cancel</button><button class="btn p">Move to R9</button></div>
+<p class="mut" style="margin:0">Open KOTs, tabs and the waiter follow the order. Every move is logged.</p>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

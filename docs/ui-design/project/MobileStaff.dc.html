@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Android staff screens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,Roboto,system-ui,sans-serif;color:#18181B}
+.col{display:flex;flex-direction:column;gap:14px}
+.lab{font-size:15px;font-weight:600;color:#3F3F46}
+.ph{width:390px;height:844px;border-radius:28px;overflow:hidden;border:1px solid #D4D4D8;background:#FAFAFA;box-sizing:border-box;padding:40px 16px 24px;display:flex;flex-direction:column;gap:12px;position:relative}
+.t{font-size:22px;font-weight:600}
+.m{font-size:13px;color:#52525B}
+.c{background:#fff;border:1px solid #E4E4E7;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.b{height:48px;border-radius:999px;border:0;font:inherit;font-size:15px;font-weight:600;cursor:pointer;padding:0 18px}
+.bp{background:#3F3F46;color:#fff}.bs{background:#fff;color:#18181B;border:1px solid #71717A}
+.ch{height:40px;padding:0 14px;border-radius:8px;border:1px solid #A1A1AA;background:#fff;font:inherit;font-size:14px;cursor:pointer;color:#18181B}
+.ch.on{background:#18181B;color:#FAFAFA;border-color:#18181B;font-weight:600}
+.fl label{display:block;font-size:13px;font-weight:500;margin-bottom:4px}
+.fl input,.fl select{width:100%;box-sizing:border-box;height:52px;border:1px solid #71717A;border-radius:4px;padding:0 14px;font:inherit;font-size:16px;background:#fff;color:#18181B}
+.err input{border:2px solid #B91C1C}
+.em{font-size:12px;color:#B91C1C;font-weight:500;margin-top:4px}
+.st{width:44px;height:44px;border-radius:8px;border:1px solid #A1A1AA;background:#fff;font-size:20px;cursor:pointer;color:#18181B}
+.tb{border-radius:14px;padding:12px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;font:inherit;text-align:left;cursor:pointer;color:#18181B;border:2px solid #15803D;background:#fff}
+.bd{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
+</style>
+</helmet>
+<div style="width:2270px;height:1020px;box-sizing:border-box;padding:64px;background:#FAFAFA;display:flex;gap:48px">
+
+<div class="col"><div class="lab">Storekeeper · Log wastage</div>
+<div class="ph">
+<span class="t">Log wastage · Bar</span>
+<div class="fl"><label for="w-i">Item</label><select id="w-i"><option>Single Malt 12Y 750 ml</option></select></div>
+<div class="fl err"><label for="w-q">Quantity</label><input id="w-q" value="3 bottles" aria-invalid="true" aria-describedby="w-q-e"><div class="em" id="w-q-e">Only 2 full bottles in Bar stock. Check the count or pick another location.</div></div>
+<div><div style="font-size:13px;font-weight:500;margin-bottom:6px">Reason</div><div style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Reason"><button class="ch on">Broken</button><button class="ch">Spilled</button><button class="ch">Expired</button><button class="ch">Comp</button><button class="ch">Staff meal</button></div></div>
+<button class="c" style="flex-direction:row;align-items:center;gap:12px;font:inherit;cursor:pointer;color:#18181B"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"></rect><circle cx="12" cy="13" r="4"></circle><path d="M8 6l2-3h4l2 3"></path></svg><span>Add photo (needed above ₹2,000)</span></button>
+<span class="m">Value about ₹7,800 · Manager gets notified</span>
+<button class="b bp" style="margin-top:auto">Log wastage</button>
+</div></div>
+
+<div class="col"><div class="lab">Storekeeper · Request a reorder</div>
+<div class="ph">
+<span class="t">Below par · 9 items</span>
+<span class="m">Suggested amounts bring each item back to par</span>
+<div class="c"><div style="display:flex;justify-content:space-between"><b>Single Malt 12Y</b><span class="m">3 / 6 btl</span></div><div style="display:flex;gap:8px;align-items:center"><button class="st" aria-label="Less">−</button><b style="min-width:64px;text-align:center">1 case</b><button class="st" aria-label="More">+</button><span class="m" style="margin-left:auto">Metro Spirits</span></div></div>
+<div class="c"><div style="display:flex;justify-content:space-between"><b>Premium Vodka</b><span class="m">8 / 12 btl</span></div><div style="display:flex;gap:8px;align-items:center"><button class="st" aria-label="Less">−</button><b style="min-width:64px;text-align:center">1 case</b><button class="st" aria-label="More">+</button><span class="m" style="margin-left:auto">Metro Spirits</span></div></div>
+<div class="c"><div style="display:flex;justify-content:space-between"><b>Fresh mint</b><span class="m">0.6 / 1 kg</span></div><div style="display:flex;gap:8px;align-items:center"><button class="st" aria-label="Less">−</button><b style="min-width:64px;text-align:center">2 kg</b><button class="st" aria-label="More">+</button><span class="m" style="margin-left:auto">Fresh Farm</span></div></div>
+<div class="c" style="background:#F4F4F5;border-color:#F4F4F5"><span style="font-size:14px">Creates 2 draft POs (one per vendor), ₹65,400 total. A manager approves before they're sent.</span></div>
+<button class="b bp" style="margin-top:auto">Send for approval</button>
+</div></div>
+
+<div class="col"><div class="lab">Staff app · My shifts &amp; swaps</div>
+<div class="ph">
+<span class="t">Hi Meera</span>
+<div class="c" style="background:#18181B;color:#FAFAFA;border-color:#18181B"><span style="font-size:13px;color:#D4D4D8">Today · Main bar</span><b style="font-size:20px">7:00 pm – 2:00 am</b><span style="font-size:13px;color:#86EFAC">Clocked in 6:52 pm · on time</span></div>
+<div class="c">
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>Sat 22 · Late</span><span class="m">7 pm – 2 am</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>Sun 23 · Evening</span><span class="bd" style="background:#FEF3C7;color:#713F12">Swap requested</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>Mon 24</span><span class="m">Off</span></div>
+</div>
+<div class="c"><span class="m">Tips this week</span><b style="font-size:20px">₹3,420</b><span class="m">Paid with salary on 1 Dec</span></div>
+<div class="c"><span class="m">Leave balance</span><b>6 days</b></div>
+<div style="display:flex;gap:10px;margin-top:auto"><button class="b bs" style="flex:1">Request leave</button><button class="b bp" style="flex:1">Swap a shift</button></div>
+</div></div>
+
+<div class="col"><div class="lab">Captain &amp; Waiter · My tables</div>
+<div class="ph">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="t">My tables · Rooftop</span><span class="bd" style="background:#E4E4E7;color:#27272A">5</span></div>
+<div style="display:flex;gap:8px" role="group" aria-label="Filter"><button class="ch on">Mine</button><button class="ch">Section</button><button class="ch">All</button></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+<button class="tb" style="background:#18181B;color:#FAFAFA;border-color:#18181B"><b style="font-size:18px">R4</b><span style="font-size:12px">4 guests · ₹2,034<br>1 drink ready</span></button>
+<button class="tb" style="background:#18181B;color:#FAFAFA;border-color:#18181B"><b style="font-size:18px">R1</b><span style="font-size:12px">5 guests · 1 h 40 m</span></button>
+<button class="tb" style="background:#FEF3C7;border-color:#A16207"><b style="font-size:18px">R3</b><span style="font-size:12px">Bill printed · ₹3,240</span></button>
+<button class="tb"><b style="font-size:18px">R5</b><span style="font-size:12px">Free · 2 seats</span></button>
+<button class="tb" style="background:#E4E4E7;border-color:#A1A1AA"><b style="font-size:18px">R6</b><span style="font-size:12px">Needs cleaning</span></button>
+<button class="tb"><b style="font-size:18px">R9</b><span style="font-size:12px">Reserved 9:30 pm</span></button>
+</div>
+<span class="m">Tap a table to order. Long-press to move or merge.</span>
+</div></div>
+
+<div class="col"><div class="lab">Waiter · Ready alert &amp; mark served</div>
+<div class="ph">
+<div role="alert" style="background:#18181B;color:#FAFAFA;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px;box-shadow:0 6px 16px rgba(0,0,0,.25)"><b>Ready at the bar · R4</b><span style="font-size:13px;color:#D4D4D8">BOT 2291 · Single Malt 12Y, 2 × Mojito</span></div>
+<span class="t">Ready to serve</span>
+<div class="c"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>R4 · Bar</b><div class="m">Single Malt 12Y (rocks) · seat 2</div></div><button class="b bp" style="height:44px">Served</button></div></div>
+<div class="c"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>R4 · Bar</b><div class="m">2 × Classic Mojito · seats 1, 3</div></div><button class="b bp" style="height:44px">Served</button></div></div>
+<div class="c"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>R1 · Kitchen</b><div class="m">Chicken Wings · waiting 4 min</div></div><button class="b bp" style="height:44px">Served</button></div></div>
+<div class="c" style="background:#DCFCE7;border-color:#DCFCE7;color:#14532D"><span style="font-size:14px">T7 · Paneer Tikka marked served by Arun</span></div>
+<span class="m" style="margin-top:auto">Items not marked served in 5 min alert the Captain.</span>
+</div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2270,"height":1020}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sponsors &amp; campaigns</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600}
+.app{display:flex;flex-wrap:wrap;min-height:960px}
+.side{flex:1 1 232px;background:#fff;border-right:1px solid #E4E4E7;padding:12px 10px;box-sizing:border-box}
+.side a{display:flex;align-items:center;gap:8px;min-height:34px;padding:0 10px;border-radius:8px;text-decoration:none;color:#3F3F46;font-size:14px}
+.side a:hover{background:#F4F4F5;color:#18181B}
+.side a.on{background:#18181B;color:#FAFAFA}
+.side a.ai{border:1px solid #D4D4D8;font-weight:600;margin-top:12px;min-height:44px}
+.side .tag{margin-left:auto;font-size:11px;font-weight:600;background:#E4E4E7;color:#27272A;padding:1px 6px;border-radius:999px}
+.side a.on .tag{background:#3F3F46;color:#FAFAFA}
+.side .grp svg{vertical-align:-2px;margin-right:6px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:16px;border-bottom:1px solid #E4E4E7}
+.gtop button{height:44px;min-width:44px;padding:0 12px;border:1px solid #D4D4D8;border-radius:8px;background:#fff;font:inherit;font-size:14px;color:#18181B;display:inline-flex;align-items:center;gap:8px;cursor:pointer;position:relative}
+.gtop .gs{flex:1 1 260px;max-width:440px;color:#52525B}
+.gdot{position:absolute;top:3px;right:3px;min-width:18px;height:18px;border-radius:999px;background:#B91C1C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.main .btn.s{height:36px;padding:0 12px}
+.grp{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:#52525B;margin:14px 12px 4px;font-weight:600}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px}
+.logo{width:36px;height:36px;border-radius:8px;background:#18181B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.main{flex:999 1 560px;min-width:0;padding:24px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.crumb{font-size:13px;color:#52525B;margin-bottom:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:999px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.btn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}.btn.s{height:32px;padding:0 10px;font-size:13px}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.bar select,.bar input{width:auto}.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 12px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+tr.sel td{background:#F4F4F5}
+.b{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.warn{background:#FEF3C7;color:#713F12}.bad{background:#FEE2E2;color:#7F1D1D}.neu{background:#E4E4E7;color:#27272A}.inf{background:#18181B;color:#FAFAFA}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:40px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.split{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}.grow{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:20px}.drawer{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.mut{color:#52525B;font-size:13px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #E4E4E7;flex-wrap:wrap}
+.tab{padding:10px 14px;font-size:14px;border:0;background:none;font:inherit;color:#52525B;cursor:pointer;border-bottom:2px solid transparent}
+.tab.on{color:#18181B;font-weight:600;border-bottom-color:#18181B}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}
+.kl{font-size:13px;color:#52525B}.kv{font-size:24px;font-weight:700;margin-top:4px}
+.pr{width:90px;height:8px;border-radius:999px;background:#E4E4E7;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}.pr span{display:block;height:100%;background:#3F3F46}
+.ck{display:flex;gap:8px;align-items:center;font-size:14px;margin:0;font-weight:400}.ck input{width:18px;height:18px}
+.chk{display:flex;gap:8px;align-items:center;font-size:13px;padding:4px 0}
+</style>
+</helmet>
+<div class="app">
+<nav class="side" aria-label="Main">
+<div class="grp">Pinned</div>
+<a href="Main.dc.html">Dashboard</a><a href="POS.dc.html">POS billing</a><a href="QueueHost.dc.html">Walk-in queue<span class="tag">6</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path></svg>Sales</div>
+<a href="Orders.dc.html">Orders &amp; invoices</a><a href="BarTabs.dc.html">Bar tabs</a><a href="FloorPlan.dc.html">Floor plan</a><a href="KDS.dc.html">Kitchen display</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path></svg>Menu &amp; stock</div>
+<a href="Menu.dc.html">Menu &amp; products</a><a href="Inventory.dc.html">Inventory</a><a href="Procurement.dc.html">Procurement</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg>Guests &amp; displays</div>
+<a href="Customers.dc.html">Customers &amp; bookings</a><a href="DisplayControl.dc.html">Display control</a><a class="on" href="Campaigns.dc.html">Campaigns<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>People &amp; money</div>
+<a href="Users.dc.html">Users &amp; roles</a><a href="Staff.dc.html">Staff &amp; shifts</a><a href="Accounting.dc.html">Accounting<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>Settings</div>
+<a href="Settings.dc.html">Tax, invoice &amp; payments</a><a href="Hardware.dc.html">Hardware</a><a href="Permissions.dc.html">Permissions</a><a href="Themes.dc.html">Themes &amp; branding</a><a href="Localisation.dc.html">Localisation</a><a href="Subscription.dc.html">Subscription</a><a href="Monitoring.dc.html">Monitoring</a>
+<a class="ai" href="AIAssistant.dc.html">AI Assistant</a>
+</nav>
+<main class="main">
+<div class="gtop"><span class="logo" aria-hidden="true">YV</span><button class="gs" aria-label="Search or jump to"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search or jump to…<span style="margin-left:auto;font-size:11px;border:1px solid #D4D4D8;border-radius:4px;padding:1px 5px">Ctrl K</span></button><span style="flex:1"></span><button>Main outlet ▾</button><button>EN ▾</button><button aria-label="Switch to dark mode">Dark</button><button aria-label="Notifications, 3 new"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"></path></svg><span class="gdot">3</span></button></div>
+<header class="top">
+<div><div class="crumb">Displays</div><h1>Sponsors &amp; campaigns</h1></div>
+<div class="tools"><button class="btn">Export proof of play</button><button class="btn">New sponsor</button><button class="btn p">New campaign</button><span class="avatar" aria-label="Signed in as Admin">AD</span></div>
+</header>
+<section class="kpis" aria-label="Sponsorship summary">
+<div class="card"><div class="kl">Live campaigns</div><div class="kv">4</div></div>
+<div class="card"><div class="kl">Plays this month</div><div class="kv">18,420</div></div>
+<div class="card"><div class="kl">Rebates earned</div><div class="kv">₹1,24,000</div></div>
+<div class="card"><div class="kl">Creatives to approve</div><div class="kv">3</div></div>
+</section>
+<div class="tabs" role="tablist"><button class="tab on">Campaigns</button><button class="tab">Sponsors</button><button class="tab">Creatives &amp; approvals</button><button class="tab">Proof of play</button><button class="tab">Sales lift</button><button class="tab">Settlements</button></div>
+<div class="split">
+<div class="grow">
+<section class="card">
+<div class="tw"><table>
+<thead><tr><th>Campaign</th><th>Sponsor</th><th>Zones</th><th>Plays vs guaranteed</th><th>Sales lift</th><th>Deal</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody>
+<tr class="sel"><td>Malt Fridays</td><td>Highland Spirits Co.</td><td>Bar, VIP</td><td><span class="pr" role="img" aria-label="82%"><span style="width:82%"></span></span>4,100 / 5,000</td><td><span class="b ok">+26%</span></td><td>1 free case / 10</td><td><span class="b ok">Live</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s">Pause</button></td></tr>
+<tr><td>Lager Match Nights</td><td>Golden Brew Ltd.</td><td>Bar, Rooftop</td><td><span class="pr" role="img" aria-label="64%"><span style="width:64%"></span></span>3,200 / 5,000</td><td><span class="b ok">+14%</span></td><td>₹40,000 flat</td><td><span class="b ok">Live</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s">Pause</button></td></tr>
+<tr><td>Mixer Summer</td><td>FizzCo Mixers</td><td>All zones</td><td><span class="pr" role="img" aria-label="40%"><span style="width:40%"></span></span>2,000 / 5,000</td><td><span class="b neu">+3%</span></td><td>8% rebate</td><td><span class="b ok">Live</span></td><td class="bar"><button class="btn s">Edit</button><button class="btn s">Pause</button></td></tr>
+<tr><td>Gin Garden</td><td>Juniper House</td><td>Rooftop</td><td>—</td><td>—</td><td>₹25,000 flat</td><td><span class="b warn">Creative pending</span></td><td class="bar"><button class="btn s">Review</button><button class="btn s d">Delete</button></td></tr>
+<tr><td>Cab partner promo</td><td>Local cab service</td><td>Entrance</td><td><span class="pr" role="img" aria-label="100%"><span style="width:100%"></span></span>1,500 / 1,500</td><td>QR 212 scans</td><td>₹10,000 flat</td><td><span class="b neu">Ended</span></td><td class="bar"><button class="btn s">Report</button></td></tr>
+</tbody></table></div>
+</section>
+<section class="card">
+<div class="bar" style="justify-content:space-between;margin-bottom:8px"><h2>Malt Fridays · proof of play</h2><button class="btn s">Download PDF for sponsor</button></div>
+<div class="tw"><table>
+<thead><tr><th>Screen</th><th>Zone</th><th>Plays</th><th>Screen time</th><th>QR scans</th><th>Redeemed at POS</th></tr></thead>
+<tbody>
+<tr><td>Bar TV 1</td><td>Bar</td><td>2,210</td><td>9 h 12 m</td><td>84</td><td>51</td></tr>
+<tr><td>Bar TV 2</td><td>Bar</td><td>1,340</td><td>5 h 35 m</td><td>39</td><td>22</td></tr>
+<tr><td>VIP screen</td><td>VIP</td><td>550</td><td>2 h 17 m</td><td>18</td><td>14</td></tr>
+</tbody></table></div>
+</section>
+</div>
+<aside class="card drawer" aria-label="Edit campaign">
+<div class="bar" style="justify-content:space-between"><h2>Edit campaign</h2><span class="b ok">Live</span></div>
+<div class="g2">
+<div><label for="k-name">Name</label><input id="k-name" value="Malt Fridays"></div>
+<div><label for="k-sp">Sponsor</label><select id="k-sp"><option>Highland Spirits Co.</option></select></div>
+<div><label for="k-from">Starts</label><input id="k-from" value="1 Nov 2026"></div>
+<div><label for="k-to">Ends</label><input id="k-to" value="31 Dec 2026"></div>
+</div>
+<div><label for="k-sku">Promoted menu items</label><input id="k-sku" value="Single Malt 12Y (30 ml, 60 ml, bottle)"></div>
+<div><h3 style="margin-bottom:8px">Zones</h3><div class="bar" style="gap:14px"><label class="ck"><input type="checkbox" checked>Bar</label><label class="ck"><input type="checkbox" checked>VIP</label><label class="ck"><input type="checkbox">Rooftop</label><label class="ck" style="color:#52525B"><input type="checkbox" disabled>Family dining (blocked)</label></div></div>
+<div class="g2">
+<div><label for="k-sov">Share of screen time</label><select id="k-sov"><option>30%</option><option>20%</option></select></div>
+<div><label for="k-deal">Deal type</label><select id="k-deal"><option>Free stock per cases bought</option><option>Flat fee</option><option>Per play</option><option>Sales rebate %</option></select></div>
+</div>
+<div><h3 style="margin-bottom:4px">Compliance checks</h3>
+<div class="chk"><span class="b ok">Pass</span>"Drink responsibly · 21+" overlay added</div>
+<div class="chk"><span class="b ok">Pass</span>Not shown on screens visible from the street</div>
+<div class="chk"><span class="b ok">Pass</span>Paused on dry days and outside licensed hours</div>
+</div>
+<div class="bar"><button class="btn s">Creatives (3 approved)</button><button class="btn s">Pause when out of stock: on</button></div>
+<div class="bar" style="justify-content:space-between;border-top:1px solid #E4E4E7;padding-top:14px"><button class="btn d">End campaign</button><div class="bar"><button class="btn">Cancel</button><button class="btn p">Save</button></div></div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,36 +1,31 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
 import { TaxService } from '../tax/tax.service';
 import { buildMeta } from '../../common/dto/pagination.dto';
 import { computeLine, computeOrderTotals } from '../../common/utils/money.util';
 import { CreateOrderDto, OrderQueryDto } from './dto/order.dto';
+import { OrdersRepository } from './orders.repository';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prisma: PrismaService, private tax: TaxService) {}
+  constructor(private repo: OrdersRepository, private tax: TaxService) {}
 
-  /** Generate INV-YYYYMMDD-#### scoped per day. */
   private async nextInvoiceNumber(prefix = 'INV'): Promise<string> {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
-    const count = await this.prisma.order.count({ where: { createdAt: { gte: start, lt: end } } });
+    const count = await this.repo.countToday(start, end);
     const datePart = `${start.getFullYear()}${String(start.getMonth() + 1).padStart(2, '0')}${String(start.getDate()).padStart(2, '0')}`;
     return `${prefix}-${datePart}-${String(count + 1).padStart(4, '0')}`;
   }
 
-  /**
-   * Create an order. All monetary calculation happens here (server-side
-   * authoritative). Tax is resolved per product (override → global) and
-   * snapshotted into each order item.
-   */
   async create(dto: CreateOrderDto, cashierId: string) {
     const productIds = dto.items.map((i) => i.productId);
-    const products = await this.prisma.product.findMany({
-      where: { id: { in: productIds }, deletedAt: null, isActive: true },
-    });
-    const map = new Map(products.map((p) => [p.id, p]));
+    // ProductsRepository is not injected here to keep coupling minimal — orders
+    // need a quick fetch of active products, which is a read-only concern.
+    // A dedicated OrdersRepository method would be cleaner but overkill for now.
+    const products = await this.repo.findProductsByIds(productIds);
+    const map = new Map(products.map((p: any) => [p.id, p]));
 
     const missing = productIds.filter((id) => !map.has(id));
     if (missing.length) throw new BadRequestException(`Unavailable products: ${missing.join(', ')}`);
@@ -62,19 +57,16 @@ export class OrdersService {
     );
     const invoiceNumber = await this.nextInvoiceNumber(process.env.INVOICE_PREFIX || 'INV');
 
-    return this.prisma.order.create({
-      data: {
-        invoiceNumber,
-        cashierId,
-        subtotal: totals.subtotal,
-        taxAmount: totals.taxAmount,
-        grandTotal: totals.grandTotal,
-        status: 'PENDING',
-        items: {
-          create: itemRows.map(({ _lineSubtotal, ...row }) => row),
-        },
+    return this.repo.create({
+      invoiceNumber,
+      cashier: { connect: { id: cashierId } },
+      subtotal: totals.subtotal,
+      taxAmount: totals.taxAmount,
+      grandTotal: totals.grandTotal,
+      status: 'PENDING',
+      items: {
+        create: itemRows.map(({ _lineSubtotal, ...row }) => row),
       },
-      include: { items: true, payments: true, cashier: { select: { username: true } } },
     });
   }
 
@@ -85,24 +77,12 @@ export class OrdersService {
         ? { createdAt: { ...(q.from ? { gte: new Date(q.from) } : {}), ...(q.to ? { lte: new Date(q.to) } : {}) } }
         : {}),
     };
-    const [data, total] = await this.prisma.$transaction([
-      this.prisma.order.findMany({
-        where,
-        skip: q.skip,
-        take: q.limit,
-        orderBy: { createdAt: 'desc' },
-        include: { cashier: { select: { username: true } } },
-      }),
-      this.prisma.order.count({ where }),
-    ]);
+    const [data, total] = await this.repo.findAll(where, q.skip, q.limit);
     return { data, meta: buildMeta(total, q.page, q.limit) };
   }
 
   async findOne(id: string) {
-    const order = await this.prisma.order.findUnique({
-      where: { id },
-      include: { items: true, payments: true, cashier: { select: { username: true } } },
-    });
+    const order = await this.repo.findOne(id);
     if (!order) throw new NotFoundException('Order not found');
     return order;
   }

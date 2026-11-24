@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Android stock count offline</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,Roboto,system-ui,sans-serif}
+.row{background:#fff;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.cnt{display:flex;gap:8px;align-items:center}
+.cnt input{width:64px;height:44px;border:1px solid #71717A;border-radius:4px;text-align:center;font:inherit;font-size:16px;background:#fff;color:#18181B;box-sizing:border-box}
+.cnt span{font-size:13px;color:#52525B}
+.st{width:44px;height:44px;border-radius:8px;border:1px solid #A1A1AA;background:#fff;font-size:20px;cursor:pointer;color:#18181B}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#F4F4F5;color:#18181B;display:flex;flex-direction:column;position:relative">
+<header style="display:flex;align-items:center;gap:8px;padding:36px 8px 8px;background:#F4F4F5">
+<button aria-label="Back" style="width:48px;height:48px;border:0;background:none;cursor:pointer;color:#18181B"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<div style="flex:1"><div style="font-size:20px;font-weight:600">Stock count · Bar</div><div style="font-size:13px;color:#52525B">18 of 42 items counted</div></div>
+</header>
+<div role="status" style="margin:0 16px 10px;background:#27272A;color:#FAFAFA;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;font-size:14px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none"><path d="M2 8.8a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M12 20h.01M3 3l18 18"></path></svg>
+<span><b>You're offline.</b> 18 counts are saved on this phone and will sync when you reconnect. Keep counting.</span>
+</div>
+<div style="height:6px;margin:0 16px 12px;border-radius:999px;background:#E4E4E7;overflow:hidden" role="img" aria-label="43% counted"><span style="display:block;width:43%;height:100%;background:#3F3F46"></span></div>
+<div style="flex:1;overflow:hidden;padding:0 16px;display:flex;flex-direction:column;gap:10px">
+<div class="row"><div style="display:flex;justify-content:space-between"><b>Premium Vodka 750 ml</b><span style="font-size:12px;font-weight:600;background:#DCFCE7;color:#14532D;padding:2px 8px;border-radius:999px">Saved offline</span></div><div class="cnt"><button class="st" aria-label="Fewer bottles">−</button><input aria-label="Full bottles" value="8"><button class="st" aria-label="More bottles">+</button><span>bottles</span><input aria-label="Open bottle ml" value="410"><span>ml open</span></div></div>
+<div class="row" style="border:2px solid #A16207"><div style="display:flex;justify-content:space-between"><b>Single Malt 12Y 750 ml</b><span style="font-size:12px;font-weight:600;background:#FEF3C7;color:#713F12;padding:2px 8px;border-radius:999px">Check again</span></div><div class="cnt"><button class="st" aria-label="Fewer bottles">−</button><input aria-label="Full bottles" value="1"><button class="st" aria-label="More bottles">+</button><span>bottles</span><input aria-label="Open bottle ml" value="120"><span>ml open</span></div><div style="font-size:13px;color:#713F12">Expected about 3 bottles. This count is 60% lower. Recount, or add a note.</div><div style="display:flex;gap:8px"><button style="height:36px;padding:0 12px;border-radius:999px;border:1px solid #A1A1AA;background:#fff;font:inherit;font-size:13px;cursor:pointer">Add note</button><button style="height:36px;padding:0 12px;border-radius:999px;border:1px solid #A1A1AA;background:#fff;font:inherit;font-size:13px;cursor:pointer">Count is correct</button></div></div>
+<div class="row"><div style="display:flex;justify-content:space-between"><b>Dark Rum 750 ml</b><span style="font-size:12px;color:#52525B">Not counted</span></div><div class="cnt"><button class="st" aria-label="Fewer bottles">−</button><input aria-label="Full bottles" placeholder="0"><button class="st" aria-label="More bottles">+</button><span>bottles</span><input aria-label="Open bottle ml" placeholder="0"><span>ml open</span></div></div>
+</div>
+<button aria-label="Scan barcode" style="position:absolute;right:16px;bottom:104px;width:56px;height:56px;border-radius:16px;border:0;background:#E4E4E7;color:#18181B;box-shadow:0 3px 8px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7V4h3M21 7V4h-3M3 17v3h3M21 17v3h-3M7 8v8M11 8v8M15 8v8M18 8v8"></path></svg></button>
+<div style="padding:12px 16px 28px;display:flex;gap:10px;background:#F4F4F5;border-top:1px solid #E4E4E7">
+<button style="flex:1;height:48px;border-radius:999px;border:1px solid #A1A1AA;background:#fff;font:inherit;font-weight:600;cursor:pointer">Save &amp; exit</button>
+<button disabled style="flex:1;height:48px;border-radius:999px;border:0;background:#D4D4D8;color:#52525B;font:inherit;font-weight:600">Submit when online</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

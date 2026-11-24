@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Android new token with validation errors</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,Roboto,system-ui,sans-serif}
+.fld{position:relative;display:flex;flex-direction:column;gap:4px}
+.fld label{position:absolute;top:-9px;left:12px;background:#FAFAFA;padding:0 4px;font-size:12px;color:#3F3F46}
+.fld input,.fld select{height:56px;border:1px solid #71717A;border-radius:4px;padding:0 16px;font:inherit;font-size:16px;background:#FAFAFA;color:#18181B;box-sizing:border-box;width:100%}
+.fld.err label{color:#B91C1C;font-weight:600}
+.fld.err input{border:2px solid #B91C1C}
+.help{font-size:12px;padding-left:16px;color:#52525B}
+.fld.err .help{color:#B91C1C;display:flex;gap:4px;align-items:center}
+.ps{width:44px;height:44px;border-radius:8px;border:1px solid #71717A;background:#FAFAFA;font:inherit;font-size:15px;cursor:pointer}
+.ps.on{background:#18181B;color:#FAFAFA;border-color:#18181B}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;background:#FAFAFA;color:#18181B;display:flex;flex-direction:column">
+<header style="display:flex;align-items:center;gap:8px;padding:36px 8px 8px">
+<button aria-label="Close" style="width:48px;height:48px;border:0;background:none;cursor:pointer;color:#18181B"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+<span style="flex:1;font-size:20px;font-weight:600">New walk-in token</span>
+</header>
+<div style="flex:1;overflow:hidden;padding:8px 16px;display:flex;flex-direction:column;gap:20px">
+<div role="alert" style="background:#FEF2F2;border-radius:12px;padding:12px 14px;color:#7F1D1D;font-size:14px;display:flex;flex-direction:column;gap:4px">
+<b>Fix 3 things to create the token</b>
+<a href="#q-name" style="color:#7F1D1D">Guest name is required</a>
+<a href="#q-phone" style="color:#7F1D1D">Mobile number is not valid</a>
+<a href="#q-consent" style="color:#7F1D1D">WhatsApp consent is needed to send updates</a>
+</div>
+<div class="fld err"><label for="q-name">Guest name *</label><input id="q-name" aria-invalid="true" aria-describedby="q-name-e"><span class="help" id="q-name-e"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg>Enter the guest's name (first name is enough)</span></div>
+<div class="fld err"><label for="q-phone">WhatsApp number *</label><input id="q-phone" value="+91 98765 432" aria-invalid="true" aria-describedby="q-phone-e"><span class="help" id="q-phone-e"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg>Enter a 10-digit mobile number (8 digits entered)</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:500">Party size *</span><div style="display:flex;gap:8px" role="group" aria-label="Party size"><button class="ps">1</button><button class="ps on">2</button><button class="ps">3</button><button class="ps">4</button><button class="ps">5</button><button class="ps">6+</button></div></div>
+<div class="fld"><label for="q-pref">Seating preference</label><select id="q-pref"><option>Rooftop</option></select><span class="help">Rooftop wait is about 35 min. Indoor is about 15 min.</span></div>
+<div class="fld"><label for="q-note">Notes</label><input id="q-note" placeholder="Birthday, high chair…"><span class="help">0 / 120</span></div>
+<label id="q-consent" style="display:flex;gap:12px;align-items:flex-start;font-size:14px;color:#7F1D1D;background:#FEF2F2;border-radius:8px;padding:10px 12px"><input type="checkbox" aria-invalid="true" style="width:20px;height:20px;flex:none;margin:0;accent-color:#B91C1C"><span>Guest agrees to get queue updates on WhatsApp. <b>Required to send the token.</b> Without consent, print a paper token instead.</span></label>
+</div>
+<div style="padding:12px 16px 28px;display:flex;gap:10px;border-top:1px solid #E4E4E7">
+<button style="flex:1;height:48px;border-radius:999px;border:1px solid #71717A;background:#FAFAFA;font:inherit;font-weight:600;cursor:pointer">Print paper token</button>
+<button style="flex:1;height:48px;border-radius:999px;border:0;background:#3F3F46;color:#fff;font:inherit;font-weight:600;cursor:pointer">Create token</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

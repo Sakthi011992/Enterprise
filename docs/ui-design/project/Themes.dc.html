@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Themes &amp; branding</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600}
+.app{display:flex;flex-wrap:wrap;min-height:960px}
+.side{flex:1 1 232px;background:#fff;border-right:1px solid #E4E4E7;padding:12px 10px;box-sizing:border-box}
+.side a{display:flex;align-items:center;gap:8px;min-height:34px;padding:0 10px;border-radius:8px;text-decoration:none;color:#3F3F46;font-size:14px}
+.side a:hover{background:#F4F4F5;color:#18181B}
+.side a.on{background:#18181B;color:#FAFAFA}
+.side a.ai{border:1px solid #D4D4D8;font-weight:600;margin-top:12px;min-height:44px}
+.side .tag{margin-left:auto;font-size:11px;font-weight:600;background:#E4E4E7;color:#27272A;padding:1px 6px;border-radius:999px}
+.side a.on .tag{background:#3F3F46;color:#FAFAFA}
+.side .grp svg{vertical-align:-2px;margin-right:6px}
+.gtop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-bottom:16px;border-bottom:1px solid #E4E4E7}
+.gtop button{height:44px;min-width:44px;padding:0 12px;border:1px solid #D4D4D8;border-radius:8px;background:#fff;font:inherit;font-size:14px;color:#18181B;display:inline-flex;align-items:center;gap:8px;cursor:pointer;position:relative}
+.gtop .gs{flex:1 1 260px;max-width:440px;color:#52525B}
+.gdot{position:absolute;top:3px;right:3px;min-width:18px;height:18px;border-radius:999px;background:#B91C1C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.main .btn.s{height:36px;padding:0 12px}
+.grp{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:#52525B;margin:14px 12px 4px;font-weight:600}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px}
+.logo{width:36px;height:36px;border-radius:8px;background:#18181B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.main{flex:999 1 560px;min-width:0;padding:24px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.crumb{font-size:13px;color:#52525B;margin-bottom:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.avatar{width:36px;height:36px;border-radius:999px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+.btn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}.btn.s{height:32px;padding:0 10px;font-size:13px}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 12px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+td select{width:auto}
+.b{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.ok{background:#DCFCE7;color:#14532D}.warn{background:#FEF3C7;color:#713F12}.neu{background:#E4E4E7;color:#27272A}.inf{background:#18181B;color:#FAFAFA}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select,textarea{width:100%;box-sizing:border-box;height:40px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+textarea{height:76px;padding:10px 12px;resize:vertical}
+.split{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}.grow{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:20px}.drawer{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.mut{color:#52525B;font-size:13px}
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.th{border:1px solid #E4E4E7;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.th.sel{border:2px solid #18181B}
+.sws{display:flex;gap:4px}.sws span{flex:1;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,.08)}
+.pv{border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.msg{background:#F4F4F5;border-radius:12px;padding:12px;font-size:14px}
+</style>
+</helmet>
+<div class="app">
+<nav class="side" aria-label="Main">
+<div class="grp">Pinned</div>
+<a href="Main.dc.html">Dashboard</a><a href="POS.dc.html">POS billing</a><a href="QueueHost.dc.html">Walk-in queue<span class="tag">6</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path></svg>Sales</div>
+<a href="Orders.dc.html">Orders &amp; invoices</a><a href="BarTabs.dc.html">Bar tabs</a><a href="FloorPlan.dc.html">Floor plan</a><a href="KDS.dc.html">Kitchen display</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path></svg>Menu &amp; stock</div>
+<a href="Menu.dc.html">Menu &amp; products</a><a href="Inventory.dc.html">Inventory</a><a href="Procurement.dc.html">Procurement</a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path></svg>Guests &amp; displays</div>
+<a href="Customers.dc.html">Customers &amp; bookings</a><a href="DisplayControl.dc.html">Display control</a><a href="Campaigns.dc.html">Campaigns<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>People &amp; money</div>
+<a href="Users.dc.html">Users &amp; roles</a><a href="Staff.dc.html">Staff &amp; shifts</a><a href="Accounting.dc.html">Accounting<span class="tag">Pro</span></a>
+<div class="grp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></svg>Settings</div>
+<a href="Settings.dc.html">Tax, invoice &amp; payments</a><a href="Hardware.dc.html">Hardware</a><a href="Permissions.dc.html">Permissions</a><a class="on" href="Themes.dc.html">Themes &amp; branding</a><a href="Localisation.dc.html">Localisation</a><a href="Subscription.dc.html">Subscription</a><a href="Monitoring.dc.html">Monitoring</a>
+<a class="ai" href="AIAssistant.dc.html">AI Assistant</a>
+</nav>
+<main class="main">
+<div class="gtop"><span class="logo" aria-hidden="true">YV</span><button class="gs" aria-label="Search or jump to"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>Search or jump to…<span style="margin-left:auto;font-size:11px;border:1px solid #D4D4D8;border-radius:4px;padding:1px 5px">Ctrl K</span></button><span style="flex:1"></span><button>Main outlet ▾</button><button>EN ▾</button><button aria-label="Switch to dark mode">Dark</button><button aria-label="Notifications, 3 new"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"></path></svg><span class="gdot">3</span></button></div>
+<header class="top">
+<div><div class="crumb">Settings</div><h1>Themes &amp; branding</h1></div>
+<div class="tools"><button class="btn">Logos</button><a href="ThemeSwitcher.dc.html" class="btn" style="display:inline-flex;align-items:center;text-decoration:none">Build from brand colours</a><button class="btn p">New theme</button><span class="avatar" aria-label="Signed in as Admin">AD</span></div>
+</header>
+<div class="split">
+<div class="grow">
+<section class="card">
+<div class="bar" style="justify-content:space-between;margin-bottom:12px"><h2>Themes</h2><input aria-label="Search themes" placeholder="Search themes" style="width:220px"></div>
+<div class="tg">
+<div class="th"><div class="sws" aria-hidden="true"><span style="background:#FFFFFF"></span><span style="background:#F4F4F5"></span><span style="background:#3F3F46"></span><span style="background:#18181B"></span></div><div class="bar" style="justify-content:space-between"><h3>Default light</h3><span class="b ok">Active</span></div><div class="bar"><button class="btn s">Edit</button><button class="btn s">Duplicate</button></div></div>
+<div class="th"><div class="sws" aria-hidden="true"><span style="background:#09090B"></span><span style="background:#18181B"></span><span style="background:#27272A"></span><span style="background:#D4D4D8"></span></div><div class="bar" style="justify-content:space-between"><h3>Default dark</h3><span class="b ok">Active</span></div><div class="bar"><button class="btn s">Edit</button><button class="btn s">Duplicate</button></div></div>
+<div class="th sel"><div class="sws" aria-hidden="true"><span style="background:#0B0A12"></span><span style="background:#1C1A2B"></span><span style="background:#F5B841"></span><span style="background:#36D6C4"></span></div><div class="bar" style="justify-content:space-between"><h3>Neon sports bar</h3><span class="b warn">AI draft</span></div><div class="bar"><button class="btn s">Edit</button><button class="btn s">Duplicate</button><button class="btn s d">Delete</button></div></div>
+<div class="th"><div class="sws" aria-hidden="true"><span style="background:#FBF7F0"></span><span style="background:#EFE6D8"></span><span style="background:#7A3E1D"></span><span style="background:#2B1B12"></span></div><div class="bar" style="justify-content:space-between"><h3>Brewery warm</h3><span class="b neu">Inactive</span></div><div class="bar"><button class="btn s">Edit</button><button class="btn s">Duplicate</button><button class="btn s d">Delete</button></div></div>
+</div>
+</section>
+<section class="card">
+<div class="bar" style="justify-content:space-between;margin-bottom:8px"><h2>Where each theme is used</h2><span class="mut">Most specific wins: device › device mode › platform › outlet</span></div>
+<div class="tw"><table>
+<thead><tr><th>Scope</th><th>Target</th><th>Light theme</th><th>Dark theme</th><th>Actions</th></tr></thead>
+<tbody>
+<tr><td>Platform</td><td>Web admin</td><td><select aria-label="Light theme for web admin"><option>Default light</option></select></td><td><select aria-label="Dark theme for web admin"><option>Default dark</option></select></td><td><button class="btn s">Reset</button></td></tr>
+<tr><td>Platform</td><td>Android POS</td><td><select aria-label="Light theme for Android POS"><option>Default light</option></select></td><td><select aria-label="Dark theme for Android POS"><option>Default dark</option></select></td><td><button class="btn s">Reset</button></td></tr>
+<tr><td>Device mode</td><td>Kitchen &amp; bar display</td><td>—</td><td><select aria-label="Theme for KDS"><option>Default dark</option></select></td><td><button class="btn s">Reset</button></td></tr>
+<tr><td>Device mode</td><td>Queue monitor &amp; signage</td><td>—</td><td><select aria-label="Theme for signage"><option>Neon sports bar</option></select></td><td><button class="btn s">Reset</button></td></tr>
+<tr><td>Device</td><td>Rooftop TV 1</td><td>—</td><td><select aria-label="Theme for Rooftop TV 1"><option>Inherit</option></select></td><td><button class="btn s">Remove</button></td></tr>
+</tbody></table></div>
+</section>
+</div>
+
+<aside class="card drawer" aria-label="AI theme assistant">
+<div class="bar" style="justify-content:space-between"><h2>Theme with AI</h2><span class="b inf">AI</span></div>
+<div class="msg">Make a dark theme for our sports bar from this logo. Big, readable buttons for bar tablets.</div>
+<div class="bar"><span class="b neu">logo-final.png</span></div>
+<div class="msg" style="background:#fff;border:1px solid #E4E4E7">I pulled amber and teal from your logo and built a full token set for light and dark. All 18 text and background pairs meet WCAG AA. Buttons on bar tablets go up to 52 px.</div>
+<div class="pv" style="background:#0B0A12;color:#F4F4F5" role="img" aria-label="Preview of the Neon sports bar theme on POS and signage">
+<div style="display:flex;justify-content:space-between"><span style="font-weight:600">POS preview</span><span style="color:#A9A6BD">Table R4</span></div>
+<div style="display:flex;gap:6px"><span style="flex:1;background:#1C1A2B;border-radius:8px;padding:10px">Single Malt 12Y</span><span style="flex:1;background:#1C1A2B;border-radius:8px;padding:10px">Premium Lager</span></div>
+<div style="background:#F5B841;color:#0B0A12;border-radius:8px;padding:12px;text-align:center;font-weight:700">Pay ₹2,034</div>
+<div style="background:#36D6C4;color:#0B0A12;border-radius:8px;padding:8px;text-align:center;font-weight:600">Now calling W-012 · Rahul</div>
+</div>
+<div class="bar"><span class="b ok">Contrast AA: 18 / 18</span><span class="b ok">Touch targets 52 px</span></div>
+<label for="ai-theme">Ask for changes</label>
+<textarea id="ai-theme" placeholder="e.g. warmer accent, rounder corners, larger prices on KDS"></textarea>
+<div class="bar"><button class="btn">Upload logo or photo</button><button class="btn">Regenerate</button></div>
+<div class="bar" style="border-top:1px solid #E4E4E7;padding-top:14px;justify-content:flex-end"><button class="btn">Open in editor</button><button class="btn p">Save as draft</button></div>
+<p class="mut" style="margin:0">AI never switches a theme on. Activating it stays a separate admin action.</p>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

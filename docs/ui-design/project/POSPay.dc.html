@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>POS pay and split</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:#09090B;color:#FAFAFA}
+h2{margin:0;font-size:18px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600;color:#A1A1AA;text-transform:uppercase;letter-spacing:.4px}
+.btn{height:52px;padding:0 18px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#D4D4D8;border-color:#D4D4D8;color:#09090B}
+.btn.on{background:#FAFAFA;color:#09090B;border-color:#FAFAFA}
+.pnl{background:#18181B;border:1px solid #27272A;border-radius:16px;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;min-width:0}
+.mut{color:#A1A1AA;font-size:13px}
+.seat{border:1px solid #3F3F46;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.seat.on{border:2px solid #FAFAFA}
+.ln{display:flex;justify-content:space-between;font-size:14px;gap:8px}
+.tn{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:10px;background:#27272A;font-size:15px}
+.k{height:56px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#FAFAFA;font:inherit;font-size:20px;cursor:pointer}
+.ok{background:#052E16;color:#86EFAC}.wt{background:#422006;color:#FDE68A}
+.bdg{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+</style>
+</helmet>
+<div style="min-height:960px;padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+<header style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:12px;align-items:center"><a href="POS.dc.html" class="btn" style="display:inline-flex;align-items:center;text-decoration:none">Back to order</a><div><div style="font-size:20px;font-weight:700">Pay · Order A-1043 · Table R4</div><div class="mut">Total ₹2,034 incl. GST, VAT &amp; 5% service</div></div></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Split mode"><button class="btn">One bill</button><button class="btn">Split equally</button><button class="btn on">By seat</button><button class="btn">By item</button></div>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:14px;flex:1;align-items:stretch">
+<section class="pnl" style="flex:1 1 380px" aria-label="Seats">
+<h3>4 seats · drag items between seats</h3>
+<div class="seat"><div class="ln"><b>Seat 1</b><span class="bdg ok">Paid ₹660</span></div><div class="ln mut"><span>Premium Lager × 2</span><span>₹600</span></div></div>
+<div class="seat on"><div class="ln"><b>Seat 2 · paying now</b><b>₹1,019</b></div><div class="ln"><span>Single Malt 12Y 60 ml</span><span>₹540</span></div><div class="ln"><span>Chicken Wings (shared ½)</span><span>₹175</span></div><div class="ln"><span>Classic Mojito</span><span>₹245</span></div><div class="ln mut"><span>Tax &amp; service</span><span>₹59</span></div></div>
+<div class="seat"><div class="ln"><b>Seat 3</b><span>₹175</span></div><div class="ln mut"><span>Chicken Wings (shared ½)</span><span>₹175</span></div></div>
+<div class="seat"><div class="ln"><b>Seat 4</b><span class="mut">No items</span></div><div class="mut">Empty seats are skipped</div></div>
+<div class="ln mut" style="margin-top:auto"><span>Remaining on table after seat 2</span><b style="color:#FAFAFA">₹355</b></div>
+</section>
+
+<section class="pnl" style="flex:1 1 420px" aria-label="Payment for seat 2">
+<div class="ln"><h2>Seat 2</h2><b style="font-size:24px">₹1,070</b></div>
+<div><h3 style="margin-bottom:8px">Tip</h3><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px" role="group" aria-label="Tip"><button class="btn">None</button><button class="btn on">5% · ₹51</button><button class="btn">10%</button><button class="btn">Custom</button></div></div>
+<div><h3 style="margin-bottom:8px">Payments</h3>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div class="tn"><span>UPI · ref 4471</span><span>₹600 <span class="bdg ok">Received</span></span></div>
+<div class="tn" style="border:2px solid #FAFAFA"><span>Cash</span><span>₹500 entered</span></div>
+<div class="tn"><span class="mut">Card terminal</span><span class="bdg wt">Ready</span></div>
+</div></div>
+<div class="ln" style="font-size:16px"><span>Paid</span><b>₹1,100</b></div>
+<div class="ln" style="font-size:20px;font-weight:700"><span>Change to give</span><span style="color:#86EFAC">₹30</span></div>
+</section>
+
+<section class="pnl" style="flex:1 1 300px" aria-label="Amount keypad">
+<h3>Cash received</h3>
+<div style="font-size:36px;font-weight:700;text-align:right;padding:8px 4px;border-bottom:1px solid #3F3F46">₹500</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px"><button class="btn">₹500</button><button class="btn">₹1,000</button><button class="btn">₹2,000</button><button class="btn">Exact</button></div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+<button class="k">1</button><button class="k">2</button><button class="k">3</button><button class="k">4</button><button class="k">5</button><button class="k">6</button><button class="k">7</button><button class="k">8</button><button class="k">9</button><button class="k">00</button><button class="k">0</button><button class="k" aria-label="Delete digit">⌫</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:auto"><button class="btn">Print bill</button><button class="btn p">Complete seat 2</button></div>
+<p class="mut" style="margin:0">Cash drawer opens on Complete. The bill can go to WhatsApp instead of printing.</p>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

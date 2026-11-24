@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plans and feature rollout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.pt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;background:#18181B;color:#FAFAFA}
+.pt a{color:#D4D4D8;text-decoration:none;padding:0 12px;height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px}
+.pt a.on{background:#3F3F46;color:#FAFAFA;font-weight:600}
+.btn{height:40px;padding:0 14px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.dd{background:#B91C1C;border-color:#B91C1C;color:#fff}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:center;font-size:12px;color:#52525B;font-weight:600;padding:10px 8px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+th.l,td.l{text-align:left}
+td{padding:8px;border-bottom:1px solid #F4F4F5;text-align:center;white-space:nowrap}
+td input{height:36px;width:110px;text-align:center}
+.y{display:inline-block;min-width:56px;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600;background:#18181B;color:#FAFAFA}
+.a{display:inline-block;min-width:56px;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600;background:#FEF3C7;color:#713F12}
+.n{display:inline-block;min-width:56px;padding:4px 8px;border-radius:6px;font-size:12px;color:#71717A;border:1px dashed #D4D4D8}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.stg{display:flex;gap:6px}.stg span{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:12px;font-weight:600;background:#F4F4F5;color:#52525B}
+.stg span.on{background:#18181B;color:#FAFAFA}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex;flex-direction:column">
+<nav class="pt" aria-label="Platform"><b style="margin-right:12px">Platform console</b><a href="PlatformTenants.dc.html">Tenants</a><a class="on" href="PlatformPlans.dc.html">Plans &amp; features</a><a href="PlatformRevenue.dc.html">Usage &amp; revenue</a><a href="SupportConsole.dc.html">Support</a><span style="margin-left:auto;font-size:13px;color:#A1A1AA">Ravi · Super Admin</span></nav>
+<main style="padding:24px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+<header style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px"><h1>Plans &amp; features</h1><div style="display:flex;gap:8px"><button class="btn">Version history</button><button class="btn p">Publish plan changes</button></div></header>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section class="card" style="flex:999 1 680px" aria-label="Plan matrix">
+<div style="overflow-x:auto"><table>
+<thead><tr><th class="l">Feature / limit</th><th>Starter</th><th>Growth</th><th>Pro</th><th>Enterprise</th></tr></thead>
+<tbody>
+<tr><td class="l">Price per month</td><td><input aria-label="Starter price" value="[PRICE]"></td><td><input aria-label="Growth price" value="[PRICE]"></td><td><input aria-label="Pro price" value="[PRICE]"></td><td>Custom</td></tr>
+<tr><td class="l">POS, tables, bar tabs, KDS</td><td><span class="y">Included</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td></tr>
+<tr><td class="l">Inventory &amp; liquor variance</td><td><span class="n">—</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td></tr>
+<tr><td class="l">Walk-in queue + WhatsApp</td><td><span class="n">—</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td></tr>
+<tr><td class="l">Digital signage</td><td><span class="n">—</span></td><td><span class="a">Add-on</span></td><td><span class="y">Included</span></td><td><span class="y">Included</span></td></tr>
+<tr><td class="l">Brand campaigns</td><td><span class="n">—</span></td><td><span class="n">—</span></td><td><span class="a">Add-on</span></td><td><span class="y">Included</span></td></tr>
+<tr><td class="l">AI Assistant</td><td><span class="a">50 credits</span></td><td><span class="a">Add-on</span></td><td><span class="y">500 credits</span></td><td><span class="y">Custom</span></td></tr>
+<tr><td class="l">Users / screens / outlets</td><td>5 / 2 / 1</td><td>15 / 5 / 1</td><td>50 / 20 / 3</td><td>Custom</td></tr>
+</tbody></table></div>
+<span class="mut">Price changes apply to new subscriptions and renewals only. Existing customers get 30 days' notice by email.</span>
+</section>
+<aside class="card" style="flex:1 1 360px" aria-label="Feature rollout">
+<h2>Feature rollout</h2>
+<div><label for="fr-f">Feature</label><select id="fr-f"><option>qr_ordering.v2 · QR ordering v2</option></select></div>
+<div><div style="font-size:13px;font-weight:500;margin-bottom:6px">Stage</div><div class="stg"><span>Internal</span><span class="on">Beta</span><span>25%</span><span>All</span></div></div>
+<div><label for="fr-t">Beta tenants</label><input id="fr-t" value="The Brew Lab, Coastline Bars + 8 more"></div>
+<div style="background:#F4F4F5;border-radius:10px;padding:12px;font-size:13px;display:flex;flex-direction:column;gap:4px"><b>Last 24 h on beta</b><span>Error rate 0.4% (normal 0.3%) · 1,240 QR orders</span><span>Auto-rollback if errors go above 2%</span></div>
+<div style="display:flex;justify-content:space-between;gap:8px;border-top:1px solid #E4E4E7;padding-top:12px"><button class="btn dd">Kill switch</button><button class="btn p">Move to 25%</button></div>
+<span class="mut">The kill switch turns the feature off for every tenant within 1 minute. It's logged and needs a reason.</span>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

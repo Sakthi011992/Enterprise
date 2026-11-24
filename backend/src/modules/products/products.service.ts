@@ -1,15 +1,15 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
 import { buildMeta } from '../../common/dto/pagination.dto';
 import { STORAGE_SERVICE, StorageService } from '../uploads/storage.interface';
 import { CreateProductDto, ProductQueryDto, UpdateProductDto } from './dto/product.dto';
 import { ImportSummary, ProductImportService } from './product-import.service';
+import { ProductsRepository } from './products.repository';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    private prisma: PrismaService,
+    private repo: ProductsRepository,
     @Inject(STORAGE_SERVICE) private storage: StorageService,
     private importer: ProductImportService,
   ) {}
@@ -22,27 +22,22 @@ export class ProductsService {
         ? { OR: [{ name: { contains: q.search, mode: 'insensitive' } }, { description: { contains: q.search, mode: 'insensitive' } }] }
         : {}),
     };
-    const [data, total] = await this.prisma.$transaction([
-      this.prisma.product.findMany({ where, skip: q.skip, take: q.limit, orderBy: { name: 'asc' } }),
-      this.prisma.product.count({ where }),
-    ]);
+    const [data, total] = await this.repo.findAll(where, q.skip, q.limit);
     return { data, meta: buildMeta(total, q.page, q.limit) };
   }
 
   async findOne(id: string) {
-    const product = await this.prisma.product.findFirst({ where: { id, deletedAt: null } });
+    const product = await this.repo.findOne(id);
     if (!product) throw new NotFoundException('Product not found');
     return product;
   }
 
   create(dto: CreateProductDto) {
-    return this.prisma.product.create({
-      data: {
-        name: dto.name,
-        description: dto.description,
-        price: new Prisma.Decimal(dto.price),
-        taxPercentage: dto.taxPercentage === undefined ? null : new Prisma.Decimal(dto.taxPercentage),
-      },
+    return this.repo.create({
+      name: dto.name,
+      description: dto.description,
+      price: new Prisma.Decimal(dto.price),
+      taxPercentage: dto.taxPercentage === undefined ? null : new Prisma.Decimal(dto.taxPercentage),
     });
   }
 
@@ -54,17 +49,17 @@ export class ProductsService {
     if (dto.price !== undefined) data.price = new Prisma.Decimal(dto.price);
     if (dto.taxPercentage !== undefined)
       data.taxPercentage = dto.taxPercentage === null ? null : new Prisma.Decimal(dto.taxPercentage);
-    return this.prisma.product.update({ where: { id }, data });
+    return this.repo.update(id, data);
   }
 
   async setStatus(id: string, isActive: boolean) {
     await this.findOne(id);
-    return this.prisma.product.update({ where: { id }, data: { isActive } });
+    return this.repo.update(id, { isActive });
   }
 
   async remove(id: string) {
     await this.findOne(id);
-    await this.prisma.product.update({ where: { id }, data: { deletedAt: new Date(), isActive: false } });
+    await this.repo.softDelete(id);
     return { success: true };
   }
 
@@ -72,7 +67,7 @@ export class ProductsService {
     const product = await this.findOne(id);
     if (product.imageUrl) await this.storage.remove(product.imageUrl);
     const url = await this.storage.save(file.buffer, file.originalname, 'products');
-    return this.prisma.product.update({ where: { id }, data: { imageUrl: url } });
+    return this.repo.update(id, { imageUrl: url });
   }
 
   importExcel(file: Express.Multer.File, userId: string): Promise<ImportSummary> {

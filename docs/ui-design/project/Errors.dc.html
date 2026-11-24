@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Validation &amp; error patterns</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B}
+h1{margin:0;font-size:32px;font-weight:700;letter-spacing:-.5px}h2{margin:0;font-size:18px;font-weight:600}h3{margin:0;font-size:14px;font-weight:600}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;min-width:0}
+.mut{color:#52525B;font-size:13px}
+.btn{height:40px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.dd{background:#B91C1C;border-color:#B91C1C;color:#fff}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:40px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.f-focus input{border:2px solid #3F3F46;box-shadow:0 0 0 3px rgba(63,63,70,.15)}
+.f-err input{border:2px solid #B91C1C;background:#FEF2F2}
+.f-ok input{border-color:#15803D}
+.f-dis input{background:#F4F4F5;color:#71717A}
+.em{display:flex;gap:6px;align-items:center;font-size:13px;color:#B91C1C;margin-top:6px;font-weight:500}
+.okm{display:flex;gap:6px;align-items:center;font-size:13px;color:#15803D;margin-top:6px;font-weight:500}
+.hm{font-size:13px;color:#52525B;margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:8px;border-bottom:1px solid #E4E4E7}
+td{padding:8px;border-bottom:1px solid #F4F4F5;vertical-align:top}
+.al{border-radius:10px;padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.al.e{background:#FEF2F2;color:#7F1D1D}.al.w{background:#FEF3C7;color:#713F12}.al.s{background:#DCFCE7;color:#14532D}.al.i{background:#F4F4F5;color:#27272A}
+.state{border:1px dashed #D4D4D8;border-radius:12px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.ic{width:48px;height:48px;border-radius:999px;background:#F4F4F5;display:flex;align-items:center;justify-content:center;color:#3F3F46}
+</style>
+</helmet>
+<div style="width:1440px;height:1700px;box-sizing:border-box;background:#F4F4F5;padding:48px;display:flex;flex-direction:column;gap:24px">
+<div><h1>Validation &amp; error patterns</h1><p class="mut" style="font-size:15px;margin:6px 0 0">One set of rules used on every screen: web admin, POS, Android and iOS. Messages say what went wrong and how to fix it, in the user's language.</p></div>
+
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+<section class="card" aria-label="Field states">
+<h2>1 · Field states</h2>
+<div><label for="e1">Default</label><input id="e1" placeholder="Item name"><div class="hm">Helper text explains the format</div></div>
+<div class="f-focus"><label for="e2">Focused</label><input id="e2" value="Single Malt"></div>
+<div class="f-err"><label for="e3">Error · Price (₹) *</label><input id="e3" value="0" aria-invalid="true" aria-describedby="e3m"><div class="em" id="e3m"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg>Price must be more than ₹0</div></div>
+<div class="f-ok"><label for="e4">Valid · GSTIN</label><input id="e4" value="29ABCDE1234F1Z5"><div class="okm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l4 4L19 6"></path></svg>Valid GSTIN format</div></div>
+<div class="f-dis"><label for="e5">Disabled · SKU (set by system)</label><input id="e5" value="SP-0012" disabled></div>
+</section>
+
+<section class="card" aria-label="Validation rules">
+<h2>2 · Validation rules</h2>
+<table>
+<thead><tr><th>Rule</th><th>Example message</th></tr></thead>
+<tbody>
+<tr><td>Required</td><td>Enter the guest's name</td></tr>
+<tr><td>Format</td><td>Enter a 10-digit mobile number</td></tr>
+<tr><td>Range</td><td>Pegs per bottle must be between 1 and 100</td></tr>
+<tr><td>Unique</td><td>SKU SP-0012 is already used by "Single Malt 12Y"</td></tr>
+<tr><td>Depends on field</td><td>Happy hour price must be lower than the regular price (₹540)</td></tr>
+<tr><td>Dates</td><td>End date must be after the start date</td></tr>
+<tr><td>File upload</td><td>Use .xlsx, .csv or .pdf under 10 MB (this file is 24 MB)</td></tr>
+<tr><td>Plan limit</td><td>You've used 15 of 15 users. Upgrade or deactivate a user</td></tr>
+<tr><td>Server check</td><td>This table has an open bill. Close it before deleting</td></tr>
+</tbody></table>
+<p class="mut" style="margin:0">Check on blur and on submit, not while typing. The server repeats every check.</p>
+</section>
+
+<section class="card" aria-label="Error summary">
+<h2>3 · Error summary on submit</h2>
+<div class="al e" role="alert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg><div><b>2 fields need attention</b><br><a href="#e3" style="color:#7F1D1D">Price must be more than ₹0</a><br><a href="#e6" style="color:#7F1D1D">Choose a tax category</a></div></div>
+<div class="f-err"><label for="e6">Tax category *</label><select id="e6" aria-invalid="true"><option>Select…</option></select><div class="em">Choose a tax category</div></div>
+<div class="bar"><button class="btn">Cancel</button><button class="btn p">Save item</button></div>
+<p class="mut" style="margin:0">Focus moves to the summary. Each link jumps to its field. Entered values are kept.</p>
+</section>
+
+<section class="card" aria-label="Edit conflict">
+<h2>4 · Someone else changed it</h2>
+<div class="al w" role="alert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none"><path d="M12 3l10 18H2z"></path><path d="M12 10v4M12 18h.01"></path></svg><div><b>Priya updated this item 2 minutes ago</b><br>Price: ₹540 → ₹560. Your change: ₹520.</div></div>
+<div class="bar"><button class="btn">Keep Priya's version</button><button class="btn">Review both</button><button class="btn p">Save mine anyway</button></div>
+</section>
+
+<section class="card" aria-label="Permission and plan">
+<h2>5 · No permission / not in plan</h2>
+<div class="state"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 018 0v4"></path></svg></span><h3>You don't have access to Accounting</h3><span class="mut">Ask a manager or admin to give the Bartender persona this permission.</span><button class="btn">Request access</button></div>
+<div class="state"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg></span><h3>Brand campaigns are on the Pro plan</h3><span class="mut">Only admins see the upgrade button. Other staff see the first message.</span><button class="btn p">See Pro plan</button></div>
+</section>
+
+<section class="card" aria-label="Empty states">
+<h2>6 · Empty &amp; no-results</h2>
+<div class="state"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path></svg></span><h3>No menu items yet</h3><span class="mut">Add items one by one, import Excel, or let the AI Assistant read your menu.</span><div class="bar"><button class="btn">Import Excel</button><button class="btn p">Add first item</button></div></div>
+<div class="state"><h3>No results for "cognac 90ml"</h3><span class="mut">Try fewer words, or clear the "Active" filter.</span><button class="btn">Clear filters</button></div>
+</section>
+
+<section class="card" aria-label="Network and server">
+<h2>7 · Network &amp; server errors</h2>
+<div class="al i" role="status"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none"><path d="M2 8.8a15 15 0 0120 0M8.5 16a5 5 0 017 0M3 3l18 18"></path></svg><div><b>Offline.</b> Billing still works. 6 orders will sync when you reconnect.</div></div>
+<div class="al e" role="alert"><div><b>Couldn't save. The server didn't respond.</b><br>Your changes are kept. <a href="#" style="color:#7F1D1D">Try again</a> · Ref ERR-7F3A21</div></div>
+<div class="state"><h3>Something went wrong on our side</h3><span class="mut">We've been notified (ref ERR-7F3A21). Your data is safe.</span><div class="bar"><button class="btn">Go to dashboard</button><button class="btn p">Reload</button></div></div>
+</section>
+
+<section class="card" aria-label="Session and approval">
+<h2>8 · Session &amp; approvals</h2>
+<div style="border:1px solid #E4E4E7;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.08)">
+<h3>Your session expired</h3><span class="mut">For security, you were signed out after 30 minutes idle. Unsaved changes are kept on this device.</span>
+<div class="f-err"><label for="e7">Manager PIN</label><input id="e7" type="password" value="1234" aria-invalid="true"><div class="em">Wrong PIN. 2 tries left before a 5-minute lock.</div></div>
+<div class="bar"><button class="btn">Switch user</button><button class="btn p">Continue</button></div>
+</div>
+</section>
+
+<section class="card" aria-label="Destructive confirm and feedback">
+<h2>9 · Confirm, success &amp; undo</h2>
+<div style="border:1px solid #E4E4E7;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+<h3>Delete 3 menu items?</h3><span class="mut">They'll be hidden from POS, QR and kiosk menus right away. Past orders keep them. Type DELETE to confirm.</span>
+<input aria-label="Type DELETE to confirm" placeholder="DELETE">
+<div class="bar" style="justify-content:flex-end"><button class="btn">Cancel</button><button class="btn dd">Delete 3 items</button></div>
+</div>
+<div class="al s" role="status"><span style="flex:1">3 items deleted</span><a href="#" style="color:#14532D;font-weight:600">Undo</a></div>
+</section>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+<section class="card" aria-label="Hardware errors"><h2>10 · Hardware</h2>
+<div class="al w"><div><b>Bar printer is offline.</b> BOT 2291 was sent to the bar screen instead. <a href="#" style="color:#713F12">Retry printer</a></div></div>
+<div class="al e"><div><b>Card terminal timed out.</b> No money was taken. Try again or choose another method.</div></div>
+</section>
+<section class="card" aria-label="Integration errors"><h2>11 · WhatsApp &amp; integrations</h2>
+<div class="al w"><div><b>WhatsApp didn't deliver to W-013.</b> SMS sent instead. <a href="#" style="color:#713F12">Call guest</a></div></div>
+<div class="al e"><div><b>Delivery app menu sync failed</b> for 4 items (missing images). <a href="#" style="color:#7F1D1D">Fix items</a></div></div>
+</section>
+<section class="card" aria-label="Compliance blocks"><h2>12 · Compliance blocks</h2>
+<div class="al e"><div><b>Liquor can't be sold right now.</b> Today is a dry day (set in Licences). Food and soft drinks are still available.</div></div>
+<div class="al w"><div><b>Age check needed.</b> Confirm the guest is 21+ before adding liquor to this tab.</div></div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

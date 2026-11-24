@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Receive a delivery</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B;background:#F4F4F5}
+a{color:#18181B}a:hover{color:#3F3F46}
+h1{margin:0;font-size:22px;font-weight:600}h2{margin:0;font-size:16px;font-weight:600}
+.rail{flex:0 0 64px;background:#fff;border-right:1px solid #E4E4E7;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 0}
+.rail a{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#3F3F46}
+.rail a.on{background:#18181B;color:#FAFAFA}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}
+.card{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:20px;box-sizing:border-box;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mut{color:#52525B;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:#52525B;font-weight:600;padding:10px 8px;border-bottom:1px solid #E4E4E7;white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #F4F4F5;white-space:nowrap}
+td input{height:40px;width:90px}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:14px;background:#fff;color:#18181B}
+.err input{border:2px solid #B91C1C;background:#FEF2F2}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.row{display:flex;justify-content:space-between;font-size:14px;padding:6px 0}
+</style>
+</helmet>
+<div style="min-height:960px;display:flex">
+<nav class="rail" aria-label="Main">
+<a href="Main.dc.html" aria-label="Dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"></path></svg></a>
+<a class="on" href="Procurement.dc.html" aria-label="Procurement"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg></a>
+<a href="Inventory.dc.html" aria-label="Inventory"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"></path></svg></a>
+<a href="Shell.dc.html" aria-label="Expand menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+</nav>
+<main style="flex:1;min-width:0;padding:24px 28px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+<header style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+<div><div class="mut"><a href="Procurement.dc.html">Procurement</a> / Goods received</div><h1>Receive PO-0317 · City Breweries Supply</h1></div>
+<div style="display:flex;gap:8px"><button class="btn">Save draft</button><button class="btn p">Post GRN</button></div>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section class="card" style="flex:999 1 640px" aria-label="Lines">
+<div style="overflow-x:auto"><table>
+<thead><tr><th>Item</th><th>Ordered</th><th>Invoiced</th><th>Received</th><th>Damaged</th><th>Batch</th><th>Expiry</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Premium Lager 650 ml</td><td>10 cs</td><td>10 cs</td><td><input aria-label="Received" value="10"></td><td><input aria-label="Damaged" value="1"></td><td><input aria-label="Batch" value="PL-2611"></td><td><input aria-label="Expiry" value="05/27"></td><td><span class="b" style="background:#FEF3C7;color:#713F12">1 damaged</span></td></tr>
+<tr><td>Wheat beer keg 30 L</td><td>4</td><td>5</td><td><input aria-label="Received" value="4"></td><td><input aria-label="Damaged" value="0"></td><td><input aria-label="Batch" value="WB-88"></td><td><input aria-label="Expiry" value="01/27"></td><td><span class="b" style="background:#FEE2E2;color:#7F1D1D">Invoice +1</span></td></tr>
+<tr><td>Stout 500 ml</td><td>4 cs</td><td>4 cs</td><td class="err"><input aria-label="Received, invalid" value="-4" aria-invalid="true"></td><td><input aria-label="Damaged" value="0"></td><td><input aria-label="Batch" value="ST-12"></td><td><input aria-label="Expiry" value="03/27"></td><td><span class="b" style="background:#FEE2E2;color:#7F1D1D">Must be 0 or more</span></td></tr>
+</tbody></table></div>
+<div style="background:#FEF3C7;color:#713F12;border-radius:10px;padding:12px;font-size:14px">Posting creates: stock +13 cases +4 kegs in Cellar, a debit note of ₹7,800 for the missing keg, and ₹950 wastage for the damaged case.</div>
+</section>
+<aside class="card" style="flex:1 1 320px" aria-label="Delivery details">
+<h2>Delivery details</h2>
+<div><label for="gr-inv">Vendor invoice no. *</label><input id="gr-inv" value="INV 88412"></div>
+<div class="g2"><div><label for="gr-d">Received on</label><input id="gr-d" value="21 Nov 2026"></div><div><label for="gr-l">Into</label><select id="gr-l"><option>Cellar</option></select></div></div>
+<div><label for="gr-tp">Transport permit *</label><input id="gr-tp" value="TP/KA/2026/55120"></div>
+<button class="btn">Attach invoice photo or PDF</button>
+<div style="border-top:1px solid #E4E4E7;padding-top:10px">
+<div class="row"><span class="mut">PO value</span><span>₹64,200</span></div>
+<div class="row"><span class="mut">Invoice value</span><span>₹66,900</span></div>
+<div class="row" style="font-weight:700"><span>Payable after GRN</span><span>₹59,100</span></div>
+</div>
+<span class="mut">Goes to the Accountant for the 3-way match: PO vs GRN vs invoice.</span>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

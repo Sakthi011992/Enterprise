@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Self-order kiosk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif}
+.cat{height:64px;border-radius:14px;border:1px solid #D4D4D8;background:#fff;font:inherit;font-size:16px;font-weight:600;cursor:pointer;color:#18181B}
+.cat.on{background:#18181B;color:#FAFAFA;border-color:#18181B}
+.it{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px;text-align:left;font:inherit;cursor:pointer;color:#18181B}
+.ph{height:120px;border-radius:10px;background:#E4E4E7;display:flex;align-items:center;justify-content:center;color:#52525B;font-size:13px}
+</style>
+</helmet>
+<div style="width:768px;height:1024px;box-sizing:border-box;background:#F4F4F5;color:#18181B;display:flex;flex-direction:column">
+<header style="display:flex;justify-content:space-between;align-items:center;padding:24px 28px;background:#fff;border-bottom:1px solid #E4E4E7"><div style="display:flex;gap:12px;align-items:center"><span style="width:48px;height:48px;border-radius:12px;background:#18181B;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">YV</span><div><b style="font-size:20px">Order here</b><div style="font-size:14px;color:#52525B">Pick up at the counter · takeaway or eat in</div></div></div><button style="height:48px;padding:0 16px;border-radius:10px;border:1px solid #D4D4D8;background:#fff;font:inherit;font-size:15px;cursor:pointer">English ▾</button></header>
+<div style="padding:20px 28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px"><button class="cat">Popular</button><button class="cat on">Bites</button><button class="cat">Mocktails</button><button class="cat">Drinks 21+</button></div>
+<div style="padding:0 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:1;align-content:start">
+<button class="it"><span class="ph">Photo</span><b style="font-size:16px">Chicken Wings</b><span style="font-size:14px;color:#52525B">8 pc · ₹350</span></button>
+<button class="it" style="border:2px solid #18181B"><span class="ph">Photo</span><b style="font-size:16px">Loaded Nachos</b><span style="font-size:14px;color:#52525B">Veg · ₹320 · in cart</span></button>
+<button class="it"><span class="ph">Photo</span><b style="font-size:16px">Fish &amp; Chips</b><span style="font-size:14px;color:#713F12;font-weight:600">Only 3 left</span></button>
+<button class="it"><span class="ph">Photo</span><b style="font-size:16px">Paneer Tikka</b><span style="font-size:14px;color:#7F1D1D;font-weight:600">Sold out</span></button>
+<button class="it"><span class="ph">Photo</span><b style="font-size:16px">Peri Peri Fries</b><span style="font-size:14px;color:#52525B">Veg · ₹180</span></button>
+<button class="it"><span class="ph">Photo</span><b style="font-size:16px">Beer Tower 3L</b><span style="font-size:14px;color:#52525B">21+ · ID at pickup</span></button>
+</div>
+<div style="margin:20px 28px 0;background:#FEF3C7;color:#713F12;border-radius:12px;padding:12px 16px;font-size:14px">Drinks with alcohol need an ID check at pickup. Staff will confirm before pouring.</div>
+<footer style="margin-top:20px;padding:20px 28px 28px;background:#18181B;color:#FAFAFA;display:flex;justify-content:space-between;align-items:center;gap:16px"><div><b style="font-size:20px">2 items · ₹670</b><div style="font-size:14px;color:#D4D4D8">Pay by UPI here or with cash at the counter</div></div><button style="height:64px;padding:0 28px;border-radius:14px;border:0;background:#FAFAFA;color:#09090B;font:inherit;font-size:18px;font-weight:700;cursor:pointer">Review &amp; pay</button></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":768,"height":1024}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

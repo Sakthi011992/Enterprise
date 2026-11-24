@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Create, edit, view and loading states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#18181B}
+h1{margin:0;font-size:32px;font-weight:700;letter-spacing:-.5px}h2{margin:0;font-size:18px;font-weight:600}
+.pn{background:#fff;border:1px solid #E4E4E7;border-radius:16px;box-sizing:border-box;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.hd{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #E4E4E7}
+.bd{padding:16px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+.ft{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 20px;border-top:1px solid #E4E4E7;background:#FAFAFA}
+.lab{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#52525B}
+.mut{color:#52525B;font-size:13px}
+.btn{height:44px;padding:0 16px;border-radius:8px;border:1px solid #D4D4D8;background:#fff;color:#18181B;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn.p{background:#3F3F46;border-color:#3F3F46;color:#fff}.btn.d{color:#B91C1C;border-color:#FCA5A5}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+input,select{width:100%;box-sizing:border-box;height:44px;border:1px solid #D4D4D8;border-radius:8px;padding:0 12px;font:inherit;font-size:15px;background:#fff;color:#18181B}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ro dt{font-size:12px;color:#52525B;margin:0}.ro dd{margin:2px 0 10px;font-size:15px}
+.sk{background:#E4E4E7;border-radius:6px;height:14px;display:block}
+.b{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+</style>
+</helmet>
+<div style="width:1440px;height:1100px;box-sizing:border-box;background:#F4F4F5;padding:48px;display:flex;flex-direction:column;gap:24px">
+<div><h1>Create, edit, view &amp; loading</h1><p class="mut" style="font-size:15px;margin:6px 0 0">Every side panel has these four states. Example: a menu item.</p></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;flex:1">
+
+<section class="pn" aria-label="Create state">
+<div class="hd"><div><div class="lab">Create</div><h2>New menu item</h2></div></div>
+<div class="bd">
+<div><label for="n1">Name *</label><input id="n1" placeholder="e.g. Single Malt 12Y"></div>
+<div><label for="n2">Category *</label><select id="n2"><option>Choose…</option></select></div>
+<div class="g2"><div><label for="n3">Price *</label><input id="n3" placeholder="₹"></div><div><label for="n4">Tax *</label><select id="n4"><option>Choose…</option></select></div></div>
+<p class="mut" style="margin:0">* Required. Variants, images and recipe can be added after the first save.</p>
+</div>
+<div class="ft"><button class="btn">Cancel</button><div style="display:flex;gap:8px"><button class="btn">Save &amp; add another</button><button class="btn p">Create</button></div></div>
+</section>
+
+<section class="pn" aria-label="Edit state">
+<div class="hd"><div><div class="lab">Edit</div><h2>Single Malt 12Y</h2></div><span class="b" style="background:#FEF3C7;color:#713F12">Unsaved changes</span></div>
+<div class="bd">
+<div><label for="e1">Name *</label><input id="e1" value="Single Malt 12Y"></div>
+<div><label for="e2">Category *</label><select id="e2"><option>Spirits</option></select></div>
+<div class="g2"><div><label for="e3">Price *</label><input id="e3" value="₹ 560" style="border:2px solid #3F3F46"></div><div><label for="e4">Tax *</label><select id="e4"><option>VAT liquor</option></select></div></div>
+<p class="mut" style="margin:0">Last changed by Priya, today 9:12 pm · <a href="#" style="color:#18181B">History</a></p>
+</div>
+<div class="ft"><button class="btn d">Delete</button><div style="display:flex;gap:8px"><button class="btn">Discard</button><button class="btn p">Save</button></div></div>
+</section>
+
+<section class="pn" aria-label="View state">
+<div class="hd"><div><div class="lab">View only</div><h2>Single Malt 12Y</h2></div><span class="b" style="background:#E4E4E7;color:#27272A">Read-only</span></div>
+<div class="bd">
+<dl class="ro" style="margin:0">
+<dt>Category</dt><dd>Spirits</dd>
+<dt>Prices</dt><dd>30 ml ₹280 · 60 ml ₹540 · Bottle ₹6,200</dd>
+<dt>Tax</dt><dd>VAT liquor (20%)</dd>
+<dt>Sold on</dt><dd>POS, QR menu, kiosk</dd>
+</dl>
+<p class="mut" style="margin:0">You can view this item. Your persona (Bartender) can't edit prices.</p>
+</div>
+<div class="ft"><span></span><button class="btn">Request edit access</button></div>
+</section>
+
+<section class="pn" aria-label="Loading state">
+<div class="hd"><div><div class="lab">Loading</div><span class="sk" style="width:160px;height:20px;margin-top:4px" aria-hidden="true"></span></div><span class="mut" role="status">Loading…</span></div>
+<div class="bd" aria-hidden="true">
+<span class="sk" style="width:40%"></span><span class="sk" style="height:44px;border-radius:8px"></span>
+<span class="sk" style="width:30%"></span><span class="sk" style="height:44px;border-radius:8px"></span>
+<span class="sk" style="width:50%"></span><span class="sk" style="height:44px;border-radius:8px"></span>
+</div>
+<div class="ft"><span class="mut">After 10 s: "Still loading. Check your connection." with Retry</span></div>
+</section>
+</div>
+
+<section class="pn" aria-label="List loading and stale data">
+<div class="hd"><h2>List: first load vs. refresh</h2><span class="mut">Cached data shows immediately; a thin bar shows it's updating</span></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:20px">
+<div style="display:flex;flex-direction:column;gap:12px" aria-hidden="true">
+<div class="lab">First load</div>
+<div style="display:flex;gap:12px;align-items:center"><span class="sk" style="width:36px;height:36px;border-radius:8px"></span><span class="sk" style="flex:1"></span><span class="sk" style="width:70px"></span><span class="sk" style="width:60px;height:24px;border-radius:999px"></span></div>
+<div style="display:flex;gap:12px;align-items:center"><span class="sk" style="width:36px;height:36px;border-radius:8px"></span><span class="sk" style="flex:1"></span><span class="sk" style="width:70px"></span><span class="sk" style="width:60px;height:24px;border-radius:999px"></span></div>
+<div style="display:flex;gap:12px;align-items:center"><span class="sk" style="width:36px;height:36px;border-radius:8px"></span><span class="sk" style="flex:1"></span><span class="sk" style="width:70px"></span><span class="sk" style="width:60px;height:24px;border-radius:999px"></span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="lab">Refreshing cached list</div>
+<div style="height:3px;border-radius:999px;background:#E4E4E7;overflow:hidden" role="progressbar" aria-label="Updating"><span style="display:block;width:45%;height:100%;background:#3F3F46"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid #F4F4F5"><span>Single Malt 12Y</span><span>₹540</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid #F4F4F5"><span>Premium Lager 650ml</span><span>₹300</span></div>
+<span class="mut">Updated 2 min ago · Updating…</span>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

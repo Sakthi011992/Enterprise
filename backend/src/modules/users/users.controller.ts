@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto, ResetPasswordDto, UpdateUserDto } from './dto/user.dto';
+import { SetUserFeaturesDto } from './dto/user-features.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 
@@ -44,5 +45,18 @@ export class UsersController {
   @ApiOperation({ summary: 'Soft-delete a user' })
   remove(@Param('id') id: string) {
     return this.users.remove(id);
+  }
+
+  @Get(':id/features')
+  @ApiOperation({ summary: 'Get granted features for a user' })
+  getFeatures(@Param('id') id: string) {
+    return this.users.getFeatures(id);
+  }
+
+  @Put(':id/features')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Replace the full feature grant set for a user' })
+  setFeatures(@Param('id') id: string, @Body() dto: SetUserFeaturesDto) {
+    return this.users.setFeatures(id, dto.features);
   }
 }

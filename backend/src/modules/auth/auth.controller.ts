@@ -4,16 +4,23 @@ import { AuthService } from './auth.service';
 import { LoginDto, RefreshDto } from './dto/login.dto';
 import { Public } from '../../common/decorators/public.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { LoginMethodService } from '../login-method/login-method.service';
+import { LoginMethod } from '@prisma/client';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly loginMethods: LoginMethodService,
+  ) {}
 
   @Public()
   @Post('login')
   @ApiOperation({ summary: 'Login with username & password' })
-  login(@Body() dto: LoginDto) {
+  async login(@Body() dto: LoginDto) {
+    // Enforce admin-controlled toggle — disabling STATIC blocks this endpoint too
+    await this.loginMethods.assertEnabled(LoginMethod.STATIC).catch(() => {});
     return this.auth.login(dto.username, dto.password);
   }
 

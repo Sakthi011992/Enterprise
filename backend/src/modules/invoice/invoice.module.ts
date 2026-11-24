@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { InvoiceService } from './invoice.service';
 import { InvoiceController } from './invoice.controller';
-import { OrdersModule } from '../orders/orders.module';
+import { InvoiceNumberService } from './invoice-number.service';
+import { InvoicePdfService } from './invoice-pdf.service';
 
 @Module({
-  imports: [ConfigModule, OrdersModule],
   controllers: [InvoiceController],
-  providers: [InvoiceService],
+  providers: [InvoiceService, InvoiceNumberService, InvoicePdfService],
+  exports: [InvoiceService],
 })
 export class InvoiceModule {}
