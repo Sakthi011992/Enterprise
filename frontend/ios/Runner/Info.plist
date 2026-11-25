@@ -6,6 +6,8 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose photos to upload as product images or brand logos.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pos Billing</string>
 	<key>CFBundleExecutable</key>

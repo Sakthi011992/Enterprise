@@ -42,6 +42,10 @@ flutter run -d chrome
 8. A user with role KIOSK signs in → goes straight to `/kiosk` with no shell.
 9. Google sign-in (if enabled in login methods) returns the same session shape and lands on the persona's home route.
 
+## Mobile build fix
+
+Main's branding screen and product images dialog used `dart:html` to pick files, which breaks Android and iOS builds. Both now use `core/files/pick_file.dart` (package `file_picker ^8.0.0`), which opens the browser dialog on web and the native picker on Android/iOS. iOS gets an `NSPhotoLibraryUsageDescription` entry in `Info.plist`.
+
 ## Known gaps (follow-ups)
 
 - **Tenant scoping** covers Outlet, Persona, User, Product, GlobalTaxSetting, Order, ProductImportLog, AuditLog, Device, Notification. Main's newer models (Invoice*, PaymentMethodConfig, PaymentGatewayProfile, BrandLogo, KioskConfig, FeaturedItem, ProductImage, Translation*) are still single-tenant → Phase 1b. Nested `include`/`connect` writes are not scoped.
@@ -50,6 +54,5 @@ flutter run -d chrome
 - Feature grants (`UserFeatureGrant`) are kept but deprecated; navigation and access use persona permissions.
 - OAuth-created users have no outlet until an admin assigns one (login returns `NO_OUTLET_ACCESS`).
 - Main's STATIC login-method gate in `auth.controller.ts` swallows its own error (`.catch(() => {})`), so disabling STATIC doesn't block password login. Pre-existing; not changed.
-- `features/branding/branding_screen.dart` (from main) imports `dart:html`, which breaks Android/iOS builds; now reachable from the router. Pre-existing; needs a conditional import.
 - Existing orders keep `outletId = NULL`.
 - Real translations for Tamil and Hindi are placeholders (English text, marked untranslated).

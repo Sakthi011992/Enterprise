@@ -1,11 +1,10 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config/app_config.dart';
+import '../../../core/files/pick_file.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -107,31 +106,22 @@ class _UploadedTabState extends ConsumerState<_UploadedTab> {
     }
   }
 
-  void _pickAndUpload() {
-    final input = html.FileUploadInputElement()
-      ..accept = 'image/*'
-      ..click();
-    input.onChange.listen((event) async {
-      final file = input.files?.first;
-      if (file == null) return;
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(file);
-      await reader.onLoadEnd.first;
-      final bytes = reader.result as Uint8List;
-      setState(() => _uploading = true);
-      try {
-        final formData = FormData.fromMap({
-          'file': MultipartFile.fromBytes(bytes, filename: file.name,
-              contentType: DioMediaType.parse(file.type.isNotEmpty ? file.type : 'image/jpeg')),
-        });
-        await ref.read(dioProvider).post('/products/${widget.productId}/images/upload', data: formData);
-        await _load();
-      } catch (e) {
-        if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
-      } finally {
-        if (mounted) setState(() => _uploading = false);
-      }
-    });
+  Future<void> _pickAndUpload() async {
+    final file = await pickImageFile();
+    if (file == null) return;
+    setState(() => _uploading = true);
+    try {
+      final formData = FormData.fromMap({
+        'file': MultipartFile.fromBytes(file.bytes, filename: file.name,
+            contentType: DioMediaType.parse(file.mimeType.startsWith('image/') ? file.mimeType : 'image/jpeg')),
+      });
+      await ref.read(dioProvider).post('/products/${widget.productId}/images/upload', data: formData);
+      await _load();
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
+    } finally {
+      if (mounted) setState(() => _uploading = false);
+    }
   }
 
   Future<void> _setPrimary(String imageId) async {
