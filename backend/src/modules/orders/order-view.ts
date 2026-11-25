@@ -1,5 +1,6 @@
 import { Order, OrderDiscount, OrderItem, Payment, Prisma } from '@prisma/client';
 import { D, StoredLineTax, money, readStoredTax } from './order-pricing';
+import { isNearLimit } from '../tabs/tab-math';
 
 /** An order with everything that belongs to it, loaded without relation fields. */
 export interface OrderBundle {
@@ -16,6 +17,8 @@ export interface ViewContext {
   table: { id: string; name: string; areaName: string } | null;
   waiter: { id: string; name: string } | null;
   userNames: Map<string, string>;
+  /** The bar tab on this order, when it has one. */
+  tab?: { id: string; number: string; tabLimit: Prisma.Decimal; warnAtPercent: number } | null;
 }
 
 /** Payments that count towards the bill: positive, not refunded, plus negative refund rows. */
@@ -116,6 +119,15 @@ export function toOrderView(b: OrderBundle, ctx: ViewContext) {
       tipTotal: money(order.tipTotal),
     },
     invoiceNumber: order.invoiceNumber,
+    tab: ctx.tab
+      ? {
+          id: ctx.tab.id,
+          number: ctx.tab.number,
+          tabLimit: money(ctx.tab.tabLimit),
+          spent: money(grand),
+          nearLimit: isNearLimit(grand, ctx.tab.tabLimit, ctx.tab.warnAtPercent),
+        }
+      : null,
   };
 }
 

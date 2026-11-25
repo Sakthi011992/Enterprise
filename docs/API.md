@@ -246,6 +246,101 @@ All under `/api/v1`, outlet = the caller's outlet. Money is a string with 2 deci
 | GET | `/reports/day-closes` | `reports.view LIMITED` | `{ data: [...] }`, latest 50. |
 | POST | `/cash-drawer/open` | `sales.orders.take EDIT` | `{ reason, approvalId? }`. Opens directly with `sales.payments.take EDIT`; otherwise needs an approved NO_SALE approval (403 `APPROVAL_REQUIRED`). Audited. |
 
+## Bar tabs, KDS and realtime (Phase 3)
+
+All under `/api/v1`, outlet = the caller's outlet. Money is a string with 2 decimals, percentages a string with 1 decimal. `TabView`, `LockerView`, `KdsTicket` and `ReadyItem` are the shapes in `docs/phase-3/PLAN.md` 1.7.
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| GET | `/tabs` | `sales.tab.open VIEW` | `?status=OPEN\|CLOSED&scope=today\|all&openedById`. `{ counts: { open, nearLimit, closedToday }, items: [TabView] }`. |
+| GET | `/tabs/:id` | `sales.tab.open VIEW` | `TabView` plus `order: OrderView`. 404 `TAB_NOT_FOUND`. |
+| POST | `/tabs` | `sales.tab.open LIMITED` | `{ guestName, mobile?, ageChecked, security: CARD_PREAUTH\|CASH_DEPOSIT\|HOUSE_ACCOUNT\|NONE, cardLast4?, amountHeld?, houseAccount?, tabLimit, warnAtPercent?: 80\|90, linkType: BAR_SEAT\|TABLE\|QUEUE_TOKEN\|NONE, linkLabel?, tableId?, approvalId? }`. Creates a BAR_COUNTER order (DINE_IN with `TABLE`). 400 `AGE_CHECK_REQUIRED`, `CARD_LAST4_REQUIRED`, `DEPOSIT_REQUIRED`, `HOUSE_ACCOUNT_REQUIRED`, `TABLE_REQUIRED`; 403 `LIMIT_EXCEEDED`, `APPROVAL_REQUIRED` (security NONE without APPROVE; `approvalId` is a `TAB_NO_SECURITY` approval with payload `{ guestName, tabLimit }`); 409 `TABLE_OCCUPIED`. |
+| PUT | `/tabs/:id` | `sales.tab.open LIMITED` | `{ guestName?, mobile?, tabLimit?, warnAtPercent?, linkType?, linkLabel? }`. A new `tabLimit` is checked with the same limit rule and re-arms the warning. 409 `TAB_CLOSED`, `TAB_ON_TABLE`. |
+| POST | `/tabs/:id/move-to-table` | `sales.tab.open LIMITED` | `{ tableId }`. The order becomes DINE_IN and the old table is freed. 409 `TAB_CLOSED`, `TABLE_OCCUPIED`. |
+| POST | `/tabs/:id/close` | `sales.payments.take EDIT` | Bills the order. A cash deposit pays `min(held, total)` as a CASH payment with reference `TAB_DEPOSIT`. Returns `{ tab, orderId, depositApplied, depositToReturn }`. The tab closes when the order is fully paid. 400 `TAB_EMPTY`; 409 `TAB_CLOSED`. |
+| POST | `/tabs/:id/void` | `sales.tab.open LIMITED` | `{ reason }`. Only an empty tab. 409 `TAB_NOT_EMPTY`. |
+| GET | `/locker` | `sales.tab.open VIEW` | `?status=&search=`. `[LockerView]`. |
+| POST | `/locker` | `sales.tab.open LIMITED` | `{ guestName, mobile?, cardLast4?, stockItemId?, bottleName, bottleMl, remainingMl, expiresAt: "YYYY-MM-DD", orderItemId?, note? }`. 400 `INVALID_ML`. |
+| POST | `/locker/:id/serve` | `sales.tab.open LIMITED` | `{ ml }`. Reaching zero finishes the entry. 409 `NOT_ENOUGH_LEFT` `{ remainingMl }`, `LOCKER_EXPIRED`. |
+| PUT | `/locker/:id` | `sales.tab.open LIMITED` | `{ guestName?, mobile?, remainingMl?, expiresAt?, note? }`. A changed volume writes an ADJUST event. |
+| DELETE | `/locker/:id` | `sales.tab.open LIMITED` | Body `{ reason }`. Marks the entry REMOVED. |
+| GET | `/kds/tickets` | `kds.bump VIEW` | `?station=BAR\|KITCHEN\|ALL&view=active\|done`. `{ serverTime, tickets: [KdsTicket], allDay: [{ name, variantName, quantity }], avgTicketSeconds }`. Done = SERVED in the last two hours. |
+| POST | `/kds/tickets/:id/start` | `kds.bump EDIT` | NEW to PREPARING. 409 `KDS_BAD_STATE` `{ status }`. |
+| POST | `/kds/tickets/:id/bump` | `kds.bump EDIT` | NEW or PREPARING to READY. Notifies the waiter (`type: ready`). 409 `KDS_BAD_STATE`. |
+| POST | `/kds/tickets/:id/recall` | `kds.bump EDIT` | READY, or SERVED within 30 minutes, to PREPARING. 409 `KDS_BAD_STATE`, `RECALL_TOO_LATE`. |
+| POST | `/kds/tickets/:id/served` | `sales.orders.take EDIT` or `kds.bump EDIT` | READY to SERVED; the ticket's lines become SERVED. 409 `KDS_BAD_STATE`. |
+| GET | `/kds/ready` | `sales.orders.take VIEW` or `kds.bump VIEW` | `?mine=true`. `[ReadyItem]`, oldest first. |
+| GET | `/kds/stations` | `kds.bump VIEW` | `[{ station, label, activeCount }]`. |
+
+Errors added to the Phase 2 orders routes: `POST /orders/:id/items` and `PATCH /orders/:id/items/:itemId` return 409 `TAB_LIMIT_REACHED` `{ tabId, number, limit, spent, attempted }` when the order is on an open tab and the new total is above the limit. The change is rolled back. `OrderView` has a `tab` field (`{ id, number, tabLimit, spent, nearLimit }` or null).
+
+### Realtime
+
+Socket.io on namespace `/rt` (`cors` as the REST API). Connect with `auth: { token, stations? }`, where `token` is the access token and `stations` an optional list such as `["BAR"]`. A missing or invalid token, an outlet-selection token, or revoked outlet access disconnects at once. Rooms: `outlet:<outletId>`, `user:<userId>`, `outlet:<outletId>:station:<station>` for each requested station. A station list containing `*` joins `outlet:<outletId>:station:*`, which receives every station's KDS events.
+
+| Event | Room | Payload |
+|---|---|---|
+| `kds.ticket.created` | station | `KdsTicket` (not for cancellation tickets) |
+| `kds.ticket.updated` | station | `KdsTicket` (after start, bump, recall, served, or a void of its lines) |
+| `kds.ready` | `user:<waiterId>` and outlet | `ReadyItem` |
+| `menu.item86` | outlet | `{ productId, name, is86, auto }` |
+| `stock.low` | outlet | `{ stockItemId, name, locationId, locationName, onHand, parLevel }` |
+| `tab.nearLimit` | outlet | `TabView` |
+| `order.updated` | outlet | `{ orderId, status }` after send, bill, void, payment |
+
+## Inventory (Phase 3)
+
+Quantities are base units (ML, G, PC) as strings with 3 dp; money is a string with 2 dp; unit costs have 6 dp. Every quantity has a `…Display` string (`"8 btl + 410 ml"`). Permissions are in PLAN.md 1.6.
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| GET | `/inventory/summary` | `stock.count VIEW` or `reports.view LIMITED` | `{ stockValue, pourCost7d: { percent, cost, revenue }, liquorVariance7d: { qty, value }, belowParCount }` |
+| GET | `/stock/locations` | `stock.count VIEW` | `[{ id, name, kind, stations, isDefaultSales, itemCount, value }]` |
+| POST / PUT | `/stock/locations`, `/stock/locations/:id` | `menu.edit EDIT` or `stock.purchaseOrders EDIT` | `409 LOCATION_EXISTS` |
+| GET | `/stock/items` | `stock.count VIEW` | `?locationId&search&status=BELOW_PAR\|VARIANCE\|EXPIRES\|NEGATIVE\|OK&liquor=true` |
+| GET | `/stock/items/:id` | `stock.count VIEW` | Row plus input fields, `levels` per location, `preferredVendor`. `404 STOCK_ITEM_NOT_FOUND` |
+| POST / PUT | `/stock/items`, `/stock/items/:id` | `menu.edit EDIT` or `stock.purchaseOrders EDIT` | Create takes `opening: [{ locationId, qty }]` (OPENING movements). `409 STOCK_ITEM_EXISTS` |
+| PUT | `/stock/items/:id/par` | `menu.edit EDIT` or `stock.purchaseOrders EDIT` | `{ levels: [{ locationId, parLevel }] }` |
+| GET | `/stock/items/:id/movements` | `stock.count VIEW` | `?locationId&from&to&limit=100` |
+| GET / POST | `/stock/transfers` | `stock.count VIEW` / `EDIT` | POST `{ fromLocationId, toLocationId, note?, lines: [{ stockItemId, qty }] }`. `400 SAME_LOCATION`, `400 EMPTY_TRANSFER` |
+| GET / POST | `/stock/counts` | `stock.count VIEW` / `EDIT` | POST `{ locationId }`. `409 COUNT_ALREADY_OPEN` (`{ countId }`) |
+| GET | `/stock/counts/:id` | `stock.count VIEW` | Lines with `expectedQty` (live until submit), `differencePercent`, `outlier`. `404 COUNT_NOT_FOUND` |
+| PUT | `/stock/counts/:id/lines` | `stock.count EDIT` | `{ lines: [{ stockItemId, countedQty, note?, confirmedOutlier?, countedAt? }] }`, idempotent. `409 COUNT_NOT_OPEN` |
+| POST | `/stock/counts/:id/submit` | `stock.count EDIT` | Snapshots `expectedQty`. `400 NOTHING_COUNTED`, `409 COUNT_NOT_OPEN` |
+| POST | `/stock/counts/:id/post` | `stock.count APPROVE` | COUNT_ADJUST movements. `409 COUNT_NOT_SUBMITTED` |
+| POST | `/stock/counts/:id/cancel` | `stock.count EDIT` | `409 COUNT_POSTED` |
+| GET / POST | `/stock/wastage` | `stock.count VIEW` / `EDIT` | GET `?from&to&locationId` returns `{ items, totalValue }`. POST `{ locationId, stockItemId, qty, reason, note?, photoUrl? }`. `400 PHOTO_REQUIRED` (above ₹2,000), `409 INSUFFICIENT_STOCK` (`{ onHand, onHandDisplay }`), `400 INVALID_REASON` |
+| POST | `/stock/uploads` | `stock.count EDIT` | Multipart `file`, jpg/png/pdf up to 8 MB, checked by content. Returns `{ url }`. `400 INVALID_FILE` |
+| GET | `/stock/variance` | `stock.count VIEW` or `reports.view LIMITED` | `?locationId&from&to&liquor=true` (default: last 7 business days, liquor only). Returns `{ from, to, rows, totals: { varianceValue } }` |
+| GET | `/stock/kegs` | `stock.count VIEW` | Keg items: `fullKegs`, `onTapMl` (bar stock modulo one keg), `locationBreakdown` |
+| GET | `/products/:id/recipes` | `stock.count VIEW` and `menu.edit VIEW` | One view per variant with a recipe, plus `variantId: null`. Costing and pour cost |
+| PUT | `/products/:id/recipes` | `menu.edit EDIT` | `{ recipes: [{ variantId, note?, lines: [{ stockItemId, qty, wastagePercent }] }] }`, replaces all. `400 RECIPE_DUPLICATE_VARIANT` |
+| PUT | `/modifier-groups/:id` (Phase 2) | `menu.edit EDIT` | Options may carry `stockItemId` and `stockQty`; responses add `stockItemId`, `stockQty` (3 dp), `stockItemName` |
+
+## Procurement (Phase 3)
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| GET | `/vendors` | `stock.purchaseOrders VIEW` | `?active=true`. `openPoCount` |
+| POST / PUT | `/vendors`, `/vendors/:id` | `stock.purchaseOrders EDIT` | `409 VENDOR_EXISTS` |
+| GET | `/purchase-orders` | `stock.purchaseOrders VIEW` | `?status&vendorId`. Returns `{ counts, items }` |
+| GET | `/purchase-orders/:id` | `stock.purchaseOrders VIEW` | Lines and linked GRNs. `404 PO_NOT_FOUND` |
+| POST | `/purchase-orders` | `stock.purchaseOrders REQUEST` | `{ vendorId, locationId, dueDate?, transportPermitNo?, note?, lines: [{ stockItemId, qty, rate }] }`. `400 EMPTY_PO` |
+| PUT / DELETE | `/purchase-orders/:id` | `stock.purchaseOrders REQUEST` | PUT only for DRAFT or PENDING_APPROVAL (returns to DRAFT). DELETE only for DRAFT. `409 PO_NOT_EDITABLE` |
+| POST | `/purchase-orders/:id/submit` | `stock.purchaseOrders REQUEST` | To PENDING_APPROVAL and notifies approvers |
+| POST | `/purchase-orders/:id/approve` | `stock.purchaseOrders APPROVE` | `409 PO_NOT_PENDING` |
+| POST | `/purchase-orders/:id/send` | `stock.purchaseOrders APPROVE` | From APPROVED, or from DRAFT or PENDING_APPROVAL (auto-approved). `409 PO_NOT_APPROVED` |
+| POST | `/purchase-orders/:id/cancel` | `stock.purchaseOrders APPROVE` | `{ reason }`. `409 PO_RECEIVED` |
+| GET | `/purchase-orders/reorder-suggestions` | `stock.purchaseOrders VIEW` | `?locationId`. Items below par with `suggestedQty` in purchase units |
+| POST | `/purchase-orders/reorder-request` | `stock.purchaseOrders REQUEST` | `{ locationId, lines: [{ stockItemId, qty }] }`. One PENDING_APPROVAL PO per vendor. `400 VENDOR_MISSING` (`{ stockItemIds }`) |
+| GET | `/grns` | `stock.purchaseOrders VIEW` | `?from&to&vendorId` |
+| GET | `/grns/:id` | `stock.purchaseOrders VIEW` | Lines with status, and `preview` (stock added, debit note, wastage, payable). `404 GRN_NOT_FOUND` |
+| POST | `/grns` | `stock.purchaseOrders REQUEST` | With `poId` and no lines, lines are the PO's outstanding quantities. `409 PO_NOT_RECEIVABLE` |
+| PUT | `/grns/:id` | `stock.purchaseOrders REQUEST` | Draft only. `409 GRN_POSTED` |
+| POST | `/grns/:id/post` | `stock.purchaseOrders REQUEST` | Receipts, damaged wastage, debit note, PO status. `400 INVOICE_NO_REQUIRED`, `400 PERMIT_REQUIRED`, `400 INVALID_QTY` (`{ line, field }`) |
+| GET | `/debit-notes` | `stock.purchaseOrders VIEW` | `?status` |
+| POST | `/debit-notes/:id/settle` | `stock.purchaseOrders EDIT` | `409 DEBIT_NOTE_NOT_OPEN` |
+
 ## Error envelope
 ```json
 { "statusCode": 400, "message": "…", "error": "Bad Request", "code": "PIN_TOO_SIMPLE", "details": {}, "path": "/api/v1/…", "timestamp": "…" }

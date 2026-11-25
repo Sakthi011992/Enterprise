@@ -17,3 +17,18 @@ describe('approval payloads', () => {
     expect(() => validateApprovalPayload('NO_SALE', {})).not.toThrow();
   });
 });
+
+describe('TAB_NO_SECURITY approval payloads', () => {
+  it('binds the approval to the guest name and the limit', () => {
+    const approved = canonicalPayload('TAB_NO_SECURITY', { guestName: 'Karthik R', tabLimit: 5000 });
+    expect(canonicalPayload('TAB_NO_SECURITY', { guestName: 'Karthik R', tabLimit: 5000 })).toBe(approved);
+    expect(canonicalPayload('TAB_NO_SECURITY', { guestName: 'Karthik R', tabLimit: 6000 })).not.toBe(approved);
+    expect(canonicalPayload('TAB_NO_SECURITY', { guestName: 'Someone Else', tabLimit: 5000 })).not.toBe(approved);
+  });
+
+  it('needs a guest name and a positive limit', () => {
+    expect(() => validateApprovalPayload('TAB_NO_SECURITY', { guestName: '', tabLimit: 5000 })).toThrow();
+    expect(() => validateApprovalPayload('TAB_NO_SECURITY', { guestName: 'Karthik R', tabLimit: 0 })).toThrow();
+    expect(() => validateApprovalPayload('TAB_NO_SECURITY', { guestName: 'Karthik R', tabLimit: 5000 })).not.toThrow();
+  });
+});

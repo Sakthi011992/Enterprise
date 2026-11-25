@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { apiError } from '../../common/filters/api-error';
 import { PermissionKey } from '../../common/permissions/catalog';
 
-export type ApprovalKind = 'DISCOUNT' | 'VOID' | 'REFUND' | 'NO_SALE';
+export type ApprovalKind = 'DISCOUNT' | 'VOID' | 'REFUND' | 'NO_SALE' | 'TAB_NO_SECURITY';
 
 /** Permission that decides who may approve each kind (Approval rows and the notification's permissionKey). */
 export const APPROVAL_PERMISSION: Record<ApprovalKind, PermissionKey> = {
@@ -10,6 +10,7 @@ export const APPROVAL_PERMISSION: Record<ApprovalKind, PermissionKey> = {
   VOID: 'sales.void',
   REFUND: 'sales.void',
   NO_SALE: 'sales.payments.take',
+  TAB_NO_SECURITY: 'sales.tab.open',
 };
 
 /** An approval is usable this long after the manager decided it. */
@@ -40,6 +41,11 @@ export function validateApprovalPayload(type: ApprovalKind, payload: Record<stri
     }
     case 'NO_SALE':
       return;
+    case 'TAB_NO_SECURITY': {
+      if (typeof payload.guestName !== 'string' || payload.guestName.trim().length === 0) fail('tab payload needs a guestName');
+      if (typeof payload.tabLimit !== 'number' || !(payload.tabLimit > 0)) fail('tab payload needs a positive tabLimit');
+      return;
+    }
   }
 }
 
@@ -59,6 +65,8 @@ export function canonicalPayload(type: ApprovalKind, payload: Record<string, unk
       return [p.paymentId ?? '', new Prisma.Decimal(p.amount as number).toFixed(2)].join('|');
     case 'NO_SALE':
       return '';
+    case 'TAB_NO_SECURITY':
+      return [String(p.guestName).trim(), new Prisma.Decimal(p.tabLimit as number).toFixed(2)].join('|');
   }
 }
 

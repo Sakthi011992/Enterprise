@@ -14,6 +14,11 @@ export class ModifiersRepository {
     return this.prisma.modifierGroup.findMany({ orderBy: { name: 'asc' }, include: WITH_OPTIONS });
   }
 
+  /** Stock items named by option links (existence and display names only). */
+  stockItemsByIds(ids: string[]) {
+    return this.prisma.stockItem.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } });
+  }
+
   findOne(id: string) {
     return this.prisma.modifierGroup.findFirst({ where: { id }, include: WITH_OPTIONS });
   }

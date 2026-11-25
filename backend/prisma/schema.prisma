@@ -106,6 +106,20 @@ model Tenant {
   printJobs          PrintJob[]
   approvals          Approval[]
   dayCloses          DayClose[]
+  stockItems         StockItem[]
+  stockLocations     StockLocation[]
+  stockMovements     StockMovement[]
+  recipes            Recipe[]
+  stockTransfers     StockTransfer[]
+  stockCounts        StockCount[]
+  wastageEntries     WastageEntry[]
+  vendors            Vendor[]
+  purchaseOrders     PurchaseOrder[]
+  goodsReceipts      GoodsReceipt[]
+  debitNotes         DebitNote[]
+  documentCounters   DocumentCounter[]
+  barTabs            BarTab[]
+  bottleLockerEntries BottleLockerEntry[]
 
   @@map("tenants")
 }
@@ -134,6 +148,16 @@ model Outlet {
   tickets     Ticket[]
   approvals   Approval[]
   dayCloses   DayClose[]
+  stockLocations StockLocation[]
+  stockMovements StockMovement[]
+  stockTransfers StockTransfer[]
+  stockCounts    StockCount[]
+  wastageEntries WastageEntry[]
+  purchaseOrders PurchaseOrder[]
+  goodsReceipts  GoodsReceipt[]
+  debitNotes     DebitNote[]
+  barTabs        BarTab[]
+  bottleLockerEntries BottleLockerEntry[]
 
   @@unique([tenantId, code])
   @@index([tenantId])
@@ -298,7 +322,8 @@ model User {
   approvalsRequested Approval[]    @relation("ApprovalRequestedBy")
   approvalsDecided   Approval[]    @relation("ApprovalApprover")
   payments          Payment[]
-  tickets           Ticket[]
+  tickets           Ticket[]     @relation("TicketCreatedBy")
+  ticketsBumped     Ticket[]     @relation("TicketBumpedBy")
   dayCloses         DayClose[]
   importLogs        ProductImportLog[]
   auditLogs         AuditLog[]
@@ -311,6 +336,20 @@ model User {
   userOutlets       UserOutlet[]
   staffPin          StaffPin?
   resetTokens       PasswordResetToken[]
+  stockMovements        StockMovement[]
+  stockTransfersCreated StockTransfer[]
+  countsStarted         StockCount[]           @relation("CountStartedBy")
+  countsPosted          StockCount[]           @relation("CountPostedBy")
+  countLinesCounted     StockCountLine[]       @relation("CountLineCountedBy")
+  wastageLogged         WastageEntry[]
+  purchaseOrdersCreated PurchaseOrder[]        @relation("PoCreatedBy")
+  purchaseOrdersApproved PurchaseOrder[]       @relation("PoApprovedBy")
+  goodsReceiptsCreated  GoodsReceipt[]         @relation("GrnCreatedBy")
+  goodsReceiptsPosted   GoodsReceipt[]         @relation("GrnPostedBy")
+  tabsOpened            BarTab[]               @relation("TabOpenedBy")
+  tabsClosed            BarTab[]               @relation("TabClosedBy")
+  lockerEntriesCreated  BottleLockerEntry[]
+  lockerEvents          BottleLockerEvent[]    @relation("LockerEventBy")
 
   @@index([tenantId])
   @@index([username])
@@ -333,6 +372,7 @@ model Product {
   taxClassId     String?   // overrides category; null = category's, then taxPercentage / global tax
   taxClass       TaxClass? @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
   is86           Boolean   @default(false)
+  auto86         Boolean   @default(false)
   sortOrder      Int       @default(0)
   isActive       Boolean   @default(true)
   createdAt      DateTime  @default(now())
@@ -345,6 +385,7 @@ model Product {
   variants       ProductVariant[]
   modifierGroups ProductModifierGroup[]
   comboItems     ComboItem[]
+  recipes        Recipe[]
 
   @@index([tenantId])
   @@index([name])
@@ -411,6 +452,7 @@ model Order {
   discounts OrderDiscount[]
   tickets   Ticket[]
   approvals Approval[]
+  barTab    BarTab?
 
   @@unique([outletId, orderNumber])
   @@index([tenantId])
@@ -932,6 +974,7 @@ enum ApprovalType {
   VOID
   REFUND
   NO_SALE
+  TAB_NO_SECURITY
 }
 
 enum ApprovalStatus {
@@ -1029,6 +1072,7 @@ model ProductVariant {
   sortOrder Int      @default(0)
   isDefault Boolean  @default(false)
   isActive  Boolean  @default(true)
+  recipes   Recipe[]
 
   @@index([productId])
   @@map("product_variants")
@@ -1058,6 +1102,9 @@ model ModifierOption {
   priceDelta Decimal       @db.Decimal(12, 2) @default(0)
   sortOrder  Int           @default(0)
   isActive   Boolean       @default(true)
+  stockItemId String?
+  stockItem   StockItem?   @relation(fields: [stockItemId], references: [id], onDelete: SetNull)
+  stockQty    Decimal?     @db.Decimal(14, 3)
 
   @@index([groupId])
   @@map("modifier_options")
@@ -1160,6 +1207,7 @@ model DiningTable {
   mergedIntoId String? // set on tables merged into another
   isActive     Boolean     @default(true)
   orders       Order[]
+  barTabs      BarTab[]
 
   @@unique([outletId, name])
   @@index([outletId])
@@ -1198,12 +1246,21 @@ model Ticket {
   printerId      String?
   printer        Printer?     @relation(fields: [printerId], references: [id], onDelete: SetNull)
   createdById    String
-  createdBy      User         @relation(fields: [createdById], references: [id])
+  createdBy      User         @relation("TicketCreatedBy", fields: [createdById], references: [id])
   createdAt      DateTime     @default(now())
   printedAt      DateTime?
   printJobs      PrintJob[]
+  kdsStatus        KdsStatus @default(NEW)
+  startedAt        DateTime?
+  readyAt          DateTime?
+  servedAt         DateTime?
+  recalledAt       DateTime?
+  bumpedById       String?
+  bumpedBy         User?     @relation("TicketBumpedBy", fields: [bumpedById], references: [id], onDelete: SetNull)
+  overdueAlertedAt DateTime?
 
   @@index([outletId, createdAt])
+  @@index([outletId, kdsStatus])
   @@index([orderId])
   @@map("tickets")
 }
@@ -1316,4 +1373,596 @@ model DayClose {
 
   @@index([outletId, businessDate])
   @@map("day_closes")
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3: bar operations, KDS and stock (docs/phase-3/PLAN.md 1.5)
+// ---------------------------------------------------------------------------
+
+enum StockUnit {
+  ML
+  G
+  PC
+}
+
+enum CostingMethod {
+  WEIGHTED_AVERAGE
+  FIFO
+}
+
+enum StockLocationKind {
+  STORE
+  BAR
+  KITCHEN
+  CELLAR
+}
+
+enum StockMovementType {
+  OPENING
+  RECEIPT
+  SALE
+  SALE_REVERSAL
+  WASTAGE
+  TRANSFER_OUT
+  TRANSFER_IN
+  COUNT_ADJUST
+}
+
+enum WastageReason {
+  BROKEN
+  SPILLED
+  EXPIRED
+  COMP
+  STAFF_MEAL
+  BURNT
+  DROPPED
+  RETURNED
+  DAMAGED_DELIVERY
+  VOID
+  OTHER
+}
+
+enum StockCountStatus {
+  OPEN
+  SUBMITTED
+  POSTED
+  CANCELLED
+}
+
+enum PurchaseOrderStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  SENT
+  PARTLY_RECEIVED
+  RECEIVED
+  INVOICE_MISMATCH
+  CANCELLED
+}
+
+enum GrnStatus {
+  DRAFT
+  POSTED
+}
+
+enum DebitNoteStatus {
+  OPEN
+  SETTLED
+  CANCELLED
+}
+
+enum TabStatus {
+  OPEN
+  CLOSED
+  VOID
+}
+
+enum TabSecurity {
+  CARD_PREAUTH
+  CASH_DEPOSIT
+  HOUSE_ACCOUNT
+  NONE
+}
+
+enum TabLinkType {
+  BAR_SEAT
+  TABLE
+  QUEUE_TOKEN
+  NONE
+}
+
+enum LockerStatus {
+  ACTIVE
+  FINISHED
+  EXPIRED
+  REMOVED
+}
+
+enum LockerEventKind {
+  STORE
+  SERVE
+  ADJUST
+  REMOVE
+}
+
+enum KdsStatus {
+  NEW
+  PREPARING
+  READY
+  SERVED
+}
+
+model StockItem {
+  id                 String         @id @default(uuid())
+  tenantId           String
+  tenant             Tenant         @relation(fields: [tenantId], references: [id])
+  name               String         // "Single Malt 12Y 750 ml"
+  sku                String?
+  categoryName       String?        // free text group: "Spirits", "Beer", "Produce"
+  baseUnit           StockUnit      @default(ML)
+  packSize           Decimal        @db.Decimal(14, 3) @default(1)
+  packName           String         @default("pc")
+  purchaseUnitName   String         @default("Unit")
+  purchaseUnitQty    Decimal        @db.Decimal(14, 3) @default(1)
+  costingMethod      CostingMethod  @default(WEIGHTED_AVERAGE)
+  avgCost            Decimal        @db.Decimal(14, 6) @default(0)  // ₹ per base unit
+  lastPurchaseRate   Decimal?       @db.Decimal(12, 2)               // ₹ per purchase unit
+  preferredVendorId  String?
+  preferredVendor    Vendor?        @relation(fields: [preferredVendorId], references: [id], onDelete: SetNull)
+  isLiquor           Boolean        @default(false)
+  isKeg              Boolean        @default(false)
+  shelfLifeDays      Int?
+  isActive           Boolean        @default(true)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  levels             StockLevel[]
+  movements          StockMovement[]
+  recipeLines        RecipeLine[]
+  modifierOptions    ModifierOption[]
+  countLines         StockCountLine[]
+  wastage            WastageEntry[]
+  transferLines      StockTransferLine[]
+  poLines            PurchaseOrderLine[]
+  grnLines           GoodsReceiptLine[]
+  lockerEntries      BottleLockerEntry[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@map("stock_items")
+}
+
+model StockLocation {
+  id             String            @id @default(uuid())
+  tenantId       String
+  tenant         Tenant            @relation(fields: [tenantId], references: [id])
+  outletId       String
+  outlet         Outlet            @relation(fields: [outletId], references: [id])
+  name           String            // "Main store", "Bar", "Kitchen", "Cellar"
+  kind           StockLocationKind
+  stations       String[]          @default([])   // Category.station values that sell from here: ["BAR"]
+  isDefaultSales Boolean           @default(false) // fallback for stations not listed anywhere
+  isActive       Boolean           @default(true)
+  sortOrder      Int               @default(0)
+  levels         StockLevel[]
+  movements      StockMovement[]
+  transfersOut   StockTransfer[]   @relation("TransferFrom")
+  transfersIn    StockTransfer[]   @relation("TransferTo")
+  counts         StockCount[]
+  wastage        WastageEntry[]
+  purchaseOrders PurchaseOrder[]
+  goodsReceipts  GoodsReceipt[]
+
+  @@unique([outletId, name])
+  @@index([outletId])
+  @@map("stock_locations")
+}
+
+model StockLevel {
+  locationId  String
+  location    StockLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  stockItemId String
+  stockItem   StockItem     @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
+  onHand      Decimal       @db.Decimal(14, 3) @default(0)
+  parLevel    Decimal       @db.Decimal(14, 3) @default(0)
+  updatedAt   DateTime      @updatedAt
+
+  @@id([locationId, stockItemId])
+  @@map("stock_levels")
+}
+
+model StockMovement {
+  id           String            @id @default(uuid())
+  tenantId     String
+  tenant       Tenant            @relation(fields: [tenantId], references: [id])
+  outletId     String
+  outlet       Outlet            @relation(fields: [outletId], references: [id])
+  locationId   String
+  location     StockLocation     @relation(fields: [locationId], references: [id])
+  stockItemId  String
+  stockItem    StockItem         @relation(fields: [stockItemId], references: [id])
+  type         StockMovementType
+  qty          Decimal           @db.Decimal(14, 3)   // signed, base units
+  unitCost     Decimal           @db.Decimal(14, 6)
+  refType      String?           // ORDER_ITEM | GRN_LINE | TRANSFER | COUNT | WASTAGE | ITEM
+  refId        String?
+  businessDate DateTime          @db.Date
+  note         String?
+  createdById  String?
+  createdBy    User?             @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt    DateTime          @default(now())
+
+  @@index([locationId, stockItemId, businessDate])
+  @@index([refType, refId])
+  @@index([outletId, businessDate])
+  @@map("stock_movements")
+}
+
+model Recipe {
+  id        String           @id @default(uuid())
+  tenantId  String
+  tenant    Tenant           @relation(fields: [tenantId], references: [id])
+  productId String
+  product   Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId String?          // null = all variants without their own recipe
+  variant   ProductVariant?  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  note      String?
+  updatedAt DateTime         @updatedAt
+  lines     RecipeLine[]
+
+  @@unique([productId, variantId])
+  @@map("recipes")
+}
+
+model RecipeLine {
+  id             String    @id @default(uuid())
+  recipeId       String
+  recipe         Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  stockItemId    String
+  stockItem      StockItem @relation(fields: [stockItemId], references: [id], onDelete: Restrict)
+  qty            Decimal   @db.Decimal(14, 3)   // base units per serving
+  wastagePercent Decimal   @db.Decimal(5, 2) @default(0)
+  sortOrder      Int       @default(0)
+
+  @@index([recipeId])
+  @@map("recipe_lines")
+}
+
+model StockTransfer {
+  id             String              @id @default(uuid())
+  tenantId       String
+  tenant         Tenant              @relation(fields: [tenantId], references: [id])
+  outletId       String
+  outlet         Outlet              @relation(fields: [outletId], references: [id])
+  number         String              // "TR-0012" per tenant
+  fromLocationId String
+  fromLocation   StockLocation       @relation("TransferFrom", fields: [fromLocationId], references: [id])
+  toLocationId   String
+  toLocation     StockLocation       @relation("TransferTo", fields: [toLocationId], references: [id])
+  note           String?
+  createdById    String
+  createdBy      User                @relation(fields: [createdById], references: [id])
+  createdAt      DateTime            @default(now())
+  lines          StockTransferLine[]
+
+  @@unique([tenantId, number])
+  @@index([outletId, createdAt])
+  @@map("stock_transfers")
+}
+
+model StockTransferLine {
+  id          String        @id @default(uuid())
+  transferId  String
+  transfer    StockTransfer @relation(fields: [transferId], references: [id], onDelete: Cascade)
+  stockItemId String
+  stockItem   StockItem     @relation(fields: [stockItemId], references: [id], onDelete: Restrict)
+  qty         Decimal       @db.Decimal(14, 3)
+
+  @@map("stock_transfer_lines")
+}
+
+model StockCount {
+  id           String           @id @default(uuid())
+  tenantId     String
+  tenant       Tenant           @relation(fields: [tenantId], references: [id])
+  outletId     String
+  outlet       Outlet           @relation(fields: [outletId], references: [id])
+  locationId   String
+  location     StockLocation    @relation(fields: [locationId], references: [id])
+  status       StockCountStatus @default(OPEN)
+  businessDate DateTime         @db.Date
+  startedById  String
+  startedBy    User             @relation("CountStartedBy", fields: [startedById], references: [id])
+  submittedAt  DateTime?
+  postedAt     DateTime?
+  postedById   String?
+  postedBy     User?            @relation("CountPostedBy", fields: [postedById], references: [id], onDelete: SetNull)
+  note         String?
+  createdAt    DateTime         @default(now())
+  lines        StockCountLine[]
+
+  @@index([outletId, status])
+  @@map("stock_counts")
+}
+
+model StockCountLine {
+  id               String    @id @default(uuid())
+  countId          String
+  count            StockCount @relation(fields: [countId], references: [id], onDelete: Cascade)
+  stockItemId      String
+  stockItem        StockItem @relation(fields: [stockItemId], references: [id], onDelete: Restrict)
+  countedQty       Decimal?  @db.Decimal(14, 3)  // null = not counted
+  expectedQty      Decimal?  @db.Decimal(14, 3)  // onHand snapshot at submit
+  note             String?
+  confirmedOutlier Boolean   @default(false)     // "Count is correct" tapped on a >30% difference
+  countedAt        DateTime?
+  countedById      String?
+  countedBy        User?     @relation("CountLineCountedBy", fields: [countedById], references: [id], onDelete: SetNull)
+
+  @@unique([countId, stockItemId])
+  @@map("stock_count_lines")
+}
+
+model WastageEntry {
+  id           String        @id @default(uuid())
+  tenantId     String
+  tenant       Tenant        @relation(fields: [tenantId], references: [id])
+  outletId     String
+  outlet       Outlet        @relation(fields: [outletId], references: [id])
+  locationId   String
+  location     StockLocation @relation(fields: [locationId], references: [id])
+  stockItemId  String
+  stockItem    StockItem     @relation(fields: [stockItemId], references: [id])
+  qty          Decimal       @db.Decimal(14, 3)   // positive, base units
+  value        Decimal       @db.Decimal(12, 2)
+  reason       WastageReason
+  note         String?
+  photoUrl     String?
+  refType      String?       // ORDER_ITEM | GRN_LINE | null
+  refId        String?
+  businessDate DateTime      @db.Date
+  createdById  String
+  createdBy    User          @relation(fields: [createdById], references: [id])
+  createdAt    DateTime      @default(now())
+
+  @@index([outletId, businessDate])
+  @@map("wastage_entries")
+}
+
+model Vendor {
+  id               String   @id @default(uuid())
+  tenantId         String
+  tenant           Tenant   @relation(fields: [tenantId], references: [id])
+  name             String   // "Metro Spirits Distributors"
+  contactName      String?
+  phone            String?
+  email            String?
+  gstin            String?
+  address          String?
+  paymentTermsDays Int      @default(30)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  stockItems       StockItem[]
+  purchaseOrders   PurchaseOrder[]
+  goodsReceipts    GoodsReceipt[]
+  debitNotes       DebitNote[]
+
+  @@unique([tenantId, name])
+  @@map("vendors")
+}
+
+model PurchaseOrder {
+  id                String              @id @default(uuid())
+  tenantId          String
+  tenant            Tenant              @relation(fields: [tenantId], references: [id])
+  outletId          String
+  outlet            Outlet              @relation(fields: [outletId], references: [id])
+  number            String              // "PO-0318" per tenant
+  vendorId          String
+  vendor            Vendor              @relation(fields: [vendorId], references: [id])
+  locationId        String              // deliver to
+  location          StockLocation       @relation(fields: [locationId], references: [id])
+  status            PurchaseOrderStatus @default(DRAFT)
+  dueDate           DateTime?           @db.Date
+  transportPermitNo String?
+  total             Decimal             @db.Decimal(12, 2) @default(0)
+  note              String?
+  createdById       String
+  createdBy         User                @relation("PoCreatedBy", fields: [createdById], references: [id])
+  submittedAt       DateTime?
+  approvedById      String?
+  approvedBy        User?               @relation("PoApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt        DateTime?
+  sentAt            DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  lines             PurchaseOrderLine[]
+  goodsReceipts     GoodsReceipt[]
+
+  @@unique([tenantId, number])
+  @@index([outletId, status])
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderLine {
+  id          String         @id @default(uuid())
+  poId        String
+  po          PurchaseOrder  @relation(fields: [poId], references: [id], onDelete: Cascade)
+  stockItemId String
+  stockItem   StockItem      @relation(fields: [stockItemId], references: [id], onDelete: Restrict)
+  qty         Decimal        @db.Decimal(12, 3)   // purchase units
+  rate        Decimal        @db.Decimal(12, 2)   // ₹ per purchase unit
+  total       Decimal        @db.Decimal(12, 2)
+  receivedQty Decimal        @db.Decimal(12, 3) @default(0)   // purchase units, sum of posted GRNs
+  sortOrder   Int            @default(0)
+  grnLines    GoodsReceiptLine[]
+
+  @@map("purchase_order_lines")
+}
+
+model GoodsReceipt {
+  id                String             @id @default(uuid())
+  tenantId          String
+  tenant            Tenant             @relation(fields: [tenantId], references: [id])
+  outletId          String
+  outlet            Outlet             @relation(fields: [outletId], references: [id])
+  number            String             // "GRN-0091" per tenant
+  poId              String?
+  purchaseOrder     PurchaseOrder?     @relation(fields: [poId], references: [id], onDelete: SetNull)
+  vendorId          String
+  vendor            Vendor             @relation(fields: [vendorId], references: [id])
+  locationId        String             // "Into"
+  location          StockLocation      @relation(fields: [locationId], references: [id])
+  status            GrnStatus          @default(DRAFT)
+  vendorInvoiceNo   String?
+  invoiceDate       DateTime?          @db.Date
+  receivedOn        DateTime           @db.Date
+  transportPermitNo String?
+  invoicePhotoUrl   String?
+  poValue           Decimal            @db.Decimal(12, 2) @default(0)
+  invoiceValue      Decimal            @db.Decimal(12, 2) @default(0)
+  receivedValue     Decimal            @db.Decimal(12, 2) @default(0)
+  debitNoteAmount   Decimal            @db.Decimal(12, 2) @default(0)
+  damagedValue      Decimal            @db.Decimal(12, 2) @default(0)
+  payable           Decimal            @db.Decimal(12, 2) @default(0)
+  mismatch          Boolean            @default(false)
+  createdById       String
+  createdBy         User               @relation("GrnCreatedBy", fields: [createdById], references: [id])
+  postedById        String?
+  postedBy          User?              @relation("GrnPostedBy", fields: [postedById], references: [id], onDelete: SetNull)
+  postedAt          DateTime?
+  createdAt         DateTime           @default(now())
+  lines             GoodsReceiptLine[]
+  debitNotes        DebitNote[]
+
+  @@unique([tenantId, number])
+  @@index([outletId, createdAt])
+  @@map("goods_receipts")
+}
+
+model GoodsReceiptLine {
+  id          String             @id @default(uuid())
+  grnId       String
+  grn         GoodsReceipt       @relation(fields: [grnId], references: [id], onDelete: Cascade)
+  poLineId    String?
+  poLine      PurchaseOrderLine? @relation(fields: [poLineId], references: [id], onDelete: SetNull)
+  stockItemId String
+  stockItem   StockItem          @relation(fields: [stockItemId], references: [id], onDelete: Restrict)
+  orderedQty  Decimal            @db.Decimal(12, 3) @default(0)   // purchase units
+  invoicedQty Decimal            @db.Decimal(12, 3) @default(0)
+  receivedQty Decimal            @db.Decimal(12, 3) @default(0)   // includes damaged
+  damagedQty  Decimal            @db.Decimal(12, 3) @default(0)
+  rate        Decimal            @db.Decimal(12, 2)               // ₹ per purchase unit (invoice rate)
+  batch       String?
+  expiry      DateTime?          @db.Date
+
+  @@map("goods_receipt_lines")
+}
+
+model DebitNote {
+  id        String          @id @default(uuid())
+  tenantId  String
+  tenant    Tenant          @relation(fields: [tenantId], references: [id])
+  outletId  String
+  outlet    Outlet          @relation(fields: [outletId], references: [id])
+  number    String          // "DN-0007" per tenant
+  vendorId  String
+  vendor    Vendor          @relation(fields: [vendorId], references: [id])
+  grnId     String?
+  goodsReceipt GoodsReceipt? @relation(fields: [grnId], references: [id], onDelete: SetNull)
+  amount    Decimal         @db.Decimal(12, 2)
+  reason    String          // "1 × Wheat beer keg 30 L invoiced, not received"
+  status    DebitNoteStatus @default(OPEN)
+  createdAt DateTime        @default(now())
+
+  @@unique([tenantId, number])
+  @@map("debit_notes")
+}
+
+model DocumentCounter {     // per-tenant document numbers: PO, GRN, DN, TR
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  key      String  // "PO" | "GRN" | "DN" | "TR"
+  value    Int     @default(0)
+
+  @@id([tenantId, key])
+  @@map("document_counters")
+}
+
+model BarTab {
+  id             String      @id @default(uuid())
+  tenantId       String
+  tenant         Tenant      @relation(fields: [tenantId], references: [id])
+  outletId       String
+  outlet         Outlet      @relation(fields: [outletId], references: [id])
+  number         String      // "T-07": per outlet per business day, 2 digits min
+  businessDate   DateTime    @db.Date
+  orderId        String      @unique   // the tab's BAR_COUNTER order
+  order          Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  guestName      String
+  mobile         String?
+  ageChecked     Boolean
+  security       TabSecurity
+  cardLast4      String?     // CARD_PREAUTH
+  amountHeld     Decimal     @db.Decimal(12, 2) @default(0)  // pre-auth hold or cash deposit
+  houseAccount   String?     // HOUSE_ACCOUNT: "Corporate: Acme"
+  tabLimit       Decimal     @db.Decimal(12, 2)
+  warnAtPercent  Int         @default(80)   // 80 | 90
+  warnedAt       DateTime?   // set once when spent crosses warnAt
+  linkType       TabLinkType @default(NONE)
+  linkLabel      String?     // "Bar seat 3", "Queue W-009", "VIP 2"
+  tableId        String?     // when linkType TABLE
+  table          DiningTable? @relation(fields: [tableId], references: [id], onDelete: SetNull)
+  status         TabStatus   @default(OPEN)
+  approvalId     String?     // TAB_NO_SECURITY approval (plain id, no relation)
+  openedById     String
+  openedBy       User        @relation("TabOpenedBy", fields: [openedById], references: [id])
+  openedAt       DateTime    @default(now())
+  closedAt       DateTime?
+  closedById     String?
+  closedBy       User?       @relation("TabClosedBy", fields: [closedById], references: [id], onDelete: SetNull)
+
+  @@index([outletId, status])
+  @@map("bar_tabs")
+}
+
+model BottleLockerEntry {
+  id           String       @id @default(uuid())
+  tenantId     String
+  tenant       Tenant       @relation(fields: [tenantId], references: [id])
+  outletId     String
+  outlet       Outlet       @relation(fields: [outletId], references: [id])
+  guestName    String
+  mobile       String?
+  cardLast4    String?      // shown as "Vikram S · ••7720"
+  stockItemId  String?
+  stockItem    StockItem?   @relation(fields: [stockItemId], references: [id], onDelete: SetNull)
+  bottleName   String       // snapshot "Single Malt 12Y 750 ml"
+  bottleMl     Int          // 750
+  remainingMl  Int
+  storedAt     DateTime     @default(now())
+  expiresAt    DateTime     @db.Date
+  status       LockerStatus @default(ACTIVE)
+  orderItemId  String?      // the bottle sale, when known (plain id, no relation)
+  note         String?
+  createdById  String
+  createdBy    User         @relation(fields: [createdById], references: [id])
+  events       BottleLockerEvent[]
+
+  @@index([outletId, status])
+  @@map("bottle_locker_entries")
+}
+
+model BottleLockerEvent {
+  id        String          @id @default(uuid())
+  entryId   String
+  entry     BottleLockerEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  kind      LockerEventKind
+  ml        Int             // served or adjusted ml (signed for ADJUST)
+  byId      String
+  by        User            @relation("LockerEventBy", fields: [byId], references: [id])
+  note      String?
+  createdAt DateTime        @default(now())
+
+  @@map("bottle_locker_events")
 }

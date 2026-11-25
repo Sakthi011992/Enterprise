@@ -36,6 +36,12 @@ import { PrintingModule } from './modules/printing/printing.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
 import { DayCloseModule } from './modules/day-close/day-close.module';
 import { CashDrawerModule } from './modules/cash-drawer/cash-drawer.module';
+import { StockCoreModule } from './modules/stock-core/stock-core.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
+import { ProcurementModule } from './modules/procurement/procurement.module';
+import { TabsModule } from './modules/tabs/tabs.module';
+import { KdsModule } from './modules/kds/kds.module';
+import { RealtimeModule } from './modules/realtime/realtime.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { PermissionGuard } from './common/guards/permission.guard';
 import { RolesGuard } from './common/guards/roles.guard';
@@ -46,6 +52,8 @@ import { TenantContextMiddleware } from './common/tenancy/tenant-context.middlew
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     BlobStorageModule,
+    StockCoreModule,
+    RealtimeModule,
     PermissionsModule,
     AuthModule,
     UsersModule,
@@ -79,6 +87,10 @@ import { TenantContextMiddleware } from './common/tenancy/tenant-context.middlew
     KioskModule,
     LoginMethodModule,
     PaymentConfigModule,
+    InventoryModule,
+    ProcurementModule,
+    TabsModule,
+    KdsModule,
   ],
   providers: [
     // Registration order is run order: authenticate, then @Can, then legacy @Roles.

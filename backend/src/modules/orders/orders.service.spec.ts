@@ -102,14 +102,21 @@ function build(fx: ReturnType<typeof fixture>, extra: { check?: boolean } = {}) 
     getOutletTimezone: jest.fn(async () => 'Asia/Kolkata'),
     deleteItem: jest.fn(),
     findTable: jest.fn(),
+    findOriginalTickets: jest.fn(async () => []),
   };
   const pricing = new OrderPricingService(repo);
   const approvals: any = { assertApproved: jest.fn(async () => ({ approverId: 'm1' })) };
   const audit: any = { record: jest.fn() };
   const permissions: any = { check: jest.fn(() => extra.check ?? false) };
   const print: any = { queueTicket: jest.fn(async () => null), queueBill: jest.fn() };
-  const svc = new OrdersService(repo, pricing, {} as any, approvals, audit, permissions, print);
-  return { svc, repo, approvals, audit, permissions, print };
+  const stock: any = {
+    deductForSentItems: jest.fn(async () => ({ eightySixed: [] })),
+    reverseSale: jest.fn(async () => undefined),
+  };
+  const realtime: any = { publish: jest.fn() };
+  const tabs: any = { enforce: jest.fn(async () => []) };
+  const svc = new OrdersService(repo, pricing, {} as any, approvals, audit, permissions, print, stock, realtime, tabs);
+  return { svc, repo, approvals, audit, permissions, print, stock, realtime, tabs };
 }
 
 describe('OrdersService', () => {
@@ -185,6 +192,44 @@ describe('OrdersService', () => {
     expect(audit.record).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ action: 'wastage' }));
     expect(print.queueTicket).toHaveBeenCalledWith(expect.objectContaining({ isCancellation: true }));
     expect(fx.items[0].status).toBe('VOIDED');
+  });
+
+  it('send deducts recipes at each line\'s station and publishes one KDS card per ticket after commit', async () => {
+    const fx = fixture([item('w', { productId: 'pWings', price: 350 }), item('l', { productId: 'pLager', price: 300 })], 'OPEN');
+    const { svc, stock, realtime, print } = build(fx);
+
+    await svc.send('ord1', auth());
+
+    expect(stock.deductForSentItems).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ tenantId: 't1', outletId: 'o1', userId: 'u1', events: expect.any(Array) }),
+      expect.any(Array),
+    );
+    const items = stock.deductForSentItems.mock.calls[0][2];
+    expect(items.map((i: any) => [i.orderItemId, i.station])).toEqual([
+      ['w', 'KITCHEN'],
+      ['l', 'BAR'],
+    ]);
+    const events = realtime.publish.mock.calls[0][0];
+    expect(events.filter((e: any) => e.event === 'kds.ticket.created').map((e: any) => e.station)).toEqual(['KITCHEN', 'BAR']);
+    expect(events.find((e: any) => e.event === 'order.updated')).toBeDefined();
+    expect(print.queueTicket).toHaveBeenCalledTimes(2);
+  });
+
+  it('voiding a sent line reverses its sale and re-sends the original ticket', async () => {
+    const fx = fixture([item('w', { productId: 'pWings', price: 350, status: 'SENT' })]);
+    const { svc, repo, stock, realtime } = build(fx, { check: true });
+    repo.findOriginalTickets.mockResolvedValueOnce([
+      { id: 'orig', kind: 'KOT', station: 'KITCHEN', seq: 1, kdsStatus: 'NEW', createdAt: new Date(), readyAt: null, items: [{ orderItemId: 'w', name: 'Wings', quantity: 1 }] },
+    ]);
+
+    await svc.voidItems('ord1', { itemIds: ['w'], reason: 'Dropped' }, auth());
+
+    expect(stock.reverseSale).toHaveBeenCalledWith(expect.anything(), expect.anything(), ['w'], 'Dropped');
+    const events = realtime.publish.mock.calls[0][0];
+    const updated = events.find((e: any) => e.event === 'kds.ticket.updated');
+    expect(updated.payload.items[0]).toMatchObject({ orderItemId: 'w', voided: true });
+    expect(events.some((e: any) => e.event === 'kds.ticket.created')).toBe(false);
   });
 
   it('voiding without APPROVE needs an approval', async () => {

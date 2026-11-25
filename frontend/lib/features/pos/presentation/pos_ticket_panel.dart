@@ -220,6 +220,14 @@ class _Header extends StatelessWidget {
             padding: EdgeInsets.only(right: 8),
             child: StatusBadge(label: 'Held', tone: StatusTone.warning),
           ),
+        if (order.tab case final tab?)
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: StatusBadge(
+              label: 'Tab ${tab.number} · ${formatRupees(tab.spentValue)} / ${formatRupees(tab.tabLimitValue)}',
+              tone: tab.nearLimit ? StatusTone.warning : StatusTone.neutral,
+            ),
+          ),
         StatusBadge(
           label: opened == null ? where : '$where · $opened',
           tone: StatusTone.neutral,

@@ -26,6 +26,21 @@ export const TENANT_MODELS = [
   'PrintJob',
   'Approval',
   'DayClose',
+  // Phase 3 (stock, procurement, bar tabs). Line, level and event models carry no tenantId.
+  'StockItem',
+  'StockLocation',
+  'StockMovement',
+  'Recipe',
+  'StockTransfer',
+  'StockCount',
+  'WastageEntry',
+  'Vendor',
+  'PurchaseOrder',
+  'GoodsReceipt',
+  'DebitNote',
+  'DocumentCounter',
+  'BarTab',
+  'BottleLockerEntry',
 ] as const;
 
 export type TenantModel = (typeof TENANT_MODELS)[number];

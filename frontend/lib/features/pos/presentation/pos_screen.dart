@@ -8,7 +8,9 @@ import '../../../core/auth/api_error.dart';
 import '../../../core/auth/permission_keys.dart';
 import '../../../core/auth/permissions.dart';
 import '../../../core/auth/session.dart';
+import '../../../core/realtime/realtime_client.dart';
 import '../../../core/ui/ui.dart';
+import '../../tabs/presentation/open_tab_dialog.dart';
 import '../data/offline_queue.dart';
 import '../data/pos_models.dart';
 import '../data/pos_repository.dart';
@@ -46,6 +48,10 @@ class PosScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // An 86 change on any till or the kitchen shows here without a reload.
+    ref.listen(realtimeEventProvider(RealtimeEvents.menuItem86), (_, __) {
+      ref.invalidate(posMenuProvider);
+    });
     final id = orderId;
     final Widget body;
     if (id == null) {
@@ -135,6 +141,13 @@ class _QuickStartState extends ConsumerState<_QuickStart> {
     if (mounted) setState(() => _busy = false);
   }
 
+  /// Opens a bar tab. The tab's BAR_COUNTER order is the one we go to.
+  Future<void> _openTab() async {
+    final tab = await showOpenTabDialog(context);
+    if (tab == null || !mounted) return;
+    context.go('/pos/${tab.orderId}');
+  }
+
   Future<void> _onTable(TableView table) async {
     final order = table.order;
     if (order != null) {
@@ -205,11 +218,26 @@ class _QuickStartState extends ConsumerState<_QuickStart> {
                     onTable: _onTable,
                   )
                 : Center(
-                    child: AppButton(
-                      label: 'Start ${OrderTypes.label(_type).toLowerCase()} order',
-                      variant: AppButtonVariant.primary,
-                      loading: _busy,
-                      onPressed: (canStart && !_busy) ? _startNonTable : null,
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: t.spacing.sm,
+                      runSpacing: t.spacing.sm,
+                      children: [
+                        AppButton(
+                          label: 'Start ${OrderTypes.label(_type).toLowerCase()} order',
+                          variant: AppButtonVariant.primary,
+                          loading: _busy,
+                          onPressed: (canStart && !_busy) ? _startNonTable : null,
+                        ),
+                        if (_type == OrderTypes.barCounter &&
+                            can(ref, Perm.salesTabOpen, AccessLevel.limited))
+                          AppButton(
+                            label: 'Open tab',
+                            icon: Icons.local_bar_outlined,
+                            variant: AppButtonVariant.secondary,
+                            onPressed: (canStart && !_busy) ? _openTab : null,
+                          ),
+                      ],
                     ),
                   ),
           ),

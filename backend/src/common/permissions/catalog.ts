@@ -20,6 +20,7 @@ export type PermissionKey =
   | 'sales.discount.give'
   | 'sales.void'
   | 'sales.tab.open'
+  | 'kds.bump'
   | 'menu.edit'
   | 'menu.mark86'
   | 'stock.count'
@@ -45,16 +46,17 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   { key: 'sales.discount.give', group: 'Sales', label: 'Give discount', limitUnit: 'percent', sortOrder: 3 },
   { key: 'sales.void', group: 'Sales', label: 'Void item / bill', limitUnit: null, sortOrder: 4 },
   { key: 'sales.tab.open', group: 'Sales', label: 'Open bar tab', limitUnit: 'inr', sortOrder: 5 },
-  { key: 'menu.edit', group: 'Menu & stock', label: 'Edit menu & prices', limitUnit: null, sortOrder: 6 },
-  { key: 'menu.mark86', group: 'Menu & stock', label: 'Mark item out of stock (86)', limitUnit: null, sortOrder: 7 },
-  { key: 'stock.count', group: 'Menu & stock', label: 'Stock count & wastage', limitUnit: null, sortOrder: 8 },
-  { key: 'stock.purchaseOrders', group: 'Menu & stock', label: 'Purchase orders', limitUnit: null, sortOrder: 9 },
-  { key: 'guests.queue', group: 'Guests & displays', label: 'Walk-in queue', limitUnit: null, sortOrder: 10 },
-  { key: 'displays.control', group: 'Guests & displays', label: 'Display Control Center', limitUnit: null, sortOrder: 11 },
-  { key: 'reports.view', group: 'Reports', label: 'Reports & day close', limitUnit: null, sortOrder: 12 },
-  { key: 'admin.users', group: 'Admin', label: 'Users, personas & permissions', limitUnit: null, sortOrder: 13 },
-  { key: 'admin.settings', group: 'Admin', label: 'Outlets, tax, devices & settings', limitUnit: null, sortOrder: 14 },
-  { key: 'admin.themes', group: 'Admin', label: 'Themes & branding', limitUnit: null, sortOrder: 15 },
+  { key: 'kds.bump', group: 'Sales', label: 'Kitchen display (start, bump, recall)', limitUnit: null, sortOrder: 6 },
+  { key: 'menu.edit', group: 'Menu & stock', label: 'Edit menu & prices', limitUnit: null, sortOrder: 7 },
+  { key: 'menu.mark86', group: 'Menu & stock', label: 'Mark item out of stock (86)', limitUnit: null, sortOrder: 8 },
+  { key: 'stock.count', group: 'Menu & stock', label: 'Stock count & wastage', limitUnit: null, sortOrder: 9 },
+  { key: 'stock.purchaseOrders', group: 'Menu & stock', label: 'Purchase orders', limitUnit: null, sortOrder: 10 },
+  { key: 'guests.queue', group: 'Guests & displays', label: 'Walk-in queue', limitUnit: null, sortOrder: 11 },
+  { key: 'displays.control', group: 'Guests & displays', label: 'Display Control Center', limitUnit: null, sortOrder: 12 },
+  { key: 'reports.view', group: 'Reports', label: 'Reports & day close', limitUnit: null, sortOrder: 13 },
+  { key: 'admin.users', group: 'Admin', label: 'Users, personas & permissions', limitUnit: null, sortOrder: 14 },
+  { key: 'admin.settings', group: 'Admin', label: 'Outlets, tax, devices & settings', limitUnit: null, sortOrder: 15 },
+  { key: 'admin.themes', group: 'Admin', label: 'Themes & branding', limitUnit: null, sortOrder: 16 },
 ];
 
 export type LoginMethodName = 'PASSWORD' | 'PIN';
@@ -88,6 +90,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'sales.discount.give': { level: 'EDIT' },
       'sales.void': { level: 'EDIT' },
       'sales.tab.open': { level: 'EDIT' },
+      'kds.bump': { level: 'EDIT' },
       'menu.edit': { level: 'EDIT' },
       'menu.mark86': { level: 'EDIT' },
       'stock.count': { level: 'EDIT' },
@@ -112,6 +115,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'sales.discount.give': { level: 'LIMITED', limit: 30 },
       'sales.void': { level: 'APPROVE' },
       'sales.tab.open': { level: 'EDIT' },
+      'kds.bump': { level: 'EDIT' },
       'menu.edit': { level: 'EDIT' },
       'menu.mark86': { level: 'EDIT' },
       'stock.count': { level: 'EDIT' },
@@ -135,6 +139,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'sales.discount.give': { level: 'LIMITED', limit: 10 },
       'sales.void': { level: 'REQUEST' },
       'sales.tab.open': { level: 'LIMITED', limit: 5000 },
+      'kds.bump': { level: 'VIEW' },
       'menu.edit': { level: 'VIEW' },
       'guests.queue': { level: 'EDIT' },
       'reports.view': { level: 'LIMITED' },
@@ -152,6 +157,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'sales.discount.give': { level: 'LIMITED', limit: 10 },
       'sales.void': { level: 'REQUEST' },
       'sales.tab.open': { level: 'LIMITED', limit: 5000 },
+      'kds.bump': { level: 'VIEW' },
       'menu.edit': { level: 'VIEW' },
       'menu.mark86': { level: 'EDIT' },
       'guests.queue': { level: 'EDIT' },
@@ -164,6 +170,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
     homeRoute: '/pos',
     isSystem: false,
     matrix: {
+      'kds.bump': { level: 'VIEW' },
       'sales.orders.take': { level: 'EDIT' },
       'sales.void': { level: 'REQUEST' },
       'menu.edit': { level: 'VIEW' },
@@ -182,6 +189,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'sales.discount.give': { level: 'LIMITED', limit: 5 },
       'sales.void': { level: 'REQUEST' },
       'sales.tab.open': { level: 'LIMITED', limit: 10000 },
+      'kds.bump': { level: 'EDIT' },
       'menu.edit': { level: 'VIEW' },
       'menu.mark86': { level: 'EDIT' },
       'stock.count': { level: 'EDIT' },
@@ -195,6 +203,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
     homeRoute: '/menu',
     isSystem: false,
     matrix: {
+      'kds.bump': { level: 'EDIT' },
       'menu.edit': { level: 'VIEW' },
       'menu.mark86': { level: 'EDIT' },
       'stock.count': { level: 'EDIT' },

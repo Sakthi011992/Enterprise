@@ -45,6 +45,15 @@ export class ModifierOptionDto {
   @IsInt()
   @Min(0)
   sortOrder?: number;
+
+  @ApiPropertyOptional({ description: 'Stock item deducted when this option is sold (Phase 3)' })
+  @IsOptional()
+  @IsString()
+  stockItemId?: string | null;
+
+  @ApiPropertyOptional({ description: 'Base units of the stock item per option sold, e.g. 200 for a soda', example: 200 })
+  @IsOptional()
+  stockQty?: number | string | null;
 }
 
 /** Create and full update. PUT /modifier-groups/:id replaces the option list. */

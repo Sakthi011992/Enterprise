@@ -9,6 +9,7 @@ import '../../../core/auth/session.dart';
 import '../../../core/ui/ui.dart';
 import '../../tax/data/tax_repository.dart';
 import '../data/menu_repository.dart';
+import 'widgets/recipe_editor.dart';
 
 final menuProductProvider = FutureProvider.family<MenuProduct, String>(
   (ref, id) => ref.watch(menuRepositoryProvider).product(id),
@@ -228,7 +229,7 @@ class _ProductEditorScreenState extends ConsumerState<ProductEditorScreen> {
                 SizedBox(height: t.spacing.md),
                 Expanded(
                   child: SingleChildScrollView(
-                    child: _sections(canEdit, canMark86),
+                    child: _sections(canEdit, canMark86, p),
                   ),
                 ),
               ],
@@ -239,7 +240,7 @@ class _ProductEditorScreenState extends ConsumerState<ProductEditorScreen> {
     );
   }
 
-  Widget _sections(bool canEdit, bool canMark86) {
+  Widget _sections(bool canEdit, bool canMark86, MenuProduct product) {
     final t = context.tokens;
     final categories = ref.watch(menuCategoriesProvider).valueOrNull ?? const <MenuCategory>[];
     final taxClasses = ref.watch(taxClassesProvider).valueOrNull ?? const <TaxClass>[];
@@ -388,6 +389,19 @@ class _ProductEditorScreenState extends ConsumerState<ProductEditorScreen> {
             subtitle: const Text('Greys the item out on the POS and tells the outlet.'),
             value: _is86,
             onChanged: canMark86 ? _set86 : null,
+          ),
+        ),
+        SizedBox(height: t.spacing.md),
+        AppCard(
+          title: 'Recipe',
+          child: RecipeEditor(
+            productId: product.id,
+            sellingPrice: product.price,
+            variants: [
+              for (final v in product.variants)
+                if (v.id != null) (id: v.id!, name: v.name),
+            ],
+            canEdit: canEdit,
           ),
         ),
       ],

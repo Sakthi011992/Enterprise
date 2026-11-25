@@ -44,7 +44,7 @@ function build(grand: number, invoiceNumber: string | null = null) {
   const pricing: any = { recalc: jest.fn(async () => fx) };
   const invoices: any = { issueForOrder: jest.fn(async () => 'INV/2026-27/000001') };
   const print: any = { openDrawer: jest.fn(async () => null) };
-  const svc = new PaymentsService(repo, orders, pricing, invoices, {} as any, { record: jest.fn() } as any, { check: jest.fn(() => false) } as any, print);
+  const svc = new PaymentsService(repo, orders, pricing, invoices, {} as any, { record: jest.fn() } as any, { check: jest.fn(() => false) } as any, print, { onOrderPaid: jest.fn() } as any, { publish: jest.fn() } as any);
   return { svc, fx, orders, invoices, print };
 }
 

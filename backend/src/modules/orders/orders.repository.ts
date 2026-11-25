@@ -248,6 +248,11 @@ export class OrdersRepository {
     return tx.ticket.create({ data });
   }
 
+  /** Original (non-cancellation) tickets of an order. Read before a void so the KDS can be updated after commit. */
+  findOriginalTickets(tx: Prisma.TransactionClient, orderId: string) {
+    return tx.ticket.findMany({ where: { orderId, isCancellation: false }, orderBy: { createdAt: 'asc' } });
+  }
+
   countTicketsSince(tx: Prisma.TransactionClient, outletId: string, since: Date) {
     return tx.ticket.count({ where: { outletId, createdAt: { gte: since } } });
   }
@@ -280,7 +285,12 @@ export class OrdersRepository {
       ? { id: b.order.waiterId, name: userNames.get(b.order.waiterId)! }
       : null;
 
-    return { routing, table, waiter, userNames };
+    const barTab = await tx.barTab.findUnique({ where: { orderId: b.order.id } });
+    const tab = barTab
+      ? { id: barTab.id, number: barTab.number, tabLimit: barTab.tabLimit, warnAtPercent: barTab.warnAtPercent }
+      : null;
+
+    return { routing, table, waiter, userNames, tab };
   }
 
   /** productId -> station and ticket kind from the product's category. Missing products get the kitchen default. */

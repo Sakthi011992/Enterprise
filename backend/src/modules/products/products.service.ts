@@ -15,6 +15,8 @@ import {
 import { ImportSummary, ProductImportService } from './product-import.service';
 import { ProductsRepository } from './products.repository';
 import { normalizeVariantDefaults } from './variant-defaults';
+import { RealtimeService } from '../realtime/realtime.service';
+import { outletEvent } from '../realtime/realtime.types';
 
 @Injectable()
 export class ProductsService {
@@ -22,6 +24,7 @@ export class ProductsService {
     private repo: ProductsRepository,
     @Inject(STORAGE_SERVICE) private storage: StorageService,
     private importer: ProductImportService,
+    private realtime: RealtimeService,
   ) {}
 
   async findAll(q: ProductQueryDto) {
@@ -123,6 +126,9 @@ export class ProductsService {
     const product = await this.findOne(id);
     const updated = await this.repo.update(id, { is86: dto.is86 });
     if (product.is86 !== dto.is86) {
+      this.realtime.publish([
+        outletEvent(auth.outletId, 'menu.item86', { productId: id, name: product.name, is86: dto.is86, auto: false }),
+      ]);
       await this.repo.createOutletNotification({
         tenantId: auth.tenantId,
         outletId: auth.outletId,

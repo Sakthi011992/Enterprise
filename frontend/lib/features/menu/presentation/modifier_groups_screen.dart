@@ -6,6 +6,8 @@ import '../../../core/auth/permission_keys.dart';
 import '../../../core/auth/permissions.dart';
 import '../../../core/auth/session.dart';
 import '../../../core/ui/ui.dart';
+import '../../inventory/data/inventory_models.dart';
+import '../../inventory/data/inventory_repository.dart';
 import '../data/menu_repository.dart';
 
 const _listWidth = 280.0;
@@ -177,17 +179,30 @@ class _GroupTile extends StatelessWidget {
 
 /// One editable option row. Owns its controllers.
 class _OptionRow {
-  _OptionRow({this.id, String name = '', String price = '0.00'})
-      : name = TextEditingController(text: name),
-        price = TextEditingController(text: price);
+  _OptionRow({
+    this.id,
+    String name = '',
+    String price = '0.00',
+    this.stockItemId,
+    String stockQty = '',
+  })  : name = TextEditingController(text: name),
+        price = TextEditingController(text: price),
+        stockQty = TextEditingController(text: stockQty);
 
   final String? id;
   final TextEditingController name;
   final TextEditingController price;
 
+  /// Stock item deducted when this option is picked (Phase 3), or null.
+  String? stockItemId;
+
+  /// Base units deducted per serving, as typed.
+  final TextEditingController stockQty;
+
   void dispose() {
     name.dispose();
     price.dispose();
+    stockQty.dispose();
   }
 }
 
@@ -217,7 +232,13 @@ class _GroupEditorState extends ConsumerState<_GroupEditor> {
   late final _max = TextEditingController(text: '${widget.group?.maxSelect ?? 1}');
   late final List<_OptionRow> _options = [
     for (final o in widget.group?.options ?? const <ModifierOption>[])
-      _OptionRow(id: o.id, name: o.name, price: o.priceDelta.toStringAsFixed(2)),
+      _OptionRow(
+        id: o.id,
+        name: o.name,
+        price: o.priceDelta.toStringAsFixed(2),
+        stockItemId: o.stockItemId,
+        stockQty: o.stockQty == null ? '' : '${o.stockQty}',
+      ),
   ];
   String? _nameError;
   String? _rulesError;
@@ -258,6 +279,10 @@ class _GroupEditorState extends ConsumerState<_GroupEditor> {
         if (_options[i].name.text.trim().isEmpty || prices[i] == null) {
           _optionError = 'Each option needs a name and a price change';
         }
+        final stockQty = double.tryParse(_options[i].stockQty.text.trim());
+        if (_options[i].stockItemId != null && (stockQty == null || stockQty <= 0)) {
+          _optionError = 'Enter how much stock one serving of an option uses';
+        }
       }
     });
     if (_nameError != null || _rulesError != null || _optionError != null) return;
@@ -273,6 +298,10 @@ class _GroupEditorState extends ConsumerState<_GroupEditor> {
             id: _options[i].id,
             name: _options[i].name.text.trim(),
             priceDelta: prices[i]!,
+            stockItemId: _options[i].stockItemId,
+            stockQty: _options[i].stockItemId == null
+                ? null
+                : double.tryParse(_options[i].stockQty.text.trim()),
           ).toJson(i),
       ],
     };
@@ -315,6 +344,10 @@ class _GroupEditorState extends ConsumerState<_GroupEditor> {
   Widget build(BuildContext context) {
     final t = context.tokens;
     final canEdit = widget.canEdit;
+    final stockItems = ref
+            .watch(stockItemsProvider((locationId: null, status: null, liquor: false)))
+            .valueOrNull ??
+        const <StockItemRow>[];
     return AppCard(
       title: widget.group == null ? 'New group' : widget.group!.name,
       actions: [
@@ -383,6 +416,27 @@ class _GroupEditorState extends ConsumerState<_GroupEditor> {
                     child: AppTextField(
                       label: 'Price change',
                       controller: _options[i].price,
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  SizedBox(width: t.spacing.sm),
+                  Expanded(
+                    flex: 3,
+                    child: AppSelect<String>(
+                      label: 'Stock',
+                      value: _options[i].stockItemId,
+                      items: [for (final s in stockItems) AppSelectItem(s.id, s.name)],
+                      onChanged: canEdit
+                          ? (v) => setState(() => _options[i].stockItemId = v)
+                          : (_) {},
+                    ),
+                  ),
+                  SizedBox(width: t.spacing.sm),
+                  Expanded(
+                    flex: 2,
+                    child: AppTextField(
+                      label: 'Stock qty',
+                      controller: _options[i].stockQty,
                       keyboardType: TextInputType.number,
                     ),
                   ),

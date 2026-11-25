@@ -724,6 +724,7 @@ class OrderView {
     this.payments = const [],
     required this.totals,
     this.invoiceNumber,
+    this.tab,
   });
 
   final String id;
@@ -743,6 +744,9 @@ class OrderView {
   final List<PaymentView> payments;
   final OrderTotals totals;
   final String? invoiceNumber;
+
+  /// The bar tab this order belongs to, or null (PLAN 1.7 `OrderView.tab`).
+  final OrderTabInfo? tab;
 
   bool get isHeld => heldAt != null;
   bool get isOpen => status == OrderStatuses.open || status == OrderStatuses.sent || status == OrderStatuses.billed;
@@ -777,8 +781,39 @@ class OrderView {
       payments: [for (final p in asMaps(j['payments'])) PaymentView.fromJson(p)],
       totals: OrderTotals.fromJson(asMap(j['totals'])),
       invoiceNumber: readStringOrNull(j, 'invoiceNumber'),
+      tab: j['tab'] is Map ? OrderTabInfo.fromJson(asMap(j['tab'])) : null,
     );
   }
+}
+
+/// `OrderView.tab`: the tab a bar order belongs to, for the ticket header.
+class OrderTabInfo {
+  const OrderTabInfo({
+    required this.id,
+    required this.number,
+    required this.tabLimit,
+    required this.spent,
+    this.nearLimit = false,
+  });
+
+  final String id;
+
+  /// "T-07".
+  final String number;
+  final String tabLimit;
+  final String spent;
+  final bool nearLimit;
+
+  num get tabLimitValue => moneyValue(tabLimit);
+  num get spentValue => moneyValue(spent);
+
+  factory OrderTabInfo.fromJson(Map<String, dynamic> j) => OrderTabInfo(
+        id: readString(j, 'id'),
+        number: readString(j, 'number'),
+        tabLimit: readMoney(j, 'tabLimit'),
+        spent: readMoney(j, 'spent'),
+        nearLimit: readBool(j, 'nearLimit'),
+      );
 }
 
 /// Light row from `GET /orders/open`.

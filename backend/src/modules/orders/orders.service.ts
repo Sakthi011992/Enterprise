@@ -37,8 +37,26 @@ import { OrderPricingService } from './order-pricing.service';
 import { LineContext, OrderLineResolver, ResolvedLine } from './order-line-resolver';
 import { OrderBundle, OrderView, readModifiers, toOrderView } from './order-view';
 import { OrdersRepository } from './orders.repository';
+import { StockLedgerService, MovementContext } from '../stock-core/stock-ledger.service';
+import { RealtimeService } from '../realtime/realtime.service';
+import { RealtimeEvent, outletEvent, stationEvent } from '../realtime/realtime.types';
+import { TabsLimitService } from '../tabs/tabs-limit.service';
+import { contextFromView, readTicketItems, toKdsTicket } from '../kds/kds-view';
 
 const json = (v: unknown) => v as Prisma.InputJsonValue;
+
+/**
+ * What a mutation hands to the code that runs after its transaction commits: tickets to print, KDS rows
+ * to publish, and realtime events queued by the stock ledger and the tab rules.
+ */
+interface Outbox {
+  /** Tickets created by this mutation (cancellation tickets included, they are printed but not shown on the KDS). */
+  created: Ticket[];
+  /** Original tickets whose lines were voided. Their KDS cards are re-sent. */
+  updated: Ticket[];
+  events: RealtimeEvent[];
+  orderChanged: boolean;
+}
 
 @Injectable()
 export class OrdersService {
@@ -52,6 +70,9 @@ export class OrdersService {
     private audit: AuditTrailService,
     private permissions: PermissionsService,
     private print: PrintService,
+    private stock: StockLedgerService,
+    private realtime: RealtimeService,
+    private tabs: TabsLimitService,
   ) {}
 
   // ===========================================================================
@@ -159,17 +180,25 @@ export class OrdersService {
   // ===========================================================================
 
   async addItems(id: string, dto: AddItemsDto, auth: AuthUser): Promise<OrderView> {
-    const { view } = await this.mutate(id, auth, async (tx, b) => {
+    const now = new Date();
+    const { view, after } = await this.mutateWithOutbox(id, auth, async (tx, b, box) => {
       this.assertEditable(b.order);
-      await this.addLines(tx, b.order, dto.items, auth, new Date());
+      const spentBefore = D(b.order.grandTotal);
+      await this.addLines(tx, b.order, dto.items, auth, now);
       await this.reopenBilled(tx, b.order, auth);
+      box.orderChanged = b.order.status === 'BILLED';
+      // Throws TAB_LIMIT_REACHED, which rolls the whole addition back.
+      box.events.push(...(await this.tabs.enforce(tx, b.order.id, spentBefore, now)));
     });
+    await after();
     return view;
   }
 
   async updateItem(orderId: string, itemId: string, dto: UpdateItemDto, auth: AuthUser): Promise<OrderView> {
-    const { view } = await this.mutate(orderId, auth, async (tx, b) => {
+    const now = new Date();
+    const { view, after } = await this.mutateWithOutbox(orderId, auth, async (tx, b, box) => {
       this.assertEditable(b.order);
+      const spentBefore = D(b.order.grandTotal);
       const item = this.itemOf(b, itemId);
       if (item.status !== 'NEW') throw apiError(409, 'ITEM_ALREADY_SENT', 'This item was already sent to the kitchen');
 
@@ -186,7 +215,9 @@ export class OrdersService {
       }
       await this.repo.updateItem(tx, item.id, data);
       await this.pricing.recalc(tx, b.order.id);
+      box.events.push(...(await this.tabs.enforce(tx, b.order.id, spentBefore, now)));
     });
+    await after();
     return view;
   }
 
@@ -210,7 +241,7 @@ export class OrdersService {
   /** Sends every NEW line: one ticket per station and kind, items to SENT, order to SENT. */
   async send(orderId: string, auth: AuthUser) {
     const now = new Date();
-    const { result, after } = await this.mutateWithTickets(orderId, auth, async (tx, b) => {
+    const { view, box, after } = await this.mutateWithOutbox(orderId, auth, async (tx, b, box) => {
       this.assertEditable(b.order);
       const pending = b.items.filter((i) => i.status === 'NEW');
       if (pending.length === 0) throw apiError(400, 'NOTHING_TO_SEND', 'No new items to send');
@@ -218,12 +249,29 @@ export class OrdersService {
       const tickets = await this.createTickets(tx, b, pending, auth, false, now);
       for (const item of pending) await this.repo.updateItem(tx, item.id, { status: 'SENT', sentAt: now });
       if (b.order.status !== 'SENT') await this.repo.updateOrder(tx, b.order.id, { status: 'SENT' });
-      return tickets;
+
+      // Recipe deduction at the station of each line (PLAN 1.4). Ledger events go into the outbox.
+      const routing = await this.repo.routingFor(tx, [...new Set(pending.map((i) => i.productId))]);
+      await this.stock.deductForSentItems(
+        tx,
+        this.stockContext(auth, now, box.events),
+        pending.map((item) => ({
+          orderItemId: item.id,
+          productId: item.productId,
+          variantId: item.variantId,
+          quantity: item.quantity,
+          modifiers: readModifiers(item.modifiers),
+          station: routing.get(item.productId)?.station ?? 'KITCHEN',
+        })),
+      );
+
+      box.created.push(...tickets);
+      box.orderChanged = true;
     });
     await after();
     return {
-      order: result.view,
-      tickets: result.tickets.map((t) => ({ id: t.id, kind: t.kind, station: t.station, seq: t.seq })),
+      order: view,
+      tickets: box.created.map((t) => ({ id: t.id, kind: t.kind, station: t.station, seq: t.seq })),
     };
   }
 
@@ -237,7 +285,7 @@ export class OrdersService {
 
   /** Prints the pre-payment bill. Needs every line sent first. Dine-in table moves to BILL_PRINTED. */
   async bill(orderId: string, dto: BillDto, auth: AuthUser) {
-    const { view } = await this.mutate(orderId, auth, async (tx, b) => {
+    const { view, after } = await this.mutateWithOutbox(orderId, auth, async (tx, b, box) => {
       this.assertEditable(b.order);
       const live = b.items.filter((i) => i.status !== 'VOIDED');
       if (live.length === 0) throw apiError(400, 'NOTHING_TO_BILL', 'The order has no items');
@@ -248,8 +296,10 @@ export class OrdersService {
       if (b.order.type === 'DINE_IN' && b.order.tableId) {
         await this.repo.setTableStatus(tx, b.order.tableId, 'BILL_PRINTED');
       }
+      box.orderChanged = true;
     });
     await this.print.queueBill(orderId, { copies: dto.copies ?? 1 });
+    await after();
     return view;
   }
 
@@ -336,7 +386,7 @@ export class OrdersService {
   /** Voiding a SENT item prints a cancellation ticket at its station and logs the wastage. */
   async voidItems(orderId: string, dto: VoidItemsDto, auth: AuthUser) {
     const now = new Date();
-    const { result, after } = await this.mutateWithTickets(orderId, auth, async (tx, b) => {
+    const { view, after } = await this.mutateWithOutbox(orderId, auth, async (tx, b, box) => {
       this.assertEditable(b.order);
       const targets = dto.itemIds.map((id) => {
         const item = b.items.find((i) => i.id === id);
@@ -349,8 +399,11 @@ export class OrdersService {
       for (const item of targets) {
         await this.repo.updateItem(tx, item.id, { status: 'VOIDED', voidedAt: now, voidReason: dto.reason });
       }
-      const tickets = sent.length ? await this.createTickets(tx, b, sent, auth, true, now) : [];
       if (sent.length) {
+        box.created.push(...(await this.createTickets(tx, b, sent, auth, true, now)));
+        // Reverses the recipe deduction of each sent line (SALE_REVERSAL + WASTAGE, PLAN 1.4).
+        await this.stock.reverseSale(tx, this.stockContext(auth, now, box.events), sent.map((i) => i.id), dto.reason);
+        box.updated.push(...(await this.originalsTouching(tx, b.order.id, sent.map((i) => i.id))));
         await this.audit.record(tx, {
           tenantId: auth.tenantId,
           actorId: auth.userId,
@@ -369,15 +422,16 @@ export class OrdersService {
         metadata: { itemIds: dto.itemIds, reason: dto.reason, approvalId: dto.approvalId ?? null },
       });
       await this.pricing.recalc(tx, b.order.id);
-      return tickets;
+      box.orderChanged = true;
     });
     await after();
-    return result.view;
+    return view;
   }
 
   /** Whole-order void. Only without payments. Order to VOID, table to FREE. */
   async voidOrder(orderId: string, dto: VoidOrderDto, auth: AuthUser) {
-    const { result, after } = await this.mutateWithTickets(orderId, auth, async (tx, b) => {
+    const now = new Date();
+    const { view, after } = await this.mutateWithOutbox(orderId, auth, async (tx, b, box) => {
       this.assertEditable(b.order);
       if (b.payments.some((p) => !p.amount.isZero())) {
         throw apiError(409, 'ORDER_HAS_PAYMENTS', 'Refund the payments before voiding this order');
@@ -385,8 +439,12 @@ export class OrdersService {
       await this.authoriseVoid(auth, dto.approvalId, { itemIds: 'order' }, b.order.id);
 
       const sent = b.items.filter((i) => i.status === 'SENT' || i.status === 'SERVED');
-      const tickets = sent.length ? await this.createTickets(tx, b, sent, auth, true, new Date()) : [];
-      await this.repo.updateOrder(tx, b.order.id, { status: 'VOID', voidedAt: new Date(), voidReason: dto.reason });
+      if (sent.length) {
+        box.created.push(...(await this.createTickets(tx, b, sent, auth, true, now)));
+        await this.stock.reverseSale(tx, this.stockContext(auth, now, box.events), sent.map((i) => i.id), dto.reason);
+        box.updated.push(...(await this.originalsTouching(tx, b.order.id, sent.map((i) => i.id))));
+      }
+      await this.repo.updateOrder(tx, b.order.id, { status: 'VOID', voidedAt: now, voidReason: dto.reason });
       if (b.order.tableId) await this.repo.setTableStatus(tx, b.order.tableId, 'FREE');
       await this.audit.record(tx, {
         tenantId: auth.tenantId,
@@ -396,10 +454,10 @@ export class OrdersService {
         entityId: b.order.id,
         metadata: { reason: dto.reason, approvalId: dto.approvalId ?? null, sentItems: sent.length },
       });
-      return tickets;
+      box.orderChanged = true;
     });
     await after();
-    return result.view;
+    return view;
   }
 
   // ===========================================================================
@@ -553,22 +611,56 @@ export class OrdersService {
     return { view };
   }
 
-  /** Like mutate, but returns the tickets that must be printed once the transaction has committed. */
-  private async mutateWithTickets(
+  /**
+   * Like mutate, but collects an outbox. Tickets are printed and realtime messages sent only after the
+   * transaction has committed. A rollback (for example TAB_LIMIT_REACHED) sends nothing.
+   */
+  private async mutateWithOutbox(
     orderId: string,
     auth: AuthUser,
-    fn: (tx: Prisma.TransactionClient, b: OrderBundle) => Promise<Ticket[]>,
+    fn: (tx: Prisma.TransactionClient, b: OrderBundle, box: Outbox) => Promise<void>,
   ) {
-    const outcome = await this.repo.transaction(async (tx) => {
+    const box: Outbox = { created: [], updated: [], events: [], orderChanged: false };
+    const view = await this.repo.transaction(async (tx) => {
       const b = await this.load(tx, orderId, auth);
-      const tickets = await fn(tx, b);
-      const view = await this.viewOf(tx, await this.load(tx, orderId, auth));
-      return { view, tickets };
+      await fn(tx, b, box);
+      return this.viewOf(tx, await this.load(tx, orderId, auth));
     });
     const after = async () => {
-      for (const t of outcome.tickets) await this.printTicket(t);
+      for (const t of box.created) await this.printTicket(t);
+      this.publishOutbox(auth, view, box, new Date());
     };
-    return { result: { view: outcome.view, tickets: outcome.tickets }, after };
+    return { view, box, after };
+  }
+
+  /** Sends the realtime side of an outbox: KDS cards, the stock and tab events, and the order status. */
+  private publishOutbox(auth: AuthUser, view: OrderView, box: Outbox, now: Date): void {
+    const ctx = contextFromView(view);
+    const events: RealtimeEvent[] = [...box.events];
+    for (const t of box.created) {
+      if (!t.isCancellation) {
+        events.push(stationEvent(auth.outletId, t.station, 'kds.ticket.created', toKdsTicket(t, ctx, now)));
+      }
+    }
+    for (const t of box.updated) {
+      events.push(stationEvent(auth.outletId, t.station, 'kds.ticket.updated', toKdsTicket(t, ctx, now)));
+    }
+    if (box.orderChanged) {
+      events.push(outletEvent(auth.outletId, 'order.updated', { orderId: view.id, status: view.status }));
+    }
+    this.realtime.publish(events);
+  }
+
+  /** Context for the stock ledger. Its events are collected into the caller's outbox. */
+  private stockContext(auth: AuthUser, now: Date, events: RealtimeEvent[]): MovementContext {
+    return { tenantId: auth.tenantId, outletId: auth.outletId, userId: auth.userId, now, events };
+  }
+
+  /** Original tickets that carry any of the given order lines. */
+  private async originalsTouching(tx: Prisma.TransactionClient, orderId: string, itemIds: string[]): Promise<Ticket[]> {
+    const wanted = new Set(itemIds);
+    const tickets = await this.repo.findOriginalTickets(tx, orderId);
+    return tickets.filter((t) => readTicketItems(t.items).some((i) => wanted.has(i.orderItemId)));
   }
 
   private async printTicket(ticket: Ticket) {

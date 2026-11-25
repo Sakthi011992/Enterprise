@@ -29,7 +29,21 @@ type TenantScopedDelegate =
   | 'stationRoute'
   | 'printJob'
   | 'approval'
-  | 'dayClose';
+  | 'dayClose'
+  | 'stockItem'
+  | 'stockLocation'
+  | 'stockMovement'
+  | 'recipe'
+  | 'stockTransfer'
+  | 'stockCount'
+  | 'wastageEntry'
+  | 'vendor'
+  | 'purchaseOrder'
+  | 'goodsReceipt'
+  | 'debitNote'
+  | 'documentCounter'
+  | 'barTab'
+  | 'bottleLockerEntry';
 
 type TenantFilledCreate<D> = {
   [K in keyof D]: K extends 'create' | 'createMany' | 'upsert' ? (args: any) => any : D[K];

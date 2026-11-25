@@ -7,6 +7,9 @@ import { InvoiceService } from '../invoice/invoice.service';
 import { ApprovalsService } from '../approvals/approvals.service';
 import { AuditTrailService } from '../approvals/audit-trail.service';
 import { PermissionsService } from '../personas/permissions.service';
+import { TabsLimitService } from '../tabs/tabs-limit.service';
+import { RealtimeService } from '../realtime/realtime.service';
+import { outletEvent } from '../realtime/realtime.types';
 import { OrderBundle, OrderView, paidAmount, toOrderView } from '../orders/order-view';
 import { OrdersRepository } from '../orders/orders.repository';
 import { OrderPricingService } from '../orders/order-pricing.service';
@@ -41,6 +44,8 @@ export class PaymentsService {
     private audit: AuditTrailService,
     private permissions: PermissionsService,
     private print: PrintService,
+    private tabs: TabsLimitService,
+    private realtime: RealtimeService,
   ) {}
 
   // ===========================================================================
@@ -50,6 +55,7 @@ export class PaymentsService {
   /** POST /orders/:id/payments. Returns the order and the change to give back. */
   async pay(orderId: string, dto: PayOrderDto, auth: AuthUser) {
     const s = await this.repo.transaction((tx) => this.settle(tx, orderId, dto, auth));
+    this.realtime.publish([outletEvent(auth.outletId, 'order.updated', { orderId, status: s.view.status })]);
     if (s.hasCash) {
       try {
         await this.print.openDrawer(auth.outletId, 'Cash payment');
@@ -64,6 +70,7 @@ export class PaymentsService {
   async legacyCreate(dto: CreatePaymentDto, auth: AuthUser) {
     const line: PaymentLineDto = { method: dto.paymentMethod, amount: dto.amount };
     const s = await this.repo.transaction((tx) => this.settle(tx, dto.orderId, { payments: [line] }, auth));
+    this.realtime.publish([outletEvent(auth.outletId, 'order.updated', { orderId: dto.orderId, status: s.view.status })]);
     if (s.hasCash) {
       try {
         await this.print.openDrawer(auth.outletId, 'Cash payment');
@@ -183,6 +190,8 @@ export class PaymentsService {
         tipTotal,
       });
       if (dineIn && b.order.tableId) await this.orders.setTableStatus(tx, b.order.tableId, 'CLEANING');
+      // A bar tab on this order closes once the order is fully paid (PLAN 1.7 Orders integration).
+      await this.tabs.onOrderPaid(tx, b.order.id, now);
     } else {
       await this.orders.updateOrder(tx, b.order.id, { tipTotal });
     }

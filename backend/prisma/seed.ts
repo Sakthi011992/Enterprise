@@ -6,11 +6,14 @@ import {
   OrderType,
   PrinterConnection,
   RoundingMode,
+  StockLocationKind,
+  StockUnit,
   TableShape,
   TicketKind,
 } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { DEFAULT_PERSONAS, PERMISSION_CATALOG } from '../src/common/permissions/catalog';
+import { businessDateFor, toDateOnly } from '../src/common/pricing/business-date';
 
 // Plain client, no tenant extension: every write below passes tenantId explicitly.
 const prisma = new PrismaClient();
@@ -287,6 +290,301 @@ async function seedPosDemo(tenantId: string, outletId: string): Promise<void> {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Phase 3 demo: stock locations, items with opening stock and par, recipes, vendors and PO-0317
+// (PLAN.md 1.8). Idempotent: rows are looked up or upserted, and opening stock is written once per
+// item and location (an OPENING movement is the marker).
+// ---------------------------------------------------------------------------
+
+const STOCK_LOCATION_DEFS: { name: string; kind: StockLocationKind; stations: string[]; isDefaultSales: boolean; sortOrder: number }[] = [
+  { name: 'Main store', kind: StockLocationKind.STORE, stations: [], isDefaultSales: false, sortOrder: 0 },
+  { name: 'Bar', kind: StockLocationKind.BAR, stations: ['BAR'], isDefaultSales: false, sortOrder: 1 },
+  { name: 'Kitchen', kind: StockLocationKind.KITCHEN, stations: ['KITCHEN', 'TANDOOR', 'GRILL'], isDefaultSales: true, sortOrder: 2 },
+  { name: 'Cellar', kind: StockLocationKind.CELLAR, stations: [], isDefaultSales: false, sortOrder: 3 },
+];
+
+const VENDOR_NAMES = ['Metro Spirits Distributors', 'City Breweries Supply', 'Fresh Farm Produce', 'Glassware Co.'];
+
+interface StockDef {
+  name: string;
+  category: string;
+  unit: StockUnit;
+  packSize: number;
+  packName: string;
+  purchaseUnitName: string;
+  purchaseUnitQty: number;
+  avgCost: string; // ₹ per base unit, 6 dp
+  lastPurchaseRate?: string; // ₹ per purchase unit
+  vendor?: string;
+  isLiquor?: boolean;
+  isKeg?: boolean;
+  opening: { location: string; qty: number; par?: number }[]; // base units
+}
+
+// Prices are taken from PLAN.md where stated (House Whisky, Single Malt, Vodka, lager, keg, stout).
+// Other items have no price in the plan: cost stays 0 and opening quantities are demo values.
+const STOCK_DEFS: StockDef[] = [
+  {
+    name: 'House Whisky 750 ml', category: 'Spirits', unit: StockUnit.ML, packSize: 750, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 9000, avgCost: '1.466667', lastPurchaseRate: '13200.00',
+    vendor: 'Metro Spirits Distributors', isLiquor: true,
+    opening: [{ location: 'Bar', qty: 4500, par: 4500 }, { location: 'Main store', qty: 18000 }],
+  },
+  {
+    name: 'Single Malt 12Y 750 ml', category: 'Spirits', unit: StockUnit.ML, packSize: 750, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 9000, avgCost: '4.160000', lastPurchaseRate: '37440.00',
+    vendor: 'Metro Spirits Distributors', isLiquor: true,
+    opening: [{ location: 'Bar', qty: 2250, par: 4500 }, { location: 'Main store', qty: 9000 }],
+  },
+  {
+    name: 'Premium Vodka 750 ml', category: 'Spirits', unit: StockUnit.ML, packSize: 750, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 9000, avgCost: '1.933333', lastPurchaseRate: '17400.00',
+    vendor: 'Metro Spirits Distributors', isLiquor: true,
+    opening: [{ location: 'Bar', qty: 6410, par: 9000 }],
+  },
+  {
+    name: 'Dark Rum 750 ml', category: 'Spirits', unit: StockUnit.ML, packSize: 750, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 9000, avgCost: '1.200000', lastPurchaseRate: '10800.00',
+    vendor: 'Metro Spirits Distributors', isLiquor: true,
+    opening: [{ location: 'Main store', qty: 9000 }],
+  },
+  {
+    name: 'White Rum 750 ml', category: 'Spirits', unit: StockUnit.ML, packSize: 750, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 9000, avgCost: '1.200000', lastPurchaseRate: '10800.00',
+    vendor: 'Metro Spirits Distributors', isLiquor: true,
+    opening: [{ location: 'Bar', qty: 4500, par: 4500 }, { location: 'Main store', qty: 9000 }],
+  },
+  {
+    name: 'Premium Lager 650 ml', category: 'Beer', unit: StockUnit.ML, packSize: 650, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 7800, avgCost: '0.487179', lastPurchaseRate: '3800.00',
+    vendor: 'City Breweries Supply', isLiquor: true,
+    opening: [{ location: 'Cellar', qty: 78000 }],
+  },
+  {
+    name: 'Stout 500 ml', category: 'Beer', unit: StockUnit.ML, packSize: 500, packName: 'btl',
+    purchaseUnitName: 'Case of 12 bottles', purchaseUnitQty: 6000, avgCost: '0.566667', lastPurchaseRate: '3400.00',
+    vendor: 'City Breweries Supply', isLiquor: true,
+    opening: [],
+  },
+  {
+    name: 'Wheat beer keg 30 L', category: 'Beer', unit: StockUnit.ML, packSize: 30000, packName: 'keg',
+    purchaseUnitName: 'Keg', purchaseUnitQty: 30000, avgCost: '0.260000', lastPurchaseRate: '7800.00',
+    vendor: 'City Breweries Supply', isLiquor: true, isKeg: true,
+    opening: [{ location: 'Cellar', qty: 90000 }],
+  },
+  {
+    name: 'Soda 200 ml', category: 'Mixers', unit: StockUnit.ML, packSize: 200, packName: 'btl',
+    purchaseUnitName: 'Case of 24 bottles', purchaseUnitQty: 4800, avgCost: '0.000000',
+    opening: [{ location: 'Bar', qty: 2000 }],
+  },
+  {
+    name: 'Sugar syrup', category: 'Mixers', unit: StockUnit.ML, packSize: 1000, packName: 'btl',
+    purchaseUnitName: 'Bottle 1 L', purchaseUnitQty: 1000, avgCost: '0.000000',
+    opening: [{ location: 'Bar', qty: 2000 }],
+  },
+  {
+    name: 'Fresh mint', category: 'Produce', unit: StockUnit.G, packSize: 1000, packName: 'kg pack',
+    purchaseUnitName: 'Kg pack', purchaseUnitQty: 1000, avgCost: '0.000000', vendor: 'Fresh Farm Produce',
+    opening: [{ location: 'Bar', qty: 600, par: 1000 }],
+  },
+  {
+    name: 'Lime', category: 'Produce', unit: StockUnit.PC, packSize: 1, packName: 'pc',
+    purchaseUnitName: 'Crate of 100', purchaseUnitQty: 100, avgCost: '0.000000', vendor: 'Fresh Farm Produce',
+    opening: [{ location: 'Bar', qty: 40 }],
+  },
+  {
+    name: 'Chicken wings', category: 'Produce', unit: StockUnit.G, packSize: 1, packName: 'pack',
+    purchaseUnitName: 'Kg', purchaseUnitQty: 1000, avgCost: '0.000000', vendor: 'Fresh Farm Produce',
+    opening: [{ location: 'Kitchen', qty: 5000 }],
+  },
+  {
+    name: 'Paneer', category: 'Produce', unit: StockUnit.G, packSize: 1, packName: 'pack',
+    purchaseUnitName: 'Block 1 kg', purchaseUnitQty: 1000, avgCost: '0.000000', vendor: 'Fresh Farm Produce',
+    opening: [{ location: 'Kitchen', qty: 2000 }],
+  },
+];
+
+async function seedStockDemo(tenantId: string, outletId: string, adminId: string): Promise<void> {
+  // Locations
+  const locationIdByName = new Map<string, string>();
+  for (const def of STOCK_LOCATION_DEFS) {
+    const row = await prisma.stockLocation.upsert({
+      where: { outletId_name: { outletId, name: def.name } },
+      update: {},
+      create: { tenantId, outletId, name: def.name, kind: def.kind, stations: def.stations, isDefaultSales: def.isDefaultSales, sortOrder: def.sortOrder },
+    });
+    locationIdByName.set(def.name, row.id);
+  }
+
+  // Vendors
+  const vendorIdByName = new Map<string, string>();
+  for (const name of VENDOR_NAMES) {
+    const row = await prisma.vendor.upsert({
+      where: { tenantId_name: { tenantId, name } },
+      update: {},
+      create: { tenantId, name, paymentTermsDays: 30 },
+    });
+    vendorIdByName.set(name, row.id);
+  }
+
+  // Stock items, opening stock (OPENING movements) and par
+  const businessDay = toDateOnly(businessDateFor(new Date(), 'Asia/Kolkata', '05:00'));
+  const itemIdByName = new Map<string, string>();
+  for (const def of STOCK_DEFS) {
+    const item = await prisma.stockItem.upsert({
+      where: { tenantId_name: { tenantId, name: def.name } },
+      update: {},
+      create: {
+        tenantId,
+        name: def.name,
+        categoryName: def.category,
+        baseUnit: def.unit,
+        packSize: def.packSize,
+        packName: def.packName,
+        purchaseUnitName: def.purchaseUnitName,
+        purchaseUnitQty: def.purchaseUnitQty,
+        avgCost: def.avgCost,
+        lastPurchaseRate: def.lastPurchaseRate ?? null,
+        preferredVendorId: def.vendor ? vendorIdByName.get(def.vendor) ?? null : null,
+        isLiquor: def.isLiquor ?? false,
+        isKeg: def.isKeg ?? false,
+      },
+    });
+    itemIdByName.set(def.name, item.id);
+
+    for (const op of def.opening) {
+      const locationId = locationIdByName.get(op.location)!;
+      await prisma.stockLevel.upsert({
+        where: { locationId_stockItemId: { locationId, stockItemId: item.id } },
+        update: {},
+        create: { locationId, stockItemId: item.id, onHand: op.qty, parLevel: op.par ?? 0 },
+      });
+      const written = await prisma.stockMovement.count({
+        where: { tenantId, stockItemId: item.id, locationId, type: 'OPENING' },
+      });
+      if (written === 0) {
+        await prisma.stockMovement.create({
+          data: {
+            tenantId,
+            outletId,
+            locationId,
+            stockItemId: item.id,
+            type: 'OPENING',
+            qty: op.qty,
+            unitCost: def.avgCost,
+            businessDate: businessDay,
+            note: 'Opening stock (seed)',
+          },
+        });
+      }
+    }
+  }
+
+  // Product that the Phase 2 demo menu lacks: Paneer Tikka in Bar bites (KITCHEN station)
+  const barBites = await prisma.category.findFirst({ where: { tenantId, name: 'Bar bites' } });
+  let paneerTikka = await prisma.product.findFirst({ where: { tenantId, name: 'Paneer Tikka', deletedAt: null } });
+  if (!paneerTikka) {
+    paneerTikka = await prisma.product.create({
+      data: { tenantId, name: 'Paneer Tikka', price: '320.00', categoryId: barBites?.id ?? null },
+    });
+  }
+
+  // Recipes (PLAN.md 1.8). A recipe is skipped when it already exists for the product and variant.
+  const productIdByName = async (name: string) => {
+    const p = await prisma.product.findFirst({ where: { tenantId, name, deletedAt: null } });
+    if (!p) throw new Error(`Product "${name}" missing for the stock demo`);
+    return p.id;
+  };
+  const variantIdByName = async (productId: string, name: string) => {
+    const v = await prisma.productVariant.findFirst({ where: { productId, name } });
+    if (!v) throw new Error(`Variant "${name}" missing for the stock demo`);
+    return v.id;
+  };
+  const seedRecipe = async (
+    productId: string,
+    variantId: string | null,
+    lines: { item: string; qty: number; wastage: number }[],
+  ) => {
+    const existing = await prisma.recipe.findFirst({ where: { productId, variantId } });
+    if (existing) return;
+    await prisma.recipe.create({
+      data: {
+        tenantId,
+        productId,
+        variantId,
+        lines: {
+          create: lines.map((l, i) => ({
+            stockItemId: itemIdByName.get(l.item)!,
+            qty: l.qty,
+            wastagePercent: l.wastage,
+            sortOrder: i,
+          })),
+        },
+      },
+    });
+  };
+
+  const whisky = await productIdByName('House Whisky');
+  await seedRecipe(whisky, await variantIdByName(whisky, '30 ml'), [{ item: 'House Whisky 750 ml', qty: 30, wastage: 2 }]);
+  await seedRecipe(whisky, await variantIdByName(whisky, '60 ml'), [{ item: 'House Whisky 750 ml', qty: 60, wastage: 2 }]);
+  await seedRecipe(whisky, await variantIdByName(whisky, 'Bottle'), [{ item: 'House Whisky 750 ml', qty: 750, wastage: 0 }]);
+
+  const malt = await productIdByName('Single Malt 12Y');
+  await seedRecipe(malt, await variantIdByName(malt, '30 ml'), [{ item: 'Single Malt 12Y 750 ml', qty: 30, wastage: 2 }]);
+  await seedRecipe(malt, await variantIdByName(malt, '60 ml'), [{ item: 'Single Malt 12Y 750 ml', qty: 60, wastage: 2 }]);
+
+  await seedRecipe(await productIdByName('Premium Lager 650 ml'), null, [{ item: 'Premium Lager 650 ml', qty: 650, wastage: 0 }]);
+  await seedRecipe(await productIdByName('Classic Mojito'), null, [
+    { item: 'White Rum 750 ml', qty: 60, wastage: 2 },
+    { item: 'Fresh mint', qty: 8, wastage: 0 },
+    { item: 'Sugar syrup', qty: 20, wastage: 0 },
+    { item: 'Soda 200 ml', qty: 100, wastage: 0 },
+    { item: 'Lime', qty: 1, wastage: 0 },
+  ]);
+  await seedRecipe(await productIdByName('Chicken Wings (8 pc)'), null, [{ item: 'Chicken wings', qty: 400, wastage: 0 }]);
+  await seedRecipe(paneerTikka.id, null, [{ item: 'Paneer', qty: 250, wastage: 0 }]);
+
+  // "With soda" modifier draws 200 ml of soda
+  await prisma.modifierOption.updateMany({
+    where: { name: 'With soda', group: { tenantId } },
+    data: { stockItemId: itemIdByName.get('Soda 200 ml')!, stockQty: '200' },
+  });
+
+  // PO-0317 sent to City Breweries Supply for the Cellar, so the GRN example can be replayed
+  const poExists = await prisma.purchaseOrder.findFirst({ where: { tenantId, number: 'PO-0317' } });
+  if (!poExists) {
+    const now = new Date();
+    await prisma.purchaseOrder.create({
+      data: {
+        tenantId,
+        outletId,
+        number: 'PO-0317',
+        vendorId: vendorIdByName.get('City Breweries Supply')!,
+        locationId: locationIdByName.get('Cellar')!,
+        status: 'SENT',
+        total: '82800.00',
+        createdById: adminId,
+        submittedAt: now,
+        approvedById: adminId,
+        approvedAt: now,
+        sentAt: now,
+        lines: {
+          create: [
+            { stockItemId: itemIdByName.get('Premium Lager 650 ml')!, qty: '10', rate: '3800.00', total: '38000.00', sortOrder: 0 },
+            { stockItemId: itemIdByName.get('Wheat beer keg 30 L')!, qty: '4', rate: '7800.00', total: '31200.00', sortOrder: 1 },
+            { stockItemId: itemIdByName.get('Stout 500 ml')!, qty: '4', rate: '3400.00', total: '13600.00', sortOrder: 2 },
+          ],
+        },
+      },
+    });
+  }
+  await prisma.documentCounter.upsert({
+    where: { tenantId_key: { tenantId, key: 'PO' } },
+    update: {},
+    create: { tenantId, key: 'PO', value: 317 },
+  });
+}
+
 async function main() {
   // Roles (legacy, kept until Phase 2)
   const adminRole = await prisma.role.upsert({
@@ -423,6 +721,9 @@ async function main() {
 
   // Phase 2 POS demo (menu, floor plan, printers)
   await seedPosDemo(tenantId, outlet.id);
+
+  // Phase 3 demo (stock, recipes, vendors, PO-0317)
+  await seedStockDemo(tenantId, outlet.id, admin.id);
 
   // Global tax
   const taxPct = new Prisma.Decimal(process.env.SEED_GLOBAL_TAX || '18');

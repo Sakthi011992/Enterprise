@@ -111,16 +111,30 @@ class MenuProduct {
 }
 
 class ModifierOption {
-  const ModifierOption({this.id, required this.name, this.priceDelta = 0});
+  const ModifierOption({
+    this.id,
+    required this.name,
+    this.priceDelta = 0,
+    this.stockItemId,
+    this.stockQty,
+  });
 
   final String? id;
   final String name;
   final double priceDelta;
 
+  /// Stock item deducted when this option is picked (Phase 3). Null for none.
+  final String? stockItemId;
+
+  /// Base units deducted per serving of this option.
+  final double? stockQty;
+
   factory ModifierOption.fromJson(Map j) => ModifierOption(
         id: j['id'] as String?,
         name: j['name'] as String,
         priceDelta: _money(j['priceDelta']),
+        stockItemId: j['stockItemId'] as String?,
+        stockQty: double.tryParse(j['stockQty']?.toString() ?? ''),
       );
 
   Map<String, dynamic> toJson(int index) => {
@@ -128,6 +142,9 @@ class ModifierOption {
         'name': name,
         'priceDelta': _moneyText(priceDelta),
         'sortOrder': index,
+        // Sent even when empty, so clearing a stock link saves.
+        'stockItemId': stockItemId,
+        'stockQty': stockQty,
       };
 }
 
@@ -265,8 +282,16 @@ class MenuRepository {
 
   // Products
   Future<List<MenuProduct>> products() async {
-    final res = await _dio.get('/products', queryParameters: {'limit': 200});
-    return _rows(res.data).map(MenuProduct.fromJson).toList();
+    // The list endpoint is paged with at most 100 rows per page.
+    final out = <MenuProduct>[];
+    for (var page = 1; page <= 20; page++) {
+      final res = await _dio.get('/products', queryParameters: {'limit': 100, 'page': page});
+      out.addAll(_rows(res.data).map(MenuProduct.fromJson));
+      final meta = res.data is Map ? (res.data as Map)['meta'] : null;
+      final totalPages = meta is Map ? (meta['totalPages'] as num?)?.toInt() ?? 1 : 1;
+      if (page >= totalPages) break;
+    }
+    return out;
   }
 
   Future<MenuProduct> product(String id) async {

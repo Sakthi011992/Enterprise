@@ -6,6 +6,7 @@ abstract class Perm {
   static const salesDiscountGive = 'sales.discount.give';
   static const salesVoid = 'sales.void';
   static const salesTabOpen = 'sales.tab.open';
+  static const kdsBump = 'kds.bump';
   static const menuEdit = 'menu.edit';
   static const menuMark86 = 'menu.mark86';
   static const stockCount = 'stock.count';

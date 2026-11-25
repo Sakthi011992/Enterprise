@@ -26,6 +26,7 @@ const TITLE: Record<ApprovalKind, string> = {
   VOID: 'Void needs approval',
   REFUND: 'Refund needs approval',
   NO_SALE: 'Cash drawer open needs approval',
+  TAB_NO_SECURITY: 'Bar tab without security needs approval',
 };
 
 export function approvalView(a: Approval) {

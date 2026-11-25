@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/auth/api_error.dart';
 import '../../auth/data/auth_repository.dart';
+import '../../tabs/domain/tab_rules.dart';
 import '../data/pos_models.dart';
 import '../data/pos_repository.dart';
 
@@ -171,7 +172,7 @@ class PosOrderController extends StateNotifier<PosOrderState> {
     state = state.copyWith(
       busy: false,
       loading: loading ? false : state.loading,
-      error: err.message,
+      error: err.code == 'TAB_LIMIT_REACHED' ? tabLimitReachedMessage(err) : err.message,
       offline: err.isNetwork,
     );
   }

@@ -15,7 +15,18 @@ import '../../features/floor/presentation/floor_setup_screen.dart';
 import '../../features/devices/presentation/devices_screen.dart';
 import '../../features/kiosk/presentation/kiosk_admin_screen.dart';
 import '../../features/hardware/presentation/hardware_screen.dart';
+import '../../features/inventory/presentation/inventory_screen.dart';
+import '../../features/inventory/presentation/stock_count_screen.dart';
+import '../../features/inventory/presentation/stock_item_editor_screen.dart';
 import '../../features/kiosk/presentation/kiosk_display_screen.dart';
+import '../../features/kds/presentation/kds_screen.dart';
+import '../../features/kds/presentation/ready_to_serve_screen.dart';
+import '../../features/menu/presentation/availability_screen.dart';
+import '../../features/procurement/presentation/grn_screen.dart';
+import '../../features/procurement/presentation/procurement_screen.dart';
+import '../../features/procurement/presentation/purchase_order_screen.dart';
+import '../../features/procurement/presentation/reorder_screen.dart';
+import '../../features/tabs/presentation/bar_tabs_screen.dart';
 import '../../features/menu/presentation/categories_screen.dart';
 import '../../features/menu/presentation/combos_screen.dart';
 import '../../features/menu/presentation/modifier_groups_screen.dart';
@@ -139,9 +150,36 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/menu/modifiers', builder: (_, __) => const ModifierGroupsScreen()),
           GoRoute(path: '/menu/combos', builder: (_, __) => const CombosScreen()),
           GoRoute(path: '/menu/happy-hours', builder: (_, __) => const PriceRulesScreen()),
+          GoRoute(path: '/tabs', builder: (_, __) => const BarTabsScreen()),
+          GoRoute(
+            path: '/kds',
+            builder: (_, state) => KdsScreen(initialStation: state.uri.queryParameters['station']),
+          ),
+          GoRoute(path: '/service/ready', builder: (_, __) => const ReadyToServeScreen()),
+          GoRoute(path: '/menu/availability', builder: (_, __) => const AvailabilityScreen()),
+          GoRoute(path: '/inventory', builder: (_, __) => const InventoryScreen()),
+          GoRoute(
+            path: '/inventory/items/:id',
+            builder: (_, state) =>
+                StockItemEditorScreen(itemId: state.pathParameters['id']!),
+          ),
           GoRoute(
             path: '/stock-count',
-            builder: (_, __) => const PlaceholderScreen(title: 'Stock count'),
+            builder: (_, state) =>
+                StockCountScreen(initialCountId: state.uri.queryParameters['countId']),
+          ),
+          GoRoute(path: '/procurement', builder: (_, __) => const ProcurementScreen()),
+          GoRoute(path: '/procurement/reorder', builder: (_, __) => const ReorderScreen()),
+          GoRoute(
+            path: '/procurement/po/:id',
+            builder: (_, state) => PurchaseOrderScreen(poId: state.pathParameters['id']!),
+          ),
+          GoRoute(
+            path: '/procurement/grn/:id',
+            builder: (_, state) => GrnScreen(
+              grnId: state.pathParameters['id']!,
+              poId: state.uri.queryParameters['poId'],
+            ),
           ),
           GoRoute(
             path: '/my-shifts',
