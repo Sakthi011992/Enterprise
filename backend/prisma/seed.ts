@@ -100,16 +100,17 @@ const AREA_DEFS = [
   { name: 'Bar counter', sortOrder: 3, priceMarkupPercent: '0.00' },
 ];
 
+// posX / posY are cells on the floor setup grid (12 columns x 8 rows), not pixels.
 function demoTables(): { name: string; area: string; seats: number; shape: TableShape; posX: number; posY: number }[] {
   const out: { name: string; area: string; seats: number; shape: TableShape; posX: number; posY: number }[] = [];
   for (let i = 1; i <= 9; i++) {
-    out.push({ name: `R${i}`, area: 'Rooftop', seats: 4, shape: TableShape.SQUARE, posX: ((i - 1) % 3) * 140, posY: Math.floor((i - 1) / 3) * 140 });
+    out.push({ name: `R${i}`, area: 'Rooftop', seats: 4, shape: TableShape.SQUARE, posX: ((i - 1) % 3) * 2, posY: Math.floor((i - 1) / 3) * 2 });
   }
   for (let i = 1; i <= 4; i++) {
-    out.push({ name: `T${i}`, area: 'Indoor', seats: 4, shape: TableShape.ROUND, posX: (i - 1) * 140, posY: 0 });
+    out.push({ name: `T${i}`, area: 'Indoor', seats: 4, shape: TableShape.ROUND, posX: (i - 1) * 2, posY: 0 });
   }
   for (let i = 1; i <= 10; i++) {
-    out.push({ name: `Bar ${i}`, area: 'Bar counter', seats: 1, shape: TableShape.LONG, posX: (i - 1) * 60, posY: 0 });
+    out.push({ name: `Bar ${i}`, area: 'Bar counter', seats: 1, shape: TableShape.LONG, posX: i - 1, posY: 0 });
   }
   return out;
 }
