@@ -81,14 +81,23 @@ class AppDataTable<T> extends StatelessWidget {
       content = _responsiveTable(context, selection, selectable);
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showToolbar) _toolbar(context),
-        if (selectable && selection.isNotEmpty) _bulkBar(context, selection),
-        content,
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Inside a fixed-height area (e.g. Expanded in a tab view) the rows scroll; elsewhere the
+        // table keeps its natural height and the page scrolls instead.
+        final body = constraints.hasBoundedHeight
+            ? Flexible(child: SingleChildScrollView(child: content))
+            : content;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (showToolbar) _toolbar(context),
+            if (selectable && selection.isNotEmpty) _bulkBar(context, selection),
+            body,
+          ],
+        );
+      },
     );
   }
 
