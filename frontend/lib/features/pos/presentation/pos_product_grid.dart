@@ -44,7 +44,7 @@ class PosProductGrid extends StatelessWidget {
         maxCrossAxisExtent: 200,
         mainAxisSpacing: 12,
         crossAxisSpacing: 12,
-        childAspectRatio: 0.9,
+        childAspectRatio: 0.8, // room for two rows of variant chips
       ),
       itemCount: count,
       itemBuilder: (context, index) {

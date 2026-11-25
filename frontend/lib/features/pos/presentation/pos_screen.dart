@@ -324,7 +324,9 @@ class _TableTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(t.radius.lg),
               border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
             ),
+            // The tile sits in a Wrap inside a scroll view, so its height is unbounded: no Spacer here.
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -339,7 +341,7 @@ class _TableTile extends StatelessWidget {
                   '${table.seats} seats',
                   style: TextStyle(color: t.color.content.secondary, fontSize: 13),
                 ),
-                const Spacer(),
+                SizedBox(height: t.spacing.md),
                 StatusBadge(label: tableStatusLabel(table.status), tone: tone),
                 if (order != null) ...[
                   SizedBox(height: t.spacing.xs),
