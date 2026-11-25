@@ -719,6 +719,45 @@ async function main() {
     create: { userId: bartender.id, pinHash: await bcrypt.hash('2580', 10) },
   });
 
+  // One demo login per remaining persona: password <Persona>@123, PINs below (kiosk has no PIN).
+  const kioskRole = await prisma.role.findUniqueOrThrow({ where: { name: 'KIOSK' } });
+  const DEMO_USERS: { username: string; displayName: string; persona: string; password: string; pin: string | null }[] = [
+    { username: 'manager1', displayName: 'Manager 1', persona: 'manager', password: 'Manager@123', pin: '4826' },
+    { username: 'cashier1', displayName: 'Cashier 1', persona: 'cashier', password: 'Cashier@123', pin: '3917' },
+    { username: 'captain1', displayName: 'Captain 1', persona: 'captain', password: 'Captain@123', pin: '5173' },
+    { username: 'waiter1', displayName: 'Waiter 1', persona: 'waiter', password: 'Waiter@123', pin: '6284' },
+    { username: 'chef1', displayName: 'Chef 1', persona: 'chef', password: 'Chef@123', pin: '7395' },
+    { username: 'storekeeper1', displayName: 'Storekeeper 1', persona: 'storekeeper', password: 'Storekeeper@123', pin: '8462' },
+    { username: 'kiosk1', displayName: 'Kiosk display', persona: 'kiosk', password: 'Kiosk@123', pin: null },
+  ];
+  for (const d of DEMO_USERS) {
+    const user = await prisma.user.upsert({
+      where: { username: d.username },
+      update: {},
+      create: {
+        tenantId,
+        username: d.username,
+        email: `${d.username}@example.com`,
+        displayName: d.displayName,
+        passwordHash: await bcrypt.hash(d.password, 10),
+        roleId: d.persona === 'kiosk' ? kioskRole.id : userRole.id,
+        isActive: true,
+      },
+    });
+    await prisma.userOutlet.upsert({
+      where: { userId_outletId: { userId: user.id, outletId: outlet.id } },
+      update: {},
+      create: { userId: user.id, outletId: outlet.id, personaId: requireId(personaIds, d.persona), isDefault: true },
+    });
+    if (d.pin) {
+      await prisma.staffPin.upsert({
+        where: { userId: user.id },
+        update: {},
+        create: { userId: user.id, pinHash: await bcrypt.hash(d.pin, 10) },
+      });
+    }
+  }
+
   // Phase 2 POS demo (menu, floor plan, printers)
   await seedPosDemo(tenantId, outlet.id);
 
@@ -801,7 +840,7 @@ async function main() {
     });
   }
 
-  console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580.`);
+  console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580; manager1, cashier1, captain1, waiter1, chef1, storekeeper1, kiosk1 (password <Persona>@123).`);
 }
 
 main()
