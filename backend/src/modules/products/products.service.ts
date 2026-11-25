@@ -140,8 +140,8 @@ export class ProductsService {
     return updated;
   }
 
-  importExcel(file: Express.Multer.File, userId: string): Promise<ImportSummary> {
-    return this.importer.importFromBuffer(file, userId);
+  importExcel(file: Express.Multer.File, userId: string, tenantId: string): Promise<ImportSummary> {
+    return this.importer.importFromBuffer(file, userId, tenantId);
   }
 
   importTemplate() {

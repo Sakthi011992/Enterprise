@@ -10,7 +10,7 @@ describe('RealtimeService', () => {
 
   it('sends station events to the station room and the all-stations room', () => {
     const emit = jest.fn();
-    const to = jest.fn(() => ({ emit }));
+    const to = jest.fn((_room: string) => ({ emit }));
     const svc = new RealtimeService();
     svc.attach({ to });
 
@@ -22,7 +22,7 @@ describe('RealtimeService', () => {
 
   it('routes outlet and user events to their rooms and skips events missing their ids', () => {
     const emit = jest.fn();
-    const to = jest.fn(() => ({ emit }));
+    const to = jest.fn((_room: string) => ({ emit }));
     const svc = new RealtimeService();
     svc.attach({ to });
 

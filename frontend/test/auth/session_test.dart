@@ -83,7 +83,7 @@ void main() {
 
     test('a user without a display name falls back to the username', () {
       final json = sampleSessionJson();
-      (json['user'] as Map<String, dynamic>)['displayName'] = null;
+      json['user'] = <String, dynamic>{...(json['user'] as Map), 'displayName': null};
       expect(Session.fromJson(json).user.label, 'priya');
     });
   });

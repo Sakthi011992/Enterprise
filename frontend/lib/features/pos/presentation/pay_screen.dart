@@ -318,7 +318,7 @@ class _PayScreenState extends ConsumerState<PayScreen> {
           offline: state.offline,
           paying: _paying,
           payError: _payError,
-          completeLabel: _completeLabel(share),
+          completeLabel: _completeLabel(_share),
           cash: _cash,
           useUpi: _useUpi,
           upiAmount: _upiAmount,
@@ -550,7 +550,7 @@ class _ShareCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(t.radius.lg),
               border: Border.all(
-                color: selected ? t.color.border.focus : t.color.border.default,
+                color: selected ? t.color.border.focus : t.color.border.standard,
                 width: selected ? t.borderWidth.thick : t.borderWidth.hairline,
               ),
             ),
@@ -843,7 +843,7 @@ class _TenderRow extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(t.radius.md),
               border: Border.all(
-                color: selected ? t.color.border.accent : t.color.border.default,
+                color: selected ? t.color.border.accent : t.color.border.standard,
                 width: t.borderWidth.hairline,
               ),
             ),

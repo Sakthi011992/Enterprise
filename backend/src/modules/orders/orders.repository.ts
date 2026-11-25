@@ -294,7 +294,9 @@ export class OrdersRepository {
   }
 
   /** productId -> station and ticket kind from the product's category. Missing products get the kitchen default. */
-  async routingFor(tx: Prisma.TransactionClient, productIds: string[]) {
+  async routingFor(tx: Prisma.TransactionClient, ids: (string | null)[]) {
+    // Combo lines have no productId; they use the default route.
+    const productIds = ids.filter((id): id is string => !!id);
     const products = productIds.length
       ? await tx.product.findMany({ where: { id: { in: productIds } }, select: { id: true, categoryId: true } })
       : [];

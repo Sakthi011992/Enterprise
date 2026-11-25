@@ -71,6 +71,12 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
   ref.onDispose(refresh.dispose);
   ref.listen<SessionState>(sessionProvider, (_, __) => refresh.value++);
+
+  bool _isForbidden(String path) {
+    final session = ref.read(sessionProvider).session;
+    final item = navItemForPath(path);
+    return item != null && !canOf(session, item.permission, item.min);
+  }
 
   String? redirect(BuildContext context, GoRouterState state) {
     final path = state.matchedLocation;
@@ -98,12 +104,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       return path == home ? null : home;
     }
     return null;
-  }
-
-  bool _isForbidden(String path) {
-    final session = ref.read(sessionProvider).session;
-    final item = navItemForPath(path);
-    return item != null && !canOf(session, item.permission, item.min);
   }
 
   return GoRouter(

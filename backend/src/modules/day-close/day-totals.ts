@@ -29,7 +29,7 @@ export interface DayPayment {
 
 export interface DayItem {
   orderId: string;
-  productId: string;
+  productId: string | null;
   quantity: number;
   net: Prisma.Decimal;
   status: string;
@@ -101,7 +101,7 @@ export function computeDayTotals(f: DayFacts) {
   const byCategoryMap = new Map<string, { categoryId: string | null; name: string; quantity: number; amount: Prisma.Decimal }>();
   for (const it of f.items) {
     if (it.status === 'VOIDED' || !paidIds.has(it.orderId)) continue;
-    const categoryId = f.categoryOfProduct.get(it.productId) ?? null;
+    const categoryId = (it.productId ? f.categoryOfProduct.get(it.productId) : undefined) ?? null;
     const key = categoryId ?? '__none';
     const cur = byCategoryMap.get(key) ?? {
       categoryId,

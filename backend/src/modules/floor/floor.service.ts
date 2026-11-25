@@ -59,7 +59,7 @@ export class FloorService {
     }
     const waiterIds = [...new Set([...firstOrder.values()].map((o) => o.waiterId).filter((w): w is string => !!w))];
     const users = await this.repo.findUsers(waiterIds);
-    const names = new Map(users.map((u) => [u.id, u.displayName ?? u.username]));
+    const names = new Map(users.map((u) => [u.id, u.displayName ?? u.username] as const));
 
     return tables.map((t) => {
       const order = firstOrder.get(t.id);

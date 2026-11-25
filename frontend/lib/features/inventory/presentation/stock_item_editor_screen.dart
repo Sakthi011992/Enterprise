@@ -9,6 +9,7 @@ import '../../../core/auth/session.dart';
 import '../../../core/ui/ui.dart';
 import '../../pos/presentation/pos_format.dart';
 import '../../procurement/data/procurement_repository.dart';
+import '../../procurement/data/procurement_models.dart';
 import '../data/inventory_models.dart';
 import '../data/inventory_repository.dart';
 import '../data/json_read.dart';

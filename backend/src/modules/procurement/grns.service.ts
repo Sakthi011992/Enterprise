@@ -24,6 +24,8 @@ import { grnSummaryViews } from './procurement-views';
 import { ProcurementRepository, RECEIVABLE_PO_STATUSES } from './procurement.repository';
 
 export interface ParsedGrnLine {
+  /** Saved line id; set for lines loaded from the database, used as the ledger refId. */
+  id?: string;
   poLineId: string | null;
   stockItemId: string;
   orderedQty: Prisma.Decimal;
@@ -456,6 +458,7 @@ export class GrnsService {
 
   private fromRow(r: GoodsReceiptLine): ParsedGrnLine {
     return {
+      id: r.id,
       poLineId: r.poLineId,
       stockItemId: r.stockItemId,
       orderedQty: r.orderedQty,

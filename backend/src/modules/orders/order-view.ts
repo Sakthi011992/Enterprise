@@ -53,7 +53,7 @@ export function toOrderView(b: OrderBundle, ctx: ViewContext) {
     note: order.note,
     items: b.items.map((item) => {
         const tax: StoredLineTax = readStoredTax(item.taxBreakdown);
-        const route = ctx.routing.get(item.productId) ?? { station: 'KITCHEN', ticketKind: 'KOT' };
+        const route = ctx.routing.get(item.productId ?? '') ?? { station: 'KITCHEN', ticketKind: 'KOT' };
         const gross = D(item.grossAmount);
         const discount = D(item.discountAmount);
         return {

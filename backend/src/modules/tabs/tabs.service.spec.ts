@@ -50,7 +50,7 @@ function build(opts: { tab?: ReturnType<typeof tabRow> | null; total?: string; i
     loadBundle: jest.fn(),
   };
   const orders: any = {
-    bill: jest.fn(async () => ({ totals: { grandTotal: state.total } })),
+    bill: jest.fn(async () => ({ totals: { grandTotal: state.total }, payments: [] })),
     findOne: jest.fn(),
   };
   const payments: any = { pay: jest.fn(async () => ({})) };

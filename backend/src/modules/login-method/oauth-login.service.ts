@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { LoginMethod } from '@prisma/client';
+import { LoginMethod, User } from '@prisma/client';
 import { OAuth2Client } from 'google-auth-library';
 import { AuthService } from '../auth/auth.service';
 import { OAuthRepository } from './oauth.repository';
@@ -35,7 +35,7 @@ export class OAuthLoginService {
 
   private async findOrCreateUser(provider: LoginMethod, providerUserId: string, email?: string) {
     const account = await this.repo.findAccountUser(provider, providerUserId);
-    let user = account?.user ?? null;
+    let user: User | null = account?.user ?? null;
 
     if (!user) {
       // Auto-link by verified email, otherwise create a user in the default tenant.
@@ -46,13 +46,15 @@ export class OAuthLoginService {
         const role = await this.repo.findRoleIdByName('USER');
         if (!tenant || !role) throw new UnauthorizedException('Login is not set up for this tenant');
         const username = email?.split('@')[0] ?? `oauth_${providerUserId.slice(0, 8)}`;
-        user = await this.repo.createUser({ tenantId: tenant.id, username, email, roleId: role.id });
+        const created = await this.repo.createUser({ tenantId: tenant.id, username, email, roleId: role.id });
+        user = created;
       }
 
+      if (!user) throw new UnauthorizedException('Login is not set up for this tenant');
       await this.repo.createAccount({ userId: user.id, provider, providerUserId, email });
     }
 
-    if (!user.isActive || user.deletedAt) throw new UnauthorizedException('Account is inactive');
+    if (!user || !user.isActive || user.deletedAt) throw new UnauthorizedException('Account is inactive');
     return user;
   }
 }

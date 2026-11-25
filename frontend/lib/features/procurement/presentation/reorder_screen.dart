@@ -8,6 +8,7 @@ import '../../inventory/data/inventory_repository.dart';
 import '../../inventory/presentation/inventory_messages.dart';
 import '../../inventory/presentation/widgets/qty_stepper.dart';
 import '../../pos/presentation/pos_format.dart';
+import '../../inventory/data/inventory_models.dart';
 import '../data/procurement_models.dart';
 import '../data/procurement_repository.dart';
 import '../domain/grn_math.dart';

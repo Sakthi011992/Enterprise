@@ -134,8 +134,8 @@ export class ProductsController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10 * 1024 * 1024 } }))
-  import(@UploadedFile() file: Express.Multer.File, @CurrentUser('userId') userId: string): Promise<ImportSummary> {
+  import(@UploadedFile() file: Express.Multer.File, @CurrentUser() auth: AuthUser): Promise<ImportSummary> {
     if (!file) throw new BadRequestException('Excel file required');
-    return this.products.importExcel(file, userId);
+    return this.products.importExcel(file, auth.userId, auth.tenantId);
   }
 }

@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { ApprovalsService } from './approvals.service';
 import { AuthUser } from '../../common/decorators/current-user.decorator';
 
-const codeOf = (e: unknown) => (e as HttpException).getResponse() as { code: string };
+const codeOf = (e: unknown) => (e as HttpException).getResponse() as { code: string; details?: Record<string, unknown> };
 const auth = { userId: 'cashier', tenantId: 't1', outletId: 'o1', permissions: {} } as unknown as AuthUser;
 
 describe('ApprovalsService.approveWithPin', () => {
@@ -35,10 +35,10 @@ describe('ApprovalsService.approveWithPin', () => {
     const svc = build();
 
     const first = await svc.approveWithPin(auth, dto).catch((e) => e);
-    expect(codeOf(first)).toMatchObject({ code: 'PIN_INVALID', attemptsLeft: 2 });
+    expect(codeOf(first)).toMatchObject({ code: 'PIN_INVALID', details: { attemptsLeft: 2 } });
 
     const second = await svc.approveWithPin(auth, dto).catch((e) => e);
-    expect(codeOf(second)).toMatchObject({ code: 'PIN_INVALID', attemptsLeft: 1 });
+    expect(codeOf(second)).toMatchObject({ code: 'PIN_INVALID', details: { attemptsLeft: 1 } });
 
     const third = await svc.approveWithPin(auth, dto).catch((e) => e);
     expect(codeOf(third).code).toBe('PIN_LOCKED');

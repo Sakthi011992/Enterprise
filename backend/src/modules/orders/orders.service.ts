@@ -261,7 +261,7 @@ export class OrdersService {
           variantId: item.variantId,
           quantity: item.quantity,
           modifiers: readModifiers(item.modifiers),
-          station: routing.get(item.productId)?.station ?? 'KITCHEN',
+          station: routing.get(item.productId ?? '')?.station ?? 'KITCHEN',
         })),
       );
 
@@ -748,7 +748,7 @@ export class OrdersService {
   /** Rebuilds an AddItem for an existing line, keeping its product, variant, seat and note. */
   private asAddItem(item: OrderItem, modifierOptionIds: string[]): AddItemDto {
     return {
-      productId: item.comboId ? undefined : item.productId,
+      productId: item.comboId ? undefined : (item.productId ?? undefined),
       comboId: item.comboId ?? undefined,
       variantId: item.variantId ?? undefined,
       quantity: item.quantity,
@@ -783,7 +783,7 @@ export class OrdersService {
     const routing = await this.repo.routingFor(tx, [...new Set(items.map((i) => i.productId))]);
     const groups = new Map<string, { kind: TicketKind; station: string; items: OrderItem[] }>();
     for (const item of items) {
-      const r = routing.get(item.productId) ?? { station: 'KITCHEN', ticketKind: 'KOT' };
+      const r = routing.get(item.productId ?? '') ?? { station: 'KITCHEN', ticketKind: 'KOT' };
       const key = `${r.ticketKind}|${r.station}`;
       const g = groups.get(key) ?? { kind: r.ticketKind as TicketKind, station: r.station, items: [] };
       g.items.push(item);

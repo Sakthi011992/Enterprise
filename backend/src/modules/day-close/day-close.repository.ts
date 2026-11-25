@@ -38,7 +38,7 @@ export class DayCloseRepository {
       ? await tx.orderDiscount.findMany({ where: { orderId: { in: orderIds } } })
       : [];
 
-    const productIds = [...new Set(items.map((i) => i.productId))];
+    const productIds = [...new Set(items.map((i) => i.productId).filter((x): x is string => !!x))];
     const products = productIds.length
       ? await tx.product.findMany({ where: { id: { in: productIds } }, select: { id: true, categoryId: true } })
       : [];

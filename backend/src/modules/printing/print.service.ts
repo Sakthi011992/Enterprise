@@ -120,6 +120,7 @@ export class PrintService {
   async queueBill(orderId: string, opts: { copies?: number } = {}): Promise<PrintJob> {
     const order = await this.repo.findBillOrder(orderId);
     if (!order) throw apiError(404, 'ORDER_NOT_FOUND', 'Order not found');
+    if (!order.outletId) throw apiError(409, 'ORDER_HAS_NO_OUTLET', 'Order is not linked to an outlet');
 
     const printer = await this.requireReceiptPrinter(order.outletId);
     const outlet = await this.repo.findOutlet(order.outletId);

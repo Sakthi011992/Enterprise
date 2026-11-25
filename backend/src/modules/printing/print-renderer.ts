@@ -189,7 +189,7 @@ export function renderBill(data: BillPrintData, paperWidth: number): PrintPayloa
   for (const item of data.items) {
     const head = `${item.quantity} x ${item.name}`;
     lines.push(...wrapped(head, width - 10, '').map((part, index, all) =>
-      index === all.length - 1 ? { text: twoColumn(part, formatAmount(item.gross), width) } : { text: part },
+      index === all.length - 1 ? { ...part, text: twoColumn(part.text, formatAmount(item.gross), width) } : part,
     ));
     if (item.variantName) lines.push({ text: `   ${item.variantName} @ ${formatAmount(item.unitPrice)}` });
     for (const modifier of item.modifiers) lines.push(...wrapped(`+ ${modifier}`, width, '   '));

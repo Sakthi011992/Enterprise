@@ -87,7 +87,7 @@ class _ProductCard extends StatelessWidget {
             padding: EdgeInsets.all(t.spacing.md),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(t.radius.lg),
-              border: Border.all(color: t.color.border.default, width: t.borderWidth.hairline),
+              border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +188,7 @@ class _ComboCard extends StatelessWidget {
             padding: EdgeInsets.all(t.spacing.md),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(t.radius.lg),
-              border: Border.all(color: t.color.border.default, width: t.borderWidth.hairline),
+              border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

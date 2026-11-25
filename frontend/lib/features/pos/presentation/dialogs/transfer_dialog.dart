@@ -316,7 +316,7 @@ class _TableTile extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(t.radius.md),
                 border: Border.all(
-                  color: selected ? t.color.border.accent : t.color.border.default,
+                  color: selected ? t.color.border.accent : t.color.border.standard,
                   width: t.borderWidth.hairline,
                 ),
               ),
