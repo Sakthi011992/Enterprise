@@ -55,16 +55,24 @@ Map<String, PermissionGrant> adminMatrix() => {
     };
 
 void main() {
-  test('Bartender sees exactly the 5 exit-test items', () {
+  test('Bartender sees exactly the 6 back-office and POS items', () {
     final items = visibleNavItems(sessionWith(bartenderMatrix()));
     expect(items.map((i) => i.id).toList(), [
       'pos',
       'orders',
+      'floor',
       'menu',
       'stock-count',
       'my-shifts',
     ]);
-    expect(items.length, 5);
+    expect(items.length, 6);
+  });
+
+  test('Bartender does not see day close or hardware', () {
+    final ids = visibleNavItems(sessionWith(bartenderMatrix())).map((i) => i.id).toSet();
+    expect(ids.contains('day-close'), isFalse);
+    expect(ids.contains('hardware'), isFalse);
+    expect(ids.contains('floor-setup'), isFalse);
   });
 
   test('Admin sees every nav item', () {
@@ -80,12 +88,24 @@ void main() {
   test('pages without a nav entry of their own inherit their parent permission', () {
     expect(navItemForPath('/settings/appearance/themes/abc')?.id, 'appearance');
     expect(navItemForPath('/pos')?.id, 'pos');
+    expect(navItemForPath('/pos/abc/pay')?.id, 'pos');
+    expect(navItemForPath('/menu/products/abc')?.id, 'menu');
+    expect(navItemForPath('/menu/happy-hours')?.id, 'menu');
+    expect(navItemForPath('/settings/hardware')?.id, 'hardware');
     expect(navItemForPath('/posts'), isNull);
   });
 
   test('bartender is blocked from admin pages', () {
     final s = sessionWith(bartenderMatrix());
-    for (final route in ['/users', '/settings/tax', '/settings/devices', '/settings/appearance']) {
+    for (final route in [
+      '/users',
+      '/settings/tax',
+      '/settings/devices',
+      '/settings/appearance',
+      '/settings/hardware',
+      '/settings/floor',
+      '/reports/day-close',
+    ]) {
       final item = navItemForPath(route)!;
       expect(s.levelOf(item.permission).atLeast(item.min), isFalse, reason: route);
     }

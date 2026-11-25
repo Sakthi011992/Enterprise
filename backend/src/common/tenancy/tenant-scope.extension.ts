@@ -13,6 +13,19 @@ export const TENANT_MODELS = [
   'AuditLog',
   'Device',
   'Notification',
+  'TaxClass',
+  'Category',
+  'ModifierGroup',
+  'Combo',
+  'PriceRule',
+  'Area',
+  'DiningTable',
+  'Ticket',
+  'Printer',
+  'StationRoute',
+  'PrintJob',
+  'Approval',
+  'DayClose',
 ] as const;
 
 export type TenantModel = (typeof TENANT_MODELS)[number];

@@ -149,6 +149,103 @@ Requires `admin.users`. Users are tenant-scoped; deleted users return 404.
 | GET | `/reports/top-products?limit=10` | top selling products |
 | GET | `/reports/recent-orders?limit=10` | recent orders |
 
+## Menu, settings, floor and hardware (Phase 2)
+Outlet-scoped routes use the caller's outlet. Menu catalogue routes are tenant-wide. Money is returned as strings with two decimals.
+
+**Menu**
+| Method | Path | Permission | Notes |
+|--------|------|------------|-------|
+| GET | `/menu/pos` | `sales.orders.take` VIEW | `{ categories, products, modifierGroups, combos, priceRules, taxClasses, settings }` in one call. Inactive rows are left out. 86'd products stay with `is86: true`. `priceRules[].activeNow` and `endsAt` use outlet time |
+| GET / POST | `/categories` | `menu.edit` VIEW / EDIT | category has `station` (routing key), `ticketKind` (KOT or BOT), `taxClassId`, `color` |
+| PATCH | `/categories/:id` | `menu.edit` EDIT | partial |
+| DELETE | `/categories/:id` | `menu.edit` EDIT | soft delete. 409 `CATEGORY_IN_USE` (`details.count`) while active products use it |
+| PATCH | `/products/:id` | `menu.edit` EDIT | also accepts `categoryId`, `taxClassId`, `sortOrder`. 400 `CATEGORY_NOT_FOUND`, `TAX_CLASS_NOT_FOUND` |
+| PUT | `/products/:id/variants` | `menu.edit` EDIT | `{ items: [{ id?, name, price, isDefault?, sortOrder? }] }` replaces the list. Omitted variants are deactivated. Exactly one default: two defaults give 400 `VARIANT_DEFAULT_MULTIPLE`, none makes the first one the default. 400 `VARIANT_NAME_DUPLICATE`, `VARIANT_NOT_FOUND` |
+| PUT | `/products/:id/modifier-groups` | `menu.edit` EDIT | `{ groupIds }` replaces the attached groups. 400 `MODIFIER_GROUP_NOT_FOUND` |
+| POST | `/products/:id/86` | `menu.mark86` EDIT | `{ is86 }`. Notifies the outlet when the state changes |
+| GET / POST | `/modifier-groups` | `menu.edit` VIEW / EDIT | `{ name, minSelect, maxSelect, showOn: ['POS','QR','KIOSK'], options: [{ name, priceDelta, sortOrder? }] }` |
+| PUT | `/modifier-groups/:id` | `menu.edit` EDIT | full replacement. Options listed with `id` are updated, options without one are created, others are deactivated. 400 `MODIFIER_RULES`, `MODIFIER_OPTION_NOT_FOUND` |
+| DELETE | `/modifier-groups/:id` | `menu.edit` EDIT | soft delete |
+| GET / POST | `/combos` | `menu.edit` VIEW / EDIT | `{ name, price, taxClassId?, days?, startTime?, endTime?, items: [{ productId, variantId?, quantity?, swapAllowed? }] }` |
+| PUT | `/combos/:id` | `menu.edit` EDIT | full replacement including `items`. 400 `PRODUCT_NOT_FOUND`, `VARIANT_NOT_FOUND` |
+| DELETE | `/combos/:id` | `menu.edit` EDIT | soft delete |
+| GET / POST | `/price-rules` | `menu.edit` VIEW / EDIT | happy hour: `{ name, outletId?, percentOff, categoryIds, productIds, days, startTime, endTime }`. `outletId` must be null or the current outlet (400 `OUTLET_MISMATCH`). Windows may cross midnight |
+| PATCH / DELETE | `/price-rules/:id` | `menu.edit` EDIT | DELETE is soft |
+| GET / POST | `/tax-classes` | `admin.settings` VIEW / EDIT | `{ name, code, rate, components: [{ name, rate }], inclusive?, isLiquor? }`. Components must add up to `rate` (400 `TAX_COMPONENTS_MISMATCH`). 409 `TAX_CODE_TAKEN` |
+| PATCH / DELETE | `/tax-classes/:id` | `admin.settings` EDIT | DELETE is soft. 409 `TAX_CLASS_IN_USE` (`details.products`, `details.categories`) |
+| GET / PUT | `/outlet-settings` | `admin.settings` VIEW / EDIT | `{ serviceChargePercent, serviceChargeTypes, roundingMode, orderPrefix, invoicePrefix, countryCode? }` |
+
+**Floor**
+| Method | Path | Permission | Notes |
+|--------|------|------------|-------|
+| GET / POST | `/areas` | `sales.orders.take` VIEW / `admin.settings` EDIT | `{ name, priceMarkupPercent?, isSmoking?, sortOrder? }` |
+| PATCH / DELETE | `/areas/:id` | `admin.settings` EDIT | DELETE is soft. 409 `AREA_IN_USE` while it has active tables |
+| GET | `/tables` | `sales.orders.take` VIEW | live floor view: `[{ id, name, areaId, seats, shape, posX, posY, status, mergedIntoId, order: { id, orderNumber, covers, grandTotal, openedAt, waiterName } \| null }]` |
+| POST | `/tables` | `admin.settings` EDIT | `{ areaId, name, seats?, shape?, posX?, posY? }`. 409 `TABLE_NAME_TAKEN` |
+| PATCH / DELETE | `/tables/:id` | `admin.settings` EDIT | DELETE is soft. 409 `TABLE_HAS_OPEN_ORDER` |
+| PATCH | `/tables/:id/status` | `sales.orders.take` EDIT | `{ status: FREE \| CLEANING \| RESERVED }`. 409 `TABLE_HAS_OPEN_ORDER` unless the status is CLEANING |
+
+**Hardware**
+| Method | Path | Permission | Notes |
+|--------|------|------------|-------|
+| GET / POST | `/printers` | `admin.settings` VIEW / EDIT | `{ name, connection: LAN, USB, BLUETOOTH, host?, port?, paperWidth: 58 or 80, copies?, language?, isReceipt?, isActive? }`. A LAN printer needs a valid IPv4 address or hostname (400 `PRINTER_HOST_REQUIRED`, `PRINTER_HOST_INVALID`) |
+| PATCH / DELETE | `/printers/:id` | `admin.settings` EDIT | DELETE deactivates the printer |
+| POST | `/printers/:id/test` | `admin.settings` EDIT | queues a TEST print job (404 `PRINTER_NOT_FOUND`) |
+| GET / PUT | `/station-routes` | `admin.settings` VIEW / EDIT | `{ items: [{ station, printerId, fallbackPrinterId }] }` replaces the outlet's routes. 400 `DUPLICATE_STATION`, `PRINTER_NOT_IN_OUTLET` |
+| GET | `/print-jobs/next` | `X-Device-Key` (PRINTER or POS_TABLET device) | claims up to 10 QUEUED jobs for the device's outlet and marks them SENT. Returns `[{ id, kind, printer: { host, port, paperWidth, copies }, payload }]` |
+| POST | `/print-jobs/:id/result` | `X-Device-Key` | `{ ok, error?, printerStatus?: READY, PAPER_LOW, OFFLINE }`. Success completes the job (and marks the ticket PRINTED). Failure requeues it, up to 3 attempts. A ticket job moves to the station's fallback printer first. At the limit the job and ticket are FAILED and a notification is sent to the outlet. 409 `PRINT_JOB_NOT_IN_PROGRESS` |
+
+Payloads are structured lines (`{ lines: [{ text, bold?, align?, size? }], cut, openDrawer? }`). The print agent in `print-agent/` converts them to ESC/POS. Only PRINTER and POS_TABLET devices may poll for or report print jobs.
+
+## Orders (Phase 2)
+
+All under `/api/v1`, outlet = the caller's outlet. Money is a string with 2 decimals. `OrderView` is the shape in `docs/phase-2/PLAN.md` 1.4 (`items`, `discounts`, `payments`, `totals`, `invoiceNumber`).
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| POST | `/orders` | `sales.orders.take EDIT` | `{ type, tableId?, covers?, waiterId?, note?, offlineId?, items? }`. Idempotent on `offlineId`. Dine-in claims the table (409 `TABLE_OCCUPIED`). Legacy body `{ items: [{productId, quantity}] }` (no `type`) is a takeaway order and also returns `subtotal`, `taxAmount`, `grandTotal`. |
+| GET | `/orders` | `sales.orders.take VIEW` | Legacy history search (unchanged). |
+| GET | `/orders/open` | `sales.orders.take VIEW` | `{ data: [...] }` of OPEN, SENT, BILLED orders. |
+| GET | `/orders/:id` | `sales.orders.take VIEW` | `OrderView`. |
+| POST | `/orders/:id/items` | `sales.orders.take EDIT` | `{ items: [AddItem] }`. 400 `ITEM_86`, `ITEM_UNAVAILABLE`, `MODIFIER_RULES`, `COMBO_UNAVAILABLE`. |
+| PATCH / DELETE | `/orders/:id/items/:itemId` | `sales.orders.take EDIT` | Only lines still `NEW`, else 409 `ITEM_ALREADY_SENT`. PATCH takes `{ quantity?, seat?, note?, modifierOptionIds? }`. |
+| POST | `/orders/:id/send` | `sales.orders.take EDIT` | One ticket per station and kind. `{ order, tickets: [{id, kind, station, seq}] }`. 400 `NOTHING_TO_SEND`. |
+| POST | `/orders/:id/hold`, `/unhold` | `sales.orders.take EDIT` | Sets or clears `heldAt`. |
+| POST | `/orders/:id/discounts` | `sales.discount.give REQUEST` | `{ type: PERCENT\|FLAT, value, itemIds?, reason, approvalId? }`. Above the LIMITED limit: 403 `APPROVAL_REQUIRED` `{ limit }`, unless the approval matches (`APPROVAL_MISMATCH`, `APPROVAL_EXPIRED`). Liquor lines: 400 `LIQUOR_DISCOUNT_NOT_ALLOWED`. |
+| DELETE | `/orders/:id/discounts/:discountId` | `sales.discount.give EDIT` | |
+| POST | `/orders/:id/void-items` | `sales.void REQUEST` | `{ itemIds, reason, approvalId? }`. Sent lines print a cancellation ticket and log wastage. Without APPROVE on `sales.void`, 403 `APPROVAL_REQUIRED` unless an approval is given. |
+| POST | `/orders/:id/void` | `sales.void REQUEST` | `{ reason, approvalId? }`. 409 `ORDER_HAS_PAYMENTS`. Table to FREE. |
+| POST | `/orders/:id/move` | `sales.orders.take EDIT` | `{ toTableId, force? }`. 400 `TABLE_TOO_SMALL` `{ seats, covers }` unless `force`. 409 `TABLE_OCCUPIED`. |
+| POST | `/orders/:id/merge` | `sales.orders.take EDIT` | `{ fromOrderId }`. The source order is voided ("merged into A-…") and its table freed. |
+| POST | `/orders/:id/transfer-items` | `sales.orders.take EDIT` | `{ itemIds, toOrderId? , toTableId? }`. |
+| POST | `/orders/:id/bill` | `sales.payments.take VIEW` | `{ copies? }`. Order to BILLED, dine-in table to BILL_PRINTED. 409 `UNSENT_ITEMS`. |
+| GET | `/orders/:id/split` | `sales.payments.take VIEW` | `?mode=EQUAL&parts=3` \| `SEAT` \| `ITEMS&assign=itemId:seat,…`. `{ grandTotal, shares: [{ label, seat, itemIds, amount, paid, due }] }`. Shares sum to `grandTotal`. |
+| POST | `/orders/:id/payments` | `sales.payments.take EDIT` | `{ payments: [{ method, amount, tendered?, reference?, seat? }], tipAmount?, completeSeat? }`. 400 `PAYMENT_EXCEEDS_DUE` `{ due }`, `TENDERED_TOO_LOW`, `SEAT_NOT_FULLY_PAID`. Returns `{ order, change }`. On full payment: invoice number (outlet `invoicePrefix`, once), dine-in to PAID and table to CLEANING; takeaway and bar counter to CLOSED. A cash line opens the drawer. |
+| POST | `/orders/:id/close` | `sales.payments.take EDIT` | PAID to CLOSED, table to CLEANING. 409 `ORDER_NOT_PAID`. |
+| POST | `/orders/:id/refund` | `sales.payments.take EDIT` | `{ amount, reason, paymentId?, approvalId? }`. Needs APPROVE on `sales.void` or an approved REFUND approval. Negative payment row. 400 `REFUND_EXCEEDS_PAID`. |
+| POST | `/payments` | `sales.payments.take EDIT` | Legacy: `{ orderId, amount, paymentMethod }`, returns `{ payment, order }`. |
+| POST | `/payments/:id/refund` | `sales.payments.take EDIT` | Legacy full refund. |
+
+### Approvals
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| POST | `/approvals` | `sales.orders.take EDIT` | `{ type: DISCOUNT\|VOID\|REFUND\|NO_SALE, orderId?, payload, reason }`. PENDING for 15 min, notifies approvers. |
+| POST | `/approvals/pin` | `sales.orders.take EDIT` | `{ type, orderId?, payload, reason, managerUserId, pin }`. Creates and approves at once. 403 `APPROVER_NOT_ALLOWED` (needs APPROVE on the key), 401 `PIN_INVALID` `{ attemptsLeft }`, 423 `PIN_LOCKED`. |
+| GET | `/approvals/:id` | auth | Poll while waiting. Pending past expiry becomes EXPIRED. |
+| GET | `/approvals?status=PENDING` | auth | `{ data: [...] }`. |
+| POST | `/approvals/:id/decide` | APPROVE on the key | `{ decision: APPROVED\|DECLINED }`. 409 `APPROVAL_NOT_PENDING`. |
+
+### Reports and cash drawer
+
+| Method | Path | Permission | Notes |
+|---|---|---|---|
+| GET | `/reports/x` | `reports.view LIMITED` | Live totals for the current business date (05:00 cut-off). Not saved. Shape in PLAN.md 1.6. |
+| POST | `/reports/x/print` | `reports.view LIMITED` | Prints the X report on the receipt printer. |
+| POST | `/reports/z` | `reports.view EDIT` | `{ cashCounted, force? }`. Saves a DayClose and links the day's orders. 409 `DAY_ALREADY_CLOSED`, `OPEN_ORDERS_EXIST` `{ count }`. Returns `{ id, businessDate, cashCounted, cashExpected, variance, totals }`. |
+| GET | `/reports/day-closes` | `reports.view LIMITED` | `{ data: [...] }`, latest 50. |
+| POST | `/cash-drawer/open` | `sales.orders.take EDIT` | `{ reason, approvalId? }`. Opens directly with `sales.payments.take EDIT`; otherwise needs an approved NO_SALE approval (403 `APPROVAL_REQUIRED`). Audited. |
+
 ## Error envelope
 ```json
 { "statusCode": 400, "message": "…", "error": "Bad Request", "code": "PIN_TOO_SIMPLE", "details": {}, "path": "/api/v1/…", "timestamp": "…" }

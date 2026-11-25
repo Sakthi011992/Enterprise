@@ -4,7 +4,9 @@ import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/payment.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Can } from '../../common/decorators/can.decorator';
+import { AuthUser, CurrentUser } from '../../common/decorators/current-user.decorator';
 
+/** Legacy payment routes, kept for the old billing screen. */
 @ApiTags('payments')
 @ApiBearerAuth()
 @Controller('payments')
@@ -13,9 +15,9 @@ export class PaymentsController {
 
   @Can('sales.payments.take', 'EDIT')
   @Post()
-  @ApiOperation({ summary: 'Record a payment for an order' })
-  create(@Body() dto: CreatePaymentDto) {
-    return this.payments.create(dto);
+  @ApiOperation({ summary: 'Legacy: record one payment for an order' })
+  create(@Body() dto: CreatePaymentDto, @CurrentUser() auth: AuthUser) {
+    return this.payments.legacyCreate(dto, auth);
   }
 
   @Can('sales.payments.take', 'VIEW')
@@ -28,8 +30,8 @@ export class PaymentsController {
   @Roles('ADMIN')
   @Can('sales.payments.take', 'EDIT')
   @Post(':id/refund')
-  @ApiOperation({ summary: 'Refund a payment' })
+  @ApiOperation({ summary: 'Legacy: refund a payment (marks it and the order REFUNDED)' })
   refund(@Param('id') id: string) {
-    return this.payments.refund(id);
+    return this.payments.legacyRefund(id);
   }
 }

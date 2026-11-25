@@ -8,18 +8,28 @@ import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/outlet_picker_screen.dart';
 import '../../features/auth/presentation/pin_login_screen.dart';
 import '../../features/auth/presentation/reset_password_screen.dart';
-import '../../features/billing/presentation/billing_screen.dart';
 import '../../features/branding/presentation/branding_screen.dart';
 import '../../features/dev/component_gallery_screen.dart';
+import '../../features/floor/presentation/floor_plan_screen.dart';
+import '../../features/floor/presentation/floor_setup_screen.dart';
 import '../../features/devices/presentation/devices_screen.dart';
 import '../../features/kiosk/presentation/kiosk_admin_screen.dart';
+import '../../features/hardware/presentation/hardware_screen.dart';
 import '../../features/kiosk/presentation/kiosk_display_screen.dart';
+import '../../features/menu/presentation/categories_screen.dart';
+import '../../features/menu/presentation/combos_screen.dart';
+import '../../features/menu/presentation/modifier_groups_screen.dart';
+import '../../features/menu/presentation/price_rules_screen.dart';
+import '../../features/menu/presentation/product_editor_screen.dart';
 import '../../features/localisation/presentation/localisation_screen.dart';
-import '../../features/orders/presentation/order_history_screen.dart';
+import '../../features/orders/presentation/orders_screen.dart';
+import '../../features/pos/presentation/pay_screen.dart';
+import '../../features/pos/presentation/pos_screen.dart';
 import '../../features/outlets/presentation/outlets_screen.dart';
 import '../../features/personas/presentation/personas_screen.dart';
 import '../../features/products/presentation/products_screen.dart';
 import '../../features/reports/presentation/dashboard_screen.dart';
+import '../../features/reports/presentation/day_close_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/tax/presentation/tax_settings_screen.dart';
 import '../../features/themes/presentation/appearance_settings_page.dart';
@@ -104,9 +114,31 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state, child) => AppShell(location: state.uri.path, child: child),
         routes: [
           GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
-          GoRoute(path: '/pos', builder: (_, __) => const BillingScreen()),
-          GoRoute(path: '/orders', builder: (_, __) => const OrderHistoryScreen()),
+          GoRoute(
+            path: '/pos',
+            builder: (_, state) => PosScreen(tableId: state.uri.queryParameters['tableId']),
+          ),
+          GoRoute(
+            path: '/pos/:orderId',
+            builder: (_, state) => PosScreen(orderId: state.pathParameters['orderId']),
+          ),
+          GoRoute(
+            path: '/pos/:orderId/pay',
+            builder: (_, state) => PayScreen(orderId: state.pathParameters['orderId']!),
+          ),
+          GoRoute(path: '/floor', builder: (_, __) => const FloorPlanScreen()),
+          GoRoute(path: '/orders', builder: (_, __) => const OrdersScreen()),
+          GoRoute(path: '/reports/day-close', builder: (_, __) => const DayCloseScreen()),
           GoRoute(path: '/menu', builder: (_, __) => const ProductsScreen()),
+          GoRoute(path: '/menu/categories', builder: (_, __) => const CategoriesScreen()),
+          GoRoute(
+            path: '/menu/products/:id',
+            builder: (_, state) =>
+                ProductEditorScreen(productId: state.pathParameters['id']!),
+          ),
+          GoRoute(path: '/menu/modifiers', builder: (_, __) => const ModifierGroupsScreen()),
+          GoRoute(path: '/menu/combos', builder: (_, __) => const CombosScreen()),
+          GoRoute(path: '/menu/happy-hours', builder: (_, __) => const PriceRulesScreen()),
           GoRoute(
             path: '/stock-count',
             builder: (_, __) => const PlaceholderScreen(title: 'Stock count'),
@@ -121,6 +153,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/settings/outlets', builder: (_, __) => const OutletsScreen()),
           GoRoute(path: '/settings/devices', builder: (_, __) => const DevicesScreen()),
           GoRoute(path: '/settings/tax', builder: (_, __) => const TaxSettingsScreen()),
+          GoRoute(path: '/settings/hardware', builder: (_, __) => const HardwareScreen()),
+          GoRoute(path: '/settings/floor', builder: (_, __) => const FloorSetupScreen()),
           GoRoute(path: '/settings/branding', builder: (_, __) => const BrandingScreen()),
           GoRoute(
             path: '/settings/localisation',

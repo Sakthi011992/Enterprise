@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { OrderStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 
-const COUNTED: OrderStatus[] = [OrderStatus.PAID, OrderStatus.PARTIALLY_PAID];
+// CLOSED: takeaway and bar-counter orders close straight after payment (Phase 2).
+const COUNTED: OrderStatus[] = [OrderStatus.PAID, OrderStatus.PARTIALLY_PAID, OrderStatus.CLOSED];
 
 @Injectable()
 export class ReportsRepository {

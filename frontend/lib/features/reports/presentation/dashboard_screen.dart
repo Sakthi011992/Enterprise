@@ -62,7 +62,7 @@ class DashboardScreen extends ConsumerWidget {
               SizedBox(height: t.spacing.sm),
               ...recent.map((o) => ListTile(
                     leading: const Icon(Icons.history),
-                    title: Text(o['invoiceNumber'] as String),
+                    title: Text((o['invoiceNumber'] ?? o['orderNumber'] ?? '—') as String),
                     subtitle: Text(o['status'] as String),
                     trailing: Text('₹${o['grandTotal']}'),
                   )),

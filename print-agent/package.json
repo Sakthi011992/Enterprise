@@ -1,0 +1,19 @@
+{
+  "name": "pos-print-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Polls the POS API for print jobs and sends ESC/POS bytes to LAN printers",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

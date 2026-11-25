@@ -5,6 +5,7 @@ import { BlobStorageService } from '../../common/storage/blob-storage.service';
 import { InvoiceNumberService } from './invoice-number.service';
 import { InvoicePdfService } from './invoice-pdf.service';
 import { GenerateInvoiceDto, AuditQueryDto } from './dto/invoice.dto';
+import { apiError } from '../../common/filters/api-error';
 
 @Injectable()
 export class InvoiceService {
@@ -29,6 +30,10 @@ export class InvoiceService {
       include: { items: true },
     });
     if (!order) throw new NotFoundException('Order not found');
+
+    // Phase 2: paying an order already issues its invoice. Return that one instead of numbering a duplicate.
+    const existing = await this.prisma.invoice.findFirst({ where: { orderId: order.id, status: 'ISSUED' } });
+    if (existing) return existing;
 
     const profile = await this.resolveProfile(dto.countryCode ?? 'IN');
 
@@ -68,6 +73,41 @@ export class InvoiceService {
         },
       });
     });
+  }
+
+  /**
+   * Gives a paid order its invoice number inside the caller's transaction, with an Invoice row and no
+   * PDF (the PDF is produced on demand by generate()). Used by the POS payment flow, which must
+   * allocate once, on PAID, and never reuse a number.
+   */
+  async issueForOrder(
+    tx: Prisma.TransactionClient,
+    order: {
+      id: string;
+      subtotal: Prisma.Decimal;
+      taxAmount: Prisma.Decimal;
+      grandTotal: Prisma.Decimal;
+      taxBreakdown: Prisma.JsonValue | null;
+    },
+    opts: { countryCode: string; invoicePrefix: string },
+  ): Promise<string> {
+    const profile = await tx.invoiceCountryProfile.findUnique({ where: { countryCode: opts.countryCode } });
+    if (!profile) throw apiError(409, 'INVOICE_PROFILE_MISSING', `No invoice profile for country: ${opts.countryCode}`);
+
+    const invoiceNumber = await this.numberSvc.next(tx, profile.id, opts.invoicePrefix, profile.resetPeriod);
+    await tx.invoice.create({
+      data: {
+        invoiceNumber,
+        orderId: order.id,
+        countryProfileId: profile.id,
+        taxBreakdown: (order.taxBreakdown ?? []) as Prisma.InputJsonValue,
+        subtotal: order.subtotal,
+        taxAmount: order.taxAmount,
+        grandTotal: order.grandTotal,
+        blobPath: null,
+      },
+    });
+    return invoiceNumber;
   }
 
   private buildTaxBreakdown(items: any[], mode: string) {

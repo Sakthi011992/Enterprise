@@ -24,6 +24,18 @@ import { PersonasModule } from './modules/personas/personas.module';
 import { OutletsModule } from './modules/outlets/outlets.module';
 import { DevicesModule } from './modules/devices/devices.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { ModifiersModule } from './modules/modifiers/modifiers.module';
+import { CombosModule } from './modules/combos/combos.module';
+import { PriceRulesModule } from './modules/price-rules/price-rules.module';
+import { TaxClassesModule } from './modules/tax-classes/tax-classes.module';
+import { OutletSettingsModule } from './modules/outlet-settings/outlet-settings.module';
+import { FloorModule } from './modules/floor/floor.module';
+import { PrintingModule } from './modules/printing/printing.module';
+import { ApprovalsModule } from './modules/approvals/approvals.module';
+import { DayCloseModule } from './modules/day-close/day-close.module';
+import { CashDrawerModule } from './modules/cash-drawer/cash-drawer.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { PermissionGuard } from './common/guards/permission.guard';
 import { RolesGuard } from './common/guards/roles.guard';
@@ -43,8 +55,20 @@ import { TenantContextMiddleware } from './common/tenancy/tenant-context.middlew
     NotificationsModule,
     ProductsModule,
     TaxModule,
+    TaxClassesModule,
+    CategoriesModule,
+    ModifiersModule,
+    CombosModule,
+    PriceRulesModule,
+    OutletSettingsModule,
+    FloorModule,
+    MenuModule,
+    PrintingModule,
     OrdersModule,
     PaymentsModule,
+    ApprovalsModule,
+    DayCloseModule,
+    CashDrawerModule,
     ReportsModule,
     UploadsModule,
     InvoiceModule,

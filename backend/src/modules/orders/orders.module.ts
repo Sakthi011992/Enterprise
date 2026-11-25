@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
-import { OrdersService } from './orders.service';
-import { OrdersController } from './orders.controller';
 import { TaxModule } from '../tax/tax.module';
+import { ApprovalsModule } from '../approvals/approvals.module';
+import { OrdersController } from './orders.controller';
 import { OrdersRepository } from './orders.repository';
+import { OrdersService } from './orders.service';
+import { OrderLineResolver } from './order-line-resolver';
+import { OrderPricingService } from './order-pricing.service';
 
+/** Orders, lines, discounts, voids, table moves and bills. PaymentsModule builds on the exported pricing service. */
 @Module({
-  imports: [TaxModule],
+  imports: [TaxModule, ApprovalsModule],
   controllers: [OrdersController],
-  providers: [OrdersService, OrdersRepository],
-  exports: [OrdersService],
+  providers: [OrdersService, OrdersRepository, OrderLineResolver, OrderPricingService],
+  exports: [OrdersService, OrdersRepository, OrderPricingService],
 })
 export class OrdersModule {}

@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
   Res,
   UploadedFile,
@@ -17,9 +18,17 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nes
 import type { Response } from 'express';
 import { ProductsService } from './products.service';
 import type { ImportSummary } from './product-import.service';
-import { CreateProductDto, ProductQueryDto, UpdateProductDto, UpdateStatusDto } from './dto/product.dto';
+import {
+  CreateProductDto,
+  ProductQueryDto,
+  ReplaceVariantsDto,
+  Set86Dto,
+  SetModifierGroupsDto,
+  UpdateProductDto,
+  UpdateStatusDto,
+} from './dto/product.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { AuthUser, CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Can } from '../../common/decorators/can.decorator';
 
 @ApiTags('products')
@@ -63,11 +72,31 @@ export class ProductsController {
     return this.products.create(dto);
   }
 
-  @Roles('ADMIN')
   @Can('menu.edit', 'EDIT')
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
     return this.products.update(id, dto);
+  }
+
+  @Can('menu.edit', 'EDIT')
+  @Put(':id/variants')
+  @ApiOperation({ summary: 'Replace the variants of a product (exactly one default if any)' })
+  setVariants(@Param('id') id: string, @Body() dto: ReplaceVariantsDto) {
+    return this.products.setVariants(id, dto);
+  }
+
+  @Can('menu.edit', 'EDIT')
+  @Put(':id/modifier-groups')
+  @ApiOperation({ summary: 'Replace the modifier groups of a product' })
+  setModifierGroups(@Param('id') id: string, @Body() dto: SetModifierGroupsDto) {
+    return this.products.setModifierGroups(id, dto);
+  }
+
+  @Can('menu.mark86', 'EDIT')
+  @Post(':id/86')
+  @ApiOperation({ summary: 'Mark a product out of stock (86) or back in stock; notifies the outlet' })
+  set86(@Param('id') id: string, @Body() dto: Set86Dto, @CurrentUser() auth: AuthUser) {
+    return this.products.set86(id, dto, auth);
   }
 
   @Roles('ADMIN')

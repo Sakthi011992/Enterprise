@@ -16,7 +16,20 @@ type TenantScopedDelegate =
   | 'productImportLog'
   | 'auditLog'
   | 'device'
-  | 'notification';
+  | 'notification'
+  | 'taxClass'
+  | 'category'
+  | 'modifierGroup'
+  | 'combo'
+  | 'priceRule'
+  | 'area'
+  | 'diningTable'
+  | 'ticket'
+  | 'printer'
+  | 'stationRoute'
+  | 'printJob'
+  | 'approval'
+  | 'dayClose';
 
 type TenantFilledCreate<D> = {
   [K in keyof D]: K extends 'create' | 'createMany' | 'upsert' ? (args: any) => any : D[K];

@@ -17,7 +17,7 @@ export class OrderCashierEntity {
 
 export class OrderEntity {
   @ApiProperty() id: string;
-  @ApiProperty() invoiceNumber: string;
+  @ApiProperty({ nullable: true, description: 'Assigned when the order is paid' }) invoiceNumber: string | null;
   @ApiProperty() subtotal: string;
   @ApiProperty() taxAmount: string;
   @ApiProperty() grandTotal: string;

@@ -13,6 +13,25 @@ enum OrderStatus {
   PAID
   PARTIALLY_PAID
   REFUNDED
+  OPEN
+  SENT
+  BILLED
+  CLOSED
+  VOID
+}
+
+enum OrderType {
+  DINE_IN
+  BAR_COUNTER
+  TAKEAWAY
+  DELIVERY
+}
+
+enum OrderItemStatus {
+  NEW
+  SENT
+  SERVED
+  VOIDED
 }
 
 enum PaymentMethod {
@@ -74,6 +93,19 @@ model Tenant {
   auditLogs          AuditLog[]
   devices            Device[]
   notifications      Notification[]
+  taxClasses         TaxClass[]
+  categories         Category[]
+  modifierGroups     ModifierGroup[]
+  combos             Combo[]
+  priceRules         PriceRule[]
+  areas              Area[]
+  diningTables       DiningTable[]
+  tickets            Ticket[]
+  printers           Printer[]
+  stationRoutes      StationRoute[]
+  printJobs          PrintJob[]
+  approvals          Approval[]
+  dayCloses          DayClose[]
 
   @@map("tenants")
 }
@@ -92,6 +124,16 @@ model Outlet {
   userOutlets UserOutlet[]
   devices     Device[]
   orders      Order[]
+  areas       Area[]
+  diningTables DiningTable[]
+  outletSettings OutletSettings?
+  priceRules  PriceRule[]
+  printers    Printer[]
+  stationRoutes StationRoute[]
+  printJobs   PrintJob[]
+  tickets     Ticket[]
+  approvals   Approval[]
+  dayCloses   DayClose[]
 
   @@unique([tenantId, code])
   @@index([tenantId])
@@ -248,7 +290,16 @@ model User {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime? // soft delete
 
-  orders            Order[]
+  orders            Order[]        @relation("OrderCashier")
+  waiterOrders      Order[]        @relation("OrderWaiter")
+  orderItemsCreated OrderItem[]
+  orderDiscountsCreated OrderDiscount[] @relation("DiscountCreatedBy")
+  orderDiscountsApproved OrderDiscount[] @relation("DiscountApprovedBy")
+  approvalsRequested Approval[]    @relation("ApprovalRequestedBy")
+  approvalsDecided   Approval[]    @relation("ApprovalApprover")
+  payments          Payment[]
+  tickets           Ticket[]
+  dayCloses         DayClose[]
   importLogs        ProductImportLog[]
   auditLogs         AuditLog[]
   themesCreated     Theme[]
@@ -277,18 +328,28 @@ model Product {
   price          Decimal   @db.Decimal(12, 2)
   taxPercentage  Decimal?  @db.Decimal(5, 2) // null => use global tax
   imageUrl       String?
+  categoryId     String?
+  category       Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  taxClassId     String?   // overrides category; null = category's, then taxPercentage / global tax
+  taxClass       TaxClass? @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
+  is86           Boolean   @default(false)
+  sortOrder      Int       @default(0)
   isActive       Boolean   @default(true)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime? // soft delete
 
-  orderItems    OrderItem[]
-  images        ProductImage[]
-  featuredItems FeaturedItem[]
+  orderItems     OrderItem[]
+  images         ProductImage[]
+  featuredItems  FeaturedItem[]
+  variants       ProductVariant[]
+  modifierGroups ProductModifierGroup[]
+  comboItems     ComboItem[]
 
   @@index([tenantId])
   @@index([name])
   @@index([isActive])
+  @@index([categoryId])
   @@map("products")
 }
 
@@ -307,50 +368,116 @@ model GlobalTaxSetting {
 }
 
 model Order {
-  id            String      @id @default(uuid())
+  id            String       @id @default(uuid())
   tenantId      String
-  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  tenant        Tenant       @relation(fields: [tenantId], references: [id])
   outletId      String? // nullable in Phase 1; set on new orders when the request has an outlet
-  outlet        Outlet?     @relation(fields: [outletId], references: [id])
-  invoiceNumber String      @unique
+  outlet        Outlet?      @relation(fields: [outletId], references: [id])
+  orderNumber   String?      // "A-1043", unique per outlet
+  invoiceNumber String?      @unique // assigned when the order is PAID
+  type          OrderType    @default(DINE_IN)
+  status        OrderStatus  @default(OPEN)
+  tableId       String?
+  table         DiningTable? @relation(fields: [tableId], references: [id], onDelete: SetNull)
+  covers        Int          @default(1)
   cashierId     String
-  cashier       User        @relation(fields: [cashierId], references: [id])
-  subtotal      Decimal     @db.Decimal(12, 2)
-  taxAmount     Decimal     @db.Decimal(12, 2)
-  grandTotal    Decimal     @db.Decimal(12, 2)
-  status        OrderStatus @default(PENDING)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  cashier       User         @relation("OrderCashier", fields: [cashierId], references: [id])
+  waiterId      String?
+  waiter        User?        @relation("OrderWaiter", fields: [waiterId], references: [id], onDelete: SetNull)
+  subtotal      Decimal      @db.Decimal(12, 2)
+  discountTotal Decimal      @db.Decimal(12, 2) @default(0)
+  serviceCharge Decimal      @db.Decimal(12, 2) @default(0)
+  taxAmount     Decimal      @db.Decimal(12, 2)
+  tipTotal      Decimal      @db.Decimal(12, 2) @default(0)
+  roundOff      Decimal      @db.Decimal(12, 2) @default(0)
+  grandTotal    Decimal      @db.Decimal(12, 2)
+  taxBreakdown  Json?
+  note          String?
+  offlineId     String?      @unique
+  heldAt        DateTime?
+  billedAt      DateTime?
+  paidAt        DateTime?
+  closedAt      DateTime?
+  voidedAt      DateTime?
+  voidReason    String?
+  dayCloseId    String?
+  dayClose      DayClose?    @relation(fields: [dayCloseId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
-  items    OrderItem[]
-  payments Payment[]
-  invoices Invoice[]
+  items     OrderItem[]
+  payments  Payment[]
+  invoices  Invoice[]
+  discounts OrderDiscount[]
+  tickets   Ticket[]
+  approvals Approval[]
 
+  @@unique([outletId, orderNumber])
   @@index([tenantId])
   @@index([outletId])
+  @@index([outletId, status])
   @@index([invoiceNumber])
   @@index([createdAt])
   @@index([cashierId])
   @@index([status])
+  @@index([tableId])
+  @@index([dayCloseId])
   @@map("orders")
 }
 
 model OrderItem {
-  id            String  @id @default(uuid())
-  orderId       String
-  order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId     String
-  product       Product @relation(fields: [productId], references: [id])
-  productName   String  // snapshot
-  price         Decimal @db.Decimal(12, 2) // snapshot
-  quantity      Int
-  taxPercentage Decimal @db.Decimal(5, 2)  // snapshot of resolved rate
-  taxAmount     Decimal @db.Decimal(12, 2)
-  lineTotal     Decimal @db.Decimal(12, 2)
+  id               String          @id @default(uuid())
+  orderId          String
+  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId        String?
+  product          Product?        @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productName      String  // snapshot
+  price            Decimal @db.Decimal(12, 2) // snapshot: final unit price after markup and happy hour
+  quantity         Int
+  taxPercentage    Decimal @db.Decimal(5, 2)  // snapshot of resolved rate
+  taxAmount        Decimal @db.Decimal(12, 2)
+  lineTotal        Decimal @db.Decimal(12, 2)
+  variantId        String? // snapshot reference, no FK (variants are replaced on edit)
+  variantName      String?
+  seat             Int?
+  status           OrderItemStatus @default(NEW)
+  modifiers        Json            @default("[]")
+  note             String?
+  grossAmount      Decimal         @db.Decimal(12, 2) @default(0)
+  discountAmount   Decimal         @db.Decimal(12, 2) @default(0)
+  happyHourPercent Decimal?        @db.Decimal(5, 2)
+  taxClassId       String?        // snapshot reference, no FK (past orders keep snapshots)
+  taxBreakdown     Json?
+  comboId          String?        // snapshot reference, no FK
+  sentAt           DateTime?
+  createdAt        DateTime  @default(now())
+  voidedAt         DateTime?
+  voidReason       String?
+  createdById      String?
+  createdBy        User?           @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
   @@index([orderId])
   @@index([productId])
   @@map("order_items")
+}
+
+model OrderDiscount {
+  id           String       @id @default(uuid())
+  orderId      String
+  order        Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type         DiscountType
+  value        Decimal      @db.Decimal(12, 2) // percent or ₹
+  itemIds      String[]     @default([]) // empty = whole bill (non-liquor)
+  amount       Decimal      @db.Decimal(12, 2) // computed
+  reason       String
+  createdById  String
+  createdBy    User         @relation("DiscountCreatedBy", fields: [createdById], references: [id])
+  approvedById String?
+  approvedBy   User?        @relation("DiscountApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+  createdAt    DateTime     @default(now())
+
+  @@index([orderId])
+  @@map("order_discounts")
 }
 
 model Payment {
@@ -361,6 +488,13 @@ model Payment {
   paymentMethod PaymentMethod
   status        PaymentStatus @default(PAID)
   createdAt     DateTime      @default(now())
+  seat          Int?
+  tipAmount     Decimal       @db.Decimal(12, 2) @default(0)
+  tendered      Decimal?      @db.Decimal(12, 2)
+  changeGiven   Decimal?      @db.Decimal(12, 2)
+  reference     String?
+  createdById   String?
+  createdBy     User?         @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
   gatewayEventIds String[] @default([])
 
@@ -762,3 +896,424 @@ model FeaturedItem {
 // ---------------------------------------------------------------------------
 // Order → Invoice relation (back-reference)
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Phase 2: POS core (menu, floor, orders, tickets, printing, approvals, day close)
+// ---------------------------------------------------------------------------
+
+enum TicketKind {
+  KOT
+  BOT
+}
+
+enum TicketStatus {
+  QUEUED
+  PRINTED
+  FAILED
+  CANCELLED
+}
+
+enum TableStatus {
+  FREE
+  OCCUPIED
+  BILL_PRINTED
+  CLEANING
+  RESERVED
+}
+
+enum TableShape {
+  SQUARE
+  ROUND
+  LONG
+}
+
+enum ApprovalType {
+  DISCOUNT
+  VOID
+  REFUND
+  NO_SALE
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  DECLINED
+  EXPIRED
+}
+
+enum DiscountType {
+  PERCENT
+  FLAT
+}
+
+enum PrinterConnection {
+  LAN
+  USB
+  BLUETOOTH
+}
+
+enum PrintJobKind {
+  TICKET
+  BILL
+  REPORT
+  DRAWER
+  TEST
+}
+
+enum PrintJobStatus {
+  QUEUED
+  SENT
+  DONE
+  FAILED
+}
+
+enum RoundingMode {
+  NONE
+  NEAREST_1
+}
+
+enum DayCloseKind {
+  X
+  Z
+}
+
+model TaxClass {
+  id         String   @id @default(uuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  name       String   // "GST 5% (restaurant)"
+  code       String   // "GST5", "VAT_LIQUOR", "GST18"
+  rate       Decimal  @db.Decimal(5, 2)
+  components Json     // [{ "name": "CGST", "rate": 2.5 }, { "name": "SGST", "rate": 2.5 }] — rates sum to `rate`
+  inclusive  Boolean  @default(false)
+  isLiquor   Boolean  @default(false) // liquor lines are never discounted
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  categories Category[]
+  products   Product[]
+  combos     Combo[]
+
+  @@unique([tenantId, code])
+  @@map("tax_classes")
+}
+
+model Category {
+  id         String     @id @default(uuid())
+  tenantId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  name       String
+  sortOrder  Int        @default(0)
+  station    String     @default("KITCHEN") // routing key, e.g. "BAR", "KITCHEN", "TANDOOR"
+  ticketKind TicketKind @default(KOT) // BOT for drinks
+  taxClassId String? // default for products in this category
+  taxClass   TaxClass?  @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
+  color      String? // hex for the POS rail
+  isActive   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  products Product[]
+
+  @@index([tenantId])
+  @@map("categories")
+}
+
+model ProductVariant {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String // "30 ml", "60 ml", "Bottle", "Shot"
+  price     Decimal  @db.Decimal(12, 2)
+  sortOrder Int      @default(0)
+  isDefault Boolean  @default(false)
+  isActive  Boolean  @default(true)
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model ModifierGroup {
+  id        String   @id @default(uuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  name      String // "How to serve (spirits)"
+  minSelect Int      @default(0)
+  maxSelect Int      @default(1)
+  showOn    String[] @default(["POS"]) // POS, QR, KIOSK
+  isActive  Boolean  @default(true)
+  options   ModifierOption[]
+  products  ProductModifierGroup[]
+
+  @@index([tenantId])
+  @@map("modifier_groups")
+}
+
+model ModifierOption {
+  id         String        @id @default(uuid())
+  groupId    String
+  group      ModifierGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  name       String // "With soda"
+  priceDelta Decimal       @db.Decimal(12, 2) @default(0)
+  sortOrder  Int           @default(0)
+  isActive   Boolean       @default(true)
+
+  @@index([groupId])
+  @@map("modifier_options")
+}
+
+model ProductModifierGroup {
+  productId String
+  product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  groupId   String
+  group     ModifierGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sortOrder Int           @default(0)
+
+  @@id([productId, groupId])
+  @@index([groupId])
+  @@map("product_modifier_groups")
+}
+
+model Combo {
+  id         String   @id @default(uuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  name       String // "Beer bucket (5)"
+  price      Decimal  @db.Decimal(12, 2)
+  taxClassId String?
+  taxClass   TaxClass? @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
+  days       Int[]    @default([0, 1, 2, 3, 4, 5, 6]) // 0 = Sunday
+  startTime  String? // "17:00" outlet local time; null = all day
+  endTime    String? // "23:59"
+  isActive   Boolean  @default(true)
+  items      ComboItem[]
+
+  @@index([tenantId])
+  @@map("combos")
+}
+
+model ComboItem {
+  id          String  @id @default(uuid())
+  comboId     String
+  combo       Combo   @relation(fields: [comboId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variantId   String? // snapshot reference, no FK
+  quantity    Int     @default(1)
+  swapAllowed Boolean @default(false)
+
+  @@index([comboId])
+  @@map("combo_items")
+}
+
+model PriceRule {
+  id          String   @id @default(uuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  outletId    String? // null = all outlets
+  outlet      Outlet?  @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  name        String // "Happy hour"
+  percentOff  Decimal  @db.Decimal(5, 2)
+  categoryIds String[] @default([])
+  productIds  String[] @default([])
+  days        Int[]    @default([0, 1, 2, 3, 4, 5, 6])
+  startTime   String // "17:00"
+  endTime     String // "20:00"
+  isActive    Boolean  @default(true)
+
+  @@index([tenantId])
+  @@map("price_rules")
+}
+
+model Area {
+  id                 String        @id @default(uuid())
+  tenantId           String
+  tenant             Tenant        @relation(fields: [tenantId], references: [id])
+  outletId           String
+  outlet             Outlet        @relation(fields: [outletId], references: [id])
+  name               String // "Rooftop"
+  sortOrder          Int           @default(0)
+  priceMarkupPercent Decimal       @db.Decimal(5, 2) @default(0) // "Rooftop (+10%)"
+  isSmoking          Boolean       @default(false)
+  isActive           Boolean       @default(true)
+  tables             DiningTable[]
+
+  @@index([outletId])
+  @@map("areas")
+}
+
+model DiningTable {
+  id           String      @id @default(uuid())
+  tenantId     String
+  tenant       Tenant      @relation(fields: [tenantId], references: [id])
+  outletId     String
+  outlet       Outlet      @relation(fields: [outletId], references: [id])
+  areaId       String
+  area         Area        @relation(fields: [areaId], references: [id])
+  name         String // "R4"
+  seats        Int         @default(4)
+  shape        TableShape  @default(SQUARE)
+  posX         Int         @default(0)
+  posY         Int         @default(0)
+  status       TableStatus @default(FREE)
+  mergedIntoId String? // set on tables merged into another
+  isActive     Boolean     @default(true)
+  orders       Order[]
+
+  @@unique([outletId, name])
+  @@index([outletId])
+  @@map("dining_tables")
+}
+
+model OutletSettings {
+  outletId             String       @id
+  outlet               Outlet       @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  serviceChargePercent Decimal      @db.Decimal(5, 2) @default(0)
+  serviceChargeTypes   OrderType[]  @default([DINE_IN])
+  roundingMode         RoundingMode @default(NEAREST_1)
+  orderPrefix          String       @default("A")
+  lastOrderSeq         Int          @default(0)
+  invoicePrefix        String       @default("INV")
+  countryCode          String       @default("IN")
+  updatedAt            DateTime     @updatedAt
+
+  @@map("outlet_settings")
+}
+
+model Ticket {
+  id             String       @id @default(uuid())
+  tenantId       String
+  tenant         Tenant       @relation(fields: [tenantId], references: [id])
+  outletId       String
+  outlet         Outlet       @relation(fields: [outletId], references: [id])
+  orderId        String
+  order          Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  kind           TicketKind
+  station        String
+  seq            Int // per outlet per business day
+  status         TicketStatus @default(QUEUED)
+  isCancellation Boolean      @default(false)
+  items          Json // [{ "orderItemId", "name", "variantName", "quantity", "modifiers": ["On the rocks"], "note", "seat" }]
+  printerId      String?
+  printer        Printer?     @relation(fields: [printerId], references: [id], onDelete: SetNull)
+  createdById    String
+  createdBy      User         @relation(fields: [createdById], references: [id])
+  createdAt      DateTime     @default(now())
+  printedAt      DateTime?
+  printJobs      PrintJob[]
+
+  @@index([outletId, createdAt])
+  @@index([orderId])
+  @@map("tickets")
+}
+
+model Printer {
+  id         String            @id @default(uuid())
+  tenantId   String
+  tenant     Tenant            @relation(fields: [tenantId], references: [id])
+  outletId   String
+  outlet     Outlet            @relation(fields: [outletId], references: [id])
+  name       String // "Main bar BOT"
+  connection PrinterConnection @default(LAN)
+  host       String? // IP for LAN
+  port       Int               @default(9100)
+  paperWidth Int               @default(80) // 58 | 80
+  copies     Int               @default(1)
+  language   String            @default("en") // en | ta
+  isReceipt  Boolean           @default(false) // bills, X/Z, cash drawer
+  isActive   Boolean           @default(true)
+  lastStatus String? // READY | PAPER_LOW | OFFLINE
+  lastSeenAt DateTime?
+  tickets    Ticket[]
+  printJobs  PrintJob[]
+  routes         StationRoute[] @relation("StationPrinter")
+  fallbackRoutes StationRoute[] @relation("StationFallbackPrinter")
+
+  @@index([outletId])
+  @@map("printers")
+}
+
+model StationRoute {
+  id                String   @id @default(uuid())
+  tenantId          String
+  tenant            Tenant   @relation(fields: [tenantId], references: [id])
+  outletId          String
+  outlet            Outlet   @relation(fields: [outletId], references: [id])
+  station           String // matches Category.station
+  printerId         String?
+  printer           Printer? @relation("StationPrinter", fields: [printerId], references: [id], onDelete: SetNull)
+  fallbackPrinterId String?
+  fallbackPrinter   Printer? @relation("StationFallbackPrinter", fields: [fallbackPrinterId], references: [id], onDelete: SetNull)
+
+  @@unique([outletId, station])
+  @@map("station_routes")
+}
+
+model PrintJob {
+  id        String         @id @default(uuid())
+  tenantId  String
+  tenant    Tenant         @relation(fields: [tenantId], references: [id])
+  outletId  String
+  outlet    Outlet         @relation(fields: [outletId], references: [id])
+  printerId String
+  printer   Printer        @relation(fields: [printerId], references: [id], onDelete: Cascade)
+  kind      PrintJobKind
+  payload   Json // { "lines": [ { "text", "bold"?, "align"?, "size"? } ], "cut": true, "openDrawer"?: true }
+  status    PrintJobStatus @default(QUEUED)
+  attempts  Int            @default(0)
+  error     String?
+  ticketId  String?
+  ticket    Ticket?        @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  createdAt DateTime       @default(now())
+  doneAt    DateTime?
+
+  @@index([outletId, status])
+  @@map("print_jobs")
+}
+
+model Approval {
+  id            String         @id @default(uuid())
+  tenantId      String
+  tenant        Tenant         @relation(fields: [tenantId], references: [id])
+  outletId      String
+  outlet        Outlet         @relation(fields: [outletId], references: [id])
+  orderId       String?
+  order         Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  type          ApprovalType
+  status        ApprovalStatus @default(PENDING)
+  requestedById String
+  requestedBy   User           @relation("ApprovalRequestedBy", fields: [requestedById], references: [id])
+  approverId    String?
+  approver      User?          @relation("ApprovalApprover", fields: [approverId], references: [id], onDelete: SetNull)
+  payload       Json // DISCOUNT: { type, value, itemIds, reason } · VOID: { itemIds | "order", reason } · REFUND: { paymentId?, amount, reason } · NO_SALE: { reason }
+  reason        String
+  createdAt     DateTime       @default(now())
+  decidedAt     DateTime?
+  expiresAt     DateTime // createdAt + 15 min
+  consumedAt    DateTime? // set when an order/payment/cash-drawer action uses it; approvals are single-use
+
+  @@index([outletId, status])
+  @@index([orderId])
+  @@map("approvals")
+}
+
+model DayClose {
+  id           String       @id @default(uuid())
+  tenantId     String
+  tenant       Tenant       @relation(fields: [tenantId], references: [id])
+  outletId     String
+  outlet       Outlet       @relation(fields: [outletId], references: [id])
+  kind         DayCloseKind
+  businessDate DateTime     @db.Date
+  totals       Json // see docs/phase-2/PLAN.md 1.6
+  cashCounted  Decimal?     @db.Decimal(12, 2)
+  cashExpected Decimal?     @db.Decimal(12, 2)
+  createdById  String
+  createdBy    User         @relation(fields: [createdById], references: [id])
+  createdAt    DateTime     @default(now())
+  orders       Order[]
+
+  @@index([outletId, businessDate])
+  @@map("day_closes")
+}
