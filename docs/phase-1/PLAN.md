@@ -67,7 +67,7 @@ Default matrix (level, limit). Anything not listed = `NONE`.
 |---|---|---|---|---|---|---|---|---|
 | sales.orders.take | EDIT | EDIT | EDIT | EDIT | EDIT | EDIT | — | — |
 | sales.payments.take | EDIT | EDIT | EDIT | VIEW | — | EDIT | — | — |
-| sales.discount.give | EDIT | LIMITED 30 | LIMITED 10 | LIMITED 10 | — | LIMITED 5 | — | — |
+| sales.discount.give | EDIT | APPROVE | LIMITED 10 | LIMITED 10 | — | LIMITED 5 | — | — |
 | sales.void | EDIT | APPROVE | REQUEST | REQUEST | REQUEST | REQUEST | — | — |
 | sales.tab.open | EDIT | EDIT | LIMITED 5000 | LIMITED 5000 | — | LIMITED 10000 | — | — |
 | menu.edit | EDIT | EDIT | VIEW | VIEW | VIEW | VIEW | VIEW | VIEW |

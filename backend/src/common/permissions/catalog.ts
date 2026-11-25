@@ -112,7 +112,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
     matrix: {
       'sales.orders.take': { level: 'EDIT' },
       'sales.payments.take': { level: 'EDIT' },
-      'sales.discount.give': { level: 'LIMITED', limit: 30 },
+      'sales.discount.give': { level: 'APPROVE' }, // approves staff discount requests by PIN
       'sales.void': { level: 'APPROVE' },
       'sales.tab.open': { level: 'EDIT' },
       'kds.bump': { level: 'EDIT' },
