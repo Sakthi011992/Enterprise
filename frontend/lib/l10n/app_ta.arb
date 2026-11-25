@@ -1,0 +1,132 @@
+{
+  "@@locale": "ta",
+  "appTitle": "POS Billing",
+  "@appTitle": {
+    "description": "App name shown in the title bar",
+    "x-untranslated": true
+  },
+  "signIn": "Sign in",
+  "@signIn": {
+    "x-untranslated": true
+  },
+  "username": "Username",
+  "@username": {
+    "x-untranslated": true
+  },
+  "password": "Password",
+  "@password": {
+    "x-untranslated": true
+  },
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "x-untranslated": true
+  },
+  "invalidCredentials": "Wrong username or password.",
+  "@invalidCredentials": {
+    "x-untranslated": true
+  },
+  "accountLocked": "Too many attempts. Ask your admin to unlock this account.",
+  "@accountLocked": {
+    "x-untranslated": true
+  },
+  "resetPassword": "Reset password",
+  "@resetPassword": {
+    "x-untranslated": true
+  },
+  "newPassword": "New password",
+  "@newPassword": {
+    "x-untranslated": true
+  },
+  "sendResetLink": "Send reset link",
+  "@sendResetLink": {
+    "x-untranslated": true
+  },
+  "resetLinkSent": "If that account exists, we have sent a reset link.",
+  "@resetLinkSent": {
+    "x-untranslated": true
+  },
+  "chooseOutlet": "Choose an outlet",
+  "@chooseOutlet": {
+    "x-untranslated": true
+  },
+  "enterPin": "Enter your PIN",
+  "@enterPin": {
+    "x-untranslated": true
+  },
+  "pinWrongAttemptsLeft": "{count, plural, =1{Wrong PIN. 1 attempt left.} other{Wrong PIN. {count} attempts left.}}",
+  "@pinWrongAttemptsLeft": {
+    "description": "Shown after a wrong PIN; count is attempts left before lockout",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    },
+    "x-untranslated": true
+  },
+  "pinLocked": "Too many wrong PINs. Try again in {minutes} min.",
+  "@pinLocked": {
+    "description": "Shown when the PIN is locked",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    },
+    "x-untranslated": true
+  },
+  "search": "Search",
+  "@search": {
+    "x-untranslated": true
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "x-untranslated": true
+  },
+  "markAllRead": "Mark all read",
+  "@markAllRead": {
+    "x-untranslated": true
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "x-untranslated": true
+  },
+  "switchOutlet": "Switch outlet",
+  "@switchOutlet": {
+    "x-untranslated": true
+  },
+  "language": "Language",
+  "@language": {
+    "x-untranslated": true
+  },
+  "darkMode": "Dark mode",
+  "@darkMode": {
+    "x-untranslated": true
+  },
+  "pinned": "Pinned",
+  "@pinned": {
+    "x-untranslated": true
+  },
+  "nothingHereYet": "Nothing here yet",
+  "@nothingHereYet": {
+    "x-untranslated": true
+  },
+  "couldNotLoad": "Couldn’t load this. Try again.",
+  "@couldNotLoad": {
+    "x-untranslated": true
+  },
+  "tryAgain": "Try again",
+  "@tryAgain": {
+    "x-untranslated": true
+  },
+  "saving": "Saving…",
+  "@saving": {
+    "x-untranslated": true
+  },
+  "saved": "Saved",
+  "@saved": {
+    "x-untranslated": true
+  },
+  "undo": "Undo",
+  "@undo": {
+    "x-untranslated": true
+  }
+}

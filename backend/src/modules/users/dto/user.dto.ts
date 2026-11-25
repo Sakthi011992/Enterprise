@@ -1,5 +1,18 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsIn, IsOptional, IsString, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  ArrayMaxSize,
+  IsBoolean,
+  IsEmail,
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -7,18 +20,36 @@ export class CreateUserDto {
   @MinLength(3)
   username: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional({ description: 'Optional: PIN-only staff may have no email' })
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @ApiProperty()
   @IsString()
   @MinLength(6)
   password: string;
 
-  @ApiProperty({ enum: ['ADMIN', 'USER'], default: 'USER' })
-  @IsIn(['ADMIN', 'USER'])
-  roleName: 'ADMIN' | 'USER';
+  @ApiPropertyOptional({
+    enum: ['ADMIN', 'USER', 'KIOSK'],
+    default: 'USER',
+    description: 'Legacy role. Also picks the starting persona: ADMIN gives admin, USER gives cashier, KIOSK gives kiosk',
+  })
+  @IsOptional()
+  @IsIn(['ADMIN', 'USER', 'KIOSK'])
+  roleName?: 'ADMIN' | 'USER' | 'KIOSK';
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  displayName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  phone?: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -33,4 +64,36 @@ export class ResetPasswordDto {
   @IsString()
   @MinLength(6)
   newPassword: string;
+}
+
+export class SetPinDto {
+  @ApiProperty({ example: '2580' })
+  @IsString()
+  @Matches(/^\d{4}$/, { message: 'pin must be 4 digits' })
+  pin: string;
+}
+
+export class UserOutletItemDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  outletId: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  personaId: string;
+
+  @ApiPropertyOptional({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  isDefault?: boolean = false;
+}
+
+export class SetUserOutletsDto {
+  @ApiProperty({ type: [UserOutletItemDto] })
+  @ValidateNested({ each: true })
+  @Type(() => UserOutletItemDto)
+  @ArrayMaxSize(50)
+  items: UserOutletItemDto[];
 }

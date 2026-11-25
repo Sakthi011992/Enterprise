@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { PrismaModule } from './prisma/prisma.module';
@@ -19,16 +19,28 @@ import { ProductImagesModule } from './modules/product-images/product-images.mod
 import { KioskModule } from './modules/kiosk/kiosk.module';
 import { LoginMethodModule } from './modules/login-method/login-method.module';
 import { PaymentConfigModule } from './modules/payment-config/payment-config.module';
+import { PermissionsModule } from './modules/personas/permissions.module';
+import { PersonasModule } from './modules/personas/personas.module';
+import { OutletsModule } from './modules/outlets/outlets.module';
+import { DevicesModule } from './modules/devices/devices.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { PermissionGuard } from './common/guards/permission.guard';
 import { RolesGuard } from './common/guards/roles.guard';
+import { TenantContextMiddleware } from './common/tenancy/tenant-context.middleware';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     BlobStorageModule,
+    PermissionsModule,
     AuthModule,
     UsersModule,
+    PersonasModule,
+    OutletsModule,
+    DevicesModule,
+    NotificationsModule,
     ProductsModule,
     TaxModule,
     OrdersModule,
@@ -45,8 +57,14 @@ import { RolesGuard } from './common/guards/roles.guard';
     PaymentConfigModule,
   ],
   providers: [
+    // Registration order is run order: authenticate, then @Can, then legacy @Roles.
     { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: PermissionGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TenantContextMiddleware).forRoutes('*');
+  }
+}

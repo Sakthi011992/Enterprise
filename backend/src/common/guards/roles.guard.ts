@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY, AppRole } from '../decorators/roles.decorator';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { CAN_KEY } from '../decorators/can.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -13,6 +14,11 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
     if (isPublic) return true;
+
+    // Phase 1: when a route declares @Can, PermissionGuard has already enforced the persona
+    // permission, so the legacy role check is skipped. @Roles still applies to routes without @Can.
+    const hasCan = this.reflector.getAllAndOverride(CAN_KEY, [context.getHandler(), context.getClass()]);
+    if (hasCan) return true;
 
     const requiredRoles = this.reflector.getAllAndOverride<AppRole[]>(ROLES_KEY, [
       context.getHandler(),

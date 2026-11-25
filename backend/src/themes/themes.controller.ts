@@ -23,6 +23,7 @@ import type { Request, Response } from 'express';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
+import { Can } from '../common/decorators/can.decorator';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { ActiveThemeQueryDto } from './dto/active-theme-query.dto';
 import { AssignThemeDto } from './dto/assign-theme.dto';
@@ -69,6 +70,7 @@ export class ThemesController {
 
   @Put('assignments/:platform')
   @Roles('ADMIN')
+  @Can('admin.themes', 'EDIT')
   @ApiOperation({ summary: 'Make a theme live on a platform' })
   assign(
     @Param('platform', new ParseEnumPipe(Platform)) platform: Platform,
@@ -87,6 +89,7 @@ export class ThemesController {
 
   @Post()
   @Roles('ADMIN')
+  @Can('admin.themes', 'EDIT')
   @ApiOperation({ summary: 'Create a theme' })
   create(@Body() dto: CreateThemeDto, @CurrentUser('userId') userId: string) {
     return this.themes.create(dto, userId);
@@ -101,6 +104,7 @@ export class ThemesController {
 
   @Patch(':id')
   @Roles('ADMIN')
+  @Can('admin.themes', 'EDIT')
   @ApiOperation({ summary: 'Update a theme; token changes bump the revision' })
   update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateThemeDto) {
     return this.themes.update(id, dto);
@@ -108,6 +112,7 @@ export class ThemesController {
 
   @Post(':id/duplicate')
   @Roles('ADMIN')
+  @Can('admin.themes', 'EDIT')
   @ApiOperation({ summary: 'Copy a theme so a live one can be edited safely' })
   duplicate(
     @Param('id', ParseUUIDPipe) id: string,
@@ -119,6 +124,7 @@ export class ThemesController {
 
   @Delete(':id')
   @Roles('ADMIN')
+  @Can('admin.themes', 'EDIT')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Soft delete a theme (409 if live on any platform)' })
   remove(@Param('id', ParseUUIDPipe) id: string) {

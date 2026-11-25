@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TaxService } from './tax.service';
 import { SetGlobalTaxDto, SetProductTaxDto } from './dto/tax.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { Can } from '../../common/decorators/can.decorator';
 
 @ApiTags('tax')
 @ApiBearerAuth()
@@ -17,6 +18,7 @@ export class TaxController {
   }
 
   @Roles('ADMIN')
+  @Can('admin.settings', 'EDIT')
   @Put('global')
   @ApiOperation({ summary: 'Set global tax percentage' })
   setGlobal(@Body() dto: SetGlobalTaxDto) {
@@ -24,6 +26,7 @@ export class TaxController {
   }
 
   @Roles('ADMIN')
+  @Can('admin.settings', 'EDIT')
   @Patch('products/:id')
   @ApiOperation({ summary: 'Set or clear a product tax override' })
   setProduct(@Param('id') id: string, @Body() dto: SetProductTaxDto) {

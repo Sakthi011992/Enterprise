@@ -20,6 +20,7 @@ import type { ImportSummary } from './product-import.service';
 import { CreateProductDto, ProductQueryDto, UpdateProductDto, UpdateStatusDto } from './dto/product.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { Can } from '../../common/decorators/can.decorator';
 
 @ApiTags('products')
 @ApiBearerAuth()
@@ -27,6 +28,7 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 export class ProductsController {
   constructor(private readonly products: ProductsService) {}
 
+  @Can('menu.edit', 'VIEW')
   @Get()
   @ApiOperation({ summary: 'List products (search, filter, paginate)' })
   findAll(@Query() q: ProductQueryDto) {
@@ -35,6 +37,7 @@ export class ProductsController {
 
   // static routes before :id
   @Roles('ADMIN')
+  @Can('menu.edit', 'VIEW')
   @Get('import/template')
   @ApiOperation({ summary: 'Download Excel import template' })
   async template(@Res() res: Response) {
@@ -46,12 +49,14 @@ export class ProductsController {
     res.send(buf);
   }
 
+  @Can('menu.edit', 'VIEW')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.products.findOne(id);
   }
 
   @Roles('ADMIN')
+  @Can('menu.edit', 'EDIT')
   @Post()
   @ApiOperation({ summary: 'Create product' })
   create(@Body() dto: CreateProductDto) {
@@ -59,12 +64,14 @@ export class ProductsController {
   }
 
   @Roles('ADMIN')
+  @Can('menu.edit', 'EDIT')
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
     return this.products.update(id, dto);
   }
 
   @Roles('ADMIN')
+  @Can('menu.edit', 'EDIT')
   @Patch(':id/status')
   @ApiOperation({ summary: 'Activate / deactivate product' })
   setStatus(@Param('id') id: string, @Body() dto: UpdateStatusDto) {
@@ -72,6 +79,7 @@ export class ProductsController {
   }
 
   @Roles('ADMIN')
+  @Can('menu.edit', 'EDIT')
   @Delete(':id')
   @ApiOperation({ summary: 'Soft-delete product' })
   remove(@Param('id') id: string) {
@@ -79,6 +87,7 @@ export class ProductsController {
   }
 
   @Roles('ADMIN')
+  @Can('menu.edit', 'EDIT')
   @Post(':id/image')
   @ApiConsumes('multipart/form-data')
   @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
@@ -90,6 +99,7 @@ export class ProductsController {
   }
 
   @Roles('ADMIN')
+  @Can('menu.edit', 'EDIT')
   @Post('import')
   @ApiOperation({ summary: 'Bulk import products from .xlsx' })
   @ApiConsumes('multipart/form-data')

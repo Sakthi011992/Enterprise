@@ -5,6 +5,10 @@
 
 A phased plan. Each phase is independently shippable and testable.
 
+> **Pub ERP Phase 1 — Foundation** (tenants, outlets, personas & permissions, staff PIN login,
+> password reset, new app shell and component kit) is planned in [phase-1/PLAN.md](phase-1/PLAN.md)
+> and in review — see [phase-1/INTEGRATION.md](phase-1/INTEGRATION.md).
+
 ## Phase 0 — Foundations  ✅ (scaffolded here)
 - Monorepo layout, docs (architecture, ERD, API), Docker compose.
 - Backend bootstrap: Nest config, global pipes/filters/interceptors, Swagger, `/api/v1`.

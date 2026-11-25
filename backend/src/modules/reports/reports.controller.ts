@@ -2,10 +2,12 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ReportsService } from './reports.service';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { Can } from '../../common/decorators/can.decorator';
 
 @ApiTags('reports')
 @ApiBearerAuth()
 @Roles('ADMIN')
+@Can('reports.view', 'LIMITED')
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reports: ReportsService) {}

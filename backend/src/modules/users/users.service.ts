@@ -1,98 +1,165 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AppFeature } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationDto, buildMeta } from '../../common/dto/pagination.dto';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
-import { UsersRepository } from './users.repository';
+import { AuthUser } from '../../common/decorators/current-user.decorator';
+import { apiError } from '../../common/filters/api-error';
+import { CreateUserDto, SetUserOutletsDto, UpdateUserDto } from './dto/user.dto';
+import { OutletAssignment, UserRow, UsersRepository } from './users.repository';
+
+const SIMPLE_PINS = new Set(['0000', '1111', '2222', '3333', '4444', '5555', '6666', '7777', '8888', '9999', '1234', '4321']);
+
+/** Starting persona for a legacy role name. */
+const ROLE_PERSONA_KEY: Record<'ADMIN' | 'USER' | 'KIOSK', string> = {
+  ADMIN: 'admin',
+  USER: 'cashier',
+  KIOSK: 'kiosk',
+};
+
+function toUserDto(row: UserRow) {
+  const { userOutlets, staffPin, ...rest } = row;
+  return {
+    ...rest,
+    hasPin: staffPin !== null,
+    outlets: userOutlets.map((uo) => ({
+      outletId: uo.outletId,
+      outletName: uo.outlet.name,
+      personaId: uo.personaId,
+      personaName: uo.persona.name,
+      isDefault: uo.isDefault,
+    })),
+  };
+}
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private repo: UsersRepository,
-    private prisma: PrismaService,
-  ) {}
+  constructor(private repo: UsersRepository) {}
 
-  private async roleIdByName(name: string) {
-    const role = await this.prisma.role.findUnique({ where: { name } });
-    if (!role) throw new BadRequestException(`Unknown role: ${name}`);
-    return role.id;
+  async findAll(q: PaginationDto, auth: AuthUser) {
+    const { rows, total } = await this.repo.listForTenant(auth.tenantId, q.search, q.skip, q.limit);
+    return { data: rows.map(toUserDto), meta: buildMeta(total, q.page, q.limit) };
   }
 
-  async findAll(q: PaginationDto) {
-    const where = {
-      deletedAt: null as null,
-      ...(q.search
-        ? { OR: [{ username: { contains: q.search, mode: 'insensitive' as const } }] }
-        : {}),
-    };
-    const [data, total] = await this.prisma.$transaction([
-      this.prisma.user.findMany({
-        where,
-        select: {
-          id: true, username: true, isActive: true, createdAt: true, updatedAt: true,
-          role: { select: { name: true } },
-          featureGrants: { select: { feature: true } },
-        },
-        skip: q.skip,
-        take: q.limit,
-        orderBy: { createdAt: 'desc' },
-      }),
-      this.prisma.user.count({ where }),
-    ]);
-    return { data, meta: buildMeta(total, q.page, q.limit) };
+  async findOne(id: string, auth: AuthUser) {
+    const row = await this.repo.findOwned(id, auth.tenantId);
+    if (!row) throw new NotFoundException('User not found');
+    return toUserDto(row);
   }
 
-  async findOne(id: string) {
-    const user = await this.repo.findById(id);
-    if (!user) throw new NotFoundException('User not found');
-    return user;
+  /** Throws 404 for users in another tenant or deleted users. */
+  private async assertOwned(id: string, auth: AuthUser): Promise<void> {
+    if (!(await this.repo.existsOwned(id, auth.tenantId))) throw new NotFoundException('User not found');
   }
 
-  async create(dto: CreateUserDto) {
-    const roleId = await this.roleIdByName(dto.roleName ?? 'USER');
+  private async roleIdOrThrow(name: string): Promise<string> {
+    const roleId = await this.repo.roleIdByName(name);
+    if (!roleId) throw new BadRequestException(`Unknown role: ${name}`);
+    return roleId;
+  }
+
+  /**
+   * Creates the user. When the tenant has an active outlet and the starting persona
+   * for the legacy role exists, the user is assigned to that outlet as default.
+   */
+  async create(dto: CreateUserDto, auth: AuthUser) {
+    const roleName = dto.roleName ?? 'USER';
+    const roleId = await this.roleIdOrThrow(roleName);
     const passwordHash = await bcrypt.hash(dto.password, 10);
-    return this.repo.create({ username: dto.username, passwordHash, roleId });
-  }
 
-  async update(id: string, dto: UpdateUserDto) {
-    await this.findOne(id);
-    const data: Record<string, any> = {};
-    if (dto.isActive !== undefined) data.isActive = dto.isActive;
-    if (dto.roleName) data.role = { connect: { id: await this.roleIdByName(dto.roleName) } };
-    if (dto.password) data.passwordHash = await bcrypt.hash(dto.password, 10);
-    return this.prisma.user.update({
-      where: { id },
-      data,
-      select: {
-        id: true, username: true, isActive: true, createdAt: true, updatedAt: true,
-        role: { select: { name: true } },
-        featureGrants: { select: { feature: true } },
-      },
+    const outletId = await this.repo.firstActiveOutletId(auth.tenantId);
+    const personaId = await this.repo.personaIdByKey(auth.tenantId, ROLE_PERSONA_KEY[roleName]);
+
+    const row = await this.repo.create({
+      tenantId: auth.tenantId,
+      username: dto.username,
+      email: dto.email,
+      passwordHash,
+      roleId,
+      displayName: dto.displayName,
+      phone: dto.phone,
+      outlet: outletId && personaId ? { outletId, personaId } : undefined,
     });
+    return toUserDto(row);
   }
 
-  async resetPassword(id: string, newPassword: string) {
-    await this.findOne(id);
+  async update(id: string, dto: UpdateUserDto, auth: AuthUser) {
+    await this.assertOwned(id, auth);
+    const roleId = dto.roleName ? await this.roleIdOrThrow(dto.roleName) : undefined;
+    const passwordHash = dto.password ? await bcrypt.hash(dto.password, 10) : undefined;
+
+    await this.repo.update(id, {
+      email: dto.email,
+      displayName: dto.displayName,
+      phone: dto.phone,
+      isActive: dto.isActive,
+      roleId,
+      passwordHash,
+    });
+    return this.findOne(id, auth);
+  }
+
+  async resetPassword(id: string, newPassword: string, auth: AuthUser) {
+    await this.assertOwned(id, auth);
     const passwordHash = await bcrypt.hash(newPassword, 10);
-    await this.repo.updatePassword(id, passwordHash);
+    await this.repo.update(id, { passwordHash });
     return { success: true };
   }
 
-  async remove(id: string) {
-    await this.findOne(id);
+  async remove(id: string, auth: AuthUser) {
+    await this.assertOwned(id, auth);
     await this.repo.softDelete(id);
     return { success: true };
   }
 
-  async getFeatures(id: string): Promise<AppFeature[]> {
-    await this.findOne(id);
-    const grants = await this.repo.getFeatures(id);
-    return grants.map((g) => g.feature);
+  /** Sets or replaces the 4-digit PIN and clears any lock. */
+  async setPin(id: string, pin: string, auth: AuthUser) {
+    await this.assertOwned(id, auth);
+    if (SIMPLE_PINS.has(pin)) {
+      throw apiError(400, 'PIN_TOO_SIMPLE', 'Choose a less predictable PIN');
+    }
+    await this.repo.upsertPin(id, await bcrypt.hash(pin, 10));
+    return { success: true, hasPin: true };
   }
 
-  async setFeatures(id: string, features: AppFeature[]): Promise<AppFeature[]> {
-    await this.findOne(id);
+  /** Replaces all outlet assignments. Exactly one default when any are given. */
+  async setOutlets(id: string, dto: SetUserOutletsDto, auth: AuthUser) {
+    await this.assertOwned(id, auth);
+
+    const outletIds = dto.items.map((i) => i.outletId);
+    if (new Set(outletIds).size !== outletIds.length) {
+      throw apiError(400, 'DUPLICATE_OUTLET', 'An outlet can only be assigned once');
+    }
+    const defaultCount = dto.items.filter((i) => i.isDefault).length;
+    if (defaultCount > 1) {
+      throw apiError(400, 'DEFAULT_OUTLET_INVALID', 'Only one outlet can be the default');
+    }
+    const items: OutletAssignment[] = dto.items.map((item, index) => ({
+      outletId: item.outletId,
+      personaId: item.personaId,
+      isDefault: defaultCount === 0 ? index === 0 : !!item.isDefault,
+    }));
+
+    const personaIds = [...new Set(items.map((i) => i.personaId))];
+    if ((await this.repo.countOutletsIn(outletIds, auth.tenantId)) !== outletIds.length) {
+      throw apiError(400, 'INVALID_REFERENCE', 'One or more outlets were not found', { field: 'outletId' });
+    }
+    if ((await this.repo.countPersonasIn(personaIds, auth.tenantId)) !== personaIds.length) {
+      throw apiError(400, 'INVALID_REFERENCE', 'One or more personas were not found', { field: 'personaId' });
+    }
+
+    await this.repo.replaceOutlets(id, items);
+    return this.findOne(id, auth);
+  }
+
+  // Legacy feature grants (main). Deprecated: removed in Phase 2 with the feature tables.
+
+  async getFeatures(id: string, auth: AuthUser): Promise<AppFeature[]> {
+    await this.assertOwned(id, auth);
+    return this.repo.getFeatures(id);
+  }
+
+  async setFeatures(id: string, features: AppFeature[], auth: AuthUser): Promise<AppFeature[]> {
+    await this.assertOwned(id, auth);
     await this.repo.setFeatures(id, features);
     return features;
   }

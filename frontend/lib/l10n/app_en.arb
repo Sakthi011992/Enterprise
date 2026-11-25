@@ -1,0 +1,41 @@
+{
+  "@@locale": "en",
+  "appTitle": "POS Billing",
+  "@appTitle": { "description": "App name shown in the title bar" },
+  "signIn": "Sign in",
+  "username": "Username",
+  "password": "Password",
+  "forgotPassword": "Forgot password?",
+  "invalidCredentials": "Wrong username or password.",
+  "accountLocked": "Too many attempts. Ask your admin to unlock this account.",
+  "resetPassword": "Reset password",
+  "newPassword": "New password",
+  "sendResetLink": "Send reset link",
+  "resetLinkSent": "If that account exists, we have sent a reset link.",
+  "chooseOutlet": "Choose an outlet",
+  "enterPin": "Enter your PIN",
+  "pinWrongAttemptsLeft": "{count, plural, =1{Wrong PIN. 1 attempt left.} other{Wrong PIN. {count} attempts left.}}",
+  "@pinWrongAttemptsLeft": {
+    "description": "Shown after a wrong PIN; count is attempts left before lockout",
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "pinLocked": "Too many wrong PINs. Try again in {minutes} min.",
+  "@pinLocked": {
+    "description": "Shown when the PIN is locked",
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "search": "Search",
+  "notifications": "Notifications",
+  "markAllRead": "Mark all read",
+  "signOut": "Sign out",
+  "switchOutlet": "Switch outlet",
+  "language": "Language",
+  "darkMode": "Dark mode",
+  "pinned": "Pinned",
+  "nothingHereYet": "Nothing here yet",
+  "couldNotLoad": "Couldn’t load this. Try again.",
+  "tryAgain": "Try again",
+  "saving": "Saving…",
+  "saved": "Saved",
+  "undo": "Undo"
+}
