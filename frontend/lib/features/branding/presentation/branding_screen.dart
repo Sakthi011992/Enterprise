@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config/app_config.dart';
+import '../../../core/files/pick_file.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_mode_toggle.dart';
@@ -167,19 +167,10 @@ class _LogoCard extends ConsumerStatefulWidget {
 class _LogoCardState extends ConsumerState<_LogoCard> {
   bool _uploading = false;
 
-  void _pickAndUpload() {
-    final input = html.FileUploadInputElement()
-      ..accept = 'image/png,image/svg+xml,image/jpeg'
-      ..click();
-    input.onChange.listen((event) async {
-      final file = input.files?.first;
-      if (file == null) return;
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(file);
-      await reader.onLoadEnd.first;
-      final bytes = reader.result as Uint8List;
-      await _upload(bytes, file.name, file.type);
-    });
+  Future<void> _pickAndUpload() async {
+    final file = await pickImageFile(allowedExtensions: const ['png', 'svg', 'jpg', 'jpeg']);
+    if (file == null) return;
+    await _upload(file.bytes, file.name, file.mimeType);
   }
 
   Future<void> _upload(Uint8List bytes, String filename, String mimeType) async {

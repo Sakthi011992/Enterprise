@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_mode_toggle.dart';
 import '../data/product.dart';
@@ -28,7 +29,16 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
     final products = ref.watch(productsProvider(_search));
     final t = context.tokens;
     return Scaffold(
-      appBar: AppBar(title: const Text('Products'), actions: const [ThemeModeToggle()]),
+      appBar: AppBar(
+        title: const Text('Products'),
+        actions: [
+          TextButton(onPressed: () => context.go('/menu/categories'), child: const Text('Categories')),
+          TextButton(onPressed: () => context.go('/menu/modifiers'), child: const Text('Modifiers')),
+          TextButton(onPressed: () => context.go('/menu/combos'), child: const Text('Combos')),
+          TextButton(onPressed: () => context.go('/menu/happy-hours'), child: const Text('Happy hours')),
+          const ThemeModeToggle(),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _openForm(),
         icon: const Icon(Icons.add),
@@ -80,6 +90,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                                 ),
                               ),
                               IconButton(icon: const Icon(Icons.edit), onPressed: () => _openForm(p)),
+                              IconButton(
+                                icon: const Icon(Icons.tune),
+                                tooltip: 'Open full editor',
+                                onPressed: () => context.go('/menu/products/${p.id}'),
+                              ),
                             ],
                           ),
                         );

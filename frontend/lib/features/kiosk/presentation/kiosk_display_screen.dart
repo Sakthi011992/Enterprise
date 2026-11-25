@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../auth/presentation/auth_controller.dart';
+import '../../../core/auth/session_controller.dart';
 
 final _featuredProvider = FutureProvider<List<Map>>((ref) async {
   final res = await ref.watch(dioProvider).get('/kiosk/featured', queryParameters: {'storeId': 'default'});
@@ -43,7 +43,7 @@ class _KioskDisplayScreenState extends ConsumerState<KioskDisplayScreen> {
   }
 
   Future<void> _logout() async {
-    await ref.read(authControllerProvider.notifier).logout();
+    await ref.read(sessionProvider.notifier).logout();
     if (mounted) context.go('/login');
   }
 

@@ -32,7 +32,7 @@ export class ProductImportService {
     return (await wb.xlsx.writeBuffer()) as unknown as Buffer;
   }
 
-  async importFromBuffer(file: Express.Multer.File, userId: string): Promise<ImportSummary> {
+  async importFromBuffer(file: Express.Multer.File, userId: string, tenantId: string): Promise<ImportSummary> {
     if (!file) throw new BadRequestException('No file uploaded');
     const wb = new ExcelJS.Workbook();
     await wb.xlsx.load(file.buffer as any);
@@ -57,7 +57,7 @@ export class ProductImportService {
 
     // Pre-load existing names for duplicate skipping.
     const existing = new Set(
-      (await this.prisma.product.findMany({ where: { deletedAt: null }, select: { name: true } })).map((p) =>
+      (await this.prisma.product.findMany({ where: { tenantId, deletedAt: null }, select: { name: true } })).map((p) =>
         p.name.toLowerCase(),
       ),
     );
@@ -97,6 +97,7 @@ export class ProductImportService {
       }
       seenInFile.add(lower);
       toInsert.push({
+        tenantId,
         name,
         description: description || null,
         price: new Prisma.Decimal(price),
