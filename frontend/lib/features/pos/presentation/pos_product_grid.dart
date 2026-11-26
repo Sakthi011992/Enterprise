@@ -79,14 +79,14 @@ class _ProductCard extends StatelessWidget {
       opacity: out ? 0.5 : 1,
       child: Material(
         color: t.color.background.raised,
-        borderRadius: BorderRadius.circular(t.radius.lg),
+        borderRadius: BorderRadius.circular(14),
         child: InkWell(
-          borderRadius: BorderRadius.circular(t.radius.lg),
+          borderRadius: BorderRadius.circular(14),
           onTap: onTap,
           child: Container(
             padding: EdgeInsets.all(t.spacing.md),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(t.radius.lg),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
             ),
             child: Column(
@@ -124,7 +124,12 @@ class _ProductCard extends StatelessWidget {
                   SizedBox(height: t.spacing.xs),
                   Text(
                     '${formatWire(price)}${product.variants.length > 1 ? ' / ${product.defaultVariant?.name ?? ''}' : ''}',
-                    style: TextStyle(color: t.color.content.secondary, fontSize: 13),
+                    style: TextStyle(
+                      color: t.color.content.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
                   ),
                 ],
               ],
@@ -180,14 +185,14 @@ class _ComboCard extends StatelessWidget {
       opacity: combo.availableNow ? 1 : 0.5,
       child: Material(
         color: t.color.background.raised,
-        borderRadius: BorderRadius.circular(t.radius.lg),
+        borderRadius: BorderRadius.circular(14),
         child: InkWell(
-          borderRadius: BorderRadius.circular(t.radius.lg),
+          borderRadius: BorderRadius.circular(14),
           onTap: onTap,
           child: Container(
             padding: EdgeInsets.all(t.spacing.md),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(t.radius.lg),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
             ),
             child: Column(

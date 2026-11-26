@@ -8,6 +8,7 @@ import '../../../core/config/app_config.dart';
 import '../../../core/files/pick_file.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/token_ext.dart';
 import '../../../core/theme/theme_mode_toggle.dart';
 
 // ---------------------------------------------------------------------------
@@ -202,7 +203,7 @@ class _LogoCardState extends ConsumerState<_LogoCard> {
     final logo = widget.logo;
     final hasLogo = logo != null;
     final isDark = widget.variant == 'DARK';
-    final previewBg = isDark ? Colors.grey.shade900 : Colors.grey.shade100;
+    final previewBg = isDark ? t.color.background.inverse : context.ext.subtleFill;
     final blobPath = logo?['blobPath'] as String?;
 
     return SizedBox(

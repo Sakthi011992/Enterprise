@@ -950,11 +950,10 @@ class _TopBar extends StatelessWidget {
               onTap: null,
             ),
           if (happy.isNotEmpty)
-            StatusBadge(
+            BrassBadge(
               label: endsAt == null
                   ? 'Happy hour on'
                   : 'Happy hour ends ${formatClock(endsAt.toLocal())}',
-              tone: StatusTone.warning,
             ),
           StatusBadge(label: place, tone: StatusTone.neutral),
           if (order.waiter != null)

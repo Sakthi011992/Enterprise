@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_mode_toggle.dart';
+import '../../../core/ui/ui.dart';
 
 // ---------------------------------------------------------------------------
 // Providers
@@ -46,24 +47,37 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
 
   @override
   Widget build(BuildContext context) {
+    final t = context.tokens;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-        actions: const [ThemeModeToggle()],
-        bottom: TabBar(
-          controller: _tabs,
-          tabs: const [
-            Tab(icon: Icon(Icons.payment), text: 'Payment Methods'),
-            Tab(icon: Icon(Icons.login), text: 'Login Methods'),
+      body: Padding(
+        padding: EdgeInsets.all(t.spacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const PageHeader(
+              title: 'Settings',
+              actions: [ThemeModeToggle()],
+            ),
+            TabBar(
+              controller: _tabs,
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
+              tabs: const [
+                Tab(text: 'Payment Methods'),
+                Tab(text: 'Login Methods'),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabs,
+                children: const [
+                  _PaymentMethodsTab(),
+                  _LoginMethodsTab(),
+                ],
+              ),
+            ),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabs,
-        children: const [
-          _PaymentMethodsTab(),
-          _LoginMethodsTab(),
-        ],
       ),
     );
   }

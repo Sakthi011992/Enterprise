@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/token_ext.dart';
 import 'ui_style.dart';
 
 /// Raised surface with a hairline border. Optional title row with actions.
@@ -26,10 +27,11 @@ class AppCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: t.color.background.raised,
         borderRadius: BorderRadius.circular(t.radius.lg),
-        border: Border.all(color: t.color.border.subtle, width: t.borderWidth.hairline),
+        border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
+        boxShadow: context.ext.cardShadow,
       ),
       child: Padding(
-        padding: padding ?? EdgeInsets.all(t.spacing.md),
+        padding: padding ?? const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -42,13 +44,13 @@ class AppCard extends StatelessWidget {
                         ? const SizedBox.shrink()
                         : Text(
                             heading,
-                            style: kitTextStyle(t, t.typography.label, t.color.content.primary),
+                            style: kitTextStyle(t, t.typography.title, t.color.content.primary, display: true),
                           ),
                   ),
                   ...actions,
                 ],
               ),
-              SizedBox(height: t.spacing.sm),
+              SizedBox(height: t.spacing.md),
             ],
             child,
           ],

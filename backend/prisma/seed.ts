@@ -4,6 +4,7 @@ import {
   LoginMethod,
   PaymentMethod,
   OrderType,
+  Platform,
   PrinterConnection,
   RoundingMode,
   StockLocationKind,
@@ -12,6 +13,9 @@ import {
   TicketKind,
 } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { validateTokenPayload } from '../src/themes/theme-tokens.schema';
 import { DEFAULT_PERSONAS, PERMISSION_CATALOG } from '../src/common/permissions/catalog';
 import { businessDateFor, toDateOnly } from '../src/common/pricing/business-date';
 
@@ -839,6 +843,28 @@ async function main() {
       create: { keyId: keyRow.id, locale: 'en', value: i18nValues[i] },
       update: {},
     });
+  }
+
+  // Default theme "Ink & Emerald" (docs/ui-design/ink-emerald). Same values as the app's built-in
+  // fallback. It is assigned only to platforms that have no theme yet, so a chosen theme is kept.
+  const inkEmerald = JSON.parse(readFileSync(join(__dirname, 'themes', 'ink-emerald.json'), 'utf8'));
+  validateTokenPayload(inkEmerald);
+  const defaultTheme = await prisma.theme.upsert({
+    where: { name: 'Ink & Emerald' },
+    create: {
+      name: 'Ink & Emerald',
+      description: 'Default theme: ink navigation, white cards, one emerald accent.',
+      tokens: inkEmerald,
+      schemaVersion: inkEmerald.schemaVersion,
+      createdById: admin.id,
+    },
+    update: {},
+  });
+  for (const platform of [Platform.WEB, Platform.ANDROID, Platform.IOS]) {
+    const assigned = await prisma.themeAssignment.findUnique({ where: { platform } });
+    if (!assigned) {
+      await prisma.themeAssignment.create({ data: { platform, themeId: defaultTheme.id, updatedById: admin.id } });
+    }
   }
 
   console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580; manager1, cashier1, captain1, waiter1, chef1, storekeeper1, kiosk1 (password <Persona>@123).`);

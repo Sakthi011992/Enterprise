@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/theme/theme_mode_toggle.dart';
+import '../../../core/theme/token_ext.dart';
+import '../../../core/ui/ui.dart';
 
 final _dashboardProvider = FutureProvider<Map>((ref) async {
   final dio = ref.watch(dioProvider);
@@ -25,11 +26,38 @@ class DashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final data = ref.watch(_dashboardProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Dashboard'), actions: [
-        IconButton(icon: const Icon(Icons.refresh), onPressed: () => ref.invalidate(_dashboardProvider)),
-        const ThemeModeToggle(),
-      ]),
-      body: data.when(
+      backgroundColor: context.tokens.color.background.canvas,
+      // Page header in the body (28/700 Manrope); dark mode lives in the shell's top bar.
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              context.tokens.spacing.lg,
+              context.tokens.spacing.lg,
+              context.tokens.spacing.lg,
+              0,
+            ),
+            child: PageHeader(
+              title: 'Dashboard',
+              breadcrumb: 'Overview',
+              actions: [
+                AppButton(
+                  label: 'Refresh',
+                  icon: Icons.refresh,
+                  onPressed: () => ref.invalidate(_dashboardProvider),
+                ),
+              ],
+            ),
+          ),
+          Expanded(child: _body(context, data)),
+        ],
+      ),
+    );
+  }
+
+  Widget _body(BuildContext context, AsyncValue<Map> data) {
+    return data.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (d) {
@@ -39,59 +67,148 @@ class DashboardScreen extends ConsumerWidget {
           final top = d['top'] as List;
           final recent = d['recent'] as List;
           final t = context.tokens;
+          final ext = context.ext;
+          final text = Theme.of(context).textTheme;
+          final labelStyle = text.labelSmall?.copyWith(color: t.color.content.secondary);
           return ListView(
-            padding: EdgeInsets.all(t.spacing.md),
+            padding: EdgeInsets.all(t.spacing.lg),
             children: [
-              Wrap(spacing: t.spacing.step(3), runSpacing: t.spacing.step(3), children: [
-                _card(context, 'Today Orders', '${today['ordersCount']}', Icons.receipt_long),
-                _card(context, 'Today Revenue', '₹${today['revenue']}', Icons.payments),
-                _card(context, 'Today Tax', '₹${today['taxCollected']}', Icons.account_balance),
-                _card(context, 'Month Revenue', '₹${monthly['revenue']}', Icons.trending_up),
-                _card(context, 'Month Tax', '₹${monthly['taxCollected']}', Icons.savings),
-              ]),
+              _panel(
+                context,
+                child: LayoutBuilder(builder: (context, c) {
+                  final hero = Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text('Today Revenue', style: text.bodySmall?.copyWith(color: t.color.content.secondary)),
+                    SizedBox(height: t.spacing.xs),
+                    Text(
+                      '₹${today['revenue']}',
+                      style: AppFonts.apply(
+                        t.typography.displayFamily,
+                        TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.w800,
+                          color: t.color.content.primary,
+                          fontFeatures: kTabularFigures,
+                        ),
+                      ),
+                    ),
+                  ]);
+                  final others = [
+                    _metric(context, 'Today Orders', '${today['ordersCount']}'),
+                    _metric(context, 'Today Tax', '₹${today['taxCollected']}'),
+                    _metric(context, 'Month Revenue', '₹${monthly['revenue']}'),
+                    _metric(context, 'Month Tax', '₹${monthly['taxCollected']}'),
+                  ];
+                  if (c.maxWidth < 720) {
+                    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      hero,
+                      SizedBox(height: t.spacing.md),
+                      Wrap(spacing: t.spacing.lg, runSpacing: t.spacing.md, children: others),
+                    ]);
+                  }
+                  return IntrinsicHeight(
+                    child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      Expanded(flex: 2, child: hero),
+                      for (final m in others) ...[
+                        VerticalDivider(width: t.spacing.lg * 2, color: t.color.border.subtle),
+                        Expanded(child: m),
+                      ],
+                    ]),
+                  );
+                }),
+              ),
               SizedBox(height: t.spacing.lg),
-              Text('Top Selling Products', style: Theme.of(context).textTheme.titleLarge),
-              SizedBox(height: t.spacing.sm),
-              ...top.map((p) => ListTile(
-                    leading: const Icon(Icons.star_outline),
-                    title: Text(p['productName'] as String),
-                    trailing: Text('${p['quantitySold']} sold · ₹${p['revenue']}'),
-                  )),
+              _panel(
+                context,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  Text('Top Selling Products', style: text.titleMedium),
+                  SizedBox(height: t.spacing.sm),
+                  Container(
+                    color: ext.subtleFill,
+                    padding: EdgeInsets.symmetric(horizontal: t.spacing.sm, vertical: t.spacing.xs),
+                    child: Row(children: [
+                      Expanded(child: Text('Product', style: labelStyle)),
+                      Text('Sold · Revenue', style: labelStyle),
+                    ]),
+                  ),
+                  ...top.map((p) => _row(
+                        context,
+                        Row(children: [
+                          Expanded(child: Text(p['productName'] as String)),
+                          Text('${p['quantitySold']} sold · ₹${p['revenue']}'),
+                        ]),
+                      )),
+                ]),
+              ),
               SizedBox(height: t.spacing.lg),
-              Text('Recent Orders', style: Theme.of(context).textTheme.titleLarge),
-              SizedBox(height: t.spacing.sm),
-              ...recent.map((o) => ListTile(
-                    leading: const Icon(Icons.history),
-                    title: Text((o['invoiceNumber'] ?? o['orderNumber'] ?? '—') as String),
-                    subtitle: Text(o['status'] as String),
-                    trailing: Text('₹${o['grandTotal']}'),
-                  )),
+              _panel(
+                context,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  Text('Recent Orders', style: text.titleMedium),
+                  SizedBox(height: t.spacing.sm),
+                  ...recent.map((o) => _row(
+                        context,
+                        Row(children: [
+                          Expanded(
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                              Text((o['invoiceNumber'] ?? o['orderNumber'] ?? '—') as String),
+                              Text(o['status'] as String,
+                                  style: text.bodySmall?.copyWith(color: t.color.content.muted)),
+                            ]),
+                          ),
+                          Text('₹${o['grandTotal']}'),
+                        ]),
+                      )),
+                ]),
+              ),
             ],
           );
         },
+      );
+  }
+
+  Widget _row(BuildContext context, Widget child) {
+    final t = context.tokens;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: t.spacing.sm, vertical: t.spacing.sm),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: t.color.border.subtle)),
       ),
+      child: child,
     );
   }
 
-  Widget _card(BuildContext context, String label, String value, IconData icon) {
+  Widget _panel(BuildContext context, {required Widget child}) {
     final t = context.tokens;
-    return SizedBox(
-      width: 220,
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(t.spacing.md),
-          child: Row(children: [
-            CircleAvatar(child: Icon(icon)),
-            SizedBox(width: t.spacing.step(3)),
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(label, style: Theme.of(context).textTheme.bodySmall),
-                Text(value, style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis),
-              ]),
-            ),
-          ]),
+    return Container(
+      padding: EdgeInsets.all(t.spacing.lg),
+      decoration: BoxDecoration(
+        color: t.color.background.raised,
+        borderRadius: BorderRadius.circular(t.radius.lg),
+        border: Border.all(color: t.color.border.standard),
+        boxShadow: context.ext.cardShadow,
+      ),
+      child: child,
+    );
+  }
+
+  Widget _metric(BuildContext context, String label, String value) {
+    final t = context.tokens;
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+      Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: t.color.content.secondary)),
+      SizedBox(height: t.spacing.xs),
+      Text(
+        value,
+        overflow: TextOverflow.ellipsis,
+        style: AppFonts.apply(
+          t.typography.displayFamily,
+          TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            color: t.color.content.primary,
+            fontFeatures: kTabularFigures,
+          ),
         ),
       ),
-    );
+    ]);
   }
 }

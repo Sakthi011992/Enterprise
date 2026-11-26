@@ -7,6 +7,7 @@ import '../../../core/config/app_config.dart';
 import '../../../core/files/pick_file.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/token_ext.dart';
 
 // ---------------------------------------------------------------------------
 // Dialog entry point
@@ -208,8 +209,8 @@ class _UploadedTabState extends ConsumerState<_UploadedTab> {
                                 color: t.color.background.accent,
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child: const Text('Primary',
-                                  style: TextStyle(color: Colors.white, fontSize: 10)),
+                              child: Text('Primary',
+                                  style: TextStyle(color: t.color.content.onAccent, fontSize: 10)),
                             ),
                           ),
                         Positioned(
@@ -247,14 +248,17 @@ class _ImageAction extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
+    final t = context.tokens;
     return Tooltip(
       message: tooltip,
       child: InkWell(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(4)),
-          child: Icon(icon, color: Colors.white, size: 16),
+          decoration: BoxDecoration(
+              color: t.color.background.inverse.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(4)),
+          child: Icon(icon, color: t.color.content.onInverse, size: 16),
         ),
       ),
     );
@@ -371,7 +375,7 @@ class _StockSearchTabState extends ConsumerState<_StockSearchTab> {
                             child: Image.network(
                               photo['thumbUrl'] as String? ?? '',
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(color: Colors.grey.shade300),
+                              errorBuilder: (_, __, ___) => Container(color: context.ext.subtleFill),
                             ),
                           ),
                           Positioned(
@@ -380,13 +384,13 @@ class _StockSearchTabState extends ConsumerState<_StockSearchTab> {
                             right: 0,
                             child: Container(
                               padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                              decoration: BoxDecoration(
+                                color: t.color.background.inverse.withValues(alpha: 0.6),
+                                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(8)),
                               ),
                               child: Text(
                                 '© ${photo['photographerName']}',
-                                style: const TextStyle(color: Colors.white, fontSize: 9),
+                                style: TextStyle(color: t.color.content.onInverse, fontSize: 9),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../theme/app_theme.dart';
 import '../ui/ui.dart';
 import 'notifications.dart';
 
@@ -9,9 +8,26 @@ import 'notifications.dart';
 Future<void> showNotificationsPanel(BuildContext context) {
   return showDialog<void>(
     context: context,
-    builder: (_) => const Dialog(
-      child: SizedBox(width: 460, height: 520, child: NotificationsPanel()),
-    ),
+    builder: (context) {
+      final t = context.tokens;
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Container(
+          width: 460,
+          height: 520,
+          decoration: BoxDecoration(
+            color: t.color.background.raised,
+            borderRadius: BorderRadius.circular(t.radius.lg),
+            border: Border.all(color: t.color.border.standard),
+            boxShadow: context.ext.raisedShadow,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: const Material(
+              color: Colors.transparent, child: NotificationsPanel()),
+        ),
+      );
+    },
   );
 }
 
@@ -32,23 +48,30 @@ class NotificationsPanel extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(t.spacing.md, t.spacing.md, t.spacing.sm, 0),
+            padding: EdgeInsets.fromLTRB(
+                t.spacing.md, t.spacing.md, t.spacing.sm, 0),
             child: Row(
               children: [
                 Expanded(
-                  child: Text('Notifications', style: Theme.of(context).textTheme.titleMedium),
+                  child: Text('Notifications',
+                      style: Theme.of(context).textTheme.titleMedium),
                 ),
                 AppButton(
                   label: 'Mark all read',
                   variant: AppButtonVariant.ghost,
-                  onPressed: list.hasValue && list.requireValue.any((n) => !n.isRead)
-                      ? () => _markAll(ref)
-                      : null,
+                  onPressed:
+                      list.hasValue && list.requireValue.any((n) => !n.isRead)
+                          ? () => _markAll(ref)
+                          : null,
                 ),
               ],
             ),
           ),
-          const TabBar(tabs: [Tab(text: 'All'), Tab(text: 'Approvals'), Tab(text: 'Alerts')]),
+          const TabBar(tabs: [
+            Tab(text: 'All'),
+            Tab(text: 'Approvals'),
+            Tab(text: 'Alerts')
+          ]),
           Expanded(
             child: list.when(
               loading: () => const DelayedSkeleton(child: SkeletonList()),
@@ -64,7 +87,9 @@ class NotificationsPanel extends ConsumerWidget {
                     ref: ref,
                   ),
                   _NotificationList(
-                    items: items.where((n) => _alertTypes.contains(n.type)).toList(),
+                    items: items
+                        .where((n) => _alertTypes.contains(n.type))
+                        .toList(),
                     ref: ref,
                   ),
                 ],
@@ -92,11 +117,13 @@ class _NotificationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return EmptyState(title: 'Nothing here yet', message: 'You are all caught up.');
+      return EmptyState(
+          title: 'Nothing here yet', message: 'You are all caught up.');
     }
     return ListView.separated(
       itemCount: items.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
+      separatorBuilder: (context, _) =>
+          Divider(height: 1, color: context.tokens.color.border.subtle),
       itemBuilder: (context, i) => _NotificationTile(item: items[i], ref: ref),
     );
   }
@@ -126,7 +153,8 @@ class _NotificationTile extends StatelessWidget {
     final t = context.tokens;
     final isApproval = item.type == 'approval';
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: t.spacing.md, vertical: t.spacing.sm),
+      padding: EdgeInsets.symmetric(
+          horizontal: t.spacing.md, vertical: t.spacing.sm),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -147,7 +175,8 @@ class _NotificationTile extends StatelessWidget {
           if (item.body != null && item.body!.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(top: t.spacing.xs),
-              child: Text(item.body!, style: TextStyle(color: t.color.content.secondary)),
+              child: Text(item.body!,
+                  style: TextStyle(color: t.color.content.secondary)),
             ),
           SizedBox(height: t.spacing.xs),
           if (isApproval)
@@ -155,12 +184,14 @@ class _NotificationTile extends StatelessWidget {
               children: [
                 Tooltip(
                   message: 'Approvals arrive in Phase 2',
-                  child: AppButton(label: 'Approve', variant: AppButtonVariant.primary),
+                  child: AppButton(
+                      label: 'Approve', variant: AppButtonVariant.primary),
                 ),
                 SizedBox(width: t.spacing.sm),
                 Tooltip(
                   message: 'Approvals arrive in Phase 2',
-                  child: AppButton(label: 'Decline', variant: AppButtonVariant.danger),
+                  child: AppButton(
+                      label: 'Decline', variant: AppButtonVariant.danger),
                 ),
               ],
             )

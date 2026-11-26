@@ -10,6 +10,7 @@ import '../data/inventory_repository.dart';
 import '../data/stock_format.dart';
 import 'inventory_messages.dart';
 import 'widgets/qty_stepper.dart';
+import 'widgets/ink_widgets.dart';
 
 /// Wastage above this value needs a photo (PLAN 1.7).
 const double wastagePhotoThreshold = 2000;
@@ -233,10 +234,10 @@ class _LogWastageSheetState extends ConsumerState<_LogWastageSheet> {
               runSpacing: t.spacing.sm,
               children: [
                 for (final (wire, label) in WastageReasons.picks)
-                  ChoiceChip(
-                    label: Text(label),
+                  FilterPill(
+                    label: label,
                     selected: _reason == wire,
-                    onSelected: (_) => setState(() => _reason = wire),
+                    onSelected: () => setState(() => _reason = wire),
                   ),
               ],
             ),

@@ -34,6 +34,31 @@ class ExtTokens {
     required this.onDangerSubtle,
     required this.neutralSubtle,
     required this.onNeutralSubtle,
+    required this.infoSubtle,
+    required this.onInfoSubtle,
+    required this.accentSubtle,
+    required this.onAccentSubtle,
+    required this.accentSubtleBorder,
+    required this.brassSubtle,
+    required this.onBrassSubtle,
+    required this.subtleFill,
+    required this.selectedRow,
+    required this.dangerBorder,
+    required this.focusRing,
+    required this.cardShadow,
+    required this.raisedShadow,
+    this.navBackground = const Color(0xFF0B1220),
+    this.navActive = const Color(0xFF16213A),
+    this.navSubActive = const Color(0xFF111A2B),
+    this.navDivider = const Color(0xFF1F2A3D),
+    this.navForeground = const Color(0xFFC7CED9),
+    this.navForegroundActive = const Color(0xFFFFFFFF),
+    this.navMuted = const Color(0xFF8A94A6),
+    this.navAccent = const Color(0xFF2FB896),
+    this.statusRed = const Color(0xFFD92D20),
+    this.statusAmber = const Color(0xFFF79009),
+    this.statusGreen = const Color(0xFF12B76A),
+    this.statusBlue = const Color(0xFF2E90FA),
     this.controlSm = 36,
     this.controlMd = 44,
     this.controlLg = 52,
@@ -48,6 +73,47 @@ class ExtTokens {
   final Color onDangerSubtle;
   final Color neutralSubtle;
   final Color onNeutralSubtle;
+  final Color infoSubtle;
+  final Color onInfoSubtle;
+
+  /// Selected chips, active filters, highlighted rows: soft emerald fill, its text and border.
+  final Color accentSubtle;
+  final Color onAccentSubtle;
+  final Color accentSubtleBorder;
+
+  /// Happy hour, premium and "Pro" tags.
+  final Color brassSubtle;
+  final Color onBrassSubtle;
+
+  /// Table header rows, search fields, segmented-control tracks.
+  final Color subtleFill;
+
+  /// Background of a selected table row (pair with a 3 px accent edge).
+  final Color selectedRow;
+
+  /// Border of an input in error, and the soft ring drawn around a focused or invalid input.
+  final Color dangerBorder;
+  final Color focusRing;
+
+  /// Card and raised-surface shadows (dialogs, drawers, hero cards).
+  final List<BoxShadow> cardShadow;
+  final List<BoxShadow> raisedShadow;
+
+  /// The ink navigation rail and sidebar, the same in light and dark mode.
+  final Color navBackground;
+  final Color navActive;
+  final Color navSubActive;
+  final Color navDivider;
+  final Color navForeground;
+  final Color navForegroundActive;
+  final Color navMuted;
+  final Color navAccent;
+
+  /// Status dots and small indicators (live, alerts, occupancy).
+  final Color statusRed;
+  final Color statusAmber;
+  final Color statusGreen;
+  final Color statusBlue;
 
   final double controlSm;
   final double controlMd;
@@ -60,28 +126,62 @@ class ExtTokens {
     Brightness brightness, {
     AppDensity density = AppDensity.comfortable,
   }) {
+    // "Ink & Emerald": soft fills with strong text, every pair at 4.5:1 or better.
     if (brightness == Brightness.dark) {
       return ExtTokens(
-        successSubtle: const Color(0xFF052E16),
-        onSuccessSubtle: const Color(0xFF86EFAC),
-        warningSubtle: const Color(0xFF422006),
-        onWarningSubtle: const Color(0xFFFDE68A),
-        dangerSubtle: const Color(0xFF450A0A),
-        onDangerSubtle: const Color(0xFFFCA5A5),
-        neutralSubtle: const Color(0xFF27272A),
-        onNeutralSubtle: const Color(0xFFE4E4E7),
+        successSubtle: const Color(0xFF0E2A1F),
+        onSuccessSubtle: const Color(0xFF6CE9A6),
+        warningSubtle: const Color(0xFF2A2213),
+        onWarningSubtle: const Color(0xFFFEC84B),
+        dangerSubtle: const Color(0xFF2A1517),
+        onDangerSubtle: const Color(0xFFFDA29B),
+        neutralSubtle: const Color(0xFF1A2438),
+        onNeutralSubtle: const Color(0xFFC7CED9),
+        infoSubtle: const Color(0xFF13203A),
+        onInfoSubtle: const Color(0xFF84CAFF),
+        accentSubtle: const Color(0xFF13241F),
+        onAccentSubtle: const Color(0xFF5FD0B2),
+        accentSubtleBorder: const Color(0xFF1F4D41),
+        brassSubtle: const Color(0xFF2A2213),
+        onBrassSubtle: const Color(0xFFF5C46B),
+        subtleFill: const Color(0xFF111A2B),
+        selectedRow: const Color(0xFF13241F),
+        dangerBorder: const Color(0xFFF97066),
+        focusRing: const Color(0x552FB896),
+        cardShadow: const [],
+        raisedShadow: const [
+          BoxShadow(color: Color(0x66000000), blurRadius: 24, offset: Offset(0, 8), spreadRadius: -8),
+        ],
         density: density,
       );
     }
     return ExtTokens(
-      successSubtle: const Color(0xFFDCFCE7),
-      onSuccessSubtle: const Color(0xFF14532D),
-      warningSubtle: const Color(0xFFFEF3C7),
-      onWarningSubtle: const Color(0xFF713F12),
-      dangerSubtle: const Color(0xFFFEE2E2),
-      onDangerSubtle: const Color(0xFF7F1D1D),
-      neutralSubtle: const Color(0xFFE4E4E7),
-      onNeutralSubtle: const Color(0xFF27272A),
+      successSubtle: const Color(0xFFECFDF3),
+      onSuccessSubtle: const Color(0xFF067647),
+      warningSubtle: const Color(0xFFFFFAEB),
+      onWarningSubtle: const Color(0xFFB54708),
+      dangerSubtle: const Color(0xFFFEF3F2),
+      onDangerSubtle: const Color(0xFFB42318),
+      neutralSubtle: const Color(0xFFF2F4F7),
+      onNeutralSubtle: const Color(0xFF344054),
+      infoSubtle: const Color(0xFFEFF8FF),
+      onInfoSubtle: const Color(0xFF175CD3),
+      accentSubtle: const Color(0xFFE7F4F0),
+      onAccentSubtle: const Color(0xFF0A5F4E),
+      accentSubtleBorder: const Color(0xFFA6E3D3),
+      brassSubtle: const Color(0xFFFBF3E4),
+      onBrassSubtle: const Color(0xFF8A5A12),
+      subtleFill: const Color(0xFFF9FAFB),
+      selectedRow: const Color(0xFFF3FAF8),
+      dangerBorder: const Color(0xFFFDA29B),
+      focusRing: const Color(0x330E7C66),
+      cardShadow: const [
+        BoxShadow(color: Color(0x0A101828), blurRadius: 2, offset: Offset(0, 1)),
+      ],
+      raisedShadow: const [
+        BoxShadow(color: Color(0x0A101828), blurRadius: 2, offset: Offset(0, 1)),
+        BoxShadow(color: Color(0x14101828), blurRadius: 24, offset: Offset(0, 8), spreadRadius: -8),
+      ],
       density: density,
     );
   }

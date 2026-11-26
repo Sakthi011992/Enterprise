@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../theme/token_ext.dart';
 
-/// A grey block that pulses in opacity. No shimmer.
+/// A neutral block with a soft shimmer sweeping across it.
 class SkeletonBox extends StatefulWidget {
   const SkeletonBox({super.key, this.width, this.height = 16});
 
@@ -19,10 +19,8 @@ class SkeletonBox extends StatefulWidget {
 class _SkeletonBoxState extends State<SkeletonBox> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 1200),
-  )..repeat(reverse: true);
-
-  late final Animation<double> _opacity = Tween<double>(begin: 0.45, end: 1.0).animate(_controller);
+    duration: const Duration(milliseconds: 1400),
+  )..repeat();
 
   @override
   void dispose() {
@@ -34,14 +32,18 @@ class _SkeletonBoxState extends State<SkeletonBox> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     final t = context.tokens;
     final ext = context.ext;
-    return FadeTransition(
-      opacity: _opacity,
-      child: Container(
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) => Container(
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          color: ext.neutralSubtle,
           borderRadius: BorderRadius.circular(t.radius.sm),
+          gradient: LinearGradient(
+            begin: Alignment(-1.0 + 3 * _controller.value, 0),
+            end: Alignment(0.0 + 3 * _controller.value, 0),
+            colors: [ext.neutralSubtle, ext.subtleFill, ext.neutralSubtle],
+          ),
         ),
       ),
     );

@@ -7,6 +7,7 @@ import '../../../pos/presentation/pos_format.dart';
 import '../../data/inventory_models.dart';
 import '../../data/inventory_repository.dart';
 import '../../domain/periods.dart';
+import '../widgets/ink_widgets.dart';
 
 typedef VarianceQuery = ({String? locationId, String from, String to, bool liquor});
 
@@ -68,10 +69,10 @@ class _VarianceTabState extends ConsumerState<VarianceTab> {
                 onChanged: (v) => setState(() => _locationId = (v == null || v.isEmpty) ? null : v),
               ),
             ),
-            FilterChip(
-              label: const Text('Liquor only'),
+            FilterPill(
+              label: 'Liquor only',
               selected: _liquor,
-              onSelected: (v) => setState(() => _liquor = v),
+              onSelected: () => setState(() => _liquor = !_liquor),
             ),
             if (report != null)
               Text(

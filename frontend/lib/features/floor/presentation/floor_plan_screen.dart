@@ -260,14 +260,14 @@ class _TableTile extends StatelessWidget {
       label: '${table.name}, ${style.label}${detail == null ? '' : ', $detail'}',
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(t.radius.md),
+        borderRadius: BorderRadius.circular(14),
         child: Container(
           width: _tileWidth,
           height: _tileHeight,
-          padding: EdgeInsets.all(t.spacing.sm),
+          padding: EdgeInsets.all(t.spacing.sm + 2),
           decoration: BoxDecoration(
             color: colors.background,
-            borderRadius: BorderRadius.circular(t.radius.md),
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: selected ? t.color.border.focus : colors.foreground,
               width: selected ? t.borderWidth.thick : t.borderWidth.hairline,

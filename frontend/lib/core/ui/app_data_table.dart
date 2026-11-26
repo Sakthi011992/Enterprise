@@ -4,6 +4,7 @@ import '../theme/app_theme.dart';
 import '../theme/token_ext.dart';
 import 'empty_state.dart';
 import 'error_state.dart';
+import 'field_frame.dart';
 import 'skeleton.dart';
 import 'ui_style.dart';
 
@@ -117,11 +118,12 @@ class AppDataTable<T> extends StatelessWidget {
               child: TextField(
                 onChanged: onSearch,
                 style: kitTextStyle(t, t.typography.body, t.color.content.primary),
-                decoration: kitInputDecoration(
+                decoration: fieldDecoration(
                   t,
                   ext,
                   hint: searchHint ?? 'Search',
                   prefix: const Icon(Icons.search),
+                  fill: ext.subtleFill,
                 ),
               ),
             ),
@@ -205,14 +207,16 @@ class AppDataTable<T> extends StatelessWidget {
 
   Widget _grid(BuildContext context, double width, Set<T> selection, bool selectable) {
     final t = context.tokens;
+    final ext = context.ext;
     final widths = _columnWidths(width, selectable);
     final allSelected = rows.isNotEmpty && rows.every(selection.contains);
     final anySelected = rows.any(selection.contains);
     final tap = onRowTap;
 
     final header = Container(
-      padding: EdgeInsets.symmetric(vertical: t.spacing.sm),
+      padding: EdgeInsets.symmetric(vertical: t.spacing.xs),
       decoration: BoxDecoration(
+        color: ext.subtleFill,
         border: Border(
           bottom: BorderSide(color: t.color.border.standard, width: t.borderWidth.hairline),
         ),
@@ -235,7 +239,7 @@ class AppDataTable<T> extends StatelessWidget {
               columns[i].numeric,
               Text(
                 columns[i].label,
-                style: kitTextStyle(t, t.typography.label, t.color.content.secondary),
+                style: kitTextStyle(t, t.typography.caption, t.color.content.secondary),
               ),
             ),
         ],
@@ -280,9 +284,12 @@ class AppDataTable<T> extends StatelessWidget {
 
   Widget _cellBox(double width, bool numeric, Widget child) => SizedBox(
         width: width,
-        child: Align(
-          alignment: numeric ? Alignment.centerRight : Alignment.centerLeft,
-          child: child,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Align(
+            alignment: numeric ? Alignment.centerRight : Alignment.centerLeft,
+            child: child,
+          ),
         ),
       );
 }
@@ -305,15 +312,28 @@ class _HoverRowState extends State<_HoverRow> {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    final row = Container(
-      padding: EdgeInsets.symmetric(vertical: t.spacing.sm),
-      decoration: BoxDecoration(
-        color: (_hovered || widget.highlighted) ? t.color.background.surface : null,
-        border: Border(
-          bottom: BorderSide(color: t.color.border.subtle, width: t.borderWidth.hairline),
+    final ext = context.ext;
+    final row = Stack(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: widget.highlighted ? ext.selectedRow : (_hovered ? ext.subtleFill : null),
+            border: Border(
+              bottom: BorderSide(color: t.color.border.subtle, width: t.borderWidth.hairline),
+            ),
+          ),
+          child: widget.child,
         ),
-      ),
-      child: widget.child,
+        if (widget.highlighted)
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: 3,
+            child: ColoredBox(color: t.color.background.accent),
+          ),
+      ],
     );
     final tappable = widget.onTap == null
         ? row

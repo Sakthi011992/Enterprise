@@ -6,6 +6,7 @@ import '../../../core/auth/permissions.dart';
 import '../../../core/auth/session.dart';
 import '../../../core/ui/ui.dart';
 import '../data/pos_models.dart';
+import 'dialogs/dialog_frame.dart';
 import 'pos_format.dart';
 import 'pos_order_controller.dart';
 
@@ -158,30 +159,28 @@ class PosTicketPanel extends ConsumerWidget {
             ],
           ),
           SizedBox(height: t.spacing.sm),
-          Row(
-            children: [
-              if (canEdit && editable)
-                Expanded(
-                  child: AppButton(
-                    label: unsent > 0
-                        ? 'Send KOT/BOT ($unsent)'
-                        : 'Send KOT/BOT',
-                    variant: AppButtonVariant.secondary,
-                    loading: state.busy,
-                    onPressed: (unsent == 0 || state.busy) ? null : actions.onSend,
-                  ),
-                ),
-              if (canEdit && editable) SizedBox(width: t.spacing.sm),
-              if (canPay && order.isOpen && lines.isNotEmpty)
-                Expanded(
-                  child: AppButton(
-                    label: 'Pay ${formatRupees(payable)}',
-                    variant: AppButtonVariant.primary,
-                    onPressed: (state.offline || state.busy) ? null : actions.onPay,
-                  ),
-                ),
-            ],
-          ),
+          if (canEdit && editable)
+            SizedBox(
+              width: double.infinity,
+              child: AppButton(
+                label: unsent > 0 ? 'Send KOT/BOT ($unsent)' : 'Send KOT/BOT',
+                variant: AppButtonVariant.secondary,
+                loading: state.busy,
+                onPressed: (unsent == 0 || state.busy) ? null : actions.onSend,
+              ),
+            ),
+          if (canEdit && editable && canPay && order.isOpen && lines.isNotEmpty)
+            SizedBox(height: t.spacing.sm),
+          if (canPay && order.isOpen && lines.isNotEmpty)
+            SizedBox(
+              width: double.infinity,
+              child: AppButton(
+                label: 'Pay ${formatRupees(payable)}',
+                variant: AppButtonVariant.primary,
+                size: AppControlSize.lg,
+                onPressed: (state.offline || state.busy) ? null : actions.onPay,
+              ),
+            ),
           if (state.offline)
             Padding(
               padding: EdgeInsets.only(top: t.spacing.xs),
@@ -291,10 +290,7 @@ class _LineRow extends StatelessWidget {
                   children: [
                     _StatusChip(item: item),
                     if (item.hasHappyHour)
-                      StatusBadge(
-                        label: 'Happy hour −${item.happyHourPercent}%',
-                        tone: StatusTone.warning,
-                      ),
+                      BrassBadge(label: 'Happy hour −${item.happyHourPercent}%'),
                     if (item.seat != null)
                       Semantics(
                         button: editable,

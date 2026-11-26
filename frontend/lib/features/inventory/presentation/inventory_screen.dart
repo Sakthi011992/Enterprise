@@ -8,7 +8,6 @@ import '../../../core/auth/permissions.dart';
 import '../../../core/auth/session.dart';
 import '../../../core/ui/ui.dart';
 import '../../pos/presentation/pos_format.dart';
-import '../data/inventory_models.dart';
 import '../data/inventory_repository.dart';
 import 'log_wastage_sheet.dart';
 import 'tabs/kegs_tab.dart';
@@ -18,6 +17,7 @@ import 'tabs/stock_items_tab.dart';
 import 'tabs/transfers_tab.dart';
 import 'tabs/variance_tab.dart';
 import 'tabs/wastage_tab.dart';
+import 'widgets/ink_widgets.dart';
 
 /// Menu & stock > Inventory (Inventory board). KPI tiles on top, then seven
 /// tabs. Each tab is its own file under `tabs/`.
@@ -98,19 +98,17 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen>
             ),
             SizedBox(height: t.spacing.sm),
             summary.when(
-              loading: () => SizedBox(height: 72, child: DelayedSkeleton(child: SkeletonList(rows: 1))),
+              loading: () => SizedBox(height: 96, child: DelayedSkeleton(child: SkeletonList(rows: 1))),
               error: (e, _) => InlineAlert(message: ApiError.from(e).message),
-              data: (s) => Wrap(
-                spacing: t.spacing.md,
-                runSpacing: t.spacing.sm,
-                children: [
-                  _Kpi(label: 'Stock value', value: formatWire(s.stockValue)),
-                  _Kpi(label: 'Pour cost (7 days)', value: '${s.pourPercent}%'),
-                  _Kpi(
+              data: (s) => KpiStrip(
+                cells: [
+                  KpiCell(label: 'Stock value', value: formatWire(s.stockValue), hero: true),
+                  KpiCell(label: 'Pour cost (7 days)', value: '${s.pourPercent}%'),
+                  KpiCell(
                     label: 'Liquor variance (7 days)',
                     value: formatWire(s.liquorVarianceValue),
                   ),
-                  _Kpi(label: 'Below par', value: '${s.belowParCount} items'),
+                  KpiCell(label: 'Below par', value: '${s.belowParCount} items'),
                 ],
               ),
             ),
@@ -142,32 +140,6 @@ class _InventoryScreenState extends ConsumerState<InventoryScreen>
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Kpi extends StatelessWidget {
-  const _Kpi({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = context.tokens;
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 180),
-      child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(label, style: Theme.of(context).textTheme.bodySmall),
-            SizedBox(height: t.spacing.xs),
-            Text(value, style: Theme.of(context).textTheme.headlineSmall),
           ],
         ),
       ),

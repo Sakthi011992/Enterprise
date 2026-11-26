@@ -35,9 +35,9 @@ class AppButton extends StatelessWidget {
     final controlSize = size ?? ext.defaultControlSize;
     final height = ext.controlHeight(controlSize);
     final enabled = onPressed != null && !loading;
-    final colors = _ButtonColors.of(t, variant);
+    final colors = _ButtonColors.of(t, ext, variant);
     final radius = BorderRadius.circular(t.radius.md);
-    final focusSide = BorderSide(color: t.color.border.focus, width: t.borderWidth.thick);
+    final focusSide = BorderSide(color: t.color.border.accent, width: t.borderWidth.thick);
 
     final style = ButtonStyle(
       minimumSize: WidgetStatePropertyAll<Size?>(Size(0, height)),
@@ -50,7 +50,8 @@ class AppButton extends StatelessWidget {
       backgroundColor: WidgetStatePropertyAll<Color?>(colors.background),
       foregroundColor: WidgetStatePropertyAll<Color?>(colors.foreground),
       textStyle: WidgetStatePropertyAll<TextStyle?>(
-        kitTextStyle(t, t.typography.label, colors.foreground),
+        kitTextStyle(t, t.typography.label, colors.foreground)
+            .copyWith(fontWeight: FontWeight.w600),
       ),
       shape: WidgetStateProperty.resolveWith<OutlinedBorder?>(
         (states) => RoundedRectangleBorder(
@@ -80,12 +81,12 @@ class AppButton extends StatelessWidget {
     );
 
     final Widget button = switch (variant) {
-      AppButtonVariant.primary || AppButtonVariant.danger => FilledButton(
+      AppButtonVariant.primary => FilledButton(
           onPressed: enabled ? onPressed : null,
           style: style,
           child: content,
         ),
-      AppButtonVariant.secondary => OutlinedButton(
+      AppButtonVariant.secondary || AppButtonVariant.danger => OutlinedButton(
           onPressed: enabled ? onPressed : null,
           style: style,
           child: content,
@@ -113,7 +114,7 @@ class _ButtonColors {
   final Color foreground;
   final BorderSide side;
 
-  static _ButtonColors of(ThemeTokens t, AppButtonVariant variant) {
+  static _ButtonColors of(ThemeTokens t, ExtTokens ext, AppButtonVariant variant) {
     switch (variant) {
       case AppButtonVariant.primary:
         return _ButtonColors(
@@ -125,13 +126,13 @@ class _ButtonColors {
         return _ButtonColors(
           background: t.color.background.raised,
           foreground: t.color.content.primary,
-          side: BorderSide(color: t.color.border.standard, width: t.borderWidth.hairline),
+          side: BorderSide(color: t.color.border.strong, width: t.borderWidth.hairline),
         );
       case AppButtonVariant.danger:
         return _ButtonColors(
-          background: t.color.background.danger,
-          foreground: t.color.content.onAccent,
-          side: BorderSide.none,
+          background: t.color.background.raised,
+          foreground: t.color.content.danger,
+          side: BorderSide(color: ext.dangerBorder, width: t.borderWidth.hairline),
         );
       case AppButtonVariant.ghost:
         return _ButtonColors(

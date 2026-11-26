@@ -278,6 +278,20 @@ class _PermissionCell extends StatelessWidget {
                   if (changed) ...[
                     Icon(Icons.edit_outlined, size: 12, color: foreground),
                     SizedBox(width: t.spacing.xs),
+                  ] else if (grant.level != AccessLevel.none) ...[
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: switch (grant.level) {
+                          AccessLevel.edit || AccessLevel.approve => ext.statusGreen,
+                          AccessLevel.request || AccessLevel.limited => ext.statusAmber,
+                          _ => t.color.content.muted,
+                        },
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(width: t.spacing.xs),
                   ],
                   Flexible(
                     child: Text(

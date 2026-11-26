@@ -170,57 +170,63 @@ class ThemeScope extends ConsumerWidget {
 
 // --- bootstrap token literals -----------------------------------------------
 
+// Default theme: "Ink & Emerald" (docs/ui-design/ink-emerald). Six text sizes; Manrope for
+// headings and large numbers, Inter for everything else.
 const _typography = {
-  'fontFamily': {'display': 'Inter', 'body': 'Inter', 'mono': 'RobotoMono'},
+  'fontFamily': {'display': 'Manrope', 'body': 'Inter', 'mono': 'Roboto Mono'},
   'scale': {
-    'display': {'size': 32, 'weight': 700, 'height': 1.2, 'letterSpacing': -0.5},
-    'title': {'size': 22, 'weight': 600, 'height': 1.3, 'letterSpacing': 0},
-    'body': {'size': 15, 'weight': 400, 'height': 1.45, 'letterSpacing': 0},
-    'label': {'size': 13, 'weight': 500, 'height': 1.3, 'letterSpacing': 0.2},
-    'caption': {'size': 11, 'weight': 400, 'height': 1.3, 'letterSpacing': 0.4},
-    'mono': {'size': 14, 'weight': 400, 'height': 1.4, 'letterSpacing': 0},
+    'display': {'size': 28, 'weight': 700, 'height': 1.2, 'letterSpacing': -0.5},
+    'title': {'size': 16, 'weight': 700, 'height': 1.35, 'letterSpacing': -0.1},
+    'body': {'size': 14, 'weight': 400, 'height': 1.45, 'letterSpacing': 0},
+    'label': {'size': 13, 'weight': 500, 'height': 1.35, 'letterSpacing': 0},
+    'caption': {'size': 12, 'weight': 500, 'height': 1.35, 'letterSpacing': 0},
+    'mono': {'size': 13, 'weight': 400, 'height': 1.4, 'letterSpacing': 0},
   },
 };
 
 const _scales = {
   'spacing': {'0': 0, '1': 4, '2': 8, '3': 12, '4': 16, '5': 24, '6': 32, '7': 48, '8': 64},
-  'radius': {'none': 0, 'sm': 4, 'md': 8, 'lg': 16, 'pill': 999},
+  // 6 chips · 10 buttons and inputs · 16 cards.
+  'radius': {'none': 0, 'sm': 6, 'md': 10, 'lg': 16, 'pill': 999},
   'borderWidth': {'none': 0, 'hairline': 1, 'thick': 2},
   'elevation': {'none': 0, 'sm': 1, 'md': 4, 'lg': 12},
 };
 
+// Light: ink text on a soft neutral page, white cards, one emerald accent.
+// Every text colour passes 4.5:1 on white and on the page ground.
 const _bootstrapLight = {
   'color': {
     'background': {
-      'canvas': '#FFFFFF', 'surface': '#F4F4F5', 'raised': '#FFFFFF', 'inverse': '#18181B',
-      'accent': '#3F3F46', 'danger': '#B91C1C', 'success': '#15803D', 'warning': '#A16207',
+      'canvas': '#F5F6F8', 'surface': '#FFFFFF', 'raised': '#FFFFFF', 'inverse': '#0B1220',
+      'accent': '#0E7C66', 'danger': '#D92D20', 'success': '#067647', 'warning': '#B54708',
     },
     'content': {
-      'primary': '#18181B', 'secondary': '#52525B', 'muted': '#A1A1AA',
-      'onAccent': '#FFFFFF', 'onInverse': '#FAFAFA', 'danger': '#B91C1C',
+      'primary': '#101828', 'secondary': '#475467', 'muted': '#667085',
+      'onAccent': '#FFFFFF', 'onInverse': '#F2F4F7', 'danger': '#B42318',
     },
     'border': {
-      'subtle': '#E4E4E7', 'default': '#D4D4D8', 'strong': '#A1A1AA',
-      'accent': '#3F3F46', 'focus': '#3F3F46',
+      'subtle': '#F2F4F7', 'default': '#E4E7EC', 'strong': '#D0D5DD',
+      'accent': '#0E7C66', 'focus': '#0E7C66',
     },
   },
   ..._scales,
   'typography': _typography,
 };
 
+// Dark (POS, KDS, TV): deep ink layers, brighter emerald with dark text on it.
 const _bootstrapDark = {
   'color': {
     'background': {
-      'canvas': '#09090B', 'surface': '#18181B', 'raised': '#27272A', 'inverse': '#FAFAFA',
-      'accent': '#D4D4D8', 'danger': '#F87171', 'success': '#4ADE80', 'warning': '#FBBF24',
+      'canvas': '#0A0F1A', 'surface': '#0E1524', 'raised': '#151E30', 'inverse': '#F2F4F7',
+      'accent': '#2FB896', 'danger': '#F97066', 'success': '#32D583', 'warning': '#FDB022',
     },
     'content': {
-      'primary': '#FAFAFA', 'secondary': '#A1A1AA', 'muted': '#71717A',
-      'onAccent': '#09090B', 'onInverse': '#18181B', 'danger': '#F87171',
+      'primary': '#F2F4F7', 'secondary': '#A3ADC2', 'muted': '#8A94A6',
+      'onAccent': '#04231C', 'onInverse': '#0B1220', 'danger': '#F97066',
     },
     'border': {
-      'subtle': '#27272A', 'default': '#3F3F46', 'strong': '#52525B',
-      'accent': '#D4D4D8', 'focus': '#D4D4D8',
+      'subtle': '#1C263A', 'default': '#233049', 'strong': '#2B3A57',
+      'accent': '#2FB896', 'focus': '#2FB896',
     },
   },
   ..._scales,
