@@ -845,25 +845,28 @@ async function main() {
     });
   }
 
-  // Default theme "Ink & Emerald" (docs/ui-design/ink-emerald). Same values as the app's built-in
-  // fallback. It is assigned only to platforms that have no theme yet, so a chosen theme is kept.
-  const inkEmerald = JSON.parse(readFileSync(join(__dirname, 'themes', 'ink-emerald.json'), 'utf8'));
-  validateTokenPayload(inkEmerald);
-  const defaultTheme = await prisma.theme.upsert({
-    where: { name: 'Ink & Emerald' },
-    create: {
-      name: 'Ink & Emerald',
-      description: 'Default theme: ink navigation, white cards, one emerald accent.',
-      tokens: inkEmerald,
-      schemaVersion: inkEmerald.schemaVersion,
-      createdById: admin.id,
-    },
-    update: {},
-  });
+  // Themes an admin can pick in Appearance. The first is the default (same values as the app's
+  // built-in fallback); it is assigned only to platforms that have no theme yet, so a chosen theme is kept.
+  const themes = [
+    { file: 'pegs-and-bottles.json', name: 'Pegs & Bottles', description: 'Default theme: bottle-green header and sidebar, lacquer-red accent; a green room with brass accents in dark mode.' },
+    { file: 'ink-emerald.json', name: 'Ink & Emerald', description: 'Ink navigation, white cards, one emerald accent.' },
+    { file: 'copper-bar.json', name: 'Copper Bar', description: 'Latte page, espresso header and sidebar, copper accent.' },
+  ];
+  const themeIds: string[] = [];
+  for (const t of themes) {
+    const tokens = JSON.parse(readFileSync(join(__dirname, 'themes', t.file), 'utf8'));
+    validateTokenPayload(tokens);
+    const row = await prisma.theme.upsert({
+      where: { name: t.name },
+      create: { name: t.name, description: t.description, tokens, schemaVersion: tokens.schemaVersion, createdById: admin.id },
+      update: {},
+    });
+    themeIds.push(row.id);
+  }
   for (const platform of [Platform.WEB, Platform.ANDROID, Platform.IOS]) {
     const assigned = await prisma.themeAssignment.findUnique({ where: { platform } });
     if (!assigned) {
-      await prisma.themeAssignment.create({ data: { platform, themeId: defaultTheme.id, updatedById: admin.id } });
+      await prisma.themeAssignment.create({ data: { platform, themeId: themeIds[0], updatedById: admin.id } });
     }
   }
 

@@ -620,7 +620,7 @@ model Theme {
   name          String    @unique
   description   String?
   tokens        Json
-  schemaVersion Int       @default(1)
+  schemaVersion Int       @default(2)
   revision      Int       @default(1)
   isActive      Boolean   @default(true)
   deletedAt     DateTime?

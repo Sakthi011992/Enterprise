@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'app_theme.dart';
+import 'theme_tokens.dart';
+
 /// Density of a region of the UI. Sets the default control height.
 enum AppDensity { compact, comfortable, pos }
 
@@ -17,12 +20,14 @@ class DensityScope extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<DensityScope>()?.density;
 
   @override
-  bool updateShouldNotify(DensityScope oldWidget) => oldWidget.density != density;
+  bool updateShouldNotify(DensityScope oldWidget) =>
+      oldWidget.density != density;
 }
 
 /// Tokens that sit outside the v1 contract in `ThemeTokens`. They are kept here
 /// so `ThemeTokens.fromJson` stays unchanged and stored themes still parse.
-/// Values are fixed defaults from the Components board, resolved by brightness.
+/// Status colours are fixed; the accent tints, neutral fills, shadows and the
+/// navigation colours are derived from the active theme's own tokens.
 @immutable
 class ExtTokens {
   const ExtTokens({
@@ -150,7 +155,11 @@ class ExtTokens {
         focusRing: const Color(0x552FB896),
         cardShadow: const [],
         raisedShadow: const [
-          BoxShadow(color: Color(0x66000000), blurRadius: 24, offset: Offset(0, 8), spreadRadius: -8),
+          BoxShadow(
+              color: Color(0x66000000),
+              blurRadius: 24,
+              offset: Offset(0, 8),
+              spreadRadius: -8),
         ],
         density: density,
       );
@@ -176,15 +185,151 @@ class ExtTokens {
       dangerBorder: const Color(0xFFFDA29B),
       focusRing: const Color(0x330E7C66),
       cardShadow: const [
-        BoxShadow(color: Color(0x0A101828), blurRadius: 2, offset: Offset(0, 1)),
+        BoxShadow(
+            color: Color(0x0A101828), blurRadius: 2, offset: Offset(0, 1)),
       ],
       raisedShadow: const [
-        BoxShadow(color: Color(0x0A101828), blurRadius: 2, offset: Offset(0, 1)),
-        BoxShadow(color: Color(0x14101828), blurRadius: 24, offset: Offset(0, 8), spreadRadius: -8),
+        BoxShadow(
+            color: Color(0x0A101828), blurRadius: 2, offset: Offset(0, 1)),
+        BoxShadow(
+            color: Color(0x14101828),
+            blurRadius: 24,
+            offset: Offset(0, 8),
+            spreadRadius: -8),
       ],
       density: density,
     );
   }
+
+  /// Same as [forBrightness], but the accent tints, neutral fills, shadows and navigation
+  /// colours follow [tokens], so every stored theme looks like itself and not like emerald.
+  factory ExtTokens.fromTokens(
+    ThemeTokens tokens,
+    Brightness brightness, {
+    AppDensity density = AppDensity.comfortable,
+  }) {
+    final base = ExtTokens.forBrightness(brightness, density: density);
+    final dark = brightness == Brightness.dark;
+    final bg = tokens.color.background;
+    final fg = tokens.color.content;
+    final accent = bg.accent;
+    final surface = bg.surface;
+    Color mix(Color a, Color b, double t) => Color.lerp(a, b, t)!;
+
+    final navBg = dark ? bg.canvas : bg.inverse;
+    final navDark = navBg.computeLuminance() < 0.4;
+    final onNav = navDark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
+    final accentHsl = HSLColor.fromColor(accent);
+    final navAccent = navDark && accentHsl.lightness < 0.5
+        ? accentHsl
+            .withLightness(0.5)
+            .withSaturation(accentHsl.saturation.clamp(0.0, 0.65))
+            .toColor()
+        : accent;
+
+    final shadow = fg.primary;
+    return base.copyWith(
+      accentSubtle: mix(surface, accent, dark ? 0.16 : 0.10),
+      onAccentSubtle: dark
+          ? mix(accent, const Color(0xFFFFFFFF), 0.25)
+          : mix(accent, const Color(0xFF000000), 0.25),
+      accentSubtleBorder: mix(surface, accent, dark ? 0.32 : 0.35),
+      selectedRow: mix(surface, accent, dark ? 0.09 : 0.05),
+      focusRing: accent.withValues(alpha: dark ? 0.33 : 0.20),
+      subtleFill: mix(surface, fg.primary, 0.025),
+      neutralSubtle: mix(surface, fg.primary, dark ? 0.10 : 0.06),
+      onNeutralSubtle: fg.secondary,
+      cardShadow: dark
+          ? const []
+          : [
+              BoxShadow(
+                  color: shadow.withValues(alpha: 0.04),
+                  blurRadius: 2,
+                  offset: const Offset(0, 1)),
+            ],
+      raisedShadow: dark
+          ? base.raisedShadow
+          : [
+              BoxShadow(
+                  color: shadow.withValues(alpha: 0.04),
+                  blurRadius: 2,
+                  offset: const Offset(0, 1)),
+              BoxShadow(
+                  color: shadow.withValues(alpha: 0.08),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                  spreadRadius: -8),
+            ],
+      navBackground: navBg,
+      navActive: mix(navBg, onNav, 0.07),
+      navSubActive: mix(navBg, onNav, 0.035),
+      navDivider: mix(navBg, onNav, 0.10),
+      navForeground: mix(navBg, onNav, 0.78),
+      navForegroundActive: onNav,
+      navMuted: mix(navBg, onNav, 0.50),
+      navAccent: navAccent,
+    );
+  }
+
+  ExtTokens copyWith({
+    Color? neutralSubtle,
+    Color? onNeutralSubtle,
+    Color? accentSubtle,
+    Color? onAccentSubtle,
+    Color? accentSubtleBorder,
+    Color? subtleFill,
+    Color? selectedRow,
+    Color? focusRing,
+    List<BoxShadow>? cardShadow,
+    List<BoxShadow>? raisedShadow,
+    Color? navBackground,
+    Color? navActive,
+    Color? navSubActive,
+    Color? navDivider,
+    Color? navForeground,
+    Color? navForegroundActive,
+    Color? navMuted,
+    Color? navAccent,
+  }) =>
+      ExtTokens(
+        successSubtle: successSubtle,
+        onSuccessSubtle: onSuccessSubtle,
+        warningSubtle: warningSubtle,
+        onWarningSubtle: onWarningSubtle,
+        dangerSubtle: dangerSubtle,
+        onDangerSubtle: onDangerSubtle,
+        neutralSubtle: neutralSubtle ?? this.neutralSubtle,
+        onNeutralSubtle: onNeutralSubtle ?? this.onNeutralSubtle,
+        infoSubtle: infoSubtle,
+        onInfoSubtle: onInfoSubtle,
+        accentSubtle: accentSubtle ?? this.accentSubtle,
+        onAccentSubtle: onAccentSubtle ?? this.onAccentSubtle,
+        accentSubtleBorder: accentSubtleBorder ?? this.accentSubtleBorder,
+        brassSubtle: brassSubtle,
+        onBrassSubtle: onBrassSubtle,
+        subtleFill: subtleFill ?? this.subtleFill,
+        selectedRow: selectedRow ?? this.selectedRow,
+        dangerBorder: dangerBorder,
+        focusRing: focusRing ?? this.focusRing,
+        cardShadow: cardShadow ?? this.cardShadow,
+        raisedShadow: raisedShadow ?? this.raisedShadow,
+        navBackground: navBackground ?? this.navBackground,
+        navActive: navActive ?? this.navActive,
+        navSubActive: navSubActive ?? this.navSubActive,
+        navDivider: navDivider ?? this.navDivider,
+        navForeground: navForeground ?? this.navForeground,
+        navForegroundActive: navForegroundActive ?? this.navForegroundActive,
+        navMuted: navMuted ?? this.navMuted,
+        navAccent: navAccent ?? this.navAccent,
+        statusRed: statusRed,
+        statusAmber: statusAmber,
+        statusGreen: statusGreen,
+        statusBlue: statusBlue,
+        controlSm: controlSm,
+        controlMd: controlMd,
+        controlLg: controlLg,
+        density: density,
+      );
 
   double controlHeight(AppControlSize size) => switch (size) {
         AppControlSize.sm => controlSm,
@@ -203,8 +348,12 @@ class ExtTokens {
 /// `context.ext` resolves brightness from the nearest [Theme] and density from
 /// the nearest [DensityScope].
 extension ExtTokenContext on BuildContext {
-  ExtTokens get ext => ExtTokens.forBrightness(
-        Theme.of(this).brightness,
-        density: DensityScope.maybeOf(this) ?? AppDensity.comfortable,
-      );
+  ExtTokens get ext {
+    final brightness = Theme.of(this).brightness;
+    final density = DensityScope.maybeOf(this) ?? AppDensity.comfortable;
+    final tokens = dependOnInheritedWidgetOfExactType<TokenTheme>()?.tokens;
+    return tokens == null
+        ? ExtTokens.forBrightness(brightness, density: density)
+        : ExtTokens.fromTokens(tokens, brightness, density: density);
+  }
 }

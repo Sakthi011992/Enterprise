@@ -8,12 +8,12 @@ import { ThemesService } from './themes.service';
 const mode = () => ({
   color: {
     background: {
-      canvas: '#FFFFFF', surface: '#F6F7F9', raised: '#FFFFFF', inverse: '#111318',
+      canvas: '#FFFFFF', surface: '#F6F7F9', raised: '#FFFFFF', inverse: '#111318', header: '#FFFFFF',
       accent: '#2F6BFF', danger: '#D22D2D', success: '#1E8E5A', warning: '#B87503',
     },
     content: {
       primary: '#111318', secondary: '#5A6272', muted: '#8A92A3',
-      onAccent: '#FFFFFF', onInverse: '#F6F7F9', danger: '#D22D2D',
+      onAccent: '#FFFFFF', onInverse: '#F6F7F9', onHeader: '#111318', danger: '#D22D2D',
     },
     border: {
       subtle: '#E4E7EC', default: '#CBD1DA', strong: '#98A1B0',
@@ -37,7 +37,7 @@ const mode = () => ({
   elevation: { none: 0, sm: 1, md: 4, lg: 12 },
 });
 
-const validTokens = () => ({ schemaVersion: 1, modes: { light: mode(), dark: mode() } });
+const validTokens = () => ({ schemaVersion: 2, modes: { light: mode(), dark: mode() } });
 
 describe('validateTokenPayload', () => {
   it('accepts a complete payload', () => {
@@ -165,7 +165,7 @@ describe('ThemesService', () => {
 
   it('builds an ETag from the theme id and revision', async () => {
     repo.findAssignment.mockResolvedValue({
-      theme: { id: 't1', name: 'Daylight', revision: 7, schemaVersion: 1, tokens: validTokens() },
+      theme: { id: 't1', name: 'Daylight', revision: 7, schemaVersion: 2, tokens: validTokens() },
     });
 
     const active = await service.findActiveForPlatform(Platform.WEB);

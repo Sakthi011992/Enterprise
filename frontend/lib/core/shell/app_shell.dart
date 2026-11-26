@@ -79,11 +79,19 @@ class AppShell extends ConsumerWidget {
                       child: Column(
                         children: [
                           if (narrow)
-                            ColoredBox(
-                              color: t.color.background.surface,
-                              child: SizedBox(
-                                width: double.infinity,
-                                height: MediaQuery.paddingOf(context).top,
+                            AnnotatedRegion<SystemUiOverlayStyle>(
+                              // Light clock and icons on a dark header, dark ones on a light header.
+                              value: ThemeData.estimateBrightnessForColor(
+                                          t.color.background.header) ==
+                                      Brightness.dark
+                                  ? SystemUiOverlayStyle.light
+                                  : SystemUiOverlayStyle.dark,
+                              child: ColoredBox(
+                                color: t.color.background.header,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: MediaQuery.paddingOf(context).top,
+                                ),
                               ),
                             ),
                           _TopBar(
@@ -169,161 +177,183 @@ class _TopBar extends ConsumerWidget {
     final name = s?.user.label ?? '';
     final initial = name.isEmpty ? '?' : name.substring(0, 1).toUpperCase();
 
+    final header = t.color.background.header;
+    final onHeader = t.color.content.onHeader;
+    final plainHeader = header == t.color.background.surface;
+
     return Container(
       height: 56,
       padding: EdgeInsets.symmetric(horizontal: t.spacing.sm),
       decoration: BoxDecoration(
-        color: t.color.background.surface,
-        border: Border(bottom: BorderSide(color: t.color.border.standard)),
+        color: header,
+        border: Border(
+          bottom:
+              BorderSide(color: plainHeader ? t.color.border.standard : header),
+        ),
       ),
-      child: Row(
-        children: [
-          if (narrow) ...[
-            const _BrandMark(),
-            SizedBox(width: t.spacing.sm),
-            Expanded(
-              child: Text(
-                title ?? s?.tenant.name ?? 'POS Billing',
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ] else
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: _SearchField(
-                    onTap: () => showCommandPalette(context, visible)),
-              ),
-            ),
-          PopupMenuButton<String>(
-            tooltip: 'Switch outlet',
-            onSelected: (id) => _switchOutlet(context, ref, id),
-            itemBuilder: (_) => [
-              for (final o in s?.outlets ?? const <OutletAccess>[])
-                PopupMenuItem<String>(
-                  value: o.id,
-                  child: Row(
-                    children: [
-                      Icon(
-                          o.id == s?.outlet.id
-                              ? Icons.check
-                              : Icons.storefront_outlined,
-                          size: 18),
-                      SizedBox(width: t.spacing.sm),
-                      Text('${o.name} (${o.persona.name})'),
-                    ],
-                  ),
-                ),
-            ],
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: t.spacing.xs),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                        color: ext.statusGreen, shape: BoxShape.circle),
-                  ),
-                  SizedBox(width: t.spacing.xs),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: narrow ? 110 : 160),
+      child: IconButtonTheme(
+        data: IconButtonThemeData(
+            style: IconButton.styleFrom(foregroundColor: onHeader)),
+        child: IconTheme.merge(
+          data: IconThemeData(color: onHeader),
+          child: DefaultTextStyle.merge(
+            style: TextStyle(color: onHeader),
+            child: Row(
+              children: [
+                if (narrow) ...[
+                  const _BrandMark(),
+                  SizedBox(width: t.spacing.sm),
+                  Expanded(
                     child: Text(
-                      s?.outlet.name ?? 'Outlet',
+                      title ?? s?.tenant.name ?? 'POS Billing',
                       overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(color: onHeader),
                     ),
                   ),
-                  const Icon(Icons.arrow_drop_down),
-                ],
-              ),
-            ),
-          ),
-          if (!narrow)
-            PopupMenuButton<String>(
-              tooltip: 'Language',
-              icon: const Icon(Icons.translate),
-              onSelected: (_) {},
-              itemBuilder: (_) => const [
-                PopupMenuItem<String>(value: 'en', child: Text('English')),
-                PopupMenuItem<String>(
-                    enabled: false,
-                    value: 'ta',
-                    child: Text('Tamil (coming soon)')),
-                PopupMenuItem<String>(
-                    enabled: false,
-                    value: 'hi',
-                    child: Text('Hindi (coming soon)')),
-              ],
-            ),
-          if (!narrow) const ThemeModeToggle(),
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              AppIconButton(
-                icon: Icons.notifications_none,
-                tooltip: 'Notifications',
-                badgeCount: unread == 0 ? null : unread,
-                onPressed: () => showNotificationsPanel(context),
-              ),
-              if (unread > 0)
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: IgnorePointer(
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: ext.statusRed,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: t.color.background.surface, width: 1.5),
+                ] else
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: _SearchField(
+                          onTap: () => showCommandPalette(context, visible)),
+                    ),
+                  ),
+                PopupMenuButton<String>(
+                  tooltip: 'Switch outlet',
+                  onSelected: (id) => _switchOutlet(context, ref, id),
+                  itemBuilder: (_) => [
+                    for (final o in s?.outlets ?? const <OutletAccess>[])
+                      PopupMenuItem<String>(
+                        value: o.id,
+                        child: Row(
+                          children: [
+                            Icon(
+                                o.id == s?.outlet.id
+                                    ? Icons.check
+                                    : Icons.storefront_outlined,
+                                size: 18),
+                            SizedBox(width: t.spacing.sm),
+                            Text('${o.name} (${o.persona.name})'),
+                          ],
+                        ),
                       ),
+                  ],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: t.spacing.xs),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                              color: ext.statusGreen, shape: BoxShape.circle),
+                        ),
+                        SizedBox(width: t.spacing.xs),
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxWidth: narrow ? 110 : 160),
+                          child: Text(
+                            s?.outlet.name ?? 'Outlet',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const Icon(Icons.arrow_drop_down),
+                      ],
                     ),
                   ),
                 ),
-            ],
-          ),
-          if (!narrow)
-            PopupMenuButton<String>(
-              tooltip: 'Account',
-              onSelected: (v) {
-                if (v == 'signout') _signOut(context, ref);
-              },
-              itemBuilder: (_) => [
-                PopupMenuItem<String>(
-                  enabled: false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(s?.user.label ?? '',
-                          style: const TextStyle(fontWeight: FontWeight.w600)),
-                      Text(s?.persona.name ?? ''),
+                if (!narrow)
+                  PopupMenuButton<String>(
+                    tooltip: 'Language',
+                    icon: const Icon(Icons.translate),
+                    onSelected: (_) {},
+                    itemBuilder: (_) => const [
+                      PopupMenuItem<String>(
+                          value: 'en', child: Text('English')),
+                      PopupMenuItem<String>(
+                          enabled: false,
+                          value: 'ta',
+                          child: Text('Tamil (coming soon)')),
+                      PopupMenuItem<String>(
+                          enabled: false,
+                          value: 'hi',
+                          child: Text('Hindi (coming soon)')),
                     ],
                   ),
+                if (!narrow) const ThemeModeToggle(),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    AppIconButton(
+                      icon: Icons.notifications_none,
+                      tooltip: 'Notifications',
+                      badgeCount: unread == 0 ? null : unread,
+                      onPressed: () => showNotificationsPanel(context),
+                    ),
+                    if (unread > 0)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: IgnorePointer(
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: ext.statusRed,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: header, width: 1.5),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
-                const PopupMenuDivider(),
-                const PopupMenuItem<String>(
-                  value: 'signout',
-                  child: Row(children: [
-                    Icon(Icons.logout, size: 18),
-                    SizedBox(width: 8),
-                    Text('Sign out')
-                  ]),
-                ),
+                if (!narrow)
+                  PopupMenuButton<String>(
+                    tooltip: 'Account',
+                    onSelected: (v) {
+                      if (v == 'signout') _signOut(context, ref);
+                    },
+                    itemBuilder: (_) => [
+                      PopupMenuItem<String>(
+                        enabled: false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(s?.user.label ?? '',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600)),
+                            Text(s?.persona.name ?? ''),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuDivider(),
+                      const PopupMenuItem<String>(
+                        value: 'signout',
+                        child: Row(children: [
+                          Icon(Icons.logout, size: 18),
+                          SizedBox(width: 8),
+                          Text('Sign out')
+                        ]),
+                      ),
+                    ],
+                    child: CircleAvatar(
+                      radius: 16,
+                      backgroundColor: ext.neutralSubtle,
+                      foregroundColor: ext.onNeutralSubtle,
+                      child: Text(initial,
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ),
               ],
-              child: CircleAvatar(
-                radius: 16,
-                backgroundColor: ext.neutralSubtle,
-                foregroundColor: ext.onNeutralSubtle,
-                child: Text(initial,
-                    style: const TextStyle(fontWeight: FontWeight.w600)),
-              ),
             ),
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -338,6 +368,16 @@ class _SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
+    final header = t.color.background.header;
+    final onHeader = t.color.content.onHeader;
+    // On a coloured header the box is a translucent tint of it instead of a light field.
+    final plain = header == t.color.background.surface;
+    final fill =
+        plain ? context.ext.subtleFill : Color.lerp(header, onHeader, 0.08)!;
+    final line =
+        plain ? t.color.border.standard : Color.lerp(header, onHeader, 0.18)!;
+    final hint =
+        plain ? t.color.content.muted : onHeader.withValues(alpha: 0.75);
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 360),
       child: InkWell(
@@ -347,32 +387,33 @@ class _SearchField extends StatelessWidget {
           height: 36,
           padding: EdgeInsets.symmetric(horizontal: t.spacing.sm),
           decoration: BoxDecoration(
-            color: context.ext.subtleFill,
+            color: fill,
             borderRadius: BorderRadius.circular(t.radius.md),
-            border: Border.all(color: t.color.border.standard),
+            border: Border.all(color: line),
           ),
           child: Row(
             children: [
-              Icon(Icons.search, size: 18, color: t.color.content.muted),
+              Icon(Icons.search, size: 18, color: hint),
               SizedBox(width: t.spacing.sm),
               Expanded(
                 child: Text(
                   'Search or jump to…',
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: t.color.content.muted),
+                  style: TextStyle(color: hint),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 decoration: BoxDecoration(
-                  color: t.color.background.surface,
+                  color: plain ? t.color.background.surface : fill,
                   borderRadius: BorderRadius.circular(t.radius.sm),
-                  border: Border.all(color: t.color.border.standard),
+                  border: Border.all(color: line),
                 ),
                 child: Text(
                   'Ctrl K',
-                  style:
-                      TextStyle(color: t.color.content.secondary, fontSize: 11),
+                  style: TextStyle(
+                      color: plain ? t.color.content.secondary : hint,
+                      fontSize: 11),
                 ),
               ),
             ],

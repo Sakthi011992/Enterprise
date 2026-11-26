@@ -128,14 +128,14 @@ final themeControllerProvider =
   (ref) => ThemeController(ref.watch(themeRepositoryProvider)),
 );
 
-/// Fallback used only on a fresh install with no network. Neutral greys — enough
-/// to render a login screen legibly until real tokens arrive.
+/// Fallback used when no theme is assigned or the network is down on a fresh
+/// install: the default "Pegs & Bottles" theme.
 final _bootstrapTokens = AppThemeTokens.fromJson(const {
   'id': 'bootstrap',
   'name': 'Bootstrap',
   'revision': 0,
   'tokens': {
-    'schemaVersion': 1,
+    'schemaVersion': 2,
     'modes': {
       'light': _bootstrapLight,
       'dark': _bootstrapDark,
@@ -170,63 +170,63 @@ class ThemeScope extends ConsumerWidget {
 
 // --- bootstrap token literals -----------------------------------------------
 
-// Default theme: "Ink & Emerald" (docs/ui-design/ink-emerald). Six text sizes; Manrope for
-// headings and large numbers, Inter for everything else.
+// Default theme: "Pegs & Bottles" (backend/prisma/themes/pegs-and-bottles.json), taken from the
+// pub's interior. DM Serif Display for headings and large numbers, Work Sans for everything else.
 const _typography = {
-  'fontFamily': {'display': 'Manrope', 'body': 'Inter', 'mono': 'Roboto Mono'},
+  'fontFamily': {'display': 'DM Serif Display', 'body': 'Work Sans', 'mono': 'JetBrains Mono'},
   'scale': {
-    'display': {'size': 28, 'weight': 700, 'height': 1.2, 'letterSpacing': -0.5},
-    'title': {'size': 16, 'weight': 700, 'height': 1.35, 'letterSpacing': -0.1},
+    'display': {'size': 30, 'weight': 400, 'height': 1.15, 'letterSpacing': -0.2},
+    'title': {'size': 17, 'weight': 600, 'height': 1.3, 'letterSpacing': -0.1},
     'body': {'size': 14, 'weight': 400, 'height': 1.45, 'letterSpacing': 0},
-    'label': {'size': 13, 'weight': 500, 'height': 1.35, 'letterSpacing': 0},
-    'caption': {'size': 12, 'weight': 500, 'height': 1.35, 'letterSpacing': 0},
-    'mono': {'size': 13, 'weight': 400, 'height': 1.4, 'letterSpacing': 0},
+    'label': {'size': 13, 'weight': 600, 'height': 1.35, 'letterSpacing': 0},
+    'caption': {'size': 12, 'weight': 500, 'height': 1.35, 'letterSpacing': 0.1},
+    'mono': {'size': 13, 'weight': 500, 'height': 1.4, 'letterSpacing': 0},
   },
 };
 
 const _scales = {
   'spacing': {'0': 0, '1': 4, '2': 8, '3': 12, '4': 16, '5': 24, '6': 32, '7': 48, '8': 64},
-  // 6 chips · 10 buttons and inputs · 16 cards.
-  'radius': {'none': 0, 'sm': 6, 'md': 10, 'lg': 16, 'pill': 999},
+  // 6 chips · 10 buttons and inputs · 14 cards.
+  'radius': {'none': 0, 'sm': 6, 'md': 10, 'lg': 14, 'pill': 999},
   'borderWidth': {'none': 0, 'hairline': 1, 'thick': 2},
   'elevation': {'none': 0, 'sm': 1, 'md': 4, 'lg': 12},
 };
 
-// Light: ink text on a soft neutral page, white cards, one emerald accent.
-// Every text colour passes 4.5:1 on white and on the page ground.
+// Light: warm stone page, bottle-green header and sidebar, lacquer-red accent.
+// Every text colour passes 4.5:1 on the cards and on the page.
 const _bootstrapLight = {
   'color': {
     'background': {
-      'canvas': '#F5F6F8', 'surface': '#FFFFFF', 'raised': '#FFFFFF', 'inverse': '#0B1220',
-      'accent': '#0E7C66', 'danger': '#D92D20', 'success': '#067647', 'warning': '#B54708',
+      'canvas': '#ECE7DE', 'surface': '#FFFDF9', 'raised': '#FFFDF9', 'inverse': '#16291F', 'header': '#1F3D2E',
+      'accent': '#B3301D', 'danger': '#B42318', 'success': '#1F6B45', 'warning': '#A35F00',
     },
     'content': {
-      'primary': '#101828', 'secondary': '#475467', 'muted': '#667085',
-      'onAccent': '#FFFFFF', 'onInverse': '#F2F4F7', 'danger': '#B42318',
+      'primary': '#1A1714', 'secondary': '#554D44', 'muted': '#675E55',
+      'onAccent': '#FFFFFF', 'onInverse': '#F4EFE6', 'onHeader': '#F4EFE6', 'danger': '#B42318',
     },
     'border': {
-      'subtle': '#F2F4F7', 'default': '#E4E7EC', 'strong': '#D0D5DD',
-      'accent': '#0E7C66', 'focus': '#0E7C66',
+      'subtle': '#EFE9DF', 'default': '#E0D8CC', 'strong': '#CCC1B2',
+      'accent': '#B3301D', 'focus': '#B3301D',
     },
   },
   ..._scales,
   'typography': _typography,
 };
 
-// Dark (POS, KDS, TV): deep ink layers, brighter emerald with dark text on it.
+// Dark: a bottle-green room, green leather cards, near-black header, brass accent.
 const _bootstrapDark = {
   'color': {
     'background': {
-      'canvas': '#0A0F1A', 'surface': '#0E1524', 'raised': '#151E30', 'inverse': '#F2F4F7',
-      'accent': '#2FB896', 'danger': '#F97066', 'success': '#32D583', 'warning': '#FDB022',
+      'canvas': '#0D1C15', 'surface': '#14271E', 'raised': '#1B3227', 'inverse': '#F3ECDD', 'header': '#08130E',
+      'accent': '#E2B055', 'danger': '#FF8A7A', 'success': '#3DD68C', 'warning': '#F0A84A',
     },
     'content': {
-      'primary': '#F2F4F7', 'secondary': '#A3ADC2', 'muted': '#8A94A6',
-      'onAccent': '#04231C', 'onInverse': '#0B1220', 'danger': '#F97066',
+      'primary': '#F3ECDD', 'secondary': '#C3BBA8', 'muted': '#A49C8A',
+      'onAccent': '#1F1606', 'onInverse': '#1A1714', 'onHeader': '#F3ECDD', 'danger': '#FF8A7A',
     },
     'border': {
-      'subtle': '#1C263A', 'default': '#233049', 'strong': '#2B3A57',
-      'accent': '#2FB896', 'focus': '#2FB896',
+      'subtle': '#1B3227', 'default': '#244033', 'strong': '#2F5242',
+      'accent': '#E2B055', 'focus': '#E2B055',
     },
   },
   ..._scales,

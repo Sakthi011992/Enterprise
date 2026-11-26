@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 2,
+  "modes": {
+    "light": {
+      "color": {
+        "background": {
+          "canvas": "#EDE4DA", "surface": "#FFFCF8", "raised": "#FFFCF8", "inverse": "#1F1612", "header": "#2A1D16",
+          "accent": "#A84A17", "danger": "#C0261B", "success": "#0F7B45", "warning": "#A55C00"
+        },
+        "content": {
+          "primary": "#1C1613", "secondary": "#5A4F48", "muted": "#6B5F58",
+          "onAccent": "#FFFFFF", "onInverse": "#F6EFE9", "onHeader": "#F6EEE7", "danger": "#B42318"
+        },
+        "border": {
+          "subtle": "#EDE3D9", "default": "#E2D6CA", "strong": "#CFC2B4",
+          "accent": "#A84A17", "focus": "#A84A17"
+        }
+      },
+      "spacing": {"0": 0, "1": 4, "2": 8, "3": 12, "4": 16, "5": 24, "6": 32, "7": 48, "8": 64},
+      "radius": {"none": 0, "sm": 4, "md": 8, "lg": 12, "pill": 999},
+      "borderWidth": {"none": 0, "hairline": 1, "thick": 2},
+      "elevation": {"none": 0, "sm": 1, "md": 4, "lg": 12},
+      "typography": {
+        "fontFamily": {"display": "Bricolage Grotesque", "body": "DM Sans", "mono": "JetBrains Mono"},
+        "scale": {
+          "display": {"size": 30, "weight": 800, "height": 1.15, "letterSpacing": -0.8},
+          "title": {"size": 17, "weight": 700, "height": 1.3, "letterSpacing": -0.2},
+          "body": {"size": 14, "weight": 400, "height": 1.45, "letterSpacing": 0},
+          "label": {"size": 13, "weight": 600, "height": 1.35, "letterSpacing": 0.1},
+          "caption": {"size": 12, "weight": 500, "height": 1.35, "letterSpacing": 0.1},
+          "mono": {"size": 13, "weight": 500, "height": 1.4, "letterSpacing": 0}
+        }
+      }
+    },
+    "dark": {
+      "color": {
+        "background": {
+          "canvas": "#110C09", "surface": "#1C1511", "raised": "#251D18", "inverse": "#F6EFE9", "header": "#2A1F18",
+          "accent": "#EE9358", "danger": "#F97066", "success": "#3DD68C", "warning": "#F5B544"
+        },
+        "content": {
+          "primary": "#F6EFE9", "secondary": "#BDB0A6", "muted": "#9A8C82",
+          "onAccent": "#1F1008", "onInverse": "#1C1613", "onHeader": "#F6EEE7", "danger": "#F97066"
+        },
+        "border": {
+          "subtle": "#2A211B", "default": "#382C24", "strong": "#4A3B31",
+          "accent": "#EE9358", "focus": "#EE9358"
+        }
+      },
+      "spacing": {"0": 0, "1": 4, "2": 8, "3": 12, "4": 16, "5": 24, "6": 32, "7": 48, "8": 64},
+      "radius": {"none": 0, "sm": 4, "md": 8, "lg": 12, "pill": 999},
+      "borderWidth": {"none": 0, "hairline": 1, "thick": 2},
+      "elevation": {"none": 0, "sm": 1, "md": 4, "lg": 12},
+      "typography": {
+        "fontFamily": {"display": "Bricolage Grotesque", "body": "DM Sans", "mono": "JetBrains Mono"},
+        "scale": {
+          "display": {"size": 30, "weight": 800, "height": 1.15, "letterSpacing": -0.8},
+          "title": {"size": 17, "weight": 700, "height": 1.3, "letterSpacing": -0.2},
+          "body": {"size": 14, "weight": 400, "height": 1.45, "letterSpacing": 0},
+          "label": {"size": 13, "weight": 600, "height": 1.35, "letterSpacing": 0.1},
+          "caption": {"size": 12, "weight": 500, "height": 1.35, "letterSpacing": 0.1},
+          "mono": {"size": 13, "weight": 500, "height": 1.4, "letterSpacing": 0}
+        }
+      }
+    }
+  }
+}

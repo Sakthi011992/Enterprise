@@ -28,12 +28,12 @@ const _scales = {
 const _light = {
   'color': {
     'background': {
-      'canvas': '#FFFFFF', 'surface': '#F4F4F5', 'raised': '#FFFFFF', 'inverse': '#18181B',
+      'canvas': '#FFFFFF', 'surface': '#F4F4F5', 'raised': '#FFFFFF', 'inverse': '#18181B', 'header': '#F4F4F5',
       'accent': '#3F3F46', 'danger': '#B91C1C', 'success': '#15803D', 'warning': '#A16207',
     },
     'content': {
       'primary': '#18181B', 'secondary': '#52525B', 'muted': '#A1A1AA',
-      'onAccent': '#FFFFFF', 'onInverse': '#FAFAFA', 'danger': '#B91C1C',
+      'onAccent': '#FFFFFF', 'onInverse': '#FAFAFA', 'onHeader': '#18181B', 'danger': '#B91C1C',
     },
     'border': {
       'subtle': '#E4E4E7', 'default': '#D4D4D8', 'strong': '#A1A1AA',
@@ -47,12 +47,12 @@ const _light = {
 const _dark = {
   'color': {
     'background': {
-      'canvas': '#09090B', 'surface': '#18181B', 'raised': '#27272A', 'inverse': '#FAFAFA',
+      'canvas': '#09090B', 'surface': '#18181B', 'raised': '#27272A', 'inverse': '#FAFAFA', 'header': '#18181B',
       'accent': '#D4D4D8', 'danger': '#F87171', 'success': '#4ADE80', 'warning': '#FBBF24',
     },
     'content': {
       'primary': '#FAFAFA', 'secondary': '#A1A1AA', 'muted': '#71717A',
-      'onAccent': '#09090B', 'onInverse': '#18181B', 'danger': '#F87171',
+      'onAccent': '#09090B', 'onInverse': '#18181B', 'onHeader': '#FAFAFA', 'danger': '#F87171',
     },
     'border': {
       'subtle': '#27272A', 'default': '#3F3F46', 'strong': '#52525B',
@@ -68,7 +68,7 @@ final AppThemeTokens testTokens = AppThemeTokens.fromJson({
   'name': 'Test',
   'revision': 0,
   'tokens': {
-    'schemaVersion': 1,
+    'schemaVersion': 2,
     'modes': {'light': _light, 'dark': _dark},
   },
 });
