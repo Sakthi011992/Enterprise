@@ -1,0 +1,463 @@
+<title>Guest QR Ordering Screens</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a design board. Guest journey phones in flow order, then the staff side. One deliberate look: the Pegs & Bottles light theme (guest app is light-only in v1). */
+:root {
+  color-scheme: light;
+  --page: #E4DED3; --canvas: #ECE7DE; --card: #FFFDF9; --header: #1F3D2E; --onHeader: #F4EFE6; --nav: #16291F;
+  --ink: #1A1714; --ink2: #554D44; --muted: #675E55; --line: #E0D8CC; --line2: #EFE9DF;
+  --accent: #B3301D; --accentSoft: #F7E6E2; --onAccentSoft: #86240F; --brass: #E2B055;
+  --okBg: #E7F3EC; --ok: #1F6B45; --warnBg: #FBF0DD; --warn: #8A5000; --infoBg: #E8EEF6; --info: #24508C; --neutralBg: #EEEAE3;
+  --display: 'DM Serif Display', Georgia, serif; --body: 'Work Sans', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 14px/1.45 var(--body);
+  padding-block: 0 64px; }
+button { font: inherit; color: inherit; }
+.top { background: var(--header); color: var(--onHeader); padding-block: 28px 26px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1240px; margin: 0 auto; }
+.top small { font-size: 12px; letter-spacing: .6px; text-transform: uppercase; opacity: .8; }
+.top h1 { margin: 4px 0 6px; font: 400 34px/1.1 var(--display); text-wrap: balance; }
+.top p { margin: 0; max-width: 70ch; opacity: .9; }
+main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.sec { margin-top: 36px; }
+.sec > h2 { font: 400 26px/1.2 var(--display); margin: 0 0 4px; text-wrap: balance; }
+.sec > p { margin: 0 0 18px; color: var(--ink2); max-width: 75ch; }
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(292px, 1fr)); gap: 30px 22px; align-items: start; }
+.shot { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.cap { width: 100%; max-width: 300px; font-size: 12.5px; color: var(--ink2); }
+.cap b { display: block; color: var(--ink); font-size: 13.5px; margin-bottom: 2px; }
+.step { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--header); color: var(--onHeader); font-size: 11px; font-weight: 700; margin-right: 6px; vertical-align: 1px; }
+
+/* phone */
+.phone { width: 292px; max-width: 100%; padding: 7px; background: #111; border-radius: 38px; box-shadow: 0 18px 40px rgba(26,23,20,.22); }
+.scr { height: 600px; border-radius: 31px; overflow: hidden; background: var(--canvas); display: flex; flex-direction: column; position: relative; }
+.sb { height: 22px; background: var(--header); color: var(--onHeader); font-size: 10.5px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; flex: none; }
+.sb i { width: 16px; height: 7px; border-radius: 2px; background: var(--onHeader); opacity: .8; }
+.gh { background: var(--header); color: var(--onHeader); padding: 8px 14px 12px; flex: none; display: flex; align-items: center; gap: 10px; }
+.logo { width: 34px; height: 34px; border-radius: 9px; background: var(--onHeader); color: var(--header); display: grid; place-items: center; font: 400 15px var(--display); flex: none; }
+.gh .t { flex: 1; min-width: 0; line-height: 1.2; }
+.gh .t b { display: block; font: 400 17px var(--display); }
+.gh .t span { font-size: 11px; opacity: .85; }
+.chip { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: rgba(244,239,230,.14); white-space: nowrap; }
+.back { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: rgba(244,239,230,.12); flex: none; }
+.body { flex: 1; min-height: 0; overflow: hidden; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.h { font: 400 22px/1.15 var(--display); margin: 0; }
+.sub { font-size: 12px; color: var(--ink2); margin: -6px 0 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; }
+.btn { height: 46px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
+.btn.p { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.g { background: var(--header); border-color: var(--header); color: var(--onHeader); }
+.btn.off { background: var(--neutralBg); border-color: var(--neutralBg); color: #9C9389; }
+.btn.sm { height: 34px; font-size: 12.5px; width: auto; padding: 0 12px; }
+.soon { font-size: 9.5px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; padding: 2px 6px; border-radius: 999px; background: #E0D8CC; color: var(--ink2); }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 12px; font-weight: 600; }
+.inp { height: 44px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); display: flex; align-items: center; padding: 0 12px; gap: 8px; font-size: 14px; }
+.inp.f { border: 2px solid var(--accent); box-shadow: 0 0 0 3px rgba(179,48,29,.14); }
+.inp .pre { color: var(--ink2); border-right: 1px solid var(--line); padding-right: 8px; }
+.ph { color: #9C9389; }
+.check { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; color: var(--ink2); }
+.box { width: 18px; height: 18px; border-radius: 5px; background: var(--accent); color: #fff; display: grid; place-items: center; flex: none; margin-top: 1px; }
+.otp { display: flex; gap: 7px; justify-content: center; }
+.otp span { width: 36px; height: 46px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); display: grid; place-items: center; font: 500 18px var(--mono); }
+.otp.err span { border-color: #E3A39A; background: #FDF3F1; }
+.otp.pin span { width: 44px; height: 52px; font-size: 20px; }
+.err { background: #FBEAE7; color: #8E2414; border-radius: 10px; padding: 9px 11px; font-size: 12px; }
+.note { background: var(--warnBg); color: var(--warn); border-radius: 10px; padding: 9px 11px; font-size: 12px; }
+.info { background: var(--infoBg); color: var(--info); border-radius: 10px; padding: 9px 11px; font-size: 12px; }
+.hh { background: var(--header); color: var(--onHeader); border-radius: 10px; padding: 8px 11px; font-size: 12px; display: flex; gap: 8px; align-items: center; }
+.hh b { color: var(--brass); }
+.tabs { display: flex; gap: 6px; overflow: hidden; flex: none; }
+.tabs span { font-size: 12px; font-weight: 600; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); white-space: nowrap; }
+.tabs span.on { background: var(--header); border-color: var(--header); color: var(--onHeader); }
+.item { display: flex; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line2); align-items: center; }
+.item:last-child { border-bottom: 0; }
+.thumb { width: 44px; height: 44px; border-radius: 10px; background: var(--accentSoft); color: var(--accent); display: grid; place-items: center; font: 400 17px var(--display); flex: none; }
+.thumb.dr { background: #E5EDE8; color: var(--header); }
+.item .n { flex: 1; min-width: 0; font-size: 13px; font-weight: 600; line-height: 1.25; }
+.item .n small { display: block; font-weight: 400; color: var(--muted); font-size: 11px; }
+.price { font: 500 12.5px var(--mono); }
+.price s { color: var(--muted); font-size: 11px; margin-right: 4px; }
+.add { width: 30px; height: 30px; border-radius: 9px; border: 1.5px solid var(--accent); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 17px; flex: none; }
+.step2 { display: flex; align-items: center; gap: 8px; background: var(--accentSoft); border-radius: 9px; padding: 3px; flex: none; }
+.step2 i { width: 24px; height: 24px; border-radius: 7px; background: var(--accent); color: #fff; display: grid; place-items: center; font-style: normal; font-weight: 700; }
+.step2 b { font-size: 13px; min-width: 10px; text-align: center; color: var(--onAccentSoft); }
+.sold { opacity: .55; }
+.tag { font-size: 9.5px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; }
+.cartbar { position: absolute; left: 10px; right: 10px; bottom: 12px; background: var(--accent); color: #fff; border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; font-weight: 600; box-shadow: 0 8px 20px rgba(179,48,29,.35); }
+.cartbar span { flex: 1; font-size: 13px; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; }
+.row.m { color: var(--ink2); font-size: 12.5px; }
+.tot { font: 500 20px var(--mono); }
+.div { height: 1px; background: var(--line); }
+.round { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.round header { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink2); }
+.av { width: 24px; height: 24px; border-radius: 50%; background: var(--header); color: var(--onHeader); display: grid; place-items: center; font-size: 11px; font-weight: 700; flex: none; }
+.av.b { background: #7A5A2A; }
+.line { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.line .q { font: 500 12px var(--mono); color: var(--ink2); width: 22px; }
+.line .n { flex: 1; min-width: 0; }
+.st { font-size: 10px; font-weight: 700; letter-spacing: .2px; padding: 3px 8px; border-radius: 999px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+.st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.s-wait { background: var(--warnBg); color: var(--warn); }
+.s-sent { background: var(--infoBg); color: var(--info); }
+.s-cook { background: #FBEAD9; color: #9A4A0B; }
+.s-ready { background: var(--header); color: var(--brass); }
+.s-served { background: var(--okBg); color: var(--ok); }
+.s-off { background: var(--neutralBg); color: var(--muted); }
+.live { font-size: 10.5px; color: var(--ok); font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+.live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #2FB36B; box-shadow: 0 0 0 3px rgba(47,179,107,.2); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--card); border-radius: 20px 20px 0 0; padding: 8px 14px 14px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 -10px 30px rgba(0,0,0,.2); }
+.scrim { position: absolute; inset: 0; background: rgba(20,16,12,.45); }
+.grab { width: 38px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 2px; }
+.opt { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; font-size: 13px; }
+.opt.on { border: 2px solid var(--accent); background: #FFF8F6; }
+.radio { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #CCC1B2; flex: none; }
+.opt.on .radio { border: 5px solid var(--accent); }
+.opt .x { margin-left: auto; font: 500 12px var(--mono); color: var(--ink2); }
+.center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; }
+.big { width: 64px; height: 64px; border-radius: 50%; background: var(--okBg); color: var(--ok); display: grid; place-items: center; }
+.stars { display: flex; gap: 6px; color: var(--brass); font-size: 22px; }
+
+/* staff app */
+.sh { background: var(--header); color: var(--onHeader); height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 12px; flex: none; }
+.sh .mk { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; color: #fff; }
+.sh b { flex: 1; font-size: 14px; font-weight: 600; }
+.sh .o { font-size: 11px; display: flex; align-items: center; gap: 5px; }
+.sh .o::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #2FB36B; }
+.foot { height: 58px; background: var(--card); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5, 1fr); flex: none; padding: 4px 0 8px; }
+.foot div { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9.5px; color: var(--muted); font-weight: 500; position: relative; }
+.foot div i { width: 40px; height: 24px; border-radius: 12px; display: grid; place-items: center; font-style: normal; font-size: 14px; }
+.foot div.on { color: var(--accent); font-weight: 700; }
+.foot div.on i { background: var(--accentSoft); }
+.bdg { position: absolute; top: -2px; right: 12px; background: var(--accent); color: #fff; font-size: 9px; font-weight: 700; min-width: 15px; height: 15px; border-radius: 8px; display: grid; place-items: center; padding: 0 4px; }
+.req { display: flex; gap: 6px; overflow: hidden; }
+.req div { flex: none; background: var(--header); color: var(--onHeader); border-radius: 10px; padding: 7px 10px; font-size: 11.5px; display: flex; align-items: center; gap: 8px; }
+.req div b { color: var(--brass); }
+.req div span { background: rgba(244,239,230,.15); border-radius: 6px; padding: 3px 7px; font-weight: 600; }
+.gcard { padding: 11px 12px; display: flex; flex-direction: column; gap: 8px; }
+.gcard .hd { display: flex; align-items: center; gap: 8px; }
+.tbl { font: 400 20px/1 var(--display); color: var(--header); min-width: 36px; }
+.gcard .who { flex: 1; min-width: 0; font-size: 12px; line-height: 1.25; }
+.gcard .who b { font-size: 13px; display: block; }
+.gcard .age { font-size: 11px; font-weight: 600; color: var(--warn); }
+.acts { display: flex; gap: 6px; }
+.acts .btn { flex: 1; }
+.claimed { font-size: 11.5px; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+
+.wide { grid-column: 1 / -1; }
+.desk { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 18px 40px rgba(26,23,20,.12); display: grid; grid-template-columns: 200px 1fr; min-height: 520px; }
+.dnav { background: var(--nav); color: #C9D2CB; padding: 14px 10px; display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; }
+.dnav .g { font-size: 10px; letter-spacing: .5px; text-transform: uppercase; opacity: .6; margin: 10px 8px 4px; }
+.dnav span { padding: 7px 10px; border-radius: 7px; }
+.dnav span.on { background: #233A2E; color: #fff; box-shadow: inset 3px 0 0 var(--brass); }
+.dmain { background: var(--canvas); display: flex; flex-direction: column; min-width: 0; }
+.dhead { background: var(--header); color: var(--onHeader); height: 50px; display: flex; align-items: center; padding: 0 18px; gap: 10px; font-size: 13px; }
+.dhead .s { flex: 1; max-width: 320px; height: 32px; border-radius: 8px; background: rgba(244,239,230,.1); border: 1px solid rgba(244,239,230,.2); display: flex; align-items: center; padding: 0 10px; font-size: 12px; opacity: .85; }
+.dbody { padding: 18px 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+.crumb { font-size: 12px; color: var(--ink2); }
+.dtitle { font: 400 26px var(--display); margin: 0; }
+.setgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.set { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.set h3 { margin: 0; font-size: 14px; }
+.set p { margin: -6px 0 0; font-size: 12px; color: var(--ink2); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.seg div { border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 12px; color: var(--ink2); }
+.seg div b { display: block; color: var(--ink); font-size: 13px; margin-bottom: 2px; }
+.seg div.on { border: 2px solid var(--accent); background: #FFF8F6; }
+.tg { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
+.tg small { display: block; color: var(--ink2); font-size: 11.5px; }
+.sw { width: 38px; height: 22px; border-radius: 11px; background: var(--accent); position: relative; flex: none; }
+.sw::after { content: ""; position: absolute; top: 3px; right: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+.sw.off { background: #CCC1B2; } .sw.off::after { right: auto; left: 3px; }
+.floor { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.tcard { border-radius: 12px; border: 1px solid var(--line); background: var(--card); padding: 10px; min-height: 92px; display: flex; flex-direction: column; gap: 6px; position: relative; }
+.tcard b { font: 400 20px/1 var(--display); }
+.tcard small { font-size: 11px; color: var(--ink2); }
+.tcard.occ { border-color: #B9CDBF; background: #F3F8F4; }
+.tcard .bd { font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 999px; align-self: flex-start; }
+.pin { font: 500 13px var(--mono); background: var(--header); color: var(--brass); border-radius: 7px; padding: 3px 7px; align-self: flex-start; letter-spacing: 2px; }
+.kds { background: #0D1C15; border-radius: 14px; padding: 14px; color: #F3ECDD; display: flex; flex-direction: column; gap: 10px; }
+.tick { background: #14271E; border: 1px solid #244033; border-radius: 12px; overflow: hidden; }
+.tick header { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: #1B3227; font-size: 12.5px; }
+.tick header b { font-size: 14px; }
+.qr { background: var(--brass); color: #1F1606; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+.tick ul { margin: 0; padding: 10px 14px 12px; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; }
+.tick li small { color: #C3BBA8; display: block; font-size: 11.5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.notes div { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13px; color: var(--ink2); }
+.notes b { color: var(--ink); display: block; margin-bottom: 3px; }
+/* guest desktop / tablet */
+.browser { width: 100%; border-radius: 14px; overflow: hidden; background: #2A2620; box-shadow: 0 18px 40px rgba(26,23,20,.18); }
+.bbar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+.bbar i { width: 10px; height: 10px; border-radius: 50%; background: #5A5248; }
+.bbar span { flex: 1; margin-left: 10px; max-width: 360px; height: 18px; border-radius: 5px; background: rgba(255,255,255,.08); color: rgba(255,255,255,.55); font: 10.5px/18px var(--mono); padding: 0 8px; }
+.gd { background: var(--canvas); display: flex; flex-direction: column; height: 600px; }
+.gdh { background: var(--header); color: var(--onHeader); height: 60px; display: flex; align-items: center; gap: 12px; padding: 0 20px; flex: none; }
+.gdh .t b { display: block; font: 400 19px var(--display); line-height: 1.1; }
+.gdh .t span { font-size: 12px; opacity: .85; }
+.gdh .sp { flex: 1; }
+.gdh .hb { height: 34px; border-radius: 9px; border: 1px solid rgba(244,239,230,.25); display: flex; align-items: center; gap: 7px; padding: 0 12px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.gdh .me { display: flex; align-items: center; gap: 7px; font-size: 12.5px; }
+.gdgrid { flex: 1; min-height: 0; display: grid; grid-template-columns: 190px minmax(0, 1fr) 320px; }
+.cats { border-right: 1px solid var(--line); padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; background: var(--card); }
+.cats span { padding: 9px 12px; border-radius: 9px; font-size: 13.5px; display: flex; justify-content: space-between; }
+.cats span small { color: var(--muted); }
+.cats span.on { background: var(--accentSoft); color: var(--onAccentSoft); font-weight: 600; }
+.menu { padding: 18px 20px; overflow: hidden; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.menu .top2 { display: flex; gap: 12px; align-items: center; }
+.menu .top2 .inp { flex: 1; max-width: 340px; height: 38px; font-size: 13px; }
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.pcard { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.pcard .img { height: 86px; display: grid; place-items: center; font: 400 30px var(--display); }
+.pcard .img.f { background: linear-gradient(135deg, #F7E6E2, #EFD3CC); color: var(--accent); }
+.pcard .img.d { background: linear-gradient(135deg, #E5EDE8, #CFDFD5); color: var(--header); }
+.pcard .pb { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.pcard .pb b { font-size: 13.5px; }
+.pcard .pb small { color: var(--muted); font-size: 11.5px; }
+.pcard .pf { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 6px; }
+.pcard.sold { opacity: .55; }
+.side { border-left: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; min-height: 0; }
+.stabs { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); flex: none; }
+.stabs span { text-align: center; padding: 12px 0; font-size: 13px; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; }
+.stabs span.on { color: var(--accent); border-bottom-color: var(--accent); }
+.sbody { flex: 1; min-height: 0; overflow: hidden; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.sfoot { padding: 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 9px; flex: none; }
+.tab { width: 100%; max-width: 640px; padding: 10px; background: #111; border-radius: 30px; box-shadow: 0 18px 40px rgba(26,23,20,.22); }
+.tab .gd { height: 560px; border-radius: 22px; overflow: hidden; position: relative; }
+.tab .gdgrid { grid-template-columns: 1fr; }
+.tab .pgrid { grid-template-columns: 1fr 1fr; }
+.drawer { position: absolute; top: 0; right: 0; bottom: 0; width: 62%; background: var(--card); box-shadow: -14px 0 30px rgba(0,0,0,.2); display: flex; flex-direction: column; }
+@media (max-width: 900px) { .gdgrid { grid-template-columns: minmax(0, 1fr) 280px; } .cats { display: none; } }
+@media (max-width: 720px) { .desk { grid-template-columns: 1fr; } .dnav { display: none; } .floor { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+<header class="top"><div class="wrap">
+  <small>Phase 4 · UI design for review</small>
+  <h1>Guest QR table ordering</h1>
+  <p>Every screen in the Pegs &amp; Bottles theme, using your real menu. The guest journey is a phone web page opened from the table QR code. The staff screens live in the existing app. Example guests: Deepa and Arun at table R4; waiter Ravi.</p>
+</div></header>
+
+<main><div class="wrap">
+
+<section class="sec">
+  <h2>Guest journey</h2>
+  <p>Light theme only in v1. Green header carries the venue identity; lacquer red is used only for actions a guest takes. Every state chip uses a word as well as a colour.</p>
+  <div class="board" id="guest"></div>
+</section>
+
+<section class="sec">
+  <h2>Guest screens on desktop and tablet</h2>
+  <p>Same link, same screens; the layout adapts to the width. Phones (under 600 px) use the journey above. Tablets (600–1023 px) show the menu as a two-column grid with the cart in a side drawer. Desktops (1024 px and up) show categories, menu and the cart side by side, so nothing hides behind a button.</p>
+  <div class="board" id="wide"></div>
+</section>
+
+<section class="sec">
+  <h2>Staff side</h2>
+  <p>Reuses the existing app shell, footer navigation and theme. Waiters get a new <b>Guest orders</b> screen; admins get the feature configuration; the floor plan and kitchen display get small additions.</p>
+  <div class="board" id="staff"></div>
+</section>
+
+<section class="sec">
+  <h2>Item states guests see</h2>
+  <p>Derived from the existing order lines and kitchen tickets. No new status column.</p>
+  <div class="legend">
+    <span class="st s-wait">Waiting for waiter</span><span class="st s-sent">Sent to kitchen</span><span class="st s-cook">Cooking</span><span class="st s-ready">Ready to serve</span><span class="st s-served">Served</span><span class="st s-off">Cancelled</span>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>Decisions shown in these screens</h2>
+  <div class="notes">
+    <div><b>Name and mobile first</b>Asked once per phone after scanning. A refresh rejoins the same person without asking again.</div>
+    <div><b>Code: static OTP or table PIN</b>Admin picks one. SMS OTP appears as "Coming soon" until an SMS provider is added.</div>
+    <div><b>One shared table bill</b>Each person has their own cart. Everyone sees all rounds, labelled by name.</div>
+    <div><b>Routing is an admin setting</b>Only the cart's one-line message changes: "Your waiter confirms…" or "Goes straight to the kitchen".</div>
+    <div><b>Checkout via waiter</b>"Ask for the bill" alerts the waiter. "Pay online" is a disabled placeholder.</div>
+    <div><b>Waiter footer tab</b>Proposal: for Waiter and Captain, <i>Guest orders</i> replaces <i>Orders</i> in the footer bar, so new rounds are one tap away. Orders moves to More.</div>
+  </div>
+</section>
+
+</div></main>
+
+<script>
+const I = {
+  back: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
+  menu: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5h14M5 12h14M5 19h9"/></svg>',
+  bell: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17h16M6 17a6 6 0 0 1 12 0M12 8V6M10 6h4"/></svg>',
+  bill: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg>',
+  ok: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
+  check: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>',
+  lock: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  pos: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v11H3zM8 20h8M12 16v4"/></svg>',
+  trash: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>'
+};
+const phone = (inner, cls = '') => '<div class="phone"><div class="scr ' + cls + '"><div class="sb"><span>8:42</span><i></i></div>' + inner + '</div></div>';
+const gh = (title, sub, opts = {}) => '<div class="gh">' + (opts.back ? '<span class="back">' + I.back + '</span>' : '<span class="logo">P&amp;B</span>') +
+  '<div class="t"><b>' + title + '</b><span>' + sub + '</span></div>' + (opts.right || '<span class="chip">EN</span>') + '</div>';
+const shot = (n, title, desc, html) => '<div class="shot">' + html + '<div class="cap"><b>' + (n ? '<span class="step">' + n + '</span>' : '') + title + '</b>' + desc + '</div></div>';
+const item = (letter, name, sub, price, ctrl, cls = '', thumb = '') => '<div class="item ' + cls + '"><span class="thumb ' + thumb + '">' + letter + '</span><div class="n">' + name + '<small>' + sub + '</small></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span class="price">' + price + '</span>' + ctrl + '</div></div>';
+const add = '<span class="add">+</span>';
+const stepper = n => '<span class="step2"><i>−</i><b>' + n + '</b><i>+</i></span>';
+
+const guest = [
+  shot(1, 'Welcome', 'Opened from the table QR. Shows the venue and table. Ordering starts after the guest gives their details.',
+    phone(gh('Pegs &amp; Bottles', 'Table R4 · Rooftop') +
+      '<div class="body"><div class="card" style="height:150px;background:linear-gradient(160deg,#16291F,#1F3D2E 55%,#3B2416);border:0;display:flex;align-items:flex-end;padding:14px;color:#F4EFE6"><div><div style="font:400 24px/1.1 var(--display)">Good evening</div><div style="font-size:12px;opacity:.85">Order from your table. Your food comes to R4.</div></div></div>' +
+      '<button class="btn p">See menu &amp; order</button><button class="btn">' + I.bell + 'Call a waiter</button><button class="btn">' + I.bill + 'View bill</button>' +
+      '<div class="note">Alcohol is served only to guests 25 and over. Staff may check ID at your table.</div></div>')),
+  shot(null, 'Table not seated yet', 'If staff haven\'t seated R4, the menu is view-only. This blocks orders from a photo of the QR.',
+    phone(gh('Pegs &amp; Bottles', 'Table R4 · Rooftop') +
+      '<div class="body"><div class="info"><b>Ask staff to seat you to start ordering.</b><br>You can look at the menu now.</div>' +
+      '<div class="tabs"><span class="on">Popular</span><span>Cocktails</span><span>Beer</span><span>Food</span></div>' +
+      '<div class="card">' + item('C', 'Chicken Biryani', 'Fragrant rice, raita', '₹380', '') + item('W', 'Chicken Wings (8 pc)', 'Hot or BBQ', '₹350', '') + item('M', 'Classic Mojito', 'Rum, mint, lime', '₹350', '', '', 'dr') + item('L', 'Premium Lager 650 ml', 'Chilled bottle', '₹360', '', '', 'dr') + '</div></div>')),
+  shot(2, 'Your details', 'Name and mobile number, asked once per phone. Consent is needed to store the number.',
+    phone(gh('Join table R4', 'Pegs &amp; Bottles', { back: 1 }) +
+      '<div class="body"><h3 class="h">Who\'s ordering?</h3><p class="sub">Your name shows on your items so the table knows whose is whose.</p>' +
+      '<div class="field"><label>Your name</label><div class="inp">Deepa</div></div>' +
+      '<div class="field"><label>Mobile number</label><div class="inp f"><span class="pre">+91</span>98765 43210</div></div>' +
+      '<div class="check"><span class="box">' + I.ok + '</span>Use my number for this order and updates. We delete it after 90 days.</div>' +
+      '<div style="flex:1"></div><button class="btn p">Continue</button></div>')),
+  shot(3, 'Enter the code', 'Static OTP mode: 6 digits. A wrong code shows tries left; five wrong tries lock for 10 min.',
+    phone(gh('Verify', '+91 98765 43210', { back: 1 }) +
+      '<div class="body"><h3 class="h">Enter the code</h3><p class="sub">Ask your server for today\'s code.</p>' +
+      '<div class="otp err"><span>2</span><span>4</span><span>6</span><span>8</span><span>1</span><span>1</span></div>' +
+      '<div class="err">That code doesn\'t match · 3 tries left</div>' +
+      '<div class="card" style="padding:12px;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:600">Table PIN mode looks like this</div><div class="otp pin"><span>4</span><span>8</span><span>1</span><span></span></div><div style="font-size:11.5px;color:var(--ink2);text-align:center">Ask your server for this table\'s 4-digit PIN</div></div>' +
+      '<div style="flex:1"></div><button class="btn p">Join table</button></div>')),
+  shot(4, 'Menu', 'Category tabs, happy-hour prices, sold-out items greyed. The cart bar follows the guest.',
+    phone(gh('Menu', 'Table R4 · Deepa', { right: '<span class="chip">3 at table</span>' }) +
+      '<div class="body" style="padding-bottom:70px"><div class="tabs"><span>Popular</span><span class="on">Cocktails</span><span>Beer</span><span>Food</span><span>Desserts</span></div>' +
+      '<div class="hh">Happy hour <b>30% off cocktails</b> until 8 pm</div>' +
+      '<div class="card">' + item('M', 'Classic Mojito', 'Rum, mint, lime', '<s>₹350</s>₹245', stepper(2), '', 'dr') + item('L', 'Long Island Iced Tea', 'Strong', '<s>₹490</s>₹343', add, '', 'dr') + item('V', 'Virgin Colada', 'No alcohol', '₹220', add, '', 'dr') + item('S', 'Aged Cognac Sour', 'Sold out tonight', '₹520', '<span class="tag" style="background:var(--neutralBg);color:var(--muted)">Sold out</span>', 'sold', 'dr') + '</div></div>' +
+      '<div class="cartbar"><span>2 items · ₹490</span>View cart ›</div>')),
+  shot(null, 'Choices', 'Modifier groups marked for QR appear as a sheet. Required choices block "Add" until picked.',
+    phone(gh('Menu', 'Table R4 · Deepa') + '<div class="body"></div><div class="scrim"></div>' +
+      '<div class="sheet"><div class="grab"></div><div class="row"><b style="font:400 20px var(--display)">Classic Mojito</b><span class="price"><s>₹350</s>₹245</span></div>' +
+      '<div style="font-size:12px;font-weight:600">Ice <span style="color:var(--muted);font-weight:400">· choose 1</span></div>' +
+      '<div class="opt on"><span class="radio"></span>On the rocks</div><div class="opt"><span class="radio"></span>No ice</div>' +
+      '<div style="font-size:12px;font-weight:600">Extras <span style="color:var(--muted);font-weight:400">· optional</span></div>' +
+      '<div class="opt"><span class="radio" style="border-radius:5px"></span>Extra mint<span class="x">+₹30</span></div>' +
+      '<div class="row" style="margin-top:4px">' + stepper(1) + '<button class="btn p" style="width:auto;flex:1;margin-left:12px">Add · ₹245</button></div></div>')),
+  shot(5, 'Your cart', 'The guest\'s own cart. The one-line message follows the admin routing setting.',
+    phone(gh('Your cart', 'Deepa · Table R4', { back: 1 }) +
+      '<div class="body"><div class="card"><div class="item"><div class="n">2 × Classic Mojito<small>On the rocks</small></div><span class="price">₹490</span></div><div class="item"><div class="n">1 × Virgin Colada<small>No alcohol</small></div><span class="price">₹220</span></div></div>' +
+      '<div class="field"><label>Note for the kitchen (optional)</label><div class="inp"><span class="ph">Less sugar in the colada</span></div></div>' +
+      '<div class="row m"><span>Items</span><span class="price">₹710</span></div><div class="row m"><span>Tax and service on the bill</span><span>—</span></div>' +
+      '<div style="flex:1"></div><div class="note">Your waiter confirms before it goes to the kitchen.</div><button class="btn p">Place order · ₹710</button>' +
+      '<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:-4px">Direct mode says: "Goes straight to the kitchen."</div></div>')),
+  shot(6, 'Table order', 'Everyone at R4 sees every round, labelled by name, with live states. A waiting round can be cancelled.',
+    phone(gh('Table R4', '<span class="live">Live</span>', { right: '<span class="chip">₹1,780</span>' }) +
+      '<div class="body" style="gap:10px"><div class="card round"><header><span class="av">D</span><b>Deepa</b>· 1 min ago<span style="margin-left:auto;color:var(--accent);font-weight:600">Cancel</span></header>' +
+      '<div class="line"><span class="q">2×</span><span class="n">Classic Mojito</span><span class="st s-wait">Waiting for waiter</span></div><div class="line"><span class="q">1×</span><span class="n">Virgin Colada</span><span class="st s-wait">Waiting for waiter</span></div></div>' +
+      '<div class="card round"><header><span class="av b">A</span><b>Arun</b>· 6 min ago</header>' +
+      '<div class="line"><span class="q">1×</span><span class="n">Chicken Wings (8 pc)</span><span class="st s-ready">Ready to serve</span></div><div class="line"><span class="q">1×</span><span class="n">Chicken Biryani</span><span class="st s-cook">Cooking</span></div><div class="line"><span class="q">1×</span><span class="n">Premium Lager 650 ml</span><span class="st s-served">Served</span></div></div>' +
+      '<div class="card round"><header><span class="av">D</span><b>Deepa</b>· 9 min ago</header><div class="line"><span class="q">1×</span><span class="n">House Red Wine</span><span class="st s-sent">Sent to kitchen</span></div></div>' +
+      '<div style="flex:1"></div><button class="btn g">Add more items</button></div>')),
+  shot(7, 'Bill', 'Running total for the whole table. "Ask for the bill" alerts the waiter. Online payment is a placeholder.',
+    phone(gh('Bill', 'Table R4', { back: 1 }) +
+      '<div class="body"><div class="card" style="padding:12px;display:flex;flex-direction:column;gap:8px">' +
+      '<div class="row m"><span>Subtotal (6 items)</span><span class="price">₹1,780</span></div><div class="row m"><span>Service charge 5%</span><span class="price">₹89</span></div><div class="row m"><span>GST</span><span class="price">₹94</span></div><div class="div"></div>' +
+      '<div class="row"><b>Total</b><span class="tot">₹1,963</span></div><div style="font-size:11px;color:var(--warn)">Includes ₹710 waiting for the waiter to confirm (estimate).</div></div>' +
+      '<div style="flex:1"></div><button class="btn p">' + I.bill + 'Ask for the bill</button><button class="btn off">' + I.lock + 'Pay online <span class="soon">Coming soon</span></button></div>')),
+  shot(null, 'Bill asked', 'Confirmation after asking. The waiter brings the bill and takes payment on the existing pay screen.',
+    phone(gh('Bill', 'Table R4', { back: 1 }) +
+      '<div class="body"><div class="center"><div class="big">' + I.bill + '</div><h3 class="h">Your waiter is bringing the bill</h3><p style="margin:0;color:var(--ink2);font-size:13px;max-width:26ch">Total ₹1,963. Pay by UPI, card or cash at the table.</p></div>' +
+      '<button class="btn">Back to table order</button></div>')),
+  shot(8, 'Paid · thank you', 'Shown to everyone at the table when the order closes. The QR link then starts fresh for the next guests.',
+    phone(gh('Pegs &amp; Bottles', 'Table R4') +
+      '<div class="body"><div class="center"><div class="big">' + I.check + '</div><h3 class="h">Paid · thank you, Deepa</h3><p style="margin:0;color:var(--ink2);font-size:13px">₹1,963 by UPI</p><div class="stars">★★★★☆</div><p style="margin:0;color:var(--muted);font-size:11.5px">Rating is shown for the look only; feedback is a later phase.</p></div>' +
+      '<div class="info" style="text-align:center">This table\'s session has ended. Scan again on your next visit.</div></div>'))
+];
+
+const staff = [
+  shot(null, 'Waiter · Guest orders', 'New footer tab with a live count. Bill and call-waiter requests sit on top. First waiter to claim owns the table.',
+    phone('<div class="sh"><span class="mk">' + I.pos + '</span><b>Guest orders</b><span class="o">Main outlet</span></div>' +
+      '<div class="body" style="gap:10px;padding:10px"><div class="req"><div><b>R2</b>Bill please<span>Ack</span></div><div><b>B5</b>Call waiter<span>Ack</span></div></div>' +
+      '<div class="card gcard"><div class="hd"><span class="tbl">R4</span><div class="who"><b>Deepa</b>+91 98•••••210</div><span class="age">1 min</span></div>' +
+      '<div class="line"><span class="q">2×</span><span class="n">Classic Mojito · On the rocks</span><span class="price">₹490</span></div><div class="line"><span class="q">1×</span><span class="n">Virgin Colada</span><span class="price">₹220</span></div>' +
+      '<div class="acts"><button class="btn sm">Reject</button><button class="btn sm">Claim</button><button class="btn sm p">Confirm</button></div></div>' +
+      '<div class="card gcard"><div class="hd"><span class="tbl">T7</span><div class="who"><b>Karthik</b>+91 90•••••118</div><span class="age" style="color:var(--ink2)">4 min</span></div>' +
+      '<div class="line"><span class="q">4×</span><span class="n">House Whisky 60 ml</span><span class="price">₹1,360</span></div><div class="claimed"><span class="av" style="width:20px;height:20px;font-size:9px">R</span>Ravi is on it</div></div></div>' +
+      '<div class="foot"><div><i>▦</i>Floor</div><div><i>' + I.pos + '</i>POS</div><div class="on"><i>' + I.bell + '</i>Guest orders<span class="bdg">2</span></div><div><i>◔</i>Ready</div><div><i>' + I.menu + '</i>More</div></div>')),
+  shot(null, 'Waiter · Edit & confirm', 'Waiter can change quantities or remove lines before sending. Sends the KOT/BOT through the existing send.',
+    phone('<div class="sh"><span class="mk">' + I.pos + '</span><b>Guest orders</b><span class="o">Main outlet</span></div><div class="body"></div><div class="scrim"></div>' +
+      '<div class="sheet"><div class="grab"></div><div class="row"><b style="font:400 20px var(--display)">R4 · Deepa</b><span style="font-size:11.5px;color:var(--ink2)">Round 2</span></div>' +
+      '<div class="card"><div class="item"><div class="n">Classic Mojito<small>On the rocks</small></div>' + stepper(2) + '</div><div class="item"><div class="n">Virgin Colada<small>Note: less sugar</small></div>' + stepper(1) + '<span style="color:var(--accent)">' + I.trash + '</span></div></div>' +
+      '<div class="note">Alcohol in this round. Check ID if unsure.</div><div class="row"><b>Round total</b><span class="price" style="font-size:15px">₹710</span></div>' +
+      '<button class="btn p">Confirm &amp; send to bar</button><button class="btn">Reject with reason</button></div>')),
+  '<div class="shot wide">' +
+    '<div class="desk" style="width:100%"><nav class="dnav"><div class="g">Sales</div><span>Dashboard</span><span>POS billing</span><span>Orders</span><span>Guest orders</span><div class="g">Settings</div><span>General settings</span><span class="on">Feature configuration</span><span>Floor setup</span><span>Appearance</span></nav>' +
+    '<div class="dmain"><div class="dhead"><span class="s">Search or jump to…</span><span style="flex:1"></span><span>Main outlet ▾</span></div><div class="dbody">' +
+    '<div><div class="crumb">Settings › Feature configuration</div><h3 class="dtitle">Guest ordering</h3></div>' +
+    '<div class="card set" style="flex-direction:row;align-items:center;justify-content:space-between"><div><h3>Let guests order from the table QR</h3><p style="margin:0">Applies to every outlet and table.</p></div><span class="sw"></span></div>' +
+    '<div class="setgrid">' +
+      '<div class="card set"><h3>How orders reach the kitchen</h3><p>Applies to new rounds as soon as you save.</p><div class="seg"><div><b>Direct to kitchen</b>Guest orders go straight to KOT/BOT.</div><div class="on"><b>Via waiter</b>A waiter checks and confirms each round first.</div></div></div>' +
+      '<div class="card set"><h3>How guests verify</h3><p>Guests enter their name and mobile number, then this code.</p>' +
+        '<div class="opt on"><span class="radio"></span><div style="flex:1">Static OTP<div style="font-size:11.5px;color:var(--ink2)">Current code <span style="font-family:var(--mono)">••••••</span></div></div><button class="btn sm">Set new code</button></div>' +
+        '<div class="opt"><span class="radio"></span><div>Table PIN<div style="font-size:11.5px;color:var(--ink2)">New 4-digit PIN each time staff seat a table</div></div></div>' +
+        '<div class="opt" style="opacity:.55"><span class="radio"></span><div>SMS OTP</div><span class="soon" style="margin-left:auto">Coming soon</span></div></div>' +
+      '<div class="card set"><h3>Rules</h3>' +
+        '<div class="tg"><div>Only seated tables can order<small>Before seating, the menu is view-only</small></div><span class="sw"></span></div>' +
+        '<div class="tg"><div>Age check for alcohol<small>Minimum age 25</small></div><span class="sw"></span></div>' +
+        '<div class="tg"><div>Guests can cancel a waiting round<small>Until a waiter confirms it</small></div><span class="sw"></span></div>' +
+        '<div class="tg"><div>Expire unconfirmed rounds after<small>Guest is told it expired</small></div><span class="inp" style="height:32px;width:84px;font-size:13px">10 min</span></div></div>' +
+      '<div class="card set"><h3>Checkout</h3><p>How guests settle the bill.</p>' +
+        '<div class="opt on"><span class="radio"></span>Ask for the bill (waiter brings it)</div>' +
+        '<div class="opt" style="opacity:.55"><span class="radio"></span>Pay online<span class="soon" style="margin-left:auto">Coming soon</span></div></div>' +
+    '</div><div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn sm">Cancel</button><button class="btn sm p">Save changes</button></div></div></div></div>' +
+    '<div class="cap" style="max-width:none"><b>Admin · Feature configuration › Guest ordering</b>One app-wide setting for routing and verification. SMS OTP and online payment are visible but disabled until integrated.</div></div>',
+  '<div class="shot wide"><div class="card" style="width:100%;padding:16px;display:flex;flex-direction:column;gap:12px"><div class="row"><b style="font:400 20px var(--display)">Floor plan · Rooftop</b><span style="font-size:12px;color:var(--ink2)">Table PIN mode shown</span></div>' +
+    '<div class="floor">' +
+      '<div class="tcard occ"><b>R4</b><small>4 guests · 32 min</small><span class="bd" style="background:var(--accentSoft);color:var(--onAccentSoft)">QR · 1 new round</span></div>' +
+      '<div class="tcard occ"><b>R2</b><small>2 guests · 58 min</small><span class="bd" style="background:var(--warnBg);color:var(--warn)">Bill asked</span></div>' +
+      '<div class="tcard occ"><b>B2</b><small>3 guests · 5 min</small><span class="pin">4817</span></div>' +
+      '<div class="tcard"><b>R5</b><small>Free</small></div>' +
+    '</div></div><div class="cap" style="max-width:none"><b>Floor plan additions</b>Badges for a new guest round and a bill request. In Table PIN mode a seated table shows its PIN for staff to tell the guests.</div></div>',
+  shot(null, 'Kitchen display label', 'Read-only change: QR orders show the table and guest name. Phone numbers never reach the kitchen.',
+    '<div class="kds" style="width:292px;max-width:100%"><div style="font:400 18px var(--display)">Kitchen</div>' +
+      '<div class="tick"><header><b>KOT 214 · R4</b><span class="qr">QR · Arun</span></header><ul><li>1 × Chicken Wings (8 pc)<small>Hot</small></li><li>1 × Chicken Biryani</li></ul></div>' +
+      '<div class="tick"><header><b>KOT 215 · T7</b><span style="font-size:11px;color:#C3BBA8">POS · Ravi</span></header><ul><li>2 × Paneer Tikka</li></ul></div></div>')
+];
+
+const pcard = (l, name, sub, price, ctrl, kind, cls = '') => '<div class="pcard ' + cls + '"><div class="img ' + kind + '">' + l + '</div><div class="pb"><b>' + name + '</b><small>' + sub + '</small><div class="pf"><span class="price">' + price + '</span>' + ctrl + '</div></div></div>';
+const deskHeader = '<div class="gdh"><span class="logo">P&amp;B</span><div class="t"><b>Pegs &amp; Bottles</b><span>Table R4 · Rooftop · 3 at table</span></div><span class="sp"></span>' +
+  '<span class="hb">' + I.bell + 'Call a waiter</span><span class="hb">' + I.bill + 'View bill</span><span class="me"><span class="av">D</span>Deepa</span><span class="chip">EN</span></div>';
+const menuCards = pcard('M', 'Classic Mojito', 'Rum, mint, lime', '<s>₹350</s>₹245', stepper(2), 'd') + pcard('L', 'Long Island Iced Tea', 'Strong', '<s>₹490</s>₹343', add, 'd') +
+  pcard('V', 'Virgin Colada', 'No alcohol', '₹220', stepper(1), 'd') + pcard('S', 'Aged Cognac Sour', 'Sold out tonight', '₹520', '<span class="tag" style="background:var(--neutralBg);color:var(--muted)">Sold out</span>', 'd', 'sold') +
+  pcard('W', 'Chicken Wings (8 pc)', 'Hot or BBQ', '₹350', add, 'f') + pcard('C', 'Chicken Biryani', 'Fragrant rice, raita', '₹380', add, 'f');
+const cartLines = '<div class="card"><div class="item"><div class="n">2 × Classic Mojito<small>On the rocks</small></div><span class="price">₹490</span></div><div class="item"><div class="n">1 × Virgin Colada<small>No alcohol</small></div><span class="price">₹220</span></div></div>' +
+  '<div class="field"><label>Note for the kitchen (optional)</label><div class="inp"><span class="ph">Less sugar in the colada</span></div></div>';
+
+const wide = [
+  '<div class="shot wide"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span>order.pegsandbottles.in/t/R4…</span></div><div class="gd">' + deskHeader +
+    '<div class="gdgrid"><nav class="cats"><span>Popular</span><span class="on">Cocktails <small>12</small></span><span>Beer <small>8</small></span><span>Whisky <small>14</small></span><span>Wine <small>6</small></span><span>Food <small>18</small></span><span>Desserts <small>4</small></span></nav>' +
+    '<div class="menu"><div class="top2"><div class="inp"><span class="ph">Search the menu</span></div><div class="hh" style="flex:none">Happy hour <b>30% off cocktails</b> until 8 pm</div></div><div class="pgrid">' + menuCards + '</div></div>' +
+    '<aside class="side"><div class="stabs"><span class="on">Your cart · 3</span><span>Table order <span class="live" style="margin-left:4px"></span></span></div><div class="sbody">' + cartLines + '</div>' +
+    '<div class="sfoot"><div class="row"><b>Items</b><span class="price" style="font-size:15px">₹710</span></div><div class="note">Your waiter confirms before it goes to the kitchen.</div><button class="btn p">Place order · ₹710</button></div></aside></div></div></div>' +
+    '<div class="cap" style="max-width:none"><b>Desktop · menu with cart (1024 px and up)</b>Three columns: categories on the left, menu cards in the middle, and a panel on the right that switches between <i>Your cart</i> and the live <i>Table order</i>. Call a waiter and View bill stay in the header. Name, mobile and code screens appear as a centred card over the page.</div></div>',
+
+  '<div class="shot wide"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span>order.pegsandbottles.in/t/R4…</span></div><div class="gd">' + deskHeader +
+    '<div class="gdgrid"><nav class="cats"><span class="on">Popular</span><span>Cocktails <small>12</small></span><span>Beer <small>8</small></span><span>Whisky <small>14</small></span><span>Wine <small>6</small></span><span>Food <small>18</small></span><span>Desserts <small>4</small></span></nav>' +
+    '<div class="menu"><div class="top2"><div class="inp"><span class="ph">Search the menu</span></div></div><div class="pgrid">' + menuCards + '</div></div>' +
+    '<aside class="side"><div class="stabs"><span>Your cart</span><span class="on">Table order <span class="live" style="margin-left:4px"></span></span></div><div class="sbody" style="gap:8px">' +
+      '<div class="card round"><header><span class="av">D</span><b>Deepa</b>· 1 min</header><div class="line"><span class="q">2×</span><span class="n">Classic Mojito</span><span class="st s-wait">Waiting</span></div></div>' +
+      '<div class="card round"><header><span class="av b">A</span><b>Arun</b>· 6 min</header><div class="line"><span class="q">1×</span><span class="n">Chicken Wings</span><span class="st s-ready">Ready</span></div><div class="line"><span class="q">1×</span><span class="n">Chicken Biryani</span><span class="st s-cook">Cooking</span></div><div class="line"><span class="q">1×</span><span class="n">Premium Lager</span><span class="st s-served">Served</span></div></div></div>' +
+    '<div class="sfoot"><div class="row"><b>Table total</b><span class="tot">₹1,963</span></div><button class="btn p">' + I.bill + 'Ask for the bill</button><button class="btn off">' + I.lock + 'Pay online <span class="soon">Coming soon</span></button></div></aside></div></div></div>' +
+    '<div class="cap" style="max-width:none"><b>Desktop · table order and bill</b>The same right-hand panel on its <i>Table order</i> tab: every round with live states, the table total, Ask for the bill, and the Pay online placeholder. The menu stays usable beside it for adding more.</div></div>',
+
+  '<div class="shot wide" style="align-items:center"><div class="tab"><div class="gd">' +
+    '<div class="gdh" style="height:56px;padding:0 16px"><span class="logo">P&amp;B</span><div class="t"><b>Pegs &amp; Bottles</b><span>Table R4 · Deepa</span></div><span class="sp"></span><span class="hb">' + I.bell + 'Waiter</span><span class="hb">' + I.bill + 'Bill</span></div>' +
+    '<div class="gdgrid"><div class="menu" style="padding:14px"><div class="tabs"><span>Popular</span><span class="on">Cocktails</span><span>Beer</span><span>Food</span><span>Desserts</span></div><div class="pgrid">' + menuCards + '</div></div></div>' +
+    '<div class="scrim" style="border-radius:22px"></div><div class="drawer"><div class="stabs"><span class="on">Your cart · 3</span><span>Table order</span></div><div class="sbody">' + cartLines + '</div>' +
+    '<div class="sfoot"><div class="note">Your waiter confirms before it goes to the kitchen.</div><button class="btn p">Place order · ₹710</button></div></div></div></div>' +
+    '<div class="cap" style="max-width:640px"><b>Tablet (600–1023 px)</b>Category chips on top, menu as a two-column card grid, and the cart opens as a side drawer from a floating cart button. Below 600 px it becomes the phone journey.</div></div>'
+];
+
+document.getElementById('wide').innerHTML = wide.join('');
+document.getElementById('guest').innerHTML = guest.join('');
+document.getElementById('staff').innerHTML = staff.join('');
+</script>
