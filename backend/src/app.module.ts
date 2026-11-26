@@ -42,6 +42,8 @@ import { ProcurementModule } from './modules/procurement/procurement.module';
 import { TabsModule } from './modules/tabs/tabs.module';
 import { KdsModule } from './modules/kds/kds.module';
 import { RealtimeModule } from './modules/realtime/realtime.module';
+import { GuestConfigModule } from './modules/guest-config/guest-config.module';
+import { GuestAuthModule } from './modules/guest-auth/guest-auth.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { PermissionGuard } from './common/guards/permission.guard';
 import { RolesGuard } from './common/guards/roles.guard';
@@ -91,6 +93,8 @@ import { TenantContextMiddleware } from './common/tenancy/tenant-context.middlew
     ProcurementModule,
     TabsModule,
     KdsModule,
+    GuestConfigModule,
+    GuestAuthModule,
   ],
   providers: [
     // Registration order is run order: authenticate, then @Can, then legacy @Roles.

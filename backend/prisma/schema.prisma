@@ -453,8 +453,12 @@ model Order {
   tickets   Ticket[]
   approvals Approval[]
   barTab    BarTab?
+  source         OrderSource   @default(POS)
+  guestSessionId String?
+  guestSession   GuestSession? @relation(fields: [guestSessionId], references: [id], onDelete: SetNull)
 
   @@unique([outletId, orderNumber])
+  @@index([guestSessionId])
   @@index([tenantId])
   @@index([outletId])
   @@index([outletId, status])
@@ -497,8 +501,11 @@ model OrderItem {
   voidReason       String?
   createdById      String?
   createdBy        User?           @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  guestRequestId   String?  // guest round that created the line (null = staff); plain id
+  guestName        String?  // "Deepa", shown on KOT and bill lines
 
   @@index([orderId])
+  @@index([guestRequestId])
   @@index([productId])
   @@map("order_items")
 }
@@ -1208,6 +1215,10 @@ model DiningTable {
   isActive     Boolean     @default(true)
   orders       Order[]
   barTabs      BarTab[]
+  qrToken      String      @unique @default(dbgenerated("substr(replace(((gen_random_uuid())::text || (gen_random_uuid())::text), '-'::text, ''::text), 1, 22)")) // 22-char url-safe random; rotated on session close
+  guestPin     String?             // 4 digits while seated in TABLE_PIN mode
+  qrEnabled    Boolean     @default(true)
+  guestSessions GuestSession[]
 
   @@unique([outletId, name])
   @@index([outletId])
@@ -1965,4 +1976,158 @@ model BottleLockerEvent {
   createdAt DateTime        @default(now())
 
   @@map("bottle_locker_events")
+}
+
+// ---------------------------------------------------------------------------
+// Phase 4: guest QR table ordering (docs/phase-4/PLAN.md 2.1)
+// ---------------------------------------------------------------------------
+
+enum OrderSource {
+  POS
+  KIOSK
+  GUEST_QR
+}
+
+enum GuestSessionStatus {
+  OPEN
+  CLOSED
+}
+
+enum GuestRequestStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CANCELLED
+  EXPIRED
+}
+
+enum ServiceRequestType {
+  CALL_WAITER
+  BILL
+}
+
+enum ServiceRequestStatus {
+  OPEN
+  ACKNOWLEDGED
+  DONE
+}
+
+enum GuestVerifyMethod {
+  STATIC_OTP
+  TABLE_PIN
+  SMS_OTP
+}
+
+/// App-level guest configuration, one row per tenant. config.verification.staticOtpHash is bcrypt.
+model GuestConfig {
+  tenantId    String   @id
+  config      Json
+  updatedById String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("guest_configs")
+}
+
+model GuestSession {
+  id              String              @id @default(uuid())
+  tenantId        String
+  outletId        String
+  tableId         String
+  table           DiningTable         @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  orderId         String? // open order of the table; set on the first placed round
+  status          GuestSessionStatus  @default(OPEN)
+  ageConfirmedAt  DateTime?
+  openedById      String?
+  createdAt       DateTime            @default(now())
+  closedAt        DateTime?
+  participants    GuestParticipant[]
+  requests        GuestOrderRequest[]
+  serviceRequests ServiceRequest[]
+  orders          Order[]
+
+  @@index([tableId, status])
+  @@index([tenantId])
+  @@map("guest_sessions")
+}
+
+model GuestParticipant {
+  id           String              @id @default(uuid())
+  sessionId    String
+  session      GuestSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  name         String
+  phone        String // E.164 "+919876543210"
+  verifiedAt   DateTime?
+  verifyMethod GuestVerifyMethod?
+  consentAt    DateTime
+  deviceKey    String
+  joinedAt     DateTime            @default(now())
+  lastSeenAt   DateTime            @default(now())
+  requests     GuestOrderRequest[]
+
+  @@unique([sessionId, deviceKey])
+  @@index([phone])
+  @@map("guest_participants")
+}
+
+/// One code challenge. Name, phone and consent are held here until the code is verified.
+model GuestVerification {
+  id          String            @id @default(uuid())
+  tableId     String
+  phone       String
+  name        String
+  deviceKey   String
+  consentAt   DateTime
+  method      GuestVerifyMethod
+  codeHash    String? // SMS_OTP only (future)
+  attempts    Int               @default(0)
+  lockedUntil DateTime?
+  expiresAt   DateTime
+  verifiedAt  DateTime?
+  createdAt   DateTime          @default(now())
+
+  @@index([tableId, phone])
+  @@map("guest_verifications")
+}
+
+model GuestOrderRequest {
+  id            String             @id @default(uuid())
+  tenantId      String
+  outletId      String
+  sessionId     String
+  session       GuestSession       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  participantId String
+  participant   GuestParticipant   @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  orderId       String
+  roundKey      String // client idempotency key (PLAN 5)
+  status        GuestRequestStatus @default(PENDING)
+  items         Json
+  claimedById   String?
+  decidedById   String?
+  decidedAt     DateTime?
+  rejectReason  String?
+  createdAt     DateTime           @default(now())
+  expiresAt     DateTime
+
+  @@unique([sessionId, roundKey])
+  @@index([outletId, status])
+  @@index([orderId])
+  @@map("guest_order_requests")
+}
+
+model ServiceRequest {
+  id               String               @id @default(uuid())
+  tenantId         String
+  outletId         String
+  sessionId        String
+  session          GuestSession         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  tableId          String
+  type             ServiceRequestType
+  status           ServiceRequestStatus @default(OPEN)
+  acknowledgedById String?
+  createdAt        DateTime             @default(now())
+  doneAt           DateTime?
+
+  @@index([outletId, status])
+  @@index([sessionId])
+  @@map("service_requests")
 }

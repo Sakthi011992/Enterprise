@@ -18,6 +18,8 @@ import { join } from 'node:path';
 import { validateTokenPayload } from '../src/themes/theme-tokens.schema';
 import { DEFAULT_PERSONAS, PERMISSION_CATALOG } from '../src/common/permissions/catalog';
 import { businessDateFor, toDateOnly } from '../src/common/pricing/business-date';
+import { newQrToken } from '../src/modules/guest-auth/guest-utils';
+import { DEFAULT_GUEST_CONFIG, DEFAULT_STATIC_OTP } from '../src/modules/guest-config/guest-config.types';
 
 // Plain client, no tenant extension: every write below passes tenantId explicitly.
 const prisma = new PrismaClient();
@@ -262,6 +264,7 @@ async function seedPosDemo(tenantId: string, outletId: string): Promise<void> {
         shape: t.shape,
         posX: t.posX,
         posY: t.posY,
+        qrToken: newQrToken(),
       },
     });
   }
@@ -590,6 +593,48 @@ async function seedStockDemo(tenantId: string, outletId: string, adminId: string
   });
 }
 
+/**
+ * Guest ordering block, idempotent. Per tenant: the inactive `qr-guest` system user that guest
+ * orders use as cashierId/createdById (it has no password, persona or outlet, so it can never log
+ * in), a qrToken for any table without one, and the GuestConfig defaults (only when absent).
+ */
+async function seedGuestOrdering(userRoleId: string): Promise<void> {
+  const tenants = await prisma.tenant.findMany({ select: { id: true, slug: true } });
+  for (const t of tenants) {
+    // usernames are unique across tenants, so other tenants get a suffix
+    const username = t.slug === DEFAULT_TENANT_SLUG ? 'qr-guest' : `qr-guest-${t.slug}`;
+    await prisma.user.upsert({
+      where: { username },
+      update: { isActive: false, passwordHash: null },
+      create: {
+        tenantId: t.id,
+        username,
+        displayName: 'QR guest',
+        passwordHash: null,
+        roleId: userRoleId,
+        isActive: false,
+      },
+    });
+
+    const tables = await prisma.diningTable.findMany({ where: { tenantId: t.id, qrToken: '' }, select: { id: true } });
+    for (const tb of tables) {
+      await prisma.diningTable.update({ where: { id: tb.id }, data: { qrToken: newQrToken() } });
+    }
+
+    const existing = await prisma.guestConfig.findUnique({ where: { tenantId: t.id } });
+    if (!existing) {
+      const config = {
+        ...DEFAULT_GUEST_CONFIG,
+        verification: {
+          ...DEFAULT_GUEST_CONFIG.verification,
+          staticOtpHash: await bcrypt.hash(DEFAULT_STATIC_OTP, 10),
+        },
+      };
+      await prisma.guestConfig.create({ data: { tenantId: t.id, config } });
+    }
+  }
+}
+
 async function main() {
   // Roles (legacy, kept until Phase 2)
   const adminRole = await prisma.role.upsert({
@@ -870,7 +915,10 @@ async function main() {
     }
   }
 
-  console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580; manager1, cashier1, captain1, waiter1, chef1, storekeeper1, kiosk1 (password <Persona>@123).`);
+  // Phase 4 guest QR ordering (docs/phase-4/PLAN.md 2.1, 2.2)
+  await seedGuestOrdering(userRole.id);
+
+  console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580; manager1, cashier1, captain1, waiter1, chef1, storekeeper1, kiosk1 (password <Persona>@123). Guest static OTP: ${DEFAULT_STATIC_OTP}.`);
 }
 
 main()
