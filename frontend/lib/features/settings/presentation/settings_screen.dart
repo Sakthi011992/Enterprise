@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/theme_mode_toggle.dart';
@@ -54,9 +55,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const PageHeader(
+            PageHeader(
               title: 'Settings',
-              actions: [ThemeModeToggle()],
+              actions: [
+                AppButton(
+                  label: 'Feature configuration › Guest ordering',
+                  icon: Icons.qr_code_2,
+                  onPressed: () => context.go('/settings/guest-ordering'),
+                ),
+                const ThemeModeToggle(),
+              ],
             ),
             TabBar(
               controller: _tabs,

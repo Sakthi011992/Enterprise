@@ -6,6 +6,7 @@ import '../auth/session.dart';
 import '../auth/session_controller.dart';
 import '../theme/theme_providers.dart';
 import '../ui/ui.dart';
+import '../../features/guest_requests/presentation/guest_orders_badge.dart';
 import 'nav_registry.dart';
 
 /// The four pages each persona gets in the phone footer bar. Anything missing
@@ -15,8 +16,8 @@ const _personaTabs = <String, List<String>>{
   'manager': ['dashboard', 'pos', 'orders', 'floor'],
   'cashier': ['pos', 'orders', 'floor', 'bar-tabs'],
   'bartender': ['bar-tabs', 'pos', 'orders', 'availability'],
-  'captain': ['floor', 'pos', 'orders', 'bar-tabs'],
-  'waiter': ['floor', 'pos', 'orders', 'ready'],
+  'captain': ['floor', 'pos', 'guest-orders', 'bar-tabs'],
+  'waiter': ['floor', 'pos', 'guest-orders', 'ready'],
   'chef': ['kds', 'ready', 'availability', 'stock-count'],
   'storekeeper': ['stock-count', 'inventory', 'procurement', 'availability'],
 };
@@ -144,7 +145,9 @@ class MobileNavBar extends ConsumerWidget {
           destinations: [
             for (final item in tabs)
               NavigationDestination(
-                icon: Icon(item.icon),
+                icon: item.id == guestOrdersNavId
+                    ? GuestOrdersTabIcon(icon: item.icon)
+                    : Icon(item.icon),
                 label: _shortLabels[item.id] ?? item.label,
                 tooltip: item.label,
               ),

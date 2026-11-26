@@ -21,6 +21,8 @@ class KdsOrderRef {
     this.tabNumber,
     this.waiterName,
     this.covers = 1,
+    this.source,
+    this.guestName,
   });
 
   final String id;
@@ -30,6 +32,14 @@ class KdsOrderRef {
   final String? tabNumber;
   final String? waiterName;
   final int covers;
+
+  /// `POS`, `KIOSK` or `GUEST_QR` (Phase 4). Null on older servers.
+  final String? source;
+
+  /// Guest name on a QR order, when the server sends one.
+  final String? guestName;
+
+  bool get isGuestQr => source == 'GUEST_QR';
 
   /// "R4", "Tab T-08", "Bar seat 7", or the order type when there is no place.
   String get placeLabel {
@@ -48,6 +58,8 @@ class KdsOrderRef {
         tabNumber: readStringOrNull(j, 'tabNumber'),
         waiterName: readStringOrNull(j, 'waiterName'),
         covers: readInt(j, 'covers', 1),
+        source: readStringOrNull(j, 'source'),
+        guestName: readStringOrNull(j, 'guestName'),
       );
 }
 
@@ -61,6 +73,7 @@ class KdsItem {
     this.modifiers = const [],
     this.note,
     this.seat,
+    this.guestName,
     this.voided = false,
   });
 
@@ -72,6 +85,9 @@ class KdsItem {
   final String? note;
   final int? seat;
   final bool voided;
+
+  /// Guest who ordered the line on a QR order (Phase 4), or null.
+  final String? guestName;
 
   /// "2 × Classic Mojito", the form the display uses.
   String get headline {
@@ -89,6 +105,7 @@ class KdsItem {
         note: readStringOrNull(j, 'note'),
         seat: readIntOrNull(j, 'seat'),
         voided: readBool(j, 'voided'),
+        guestName: readStringOrNull(j, 'guestName'),
       );
 }
 

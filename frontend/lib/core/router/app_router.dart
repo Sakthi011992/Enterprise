@@ -14,7 +14,9 @@ import '../../features/floor/presentation/floor_plan_screen.dart';
 import '../../features/floor/presentation/floor_setup_screen.dart';
 import '../../features/devices/presentation/devices_screen.dart';
 import '../../features/kiosk/presentation/kiosk_admin_screen.dart';
+import '../../features/guest_requests/presentation/guest_orders_screen.dart';
 import '../../features/hardware/presentation/hardware_screen.dart';
+import '../../features/settings/presentation/guest_ordering_settings_screen.dart';
 import '../../features/inventory/presentation/inventory_screen.dart';
 import '../../features/inventory/presentation/stock_count_screen.dart';
 import '../../features/inventory/presentation/stock_item_editor_screen.dart';
@@ -156,6 +158,9 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (_, state) => KdsScreen(initialStation: state.uri.queryParameters['station']),
           ),
           GoRoute(path: '/service/ready', builder: (_, __) => const ReadyToServeScreen()),
+          // Phase 4 (G-E): guest ordering staff routes.
+          GoRoute(path: '/service/guest-orders', builder: (_, __) => const GuestOrdersScreen()),
+          GoRoute(path: '/settings/guest-ordering', builder: (_, __) => const GuestOrderingSettingsScreen()),
           GoRoute(path: '/menu/availability', builder: (_, __) => const AvailabilityScreen()),
           GoRoute(path: '/inventory', builder: (_, __) => const InventoryScreen()),
           GoRoute(

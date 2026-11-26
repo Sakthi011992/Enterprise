@@ -63,6 +63,14 @@ const navItems = <NavItem>[
     permission: Perm.salesOrdersTake,
   ),
   NavItem(
+    id: 'guest-orders',
+    label: 'Guest orders',
+    icon: Icons.qr_code_2,
+    route: '/service/guest-orders',
+    group: 'Sales',
+    permission: Perm.guestsOrdersConfirm,
+  ),
+  NavItem(
     id: 'floor',
     label: 'Floor plan',
     icon: Icons.table_restaurant_outlined,
