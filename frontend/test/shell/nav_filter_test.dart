@@ -78,6 +78,7 @@ Map<String, PermissionGrant> adminMatrix() => {
         Perm.stockPurchaseOrders,
         Perm.guestsQueue,
         Perm.displaysControl,
+        Perm.guestsOrdersConfirm,
         Perm.reportsView,
         Perm.adminUsers,
         Perm.adminSettings,

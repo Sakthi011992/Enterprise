@@ -12,6 +12,7 @@ abstract class Perm {
   static const stockCount = 'stock.count';
   static const stockPurchaseOrders = 'stock.purchaseOrders';
   static const guestsQueue = 'guests.queue';
+  static const guestsOrdersConfirm = 'guests.orders.confirm';
   static const displaysControl = 'displays.control';
   static const reportsView = 'reports.view';
   static const adminUsers = 'admin.users';

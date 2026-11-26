@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/auth/api_error.dart';
 import '../../../core/ui/ui.dart';
+import '../../guest_requests/presentation/floor_guest_widgets.dart';
 import '../data/floor_repository.dart';
 
 /// Grid of cells the floor plan snaps to. posX/posY are cell indices.
@@ -312,6 +313,8 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
                     return SingleChildScrollView(scrollDirection: Axis.horizontal, child: canvas);
                   },
                 ),
+                SizedBox(height: t.spacing.md),
+                FloorQrActions(area: area, tables: inArea),
               ],
             ),
           ),

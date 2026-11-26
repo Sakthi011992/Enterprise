@@ -13,6 +13,7 @@ import '../../../core/realtime/offline_poller.dart';
 import '../../../core/realtime/realtime_client.dart';
 import '../../../core/ui/ui.dart';
 import '../../pos/presentation/dialogs/dialog_frame.dart';
+import '../../guest_requests/presentation/kds_qr_label.dart';
 import '../data/kds_models.dart';
 import '../data/kds_repository.dart';
 import '../domain/kds_rules.dart';
@@ -223,6 +224,7 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    KdsQrLabel(ticket: ticket),
                     Text(
                       _ageText(ticket, now),
                       style: Theme.of(context).textTheme.titleSmall,
