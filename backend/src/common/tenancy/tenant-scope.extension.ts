@@ -41,6 +41,11 @@ export const TENANT_MODELS = [
   'DocumentCounter',
   'BarTab',
   'BottleLockerEntry',
+  // Phase 4 (guest QR ordering). Participants and verifications are reached through their session or table.
+  'GuestSession',
+  'GuestOrderRequest',
+  'ServiceRequest',
+  'GuestConfig',
 ] as const;
 
 export type TenantModel = (typeof TENANT_MODELS)[number];
