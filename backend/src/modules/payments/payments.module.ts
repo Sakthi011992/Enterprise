@@ -7,11 +7,12 @@ import { PaymentsService } from './payments.service';
 import { PaymentsController } from './payments.controller';
 import { OrderPaymentsController } from './order-payments.controller';
 import { PaymentsRepository } from './payments.repository';
+import { PAYMENT_GATEWAY, paymentGatewayProvider } from './gateway/payment-gateway';
 
 @Module({
   imports: [OrdersModule, InvoiceModule, ApprovalsModule, TabsLimitModule],
   controllers: [PaymentsController, OrderPaymentsController],
-  providers: [PaymentsService, PaymentsRepository],
-  exports: [PaymentsService],
+  providers: [PaymentsService, PaymentsRepository, paymentGatewayProvider],
+  exports: [PaymentsService, PAYMENT_GATEWAY],
 })
 export class PaymentsModule {}

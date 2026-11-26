@@ -1,9 +1,10 @@
 /** Event envelope emitted by the realtime service (PLAN.md 1.7 Realtime). */
 export type RealtimeEvent = {
-  scope: 'outlet' | 'station' | 'user';
+  scope: 'outlet' | 'station' | 'user' | 'table';
   outletId?: string;
   station?: string;
   userId?: string;
+  tableId?: string;
   event: string;
   payload: unknown;
 };
@@ -38,6 +39,16 @@ export const stationEvent = (outletId: MaybeId, station: MaybeId, event: string,
 export const userEvent = (userId: MaybeId, event: string, payload: unknown): RealtimeEvent => ({
   scope: 'user',
   userId: userId ?? undefined,
+  event,
+  payload,
+});
+
+/** Room a guest socket joins (PLAN 2.6). Guests join this room and nothing else. */
+export const tableRoom = (tableId: string): string => `table:${tableId}`;
+
+export const tableEvent = (tableId: MaybeId, event: string, payload: unknown): RealtimeEvent => ({
+  scope: 'table',
+  tableId: tableId ?? undefined,
   event,
   payload,
 });
