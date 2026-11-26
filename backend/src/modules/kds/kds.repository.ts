@@ -102,6 +102,7 @@ export class KdsRepository {
         waiterId: o.waiterId,
         waiterName: o.waiter ? o.waiter.displayName ?? o.waiter.username : null,
         itemStatus: itemStatus.get(o.id) ?? new Map<string, string>(),
+        source: o.source,
       });
     }
     return out;

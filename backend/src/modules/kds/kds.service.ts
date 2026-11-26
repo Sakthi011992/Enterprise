@@ -1,4 +1,4 @@
-import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit, Optional } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AuthUser } from '../../common/decorators/current-user.decorator';
 import { apiError } from '../../common/filters/api-error';
@@ -18,6 +18,7 @@ import {
   transitionError,
 } from './kds-math';
 import { KdsRepository } from './kds.repository';
+import { GuestHooks } from '../guest/guest-hooks.service';
 import {
   KdsOrderContext,
   itemsSummary,
@@ -44,6 +45,7 @@ export class KdsService implements OnModuleInit, OnModuleDestroy {
     private repo: KdsRepository,
     private permissions: PermissionsService,
     private realtime: RealtimeService,
+    @Optional() private guestHooks?: GuestHooks,
   ) {}
 
   onModuleInit(): void {
@@ -240,6 +242,7 @@ export class KdsService implements OnModuleInit, OnModuleDestroy {
       events.push(outletEvent(auth.outletId, 'kds.ready', ready));
     }
     this.realtime.publish(events);
+    this.guestHooks?.orderChanged(done.updated.orderId);
     return card;
   }
 

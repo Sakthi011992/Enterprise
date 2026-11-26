@@ -46,6 +46,7 @@ export class GuestAuthService {
         verification: { method: cfg.verification.method, codeLength: effectiveCodeLength(cfg) },
         ageGate: cfg.ageGate,
         minAge: cfg.minAge,
+        allowGuestCancel: cfg.allowGuestCancel,
         requireSeated: cfg.requireSeated,
         checkout: cfg.checkout,
       },
@@ -150,7 +151,7 @@ export class GuestAuthService {
     });
     return {
       guestToken,
-      session: { id: session.id, tableId: table.id, tableName: table.name, status: session.status, createdAt: session.createdAt },
+      session: { id: session.id, tableId: table.id, tableName: table.name, status: session.status, createdAt: session.createdAt, ageConfirmedAt: session.ageConfirmedAt ?? null },
       participant: {
         id: participant.id,
         name: participant.name,

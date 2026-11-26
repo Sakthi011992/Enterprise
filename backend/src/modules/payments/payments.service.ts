@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Optional } from '@nestjs/common';
+import { GuestHooks } from '../guest/guest-hooks.service';
 import { OrderStatus, Payment, PaymentMethod, PaymentStatus, Prisma } from '@prisma/client';
 import { AuthUser } from '../../common/decorators/current-user.decorator';
 import { apiError } from '../../common/filters/api-error';
@@ -46,6 +47,7 @@ export class PaymentsService {
     private print: PrintService,
     private tabs: TabsLimitService,
     private realtime: RealtimeService,
+    @Optional() private guestHooks?: GuestHooks,
   ) {}
 
   // ===========================================================================
@@ -56,6 +58,7 @@ export class PaymentsService {
   async pay(orderId: string, dto: PayOrderDto, auth: AuthUser) {
     const s = await this.repo.transaction((tx) => this.settle(tx, orderId, dto, auth));
     this.realtime.publish([outletEvent(auth.outletId, 'order.updated', { orderId, status: s.view.status })]);
+    this.guestHooks?.orderChanged(orderId);
     if (s.hasCash) {
       try {
         await this.print.openDrawer(auth.outletId, 'Cash payment');
@@ -269,6 +272,12 @@ export class PaymentsService {
 
   /** Close the bill: PAID to CLOSED, table to CLEANING. */
   async close(orderId: string, auth: AuthUser): Promise<OrderView> {
+    const view = await this.closeTx(orderId, auth);
+    this.guestHooks?.orderChanged(orderId);
+    return view;
+  }
+
+  private closeTx(orderId: string, auth: AuthUser): Promise<OrderView> {
     return this.repo.transaction(async (tx) => {
       const b = await this.loadOwn(tx, orderId, auth);
       if (b.order.status !== 'PAID') {
