@@ -406,6 +406,8 @@ class GuestController extends StateNotifier<GuestState> {
 
   // --- cart -------------------------------------------------------------------
 
+  int get minAge => state.settings.minAge;
+
   bool get ageConfirmed => state.guest?.ageConfirmed ?? false;
 
   /// True when adding [product] must first ask the age question.

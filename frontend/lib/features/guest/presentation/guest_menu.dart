@@ -553,7 +553,7 @@ class AgeGateDialog extends StatelessWidget {
 Future<void> addProductFlow(BuildContext context, GuestController controller, GuestProduct product) async {
   if (!product.available) return;
   if (controller.needsAgeCheck(product)) {
-    final yes = await showAgeGate(context, controller.state.settings.minAge);
+    final yes = await showAgeGate(context, controller.minAge);
     if (!yes) return;
     final ok = await controller.confirmAge();
     if (!ok) return;

@@ -370,7 +370,7 @@ class BillAskedView extends StatelessWidget {
       Expanded(
         child: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            _BigIcon(icon: Icons.receipt_long_outlined),
+            const _BigIcon(icon: Icons.receipt_long_outlined),
             const SizedBox(height: 10),
             Text('Your waiter is bringing the bill', textAlign: TextAlign.center, style: p.display(22)),
             const SizedBox(height: 10),

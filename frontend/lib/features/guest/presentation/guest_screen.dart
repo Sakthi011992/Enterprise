@@ -67,9 +67,9 @@ class _GuestBody extends ConsumerWidget {
 
     switch (state.stage) {
       case GuestStage.loading:
-        return Column(children: [
-          const GuestHeader(title: ''),
-          const Expanded(child: Center(child: CircularProgressIndicator())),
+        return const Column(children: [
+          GuestHeader(title: ''),
+          Expanded(child: Center(child: CircularProgressIndicator())),
         ]);
       case GuestStage.failed:
         return Column(children: [
