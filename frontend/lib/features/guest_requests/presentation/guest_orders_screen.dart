@@ -355,35 +355,30 @@ class GuestRoundCard extends StatelessWidget {
               ],
             )
           else
-            Row(
+            Wrap(
+              alignment: WrapAlignment.end,
+              spacing: t.spacing.sm,
+              runSpacing: t.spacing.sm,
               children: [
-                Expanded(
-                  child: AppButton(
+                AppButton(
                     label: 'Reject',
                     size: AppControlSize.sm,
                     onPressed: canAct && !busy ? onReject : null,
                   ),
-                ),
                 if (!_claimedByMe) ...[
-                  SizedBox(width: t.spacing.sm),
-                  Expanded(
-                    child: AppButton(
+                  AppButton(
                       label: 'Claim',
                       size: AppControlSize.sm,
                       onPressed: canAct && !busy ? onClaim : null,
                     ),
-                  ),
                 ],
-                SizedBox(width: t.spacing.sm),
-                Expanded(
-                  child: AppButton(
+                AppButton(
                     label: 'Confirm',
                     size: AppControlSize.sm,
                     variant: AppButtonVariant.primary,
                     loading: busy,
                     onPressed: canAct && !busy ? onConfirm : null,
                   ),
-                ),
               ],
             ),
         ],
