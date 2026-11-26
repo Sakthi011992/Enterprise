@@ -4,7 +4,7 @@
 - New: `frontend/lib/features/guest_requests/**` (models, `GuestRequestsRepository` + `HttpGuestRequestsRepository` + `MockGuestRequestsRepository`, providers incl. `guestLiveProvider` / `guestBadgeCountProvider`, Guest orders screen, Edit & confirm sheet, reject dialog, footer badge icon, floor badges + QR actions, KDS QR label).
 - New: `features/settings/presentation/guest_ordering_settings_screen.dart` (`/settings/guest-ordering`); link button on Settings screen.
 - Edited: `permission_keys.dart` (`Perm.guestsOrdersConfirm`), `nav_registry.dart` (Guest orders, Sales), `mobile_nav.dart` (waiter/captain tab + badge), `app_router.dart` (2 routes, isolated block), `floor_plan_screen.dart` (badges, tile height 104→124), `floor_setup_screen.dart` (FloorQrActions card), `kds_screen.dart` (label), `kds_models.dart` (optional `source`/`guestName`), `test/shell/nav_filter_test.dart` (admin matrix gets new key).
-- Tests: `frontend/test/guest_requests/` (24 tests). Whole suite: 198 pass.
+- Tests: `frontend/test/guest_requests/` (21 tests). Whole suite: 198 pass.
 
 ## Decisions / deviations
 - Mock via `--dart-define=GUEST_MOCK=true`; tests override `guestRequestsRepositoryProvider` and `guestLiveProvider`.
