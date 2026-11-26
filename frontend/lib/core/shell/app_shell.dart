@@ -8,13 +8,14 @@ import '../auth/session_controller.dart';
 import '../theme/theme_mode_toggle.dart';
 import '../ui/ui.dart';
 import 'command_palette.dart';
+import 'mobile_nav.dart';
 import 'nav_registry.dart';
 import 'notifications.dart';
 import 'notifications_panel.dart';
 import 'pinned_nav.dart';
 
 /// Breakpoints from the Shell board: >=1280 full nav, 768-1279 icon rail,
-/// <768 drawer.
+/// <768 footer bar.
 const _wideBreakpoint = 1280.0;
 const _railBreakpoint = 768.0;
 const _railWidth = 72.0;
@@ -34,7 +35,8 @@ class AppShell extends ConsumerWidget {
     // Keeps the unread-count poll alive while the shell is mounted.
     ref.watch(notificationsProvider);
     final visible = visibleNavItems(session);
-    final density = location.startsWith('/pos') ? AppDensity.pos : AppDensity.comfortable;
+    final density =
+        location.startsWith('/pos') ? AppDensity.pos : AppDensity.comfortable;
 
     return DensityScope(
       density: density,
@@ -56,19 +58,9 @@ class AppShell extends ConsumerWidget {
 
               return Scaffold(
                 backgroundColor: t.color.background.canvas,
-                drawer: narrow
-                    ? Drawer(
-                        backgroundColor: context.ext.navBackground,
-                        child: SafeArea(
-                          child: _SideNav(
-                            items: visible,
-                            location: location,
-                            compact: false,
-                            session: session,
-                            onNavigate: () => Navigator.of(context).pop(),
-                          ),
-                        ),
-                      )
+                bottomNavigationBar: narrow
+                    ? MobileNavBar(
+                        visible: visible, location: location, session: session)
                     : null,
                 body: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,7 +78,20 @@ class AppShell extends ConsumerWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          _TopBar(session: session, narrow: narrow, visible: visible),
+                          if (narrow)
+                            ColoredBox(
+                              color: t.color.background.surface,
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: MediaQuery.paddingOf(context).top,
+                              ),
+                            ),
+                          _TopBar(
+                            session: session,
+                            narrow: narrow,
+                            visible: visible,
+                            title: navItemForPath(location)?.label,
+                          ),
                           Expanded(child: child),
                         ],
                       ),
@@ -116,27 +121,37 @@ class _BrandMark extends StatelessWidget {
         color: t.color.background.accent,
         borderRadius: BorderRadius.circular(t.radius.md),
       ),
-      child: Icon(Icons.point_of_sale, size: 18, color: t.color.content.onAccent),
+      child:
+          Icon(Icons.point_of_sale, size: 18, color: t.color.content.onAccent),
     );
   }
 }
 
 class _TopBar extends ConsumerWidget {
-  const _TopBar({required this.session, required this.narrow, required this.visible});
+  const _TopBar({
+    required this.session,
+    required this.narrow,
+    required this.visible,
+    required this.title,
+  });
 
   final Session? session;
   final bool narrow;
   final List<NavItem> visible;
+  final String? title;
 
-  Future<void> _switchOutlet(BuildContext context, WidgetRef ref, String outletId) async {
+  Future<void> _switchOutlet(
+      BuildContext context, WidgetRef ref, String outletId) async {
     final ok = await ref.read(sessionProvider.notifier).switchOutlet(outletId);
     if (!context.mounted) return;
     if (ok) {
-      final home = ref.read(sessionProvider).session?.persona.homeRoute ?? '/dashboard';
+      final home =
+          ref.read(sessionProvider).session?.persona.homeRoute ?? '/dashboard';
       context.go(home);
       showAppToast(context, 'Switched outlet');
     } else {
-      showAppToast(context, ref.read(sessionProvider).error ?? "Couldn't switch outlet.");
+      showAppToast(context,
+          ref.read(sessionProvider).error ?? "Couldn't switch outlet.");
     }
   }
 
@@ -164,28 +179,23 @@ class _TopBar extends ConsumerWidget {
       child: Row(
         children: [
           if (narrow) ...[
-            AppIconButton(
-              icon: Icons.menu,
-              tooltip: 'Open menu',
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
             const _BrandMark(),
-            SizedBox(width: t.spacing.xs),
-            Flexible(
+            SizedBox(width: t.spacing.sm),
+            Expanded(
               child: Text(
-                s?.tenant.name ?? 'POS Billing',
+                title ?? s?.tenant.name ?? 'POS Billing',
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            SizedBox(width: t.spacing.md),
-          ],
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: _SearchField(onTap: () => showCommandPalette(context, visible)),
+          ] else
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: _SearchField(
+                    onTap: () => showCommandPalette(context, visible)),
+              ),
             ),
-          ),
           PopupMenuButton<String>(
             tooltip: 'Switch outlet',
             onSelected: (id) => _switchOutlet(context, ref, id),
@@ -195,7 +205,11 @@ class _TopBar extends ConsumerWidget {
                   value: o.id,
                   child: Row(
                     children: [
-                      Icon(o.id == s?.outlet.id ? Icons.check : Icons.storefront_outlined, size: 18),
+                      Icon(
+                          o.id == s?.outlet.id
+                              ? Icons.check
+                              : Icons.storefront_outlined,
+                          size: 18),
                       SizedBox(width: t.spacing.sm),
                       Text('${o.name} (${o.persona.name})'),
                     ],
@@ -210,11 +224,12 @@ class _TopBar extends ConsumerWidget {
                   Container(
                     width: 8,
                     height: 8,
-                    decoration: BoxDecoration(color: ext.statusGreen, shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                        color: ext.statusGreen, shape: BoxShape.circle),
                   ),
                   SizedBox(width: t.spacing.xs),
                   ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 160),
+                    constraints: BoxConstraints(maxWidth: narrow ? 110 : 160),
                     child: Text(
                       s?.outlet.name ?? 'Outlet',
                       overflow: TextOverflow.ellipsis,
@@ -225,17 +240,24 @@ class _TopBar extends ConsumerWidget {
               ),
             ),
           ),
-          PopupMenuButton<String>(
-            tooltip: 'Language',
-            icon: const Icon(Icons.translate),
-            onSelected: (_) {},
-            itemBuilder: (_) => const [
-              PopupMenuItem<String>(value: 'en', child: Text('English')),
-              PopupMenuItem<String>(enabled: false, value: 'ta', child: Text('Tamil (coming soon)')),
-              PopupMenuItem<String>(enabled: false, value: 'hi', child: Text('Hindi (coming soon)')),
-            ],
-          ),
-          const ThemeModeToggle(),
+          if (!narrow)
+            PopupMenuButton<String>(
+              tooltip: 'Language',
+              icon: const Icon(Icons.translate),
+              onSelected: (_) {},
+              itemBuilder: (_) => const [
+                PopupMenuItem<String>(value: 'en', child: Text('English')),
+                PopupMenuItem<String>(
+                    enabled: false,
+                    value: 'ta',
+                    child: Text('Tamil (coming soon)')),
+                PopupMenuItem<String>(
+                    enabled: false,
+                    value: 'hi',
+                    child: Text('Hindi (coming soon)')),
+              ],
+            ),
+          if (!narrow) const ThemeModeToggle(),
           Stack(
             clipBehavior: Clip.none,
             children: [
@@ -256,43 +278,51 @@ class _TopBar extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: ext.statusRed,
                         shape: BoxShape.circle,
-                        border: Border.all(color: t.color.background.surface, width: 1.5),
+                        border: Border.all(
+                            color: t.color.background.surface, width: 1.5),
                       ),
                     ),
                   ),
                 ),
             ],
           ),
-          PopupMenuButton<String>(
-            tooltip: 'Account',
-            onSelected: (v) {
-              if (v == 'signout') _signOut(context, ref);
-            },
-            itemBuilder: (_) => [
-              PopupMenuItem<String>(
-                enabled: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(s?.user.label ?? '', style: const TextStyle(fontWeight: FontWeight.w600)),
-                    Text(s?.persona.name ?? ''),
-                  ],
+          if (!narrow)
+            PopupMenuButton<String>(
+              tooltip: 'Account',
+              onSelected: (v) {
+                if (v == 'signout') _signOut(context, ref);
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem<String>(
+                  enabled: false,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(s?.user.label ?? '',
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                      Text(s?.persona.name ?? ''),
+                    ],
+                  ),
                 ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<String>(
+                  value: 'signout',
+                  child: Row(children: [
+                    Icon(Icons.logout, size: 18),
+                    SizedBox(width: 8),
+                    Text('Sign out')
+                  ]),
+                ),
+              ],
+              child: CircleAvatar(
+                radius: 16,
+                backgroundColor: ext.neutralSubtle,
+                foregroundColor: ext.onNeutralSubtle,
+                child: Text(initial,
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
               ),
-              const PopupMenuDivider(),
-              const PopupMenuItem<String>(
-                value: 'signout',
-                child: Row(children: [Icon(Icons.logout, size: 18), SizedBox(width: 8), Text('Sign out')]),
-              ),
-            ],
-            child: CircleAvatar(
-              radius: 16,
-              backgroundColor: ext.neutralSubtle,
-              foregroundColor: ext.onNeutralSubtle,
-              child: Text(initial, style: const TextStyle(fontWeight: FontWeight.w600)),
             ),
-          ),
         ],
       ),
     );
@@ -341,7 +371,8 @@ class _SearchField extends StatelessWidget {
                 ),
                 child: Text(
                   'Ctrl K',
-                  style: TextStyle(color: t.color.content.secondary, fontSize: 11),
+                  style:
+                      TextStyle(color: t.color.content.secondary, fontSize: 11),
                 ),
               ),
             ],
@@ -352,21 +383,19 @@ class _SearchField extends StatelessWidget {
   }
 }
 
-/// Ink side nav (or icon rail when [compact], or drawer body).
+/// Ink side nav, or icon rail when [compact].
 class _SideNav extends ConsumerStatefulWidget {
   const _SideNav({
     required this.items,
     required this.location,
     required this.compact,
     required this.session,
-    this.onNavigate,
   });
 
   final List<NavItem> items;
   final String location;
   final bool compact;
   final Session? session;
-  final VoidCallback? onNavigate;
 
   @override
   ConsumerState<_SideNav> createState() => _SideNavState();
@@ -376,10 +405,10 @@ class _SideNavState extends ConsumerState<_SideNav> {
   final Set<String> _collapsed = {};
 
   bool _isSelected(NavItem item) =>
-      widget.location == item.route || widget.location.startsWith('${item.route}/');
+      widget.location == item.route ||
+      widget.location.startsWith('${item.route}/');
 
   void _go(NavItem item) {
-    widget.onNavigate?.call();
     context.go(item.route);
   }
 
@@ -409,8 +438,9 @@ class _SideNavState extends ConsumerState<_SideNav> {
       }
     }
     for (final group in navGroups) {
-      final groupItems =
-          widget.items.where((i) => i.group == group && !pinnedItems.contains(i)).toList();
+      final groupItems = widget.items
+          .where((i) => i.group == group && !pinnedItems.contains(i))
+          .toList();
       if (groupItems.isEmpty) continue;
       final open = !_collapsed.contains(group);
       if (!compact) {
@@ -447,7 +477,8 @@ class _SideNavState extends ConsumerState<_SideNav> {
         children: [
           Container(
             height: 56,
-            padding: EdgeInsets.symmetric(horizontal: compact ? 0 : t.spacing.md),
+            padding:
+                EdgeInsets.symmetric(horizontal: compact ? 0 : t.spacing.md),
             alignment: compact ? Alignment.center : Alignment.centerLeft,
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: ext.navDivider)),
@@ -474,7 +505,8 @@ class _SideNavState extends ConsumerState<_SideNav> {
           ),
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(vertical: t.spacing.sm, horizontal: t.spacing.xs),
+              padding: EdgeInsets.symmetric(
+                  vertical: t.spacing.sm, horizontal: t.spacing.xs),
               children: children,
             ),
           ),
@@ -487,13 +519,15 @@ class _SideNavState extends ConsumerState<_SideNav> {
               border: Border(top: BorderSide(color: ext.navDivider)),
             ),
             child: Row(
-              mainAxisAlignment: compact ? MainAxisAlignment.center : MainAxisAlignment.start,
+              mainAxisAlignment:
+                  compact ? MainAxisAlignment.center : MainAxisAlignment.start,
               children: [
                 CircleAvatar(
                   radius: 16,
                   backgroundColor: ext.navActive,
                   foregroundColor: ext.navForegroundActive,
-                  child: Text(initial, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text(initial,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                 ),
                 if (!compact) ...[
                   SizedBox(width: t.spacing.sm),
@@ -544,7 +578,8 @@ class _GroupLabel extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(t.radius.sm),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(t.spacing.sm, t.spacing.md, t.spacing.sm, t.spacing.xs),
+        padding: EdgeInsets.fromLTRB(
+            t.spacing.sm, t.spacing.md, t.spacing.sm, t.spacing.xs),
         child: Row(
           children: [
             Expanded(
@@ -595,7 +630,8 @@ class _NavTileState extends ConsumerState<_NavTile> {
   void _togglePin() {
     final ok = ref.read(pinnedNavProvider.notifier).toggle(widget.item.id);
     if (!ok) {
-      showAppToast(context, 'Unpin something first. You can pin up to $maxPinnedNav items.');
+      showAppToast(context,
+          'Unpin something first. You can pin up to $maxPinnedNav items.');
     }
   }
 
@@ -633,7 +669,9 @@ class _NavTileState extends ConsumerState<_NavTile> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 2),
         decoration: BoxDecoration(
-          color: widget.selected ? ext.navActive : (_hover ? ext.navSubActive : null),
+          color: widget.selected
+              ? ext.navActive
+              : (_hover ? ext.navSubActive : null),
           borderRadius: BorderRadius.circular(t.radius.md),
         ),
         clipBehavior: Clip.antiAlias,
@@ -641,7 +679,8 @@ class _NavTileState extends ConsumerState<_NavTile> {
           children: [
             ListTile(
               dense: true,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(t.radius.md)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(t.radius.md)),
               iconColor: fg,
               textColor: fg,
               leading: Icon(
@@ -653,7 +692,8 @@ class _NavTileState extends ConsumerState<_NavTile> {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: fg,
-                  fontWeight: widget.selected ? FontWeight.w600 : FontWeight.w500,
+                  fontWeight:
+                      widget.selected ? FontWeight.w600 : FontWeight.w500,
                 ),
               ),
               onTap: widget.onTap,
@@ -662,7 +702,9 @@ class _NavTileState extends ConsumerState<_NavTile> {
                       tooltip: widget.pinned ? 'Unpin' : 'Pin to top',
                       color: ext.navMuted,
                       icon: Icon(
-                        widget.pinned ? Icons.push_pin : Icons.push_pin_outlined,
+                        widget.pinned
+                            ? Icons.push_pin
+                            : Icons.push_pin_outlined,
                         size: 18,
                       ),
                       onPressed: _togglePin,
@@ -674,7 +716,8 @@ class _NavTileState extends ConsumerState<_NavTile> {
                 left: 0,
                 top: 0,
                 bottom: 0,
-                child: IgnorePointer(child: Container(width: 2, color: ext.navAccent)),
+                child: IgnorePointer(
+                    child: Container(width: 2, color: ext.navAccent)),
               ),
           ],
         ),
