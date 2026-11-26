@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Localisation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="settings" sub="Localisation" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Settings" page="Localisation" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Localisation</h1>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Import</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Export</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Translate missing with AI</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Add language</button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+
+          <section aria-label="Languages" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); padding: 24px; display: flex; flex-direction: column; gap: 16px">
+            <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Languages</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px">
+              <div style="border: 1px solid #E4E7EC; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #F9FAFB">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #0B1220">English</h3><span style="padding: 2px 10px; border-radius: 999px; background: #0B1220; color: #FFFFFF; font-size: 12px; font-weight: 600">Default</span></div>
+                <div role="img" aria-label="100% translated" style="height: 6px; border-radius: 999px; background: #EAECF0; overflow: hidden"><span style="display: block; width: 100%; height: 100%; background: #0E7C66"></span></div>
+                <span style="font-size: 13px; color: #667085; font-variant-numeric: tabular-nums">1,284 / 1,284 keys</span>
+              </div>
+              <div style="border: 1px solid #E4E7EC; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #0B1220">தமிழ் Tamil</h3><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Live</span></div>
+                <div role="img" aria-label="92% translated" style="height: 6px; border-radius: 999px; background: #EAECF0; overflow: hidden"><span style="display: block; width: 92%; height: 100%; background: #0E7C66"></span></div>
+                <span style="font-size: 13px; color: #667085; font-variant-numeric: tabular-nums">1,181 keys · 103 missing</span>
+              </div>
+              <div style="border: 1px solid #E4E7EC; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #0B1220">हिन्दी Hindi</h3><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Live</span></div>
+                <div role="img" aria-label="88% translated" style="height: 6px; border-radius: 999px; background: #EAECF0; overflow: hidden"><span style="display: block; width: 88%; height: 100%; background: #0E7C66"></span></div>
+                <span style="font-size: 13px; color: #667085; font-variant-numeric: tabular-nums">1,130 keys · 154 missing</span>
+              </div>
+              <div style="border: 1px solid #E4E7EC; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #0B1220">العربية Arabic</h3><span style="padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600; white-space: nowrap">Draft · RTL</span></div>
+                <div role="img" aria-label="41% translated" style="height: 6px; border-radius: 999px; background: #EAECF0; overflow: hidden"><span style="display: block; width: 41%; height: 100%; background: #0E7C66"></span></div>
+                <span style="font-size: 13px; color: #667085; font-variant-numeric: tabular-nums">526 keys · 758 missing</span>
+              </div>
+            </div>
+          </section>
+
+          <section aria-label="Translation keys" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 24px; border-bottom: 1px solid #F2F4F7">
+              <input aria-label="Search keys" placeholder="Search key or text" style="flex: 1 1 220px; min-width: 0; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828">
+              <select aria-label="Area" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All areas</option><option>POS</option><option>KDS</option><option>Queue &amp; WhatsApp</option><option>Signage overlays</option><option>Invoices</option><option>Errors</option></select>
+              <select aria-label="Filter" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All keys</option><option>Missing in any language</option><option>AI drafts to review</option></select>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">New key</button>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-size: 14px">
+                <thead><tr>
+                  <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Key</th>
+                  <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">English</th>
+                  <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Tamil</th>
+                  <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Hindi</th>
+                  <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Arabic</th>
+                  <th scope="col" style="text-align: right; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Actions</th>
+                </tr></thead>
+                <tbody>
+                  <tr style="background: #F3FAF8; box-shadow: inset 3px 0 0 #0E7C66">
+                    <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #101828">queue.whatsapp.called</th>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Your table is ready, {name}!</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">{name}, உங்கள் மேசை தயார்!</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">{name}, आपकी टेबल तैयार है!</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">Missing</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #101828">pos.pay_now</th>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Pay {amount}</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">{amount} செலுத்து</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">{amount} भुगतान करें</td>
+                    <td dir="rtl" style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">ادفع {amount}</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #101828">pos.happy_hour_ends</th>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Happy hour ends {time}</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #EFF8FF; color: #175CD3; font-size: 12px; font-weight: 600">AI draft</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">हैप्पी आवर {time} पर खत्म</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">Missing</span></td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #101828">signage.drink_responsibly</th>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Please drink responsibly. 21+ only.</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">பொறுப்புடன் அருந்தவும். 21+ மட்டும்.</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">कृपया ज़िम्मेदारी से पिएं। केवल 21+।</td>
+                    <td dir="rtl" style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">يرجى الشرب بمسؤولية</td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; white-space: nowrap; color: #101828">kds.ticket_late</th>
+                    <td style="padding: 12px 16px; white-space: nowrap">Late by {min} min</td>
+                    <td style="padding: 12px 16px; white-space: nowrap">{min} நிமிடம் தாமதம்</td>
+                    <td style="padding: 12px 16px; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">Missing</span></td>
+                    <td style="padding: 12px 16px; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">Missing</span></td>
+                    <td style="padding: 12px 16px; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside aria-label="Edit translation key" style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Edit key</h2>
+          <div><label for="l-key" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Key</label><input id="l-key" value="queue.whatsapp.called" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div><label for="l-ctx" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Where it is used</label><input id="l-ctx" value="WhatsApp template · Queue monitor banner" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div><label for="l-en" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">English (source)</label><input id="l-en" value="Your table is ready, {name}!" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div><label for="l-ta" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Tamil</label><input id="l-ta" value="{name}, உங்கள் மேசை தயார்!" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div><label for="l-hi" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Hindi</label><input id="l-hi" value="{name}, आपकी टेबल तैयार है!" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div><label for="l-ar" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Arabic (right to left)</label><input id="l-ar" dir="rtl" placeholder="Not translated yet" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Suggest with AI</button>
+            <span style="font-size: 13px; color: #667085">Keeps {placeholders} and brand names unchanged</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid #F2F4F7; padding-top: 16px">
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Delete key</button>
+            <div style="display: flex; gap: 8px">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Cancel</button>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Save</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

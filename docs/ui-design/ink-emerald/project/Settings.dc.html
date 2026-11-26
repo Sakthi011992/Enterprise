@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tax, invoice &amp; payments</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="position: relative; display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="settings" sub="Tax, invoice &amp; payments" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Settings" page="Tax, invoice &amp; payments" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Tax, invoice &amp; payments</h1>
+          <span style="font-size: 13px; color: #667085">Rules apply to every outlet unless overridden</span>
+        </div>
+        <div style="margin-left: auto">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer">New tax rule</button>
+        </div>
+      </div>
+
+      <div role="tablist" style="display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #E4E7EC">
+        <button type="button" role="tab" aria-selected="true" style="height: 44px; padding: 0 14px; border: 0; background: transparent; font: inherit; font-weight: 600; color: #0B1220; box-shadow: inset 0 -2px 0 #0E7C66; cursor: pointer">Tax rules</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Invoice profile</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Payment methods</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Gateways</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Service charge &amp; rounding</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Licences &amp; dry days</button>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+          <section style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+            <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; padding: 20px 24px">
+              <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Tax rules</h2>
+              <span style="font-size: 13px; color: #667085">Applied per product tax category</span>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-size: 14px">
+                <thead>
+                  <tr style="background: #F9FAFB">
+                    <th scope="col" style="text-align: left; padding: 10px 24px; font-size: 12px; font-weight: 500; color: #475467">Name</th>
+                    <th scope="col" style="text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 500; color: #475467">Applies to</th>
+                    <th scope="col" style="text-align: right; padding: 10px 12px; font-size: 12px; font-weight: 500; color: #475467">Rate</th>
+                    <th scope="col" style="text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 500; color: #475467">Breakdown</th>
+                    <th scope="col" style="text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 500; color: #475467">Inclusive</th>
+                    <th scope="col" style="text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 500; color: #475467">Status</th>
+                    <th scope="col" style="text-align: right; padding: 10px 24px; font-size: 12px; font-weight: 500; color: #475467">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 14px 24px; font-weight: 500; white-space: nowrap">GST 5% (restaurant)</td>
+                    <td style="padding: 14px 12px; color: #475467">Food, soft drinks</td>
+                    <td style="padding: 14px 12px; text-align: right; font-variant-numeric: tabular-nums">5%</td>
+                    <td style="padding: 14px 12px; color: #475467; white-space: nowrap">CGST 2.5 + SGST 2.5</td>
+                    <td style="padding: 14px 12px; color: #475467">No</td>
+                    <td style="padding: 14px 12px"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                    <td style="padding: 14px 24px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 14px 24px; font-weight: 500; white-space: nowrap">VAT liquor (state)</td>
+                    <td style="padding: 14px 12px; color: #475467">Spirits, beer, wine</td>
+                    <td style="padding: 14px 12px; text-align: right; font-variant-numeric: tabular-nums">20%</td>
+                    <td style="padding: 14px 12px; color: #475467">VAT</td>
+                    <td style="padding: 14px 12px; color: #475467">No</td>
+                    <td style="padding: 14px 12px"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                    <td style="padding: 14px 24px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 14px 24px; font-weight: 500; white-space: nowrap">GST 18% (packaged)</td>
+                    <td style="padding: 14px 12px; color: #475467">Merchandise</td>
+                    <td style="padding: 14px 12px; text-align: right; font-variant-numeric: tabular-nums">18%</td>
+                    <td style="padding: 14px 12px; color: #475467; white-space: nowrap">CGST 9 + SGST 9</td>
+                    <td style="padding: 14px 12px; color: #475467">Yes</td>
+                    <td style="padding: 14px 12px"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                    <td style="padding: 14px 24px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 14px 24px; font-weight: 500; white-space: nowrap">Old cess 1%</td>
+                    <td style="padding: 14px 12px; color: #475467">—</td>
+                    <td style="padding: 14px 12px; text-align: right; font-variant-numeric: tabular-nums">1%</td>
+                    <td style="padding: 14px 12px; color: #475467">Cess</td>
+                    <td style="padding: 14px 12px; color: #475467">No</td>
+                    <td style="padding: 14px 12px"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Inactive</span></td>
+                    <td style="padding: 14px 24px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); padding: 24px; display: flex; flex-direction: column; gap: 20px">
+            <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Invoice profile</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="i-country" style="font-size: 13px; font-weight: 500; color: #344054">Country profile</label>
+                <select id="i-country" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>India (GST)</option></select>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="i-prefix" style="font-size: 13px; font-weight: 500; color: #344054">Number format</label>
+                <input id="i-prefix" value="INV/{FY}/{#####}" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%">
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="i-reset" style="font-size: 13px; font-weight: 500; color: #344054">Number resets</label>
+                <select id="i-reset" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Every financial year</option><option>Monthly</option><option>Never</option></select>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="i-gstin" style="font-size: 13px; font-weight: 500; color: #344054">GSTIN</label>
+                <input id="i-gstin" placeholder="[YOUR GSTIN]" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%">
+              </div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Preview A4</button>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Preview 80 mm</button>
+              <button type="button" style="margin-left: auto; height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Save profile</button>
+            </div>
+          </section>
+        </div>
+
+        <aside aria-label="Payment methods" style="flex: 1 1 320px; max-width: 380px; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); padding: 24px; display: flex; flex-direction: column; gap: 20px">
+          <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Payment methods</h2>
+          <div style="display: flex; flex-direction: column">
+            <div style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F4F7"><span>Cash</span><span role="img" aria-label="On" style="margin-left: auto; width: 36px; height: 20px; border-radius: 999px; background: #0E7C66; position: relative"><span style="position: absolute; top: 2px; left: 18px; width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF"></span></span></div>
+            <div style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F4F7"><span>Card (EDC terminal)</span><span role="img" aria-label="On" style="margin-left: auto; width: 36px; height: 20px; border-radius: 999px; background: #0E7C66; position: relative"><span style="position: absolute; top: 2px; left: 18px; width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF"></span></span></div>
+            <div style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F4F7"><span>UPI QR</span><span role="img" aria-label="On" style="margin-left: auto; width: 36px; height: 20px; border-radius: 999px; background: #0E7C66; position: relative"><span style="position: absolute; top: 2px; left: 18px; width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF"></span></span></div>
+            <div style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F4F7"><span>Split tender</span><span role="img" aria-label="On" style="margin-left: auto; width: 36px; height: 20px; border-radius: 999px; background: #0E7C66; position: relative"><span style="position: absolute; top: 2px; left: 18px; width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF"></span></span></div>
+            <div style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #F2F4F7"><span>House account (credit)</span><span role="img" aria-label="Off" style="margin-left: auto; width: 36px; height: 20px; border-radius: 999px; background: #D0D5DD; position: relative"><span style="position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF"></span></span></div>
+            <div style="display: flex; align-items: center; padding: 12px 0"><span>Gift card</span><span role="img" aria-label="Off" style="margin-left: auto; width: 36px; height: 20px; border-radius: 999px; background: #D0D5DD; position: relative"><span style="position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 999px; background: #FFFFFF"></span></span></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="p-gw" style="font-size: 13px; font-weight: 500; color: #344054">Online gateway</label>
+            <select id="p-gw" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Razorpay (test mode)</option><option>Stripe</option></select>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Test connection</button>
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Save</button>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div style="position: absolute; inset: 0; background: rgba(11,18,32,.45); display: flex; align-items: center; justify-content: center; padding: 24px">
+    <div role="dialog" aria-modal="true" aria-labelledby="dlg-t" style="width: 440px; max-width: 100%; background: #FFFFFF; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+      <h2 id="dlg-t" style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #0B1220">Delete tax rule "Old cess 1%"?</h2>
+      <p style="margin: 0; font-size: 14px; color: #475467">No active products use this rule. Past invoices keep their tax snapshot, so they are not affected. This action is logged.</p>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="dlg-pin" style="font-size: 13px; font-weight: 500; color: #344054">Admin PIN</label>
+        <input id="dlg-pin" type="password" placeholder="Enter PIN to confirm" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; box-sizing: border-box; width: 100%">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px">
+        <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Cancel</button>
+        <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Delete rule</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

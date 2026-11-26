@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Platform sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #101828; background: #F5F6F8">
+  <section style="flex: 1 1 480px; position: relative; overflow: hidden; background: #0B1220; color: #FFFFFF; padding: 48px 56px; box-sizing: border-box; display: flex; flex-direction: column">
+    <div aria-hidden="true" style="position: absolute; right: -160px; top: -120px; width: 560px; height: 560px; border-radius: 999px; border: 1px solid #1C2A44"></div>
+    <div aria-hidden="true" style="position: absolute; right: -60px; top: -20px; width: 360px; height: 360px; border-radius: 999px; border: 1px solid #1C2A44"></div>
+    <div aria-hidden="true" style="position: absolute; left: -120px; bottom: -200px; width: 480px; height: 480px; border-radius: 999px; background: #0E7C66; opacity: .18"></div>
+    <div style="position: relative; display: flex; align-items: center; gap: 12px">
+      <div style="width: 40px; height: 40px; border-radius: 12px; background: #0E7C66; display: flex; align-items: center; justify-content: center; font-family: Manrope, sans-serif; font-weight: 800">PE</div>
+      <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px">Platform console</span>
+    </div>
+    <div style="position: relative; margin-top: auto; display: flex; flex-direction: column; gap: 16px; max-width: 460px">
+      <span style="align-self: flex-start; font-size: 12px; font-weight: 600; background: #16213A; color: #A3ADC2; padding: 4px 10px; border-radius: 999px; border: 1px solid #233049">Platform console · staff only</span>
+      <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.12; letter-spacing: -0.03em">Pub ERP platform</h2>
+      <p style="margin: 0; color: #A3ADC2; font-size: 16px">For Super Admins and Support agents. Venue staff sign in at the venue app.</p>
+    </div>
+    <span style="position: relative; margin-top: 40px; font-size: 13px; color: #8A94A6">Every platform sign-in is logged. Access needs company VPN or an approved IP.</span>
+  </section>
+
+  <section style="flex: 1 1 520px; padding: 48px 56px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px">
+    <form aria-label="Step 1, password" style="width: 100%; max-width: 420px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 12px; font-weight: 600; color: #0A5F4E; background: #E7F4F0; padding: 3px 9px; border-radius: 999px; align-self: flex-start">Step 1 of 2</span>
+        <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Sign in</h1>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="ps-e" style="font-size: 13px; font-weight: 500; color: #344054">Work email</label>
+        <input id="ps-e" value="ravi@[your-company]" style="height: 44px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="ps-p" style="font-size: 13px; font-weight: 500; color: #344054">Password</label>
+        <input id="ps-p" type="password" value="password123" style="height: 44px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%">
+      </div>
+      <button type="button" style="height: 44px; border: 0; border-radius: 10px; background: #0B1220; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer">Continue</button>
+      <span style="font-size: 13px; color: #667085">Single sign-on with your company account is also supported.</span>
+    </form>
+
+    <form aria-label="Step 2, two-factor code" style="width: 100%; max-width: 420px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 12px; font-weight: 600; color: #0A5F4E; background: #E7F4F0; padding: 3px 9px; border-radius: 999px; align-self: flex-start">Step 2 of 2</span>
+        <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #0B1220">Enter your 6-digit code</h2>
+        <span style="font-size: 13px; color: #475467">From your authenticator app. Codes change every 30 seconds.</span>
+      </div>
+      <div role="group" aria-label="Code" style="display: flex; gap: 8px">
+        <span style="flex: 1; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #D0D5DD; border-radius: 10px; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums">3</span>
+        <span style="flex: 1; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #D0D5DD; border-radius: 10px; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums">9</span>
+        <span style="flex: 1; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #D0D5DD; border-radius: 10px; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums">1</span>
+        <span style="flex: 1; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #D0D5DD; border-radius: 10px; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums">0</span>
+        <span style="flex: 1; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #D0D5DD; border-radius: 10px; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums">7</span>
+        <span style="flex: 1; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid #FDA29B; border-radius: 10px; box-shadow: 0 0 0 4px #FEE4E2; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums; color: #B42318">5</span>
+      </div>
+      <div role="alert" style="display: flex; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #FEF3F2; border: 1px solid #FECDCA; color: #912018; font-size: 13px">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D92D20" stroke-width="2" stroke-linecap="round" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
+        <span>That code didn't work. Check your device's clock and try the new code.</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px">
+        <input id="ps-trust" type="checkbox" style="width: 18px; height: 18px; accent-color: #0E7C66">
+        <label for="ps-trust" style="color: #344054">Trust this browser for 12 hours</label>
+      </div>
+      <button type="button" style="height: 44px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Verify &amp; sign in</button>
+      <span style="font-size: 13px; color: #667085">Lost your device? Another Super Admin must reset your 2FA.</span>
+    </form>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

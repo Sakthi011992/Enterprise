@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Monitoring &amp; support</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="settings" sub="Monitoring" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Settings" page="Monitoring" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Monitoring &amp; support</h1>
+          <span style="font-size: 13px; color: #667085">You decide what our support team can see</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Download my logs</button>
+          <button type="button" style="height: 40px; padding: 0 18px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Raise a ticket with logs</button>
+        </div>
+      </div>
+
+      <section aria-labelledby="lvl" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+        <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px">
+          <h2 id="lvl" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">What can our support team see?</h2>
+          <span style="margin-left: auto; font-size: 13px; color: #667085">You can change or revoke this at any time. Every change is logged.</span>
+        </div>
+        <div role="radiogroup" aria-label="Diagnostics level" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+          <button type="button" role="radio" aria-checked="false" style="text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid #E4E7EC; border-radius: 12px; background: #FFFFFF; font: inherit; cursor: pointer"><span style="font-weight: 600; color: #0B1220">Off</span><span style="font-size: 13px; color: #475467">Nothing is sent</span></button>
+          <button type="button" role="radio" aria-checked="false" style="text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid #E4E7EC; border-radius: 12px; background: #FFFFFF; font: inherit; cursor: pointer"><span style="font-weight: 600; color: #0B1220">Errors only</span><span style="font-size: 13px; color: #475467">Crashes and failed requests</span></button>
+          <button type="button" role="radio" aria-checked="true" style="text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid #0E7C66; border-radius: 12px; background: #E7F4F0; box-shadow: 0 0 0 1px #0E7C66; font: inherit; cursor: pointer"><span style="font-weight: 600; color: #0A5F4E">Standard</span><span style="font-size: 13px; color: #475467">Errors, speed and device health</span></button>
+          <button type="button" role="radio" aria-checked="false" style="text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid #E4E7EC; border-radius: 12px; background: #FFFFFF; font: inherit; cursor: pointer"><span style="font-weight: 600; color: #0B1220">Full diagnostic</span><span style="font-size: 13px; color: #475467">Detailed logs for 24 hours</span></button>
+          <button type="button" role="radio" aria-checked="false" style="text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid #E4E7EC; border-radius: 12px; background: #FFFFFF; font: inherit; cursor: pointer"><span style="font-weight: 600; color: #0B1220">Live support session</span><span style="font-size: 13px; color: #475467">Support views a device live, approved each time</span></button>
+        </div>
+        <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475467"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475467" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Always masked before it leaves your venue: names, phone numbers, emails, card details, PINs and passwords.</p>
+      </section>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <section aria-labelledby="hl" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 20px 24px 16px">
+              <h2 id="hl" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">System health</h2>
+              <span style="margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px"><span style="width: 6px; height: 6px; border-radius: 999px; background: #12B76A"></span>All systems normal</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); border-top: 1px solid #F2F4F7">
+              <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #F2F4F7; border-bottom: 1px solid #F2F4F7"><span style="font-size: 13px; color: #475467">POS sync</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: #12B76A"></span>OK</span></div>
+              <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #F2F4F7; border-bottom: 1px solid #F2F4F7"><span style="font-size: 13px; color: #475467">Printers (4)</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: #F79009"></span>1 paper low</span></div>
+              <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #F2F4F7; border-bottom: 1px solid #F2F4F7"><span style="font-size: 13px; color: #475467">Payments</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: #12B76A"></span>OK</span></div>
+              <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #F2F4F7"><span style="font-size: 13px; color: #475467">WhatsApp</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: #12B76A"></span>OK</span></div>
+              <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid #F2F4F7"><span style="font-size: 13px; color: #475467">Screens (13)</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D92D20"></span>1 offline</span></div>
+              <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #475467">Offline queue</span><span style="display: flex; align-items: center; gap: 8px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: #12B76A"></span>0 pending</span></div>
+            </div>
+          </section>
+
+          <section aria-labelledby="ri" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 20px 24px 16px">
+              <h2 id="ri" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Recent issues</h2>
+              <select aria-label="Device" style="margin-left: auto; height: 36px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #344054"><option>All devices</option></select>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+                <thead>
+                  <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                    <th scope="col" style="padding: 10px 24px; font-weight: 500">Time</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Device</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Issue</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Count</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Status</th>
+                    <th scope="col" style="padding: 10px 24px 10px 12px; font-weight: 500; text-align: right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467; white-space: nowrap">9:31 pm</td><td style="padding: 13px 12px; font-weight: 500">Rooftop TV 2</td><td style="padding: 13px 12px">Lost connection to server</td><td style="padding: 13px 12px; text-align: right">1</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Open</span></td><td style="padding: 13px 24px 13px 12px; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer; white-space: nowrap">Restart device</button></td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467; white-space: nowrap">9:12 pm</td><td style="padding: 13px 12px; font-weight: 500">Bar printer</td><td style="padding: 13px 12px">KOT print failed, retried OK</td><td style="padding: 13px 12px; text-align: right">3</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #EFF8FF; color: #175CD3; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Auto-fixed</span></td><td style="padding: 13px 24px 13px 12px; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">Details</button></td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467; white-space: nowrap">8:47 pm</td><td style="padding: 13px 12px; font-weight: 500">Captain tablet 2</td><td style="padding: 13px 12px">App closed unexpectedly</td><td style="padding: 13px 12px; text-align: right">1</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #FFFAEB; color: #B54708; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Sent to support</span></td><td style="padding: 13px 24px 13px 12px; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">Details</button></td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467; white-space: nowrap">7:05 pm</td><td style="padding: 13px 12px; font-weight: 500">POS terminal 1</td><td style="padding: 13px 12px">Payment gateway slow (4.2 s)</td><td style="padding: 13px 12px; text-align: right">6</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Resolved</span></td><td style="padding: 13px 24px 13px 12px; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">Details</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 20px">
+          <section aria-labelledby="ac" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="display: flex; align-items: center; margin-bottom: 8px">
+              <h2 id="ac" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Automatic checks</h2>
+              <span style="margin-left: auto; font-size: 12px; color: #667085">Every 10 min</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 2px 8px; border-radius: 999px">Pass</span><span style="flex: 1">Login and open POS</span><span style="color: #475467; font-variant-numeric: tabular-nums">1.1 s</span></div>
+            <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 2px 8px; border-radius: 999px">Pass</span><span style="flex: 1">Create order and print KOT</span><span style="color: #475467; font-variant-numeric: tabular-nums">1.8 s</span></div>
+            <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 2px 8px; border-radius: 999px">Pass</span><span style="flex: 1">Invoice PDF</span><span style="color: #475467; font-variant-numeric: tabular-nums">2.4 s</span></div>
+            <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 2px 8px; border-radius: 999px">Pass</span><span style="flex: 1">Queue token and WhatsApp send</span><span style="color: #475467; font-variant-numeric: tabular-nums">3.1 s</span></div>
+            <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 2px 8px; border-radius: 999px">Fail</span><span style="flex: 1">Screen heartbeat: Rooftop TV 2</span></div>
+            <p style="margin: 8px 0 0; font-size: 13px; color: #667085">App version 3.8.2, released 18 Nov. All tests passed before release.</p>
+          </section>
+
+          <section aria-labelledby="sl" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <h2 id="sl" style="margin: 0 0 8px; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Support access log</h2>
+            <div style="padding: 10px 0; border-bottom: 1px solid #F2F4F7; font-size: 13px"><span style="color: #667085; font-variant-numeric: tabular-nums">18 Nov</span> · Support viewed error logs · ticket #4821</div>
+            <div style="padding: 10px 0; border-bottom: 1px solid #F2F4F7; font-size: 13px"><span style="color: #667085; font-variant-numeric: tabular-nums">12 Nov</span> · Live session on POS 1 · approved by Priya · 14 min</div>
+            <div style="padding: 10px 0; font-size: 13px"><span style="color: #667085; font-variant-numeric: tabular-nums">2 Nov</span> · Level changed to Standard by Admin</div>
+            <div style="margin-top: 12px"><button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">End all support access</button></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#F5F6F8}
+a{color:#0E7C66}a:hover{color:#0A5F4E}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 1180px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+
+  <!-- Sidebar -->
+  <nav aria-label="Main" style="flex: 1 1 248px; max-width: 280px; background: #0B1220; color: #C7CED9; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <div style="width: 34px; height: 34px; border-radius: 10px; background: #0E7C66; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: Manrope, sans-serif; font-weight: 800; font-size: 14px">YV</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="color: #FFFFFF; font-family: Manrope, sans-serif; font-weight: 700; font-size: 15px">Your Venue</span>
+        <span style="font-size: 12px; color: #8A94A6">Pub &amp; kitchen ERP</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <a href="#" aria-current="page" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; background: #16213A; color: #FFFFFF; text-decoration: none; font-weight: 500; box-shadow: inset 2px 0 0 #2FB896">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2FB896" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+        Dashboard
+      </a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6"></path></svg>
+        Sales
+        <span style="margin-left: auto; font-size: 12px; color: #8A94A6">5</span>
+      </a>
+      <div style="display: flex; flex-direction: column; gap: 1px; margin: 2px 0 6px 28px; padding-left: 12px; border-left: 1px solid #1F2A3D">
+        <a href="#" style="padding: 6px 10px; border-radius: 6px; color: #C7CED9; text-decoration: none; font-size: 13px">POS billing</a>
+        <a href="#" style="padding: 6px 10px; border-radius: 6px; color: #C7CED9; text-decoration: none; font-size: 13px">Orders &amp; invoices</a>
+        <a href="#" style="display: flex; padding: 6px 10px; border-radius: 6px; color: #C7CED9; text-decoration: none; font-size: 13px">Bar tabs<span style="margin-left: auto; color: #2FB896; font-weight: 600">17</span></a>
+        <a href="#" style="padding: 6px 10px; border-radius: 6px; color: #C7CED9; text-decoration: none; font-size: 13px">Floor plan</a>
+        <a href="#" style="padding: 6px 10px; border-radius: 6px; color: #C7CED9; text-decoration: none; font-size: 13px">Kitchen display</a>
+      </div>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"></path><path d="M3 12l9 4 9-4M3 17l9 4 9-4"></path></svg>
+        Menu &amp; stock
+      </a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><path d="M16 4.5a3.5 3.5 0 010 7M18 14.8c1.8.7 3 2.5 3.5 5.2"></path></svg>
+        Guests &amp; queue
+        <span style="margin-left: auto; font-size: 12px; background: #1F2A3D; color: #FFFFFF; padding: 1px 8px; border-radius: 999px">6</span>
+      </a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
+        Displays &amp; campaigns
+      </a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"></path></svg>
+        People &amp; finance
+      </a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"></path></svg>
+        Settings
+      </a>
+    </div>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px">
+      <div style="background: #111A2B; border: 1px solid #1F2A3D; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 12px; color: #8A94A6; text-transform: uppercase; letter-spacing: .06em">Business day</span>
+        <span style="color: #FFFFFF; font-weight: 600">Fri 21 Nov · open 7h 12m</span>
+        <a href="#" style="font-size: 13px; color: #2FB896; text-decoration: none; font-weight: 500">X report →</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px">
+        <div style="width: 32px; height: 32px; border-radius: 999px; background: #1F2A3D; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">AD</div>
+        <div style="display: flex; flex-direction: column">
+          <span style="color: #FFFFFF; font-size: 13px; font-weight: 500">Arun D.</span>
+          <span style="font-size: 12px; color: #8A94A6">Owner</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar -->
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 32px; background: #FFFFFF; border-bottom: 1px solid #E4E7EC">
+      <label style="flex: 1 1 320px; max-width: 460px; display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 12px; border: 1px solid #E4E7EC; border-radius: 10px; background: #F9FAFB; color: #667085">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input type="search" placeholder="Search orders, items, guests or jump to…" aria-label="Search" style="flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; color: #101828; outline: none">
+        <span style="font-size: 12px; border: 1px solid #E4E7EC; border-radius: 6px; padding: 1px 6px; background: #FFFFFF">Ctrl K</span>
+      </label>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 8px">
+        <button type="button" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border: 1px solid #E4E7EC; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; cursor: pointer">
+          <span style="width: 8px; height: 8px; border-radius: 999px; background: #12B76A"></span>Main outlet
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2"><path d="M6 9l6 6 6-6"></path></svg>
+        </button>
+        <button type="button" aria-label="Notifications, 3 unread" style="position: relative; width: 40px; height: 40px; border: 1px solid #E4E7EC; border-radius: 10px; background: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#344054" stroke-width="1.8" stroke-linecap="round"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"></path><path d="M10 20a2 2 0 004 0"></path></svg>
+          <span style="position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 999px; background: #D92D20; border: 2px solid #FFFFFF"></span>
+        </button>
+      </div>
+    </header>
+
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; max-width: 1240px; width: 100%; box-sizing: border-box">
+
+      <!-- Page header -->
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; color: #667085">Good evening, Arun · Fri 21 Nov, 7:12 pm</span>
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Tonight at Main outlet</h1>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <div role="group" aria-label="Period" style="display: flex; padding: 3px; background: #EAECF0; border-radius: 10px">
+            <button type="button" aria-pressed="true" style="height: 34px; padding: 0 14px; border: 0; border-radius: 8px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(16,24,40,.08); font: inherit; font-weight: 500; color: #101828; cursor: pointer">Today</button>
+            <button type="button" aria-pressed="false" style="height: 34px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">Week</button>
+            <button type="button" aria-pressed="false" style="height: 34px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">Month</button>
+          </div>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Export</button>
+          <a href="#" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 10px; background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600; box-shadow: 0 1px 2px rgba(16,24,40,.12)">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Open POS
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero KPI -->
+      <section aria-label="Tonight's numbers" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); display: flex; flex-wrap: wrap">
+        <div style="flex: 2 1 380px; padding: 24px 28px; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px; border-right: 1px solid #F2F4F7">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; color: #475467; font-weight: 500">Net sales today</span>
+            <span style="font-family: Manrope, sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -0.03em; color: #0B1220; font-variant-numeric: tabular-nums; line-height: 1.1">₹1,84,320</span>
+            <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475467">
+              <span style="background: #ECFDF3; color: #067647; font-weight: 600; padding: 2px 8px; border-radius: 999px">↑ 12.4%</span>vs last Friday · ₹1,63,980
+            </span>
+          </div>
+          <svg role="img" aria-label="Sales trend since opening, rising steadily" width="240" height="72" viewBox="0 0 240 72" style="margin-left: auto; max-width: 100%">
+            <defs><linearGradient id="spark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E7C66" stop-opacity=".22"></stop><stop offset="1" stop-color="#0E7C66" stop-opacity="0"></stop></linearGradient></defs>
+            <path d="M0,62 L20,60 L40,61 L60,58 L80,54 L100,50 L120,44 L140,36 L160,30 L180,22 L200,18 L220,14 L240,10 L240,72 L0,72 Z" fill="url(#spark)"></path>
+            <polyline points="0,62 20,60 40,61 60,58 80,54 100,50 120,44 140,36 160,30 180,22 200,18 220,14 240,10" fill="none" stroke="#0E7C66" stroke-width="2.2" stroke-linejoin="round"></polyline>
+            <circle cx="240" cy="10" r="3.5" fill="#0E7C66"></circle>
+          </svg>
+        </div>
+        <div style="flex: 3 1 480px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+          <div style="padding: 24px 20px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid #F2F4F7">
+            <span style="font-size: 13px; color: #475467">Covers</span>
+            <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; color: #0B1220">212</span>
+            <span style="font-size: 12px; color: #667085">₹869 per cover</span>
+          </div>
+          <div style="padding: 24px 20px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid #F2F4F7">
+            <span style="font-size: 13px; color: #475467">Pour cost</span>
+            <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; color: #0B1220">21.4%</span>
+            <span style="font-size: 12px; color: #067647; font-weight: 500">Within 18–24% target</span>
+          </div>
+          <div style="padding: 24px 20px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid #F2F4F7">
+            <span style="font-size: 13px; color: #475467">Open bar tabs</span>
+            <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; color: #0B1220">17</span>
+            <span style="font-size: 12px; color: #667085">₹46,900 outstanding</span>
+          </div>
+          <div style="padding: 24px 20px; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; color: #475467">Walk-in queue</span>
+            <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; color: #0B1220">6</span>
+            <span style="font-size: 12px; color: #B54708; font-weight: 500">Avg wait 18 min</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chart + attention -->
+      <div style="display: flex; flex-wrap: wrap; gap: 24px">
+        <section aria-labelledby="sbh" style="flex: 2 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+            <h2 id="sbh" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Sales by hour</h2>
+            <div style="margin-left: auto; display: flex; gap: 16px; font-size: 12px; color: #475467">
+              <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #0E7C66"></span>Tonight</span>
+              <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 0; border-top: 2px dashed #98A2B3"></span>Last Friday</span>
+            </div>
+          </div>
+          <svg role="img" aria-label="Sales by hour from 12 pm to 12 am. Peak at 8 pm, about 156 thousand rupees per hour band, above last Friday for most hours." viewBox="0 0 780 226" style="width: 100%; height: auto">
+            <g stroke="#F2F4F7" stroke-width="1"><line x1="0" y1="20" x2="780" y2="20"></line><line x1="0" y1="80" x2="780" y2="80"></line><line x1="0" y1="140" x2="780" y2="140"></line><line x1="0" y1="200" x2="780" y2="200" stroke="#E4E7EC"></line></g>
+            <g fill="#0E7C66">
+              <rect x="16" y="153" width="28" height="47" rx="5" fill-opacity=".55"></rect>
+              <rect x="76" y="146" width="28" height="54" rx="5" fill-opacity=".55"></rect>
+              <rect x="136" y="155" width="28" height="45" rx="5" fill-opacity=".55"></rect>
+              <rect x="196" y="157" width="28" height="43" rx="5" fill-opacity=".55"></rect>
+              <rect x="256" y="141" width="28" height="59" rx="5" fill-opacity=".55"></rect>
+              <rect x="316" y="117" width="28" height="83" rx="5" fill-opacity=".7"></rect>
+              <rect x="376" y="78" width="28" height="122" rx="5" fill-opacity=".85"></rect>
+              <rect x="436" y="48" width="28" height="152" rx="5"></rect>
+              <rect x="496" y="24" width="28" height="176" rx="5"></rect>
+              <rect x="556" y="33" width="28" height="167" rx="5"></rect>
+              <rect x="616" y="56" width="28" height="144" rx="5" fill-opacity=".85"></rect>
+              <rect x="676" y="96" width="28" height="104" rx="5" fill-opacity=".7"></rect>
+              <rect x="736" y="132" width="28" height="68" rx="5" fill-opacity=".55"></rect>
+            </g>
+            <polyline points="30,157 90,155 150,153 210,160 270,148 330,126 390,92 450,67 510,43 570,45 630,65 690,103 750,138" fill="none" stroke="#98A2B3" stroke-width="2" stroke-dasharray="5 5" stroke-linejoin="round"></polyline>
+            <g>
+              <rect x="470" y="0" width="80" height="18" rx="5" fill="#0B1220"></rect>
+              <text x="510" y="13" text-anchor="middle" font-size="11" font-family="Inter" fill="#FFFFFF" font-weight="600">₹31.2k · 8 pm</text>
+            </g>
+            <g font-size="12" font-family="Inter" fill="#667085" text-anchor="middle">
+              <text x="30" y="220">12 pm</text><text x="270" y="220">4 pm</text><text x="510" y="220">8 pm</text><text x="750" y="220">12 am</text>
+            </g>
+          </svg>
+          <div style="display: flex; flex-wrap: wrap; gap: 24px; padding-top: 12px; border-top: 1px solid #F2F4F7; font-size: 13px; color: #475467">
+            <span>Food <strong style="color: #101828; font-variant-numeric: tabular-nums">₹71,880</strong> · 39%</span>
+            <span>Liquor <strong style="color: #101828; font-variant-numeric: tabular-nums">₹1,12,440</strong> · 61%</span>
+            <a href="#" style="margin-left: auto; text-decoration: none; font-weight: 500">Open sales report →</a>
+          </div>
+        </section>
+
+        <section aria-labelledby="att" style="flex: 1 1 300px; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <h2 id="att" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Needs attention</h2>
+            <span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 2px 8px; border-radius: 999px">5</span>
+          </div>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+            <li style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F2F4F7">
+              <span style="width: 8px; height: 8px; margin-top: 6px; border-radius: 999px; background: #D92D20; flex: none"></span>
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 500">3 voids waiting for manager PIN</span><span style="font-size: 12px; color: #667085">Approvals · oldest 6 min ago</span></div>
+              <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none; align-self: center">Review</a>
+            </li>
+            <li style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F2F4F7">
+              <span style="width: 8px; height: 8px; margin-top: 6px; border-radius: 999px; background: #D92D20; flex: none"></span>
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 500">Vodka 750 ml: 140 ml unaccounted</span><span style="font-size: 12px; color: #667085">Liquor variance · Bar</span></div>
+              <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none; align-self: center">Check</a>
+            </li>
+            <li style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F2F4F7">
+              <span style="width: 8px; height: 8px; margin-top: 6px; border-radius: 999px; background: #F79009; flex: none"></span>
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 500">Single Malt 12Y below par</span><span style="font-size: 12px; color: #667085">3 bottles left · par 6</span></div>
+              <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none; align-self: center">Reorder</a>
+            </li>
+            <li style="display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F2F4F7">
+              <span style="width: 8px; height: 8px; margin-top: 6px; border-radius: 999px; background: #F79009; flex: none"></span>
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 500">Rooftop TV 2 offline</span><span style="font-size: 12px; color: #667085">Displays · 12 min</span></div>
+              <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none; align-self: center">Restart</a>
+            </li>
+            <li style="display: flex; gap: 12px; padding: 12px 0">
+              <span style="width: 8px; height: 8px; margin-top: 6px; border-radius: 999px; background: #2E90FA; flex: none"></span>
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 500">Bar licence renews in 21 days</span><span style="font-size: 12px; color: #667085">Compliance</span></div>
+              <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none; align-self: center">Details</a>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Top sellers + floor -->
+      <div style="display: flex; flex-wrap: wrap; gap: 24px">
+        <section aria-labelledby="top" style="flex: 2 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden">
+          <div style="display: flex; align-items: center; padding: 20px 24px 12px">
+            <h2 id="top" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Top sellers</h2>
+            <a href="#" style="margin-left: auto; font-size: 13px; font-weight: 500; text-decoration: none">View menu performance →</a>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+              <thead>
+                <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                  <th scope="col" style="padding: 10px 24px; font-weight: 500">Item</th>
+                  <th scope="col" style="padding: 10px 12px; font-weight: 500">Category</th>
+                  <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Qty</th>
+                  <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Revenue</th>
+                  <th scope="col" style="padding: 10px 24px 10px 12px; font-weight: 500; width: 150px">Margin</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">Premium Lager 650 ml</td><td style="padding: 13px 12px; color: #475467">Beer</td><td style="padding: 13px 12px; text-align: right">148</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹44,400</td><td style="padding: 13px 24px 13px 12px"><div style="display: flex; align-items: center; gap: 10px"><div style="flex: 1; height: 6px; border-radius: 999px; background: #F2F4F7"><div style="width: 68%; height: 6px; border-radius: 999px; background: #0E7C66"></div></div><span style="font-size: 13px; width: 34px; text-align: right">68%</span></div></td></tr>
+                <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">House Whisky 60 ml</td><td style="padding: 13px 12px; color: #475467">Spirits</td><td style="padding: 13px 12px; text-align: right">96</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹28,800</td><td style="padding: 13px 24px 13px 12px"><div style="display: flex; align-items: center; gap: 10px"><div style="flex: 1; height: 6px; border-radius: 999px; background: #F2F4F7"><div style="width: 74%; height: 6px; border-radius: 999px; background: #0E7C66"></div></div><span style="font-size: 13px; width: 34px; text-align: right">74%</span></div></td></tr>
+                <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">Classic Mojito</td><td style="padding: 13px 12px; color: #475467">Cocktails</td><td style="padding: 13px 12px; text-align: right">61</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹21,350</td><td style="padding: 13px 24px 13px 12px"><div style="display: flex; align-items: center; gap: 10px"><div style="flex: 1; height: 6px; border-radius: 999px; background: #F2F4F7"><div style="width: 71%; height: 6px; border-radius: 999px; background: #0E7C66"></div></div><span style="font-size: 13px; width: 34px; text-align: right">71%</span></div></td></tr>
+                <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">Chicken Wings (8 pc)</td><td style="padding: 13px 12px; color: #475467">Bar bites</td><td style="padding: 13px 12px; text-align: right">54</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹18,900</td><td style="padding: 13px 24px 13px 12px"><div style="display: flex; align-items: center; gap: 10px"><div style="flex: 1; height: 6px; border-radius: 999px; background: #F2F4F7"><div style="width: 52%; height: 6px; border-radius: 999px; background: #F79009"></div></div><span style="font-size: 13px; width: 34px; text-align: right">52%</span></div></td></tr>
+                <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">Beer Tower 3 L</td><td style="padding: 13px 12px; color: #475467">Beer</td><td style="padding: 13px 12px; text-align: right">12</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹16,800</td><td style="padding: 13px 24px 13px 12px"><div style="display: flex; align-items: center; gap: 10px"><div style="flex: 1; height: 6px; border-radius: 999px; background: #F2F4F7"><div style="width: 63%; height: 6px; border-radius: 999px; background: #0E7C66"></div></div><span style="font-size: 13px; width: 34px; text-align: right">63%</span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section aria-labelledby="floor" style="flex: 1 1 300px; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: baseline; gap: 8px">
+            <h2 id="floor" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Live floor</h2>
+            <span style="font-size: 13px; color: #667085">34 tables</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; color: #0B1220; font-variant-numeric: tabular-nums">76%</span>
+            <span style="font-size: 13px; color: #475467">occupied · Rooftop is full</span>
+          </div>
+          <div role="img" aria-label="Free 6, occupied 22, bill printed 4, cleaning 2" style="display: flex; height: 10px; border-radius: 999px; overflow: hidden; gap: 2px">
+            <div style="width: 17.6%; background: #A6F4C5"></div>
+            <div style="width: 64.7%; background: #0E7C66"></div>
+            <div style="width: 11.8%; background: #FDB022"></div>
+            <div style="width: 5.9%; background: #D0D5DD"></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; font-size: 13px; color: #475467; font-variant-numeric: tabular-nums">
+            <span style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #A6F4C5"></span>Free<strong style="margin-left: auto; color: #101828">6</strong></span>
+            <span style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #0E7C66"></span>Occupied<strong style="margin-left: auto; color: #101828">22</strong></span>
+            <span style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #FDB022"></span>Bill printed<strong style="margin-left: auto; color: #101828">4</strong></span>
+            <span style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 3px; background: #D0D5DD"></span>Cleaning<strong style="margin-left: auto; color: #101828">2</strong></span>
+          </div>
+          <div style="margin-top: auto; display: flex; gap: 8px">
+            <a href="#" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; color: #344054; text-decoration: none; font-weight: 500">Floor plan</a>
+            <a href="#" style="flex: 1; display: flex; align-items: center; justify-content: center; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; color: #344054; text-decoration: none; font-weight: 500">Queue</a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E7C66","options":["#0E7C66","#1D4ED8","#7A2E3A","#0B1220"]},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#0E7C66' };
+  }
+}
+</script>
+</body>
+</html>

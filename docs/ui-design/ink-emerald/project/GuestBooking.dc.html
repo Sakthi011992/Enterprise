@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Book a table</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="min-height: 960px; display: flex; flex-direction: column; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px 48px; background: #FFFFFF; border-bottom: 1px solid #E4E7EC">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span style="width: 40px; height: 40px; border-radius: 10px; background: #0B1220; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: Manrope, sans-serif; font-weight: 800; font-size: 14px">YV</span>
+      <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; color: #0B1220; letter-spacing: -0.02em">Your Venue</span>
+    </div>
+    <nav aria-label="Site" style="margin-left: auto; display: flex; align-items: center; gap: 24px; font-size: 14px">
+      <a href="#" style="color: #344054; text-decoration: none">Menu</a>
+      <a href="#" style="color: #344054; text-decoration: none">Events</a>
+      <a href="#" style="color: #344054; text-decoration: none">Find us</a>
+      <button type="button" style="height: 36px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">EN ▾</button>
+    </nav>
+  </header>
+
+  <main style="flex: 1; display: flex; flex-wrap: wrap; gap: 32px; padding: 40px 48px; box-sizing: border-box; max-width: 1280px; width: 100%; margin: 0 auto; align-items: flex-start">
+    <section aria-label="Book a table" style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 24px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Book a table</h1>
+        <p style="margin: 0; font-size: 14px; color: #475467">Walk-ins welcome too: we'll put you on the waiting list.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="bk-d" style="font-size: 13px; font-weight: 500; color: #344054">Date</label><select id="bk-d" style="height: 48px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%"><option>Sat 22 Nov</option></select></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="bk-p" style="font-size: 13px; font-weight: 500; color: #344054">Guests</label><select id="bk-p" style="height: 48px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%"><option>4 people</option></select></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="bk-a" style="font-size: 13px; font-weight: 500; color: #344054">Area</label><select id="bk-a" style="height: 48px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%"><option>Rooftop</option><option>Indoor</option><option>Bar counter</option></select></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 500; color: #344054">Time</span>
+        <div role="group" aria-label="Time" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" aria-pressed="false" style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-variant-numeric: tabular-nums; color: #344054; cursor: pointer">7:00</button>
+          <button type="button" disabled style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #E4E7EC; border-radius: 10px; background: #F9FAFB; font: inherit; font-variant-numeric: tabular-nums; color: #667085; text-decoration: line-through; cursor: not-allowed">7:30</button>
+          <button type="button" aria-pressed="true" style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #0E7C66; border-radius: 10px; background: #E7F4F0; font: inherit; font-variant-numeric: tabular-nums; font-weight: 600; color: #0A5F4E; cursor: pointer; box-shadow: 0 0 0 1px #0E7C66">8:00</button>
+          <button type="button" aria-pressed="false" style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-variant-numeric: tabular-nums; color: #344054; cursor: pointer">8:30</button>
+          <button type="button" disabled style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #E4E7EC; border-radius: 10px; background: #F9FAFB; font: inherit; font-variant-numeric: tabular-nums; color: #667085; text-decoration: line-through; cursor: not-allowed">9:00</button>
+          <button type="button" aria-pressed="false" style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-variant-numeric: tabular-nums; color: #344054; cursor: pointer">9:30</button>
+          <button type="button" aria-pressed="false" style="min-width: 76px; height: 48px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-variant-numeric: tabular-nums; color: #344054; cursor: pointer">10:00</button>
+        </div>
+        <p style="margin: 0; font-size: 13px; color: #667085">Struck-out times are full. Table kept for 15 min after your time.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="bk-n" style="font-size: 13px; font-weight: 500; color: #344054">Name</label><input id="bk-n" value="Arjun N" style="height: 48px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%"></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><label for="bk-ph" style="font-size: 13px; font-weight: 500; color: #344054">Mobile (WhatsApp)</label><input id="bk-ph" value="98765 4321" aria-invalid="true" aria-describedby="bk-ph-e" style="height: 48px; padding: 0 14px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%"><div id="bk-ph-e" style="font-size: 13px; color: #B42318">Enter a 10-digit mobile number</div></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px"><label for="bk-o" style="font-size: 13px; font-weight: 500; color: #344054">Occasion (optional)</label><select id="bk-o" style="height: 48px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%"><option>Birthday</option><option>None</option></select></div>
+
+      <label style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: #344054"><input type="checkbox" checked style="width: 20px; height: 20px; flex: none; margin: 0; accent-color: #0E7C66">Send my booking and reminders on WhatsApp</label>
+
+      <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid #F2F4F7">
+        <button type="button" style="height: 52px; padding: 0 28px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Pay ₹1,000 deposit &amp; book</button>
+        <span style="flex: 1 1 220px; font-size: 13px; color: #667085">Deposit is taken off your bill. Free cancellation up to 4 hours before.</span>
+      </div>
+    </section>
+
+    <aside aria-label="Venue information" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+      <div style="height: 220px; border-radius: 16px; background: #EAECF0; border: 1px solid #E4E7EC; display: flex; align-items: center; justify-content: center; color: #475467; font-size: 13px">Rooftop photo</div>
+      <div style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 2px rgba(16,24,40,.04)"><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; color: #0B1220">Sat 22 Nov · Live band from 8 pm</span><span style="font-size: 14px; color: #475467">Cover ₹500 per person, redeemable on drinks.</span></div>
+      <div style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 2px rgba(16,24,40,.04)"><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; color: #0B1220">Good to know</span><span style="font-size: 14px; color: #475467">21+ only after 8 pm. ID may be checked.</span><span style="font-size: 14px; color: #475467">Groups of 10+: call us for packages.</span></div>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

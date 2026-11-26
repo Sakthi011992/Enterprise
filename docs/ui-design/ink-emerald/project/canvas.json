@@ -1,0 +1,676 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-26T02:20:00Z"
+  },
+  "title": "Pub ERP premium redesign",
+  "launch": {
+    "view": "canvas",
+    "page": "core"
+  },
+  "pages": [
+    {
+      "id": "foundation",
+      "name": "Foundation"
+    },
+    {
+      "id": "core",
+      "name": "Core"
+    },
+    {
+      "id": "bar",
+      "name": "Bar & stock"
+    },
+    {
+      "id": "guests",
+      "name": "Guests"
+    },
+    {
+      "id": "displays",
+      "name": "Displays"
+    },
+    {
+      "id": "people",
+      "name": "People & money"
+    },
+    {
+      "id": "platform",
+      "name": "Platform"
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile"
+    },
+    {
+      "id": "gaps",
+      "name": "More screens"
+    },
+    {
+      "id": "flows",
+      "name": "Persona flows"
+    }
+  ],
+  "boards": {
+    "Foundations.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Foundations: colour, type, components",
+      "page": "foundation"
+    },
+    "Sidebar.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 260,
+      "h": 900,
+      "title": "Component · Sidebar",
+      "page": "foundation"
+    },
+    "Topbar.dc.html": {
+      "x": 1860,
+      "y": 0,
+      "w": 1180,
+      "h": 69,
+      "title": "Component · Top bar",
+      "page": "foundation"
+    },
+    "Login.dc.html": {
+      "x": 0,
+      "y": 1060,
+      "w": 1440,
+      "h": 960,
+      "title": "Web admin login (error) & forgot password",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "OutletPicker.dc.html": {
+      "x": 1520,
+      "y": 1060,
+      "w": 1440,
+      "h": 960,
+      "title": "Outlet & persona picker after login",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "Shell.dc.html": {
+      "x": 0,
+      "y": 2180,
+      "w": 1440,
+      "h": 960,
+      "title": "App shell: top bar, persona nav, notifications",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "Permissions.dc.html": {
+      "x": 1520,
+      "y": 2180,
+      "w": 1440,
+      "h": 960,
+      "title": "Persona permission matrix",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "POSPay.dc.html": {
+      "x": 0,
+      "y": 3300,
+      "w": 1440,
+      "h": 960,
+      "title": "POS: pay, split bill & split tender",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "POSApprove.dc.html": {
+      "x": 1520,
+      "y": 3300,
+      "w": 1440,
+      "h": 960,
+      "title": "POS: discount approval, void & transfer",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "MenuEditors.dc.html": {
+      "x": 0,
+      "y": 4420,
+      "w": 1440,
+      "h": 960,
+      "title": "Menu: recipe, modifiers & combos",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "Hardware.dc.html": {
+      "x": 1520,
+      "y": 4420,
+      "w": 1440,
+      "h": 960,
+      "title": "Hardware: printers, routing, terminals",
+      "page": "foundation",
+      "expand": "fill"
+    },
+    "States.dc.html": {
+      "x": 0,
+      "y": 5540,
+      "w": 1440,
+      "h": 1100,
+      "title": "Create, edit, view & loading states",
+      "page": "foundation"
+    },
+    "Errors.dc.html": {
+      "x": 1520,
+      "y": 5540,
+      "w": 1440,
+      "h": 1700,
+      "title": "Form validation & error patterns",
+      "page": "foundation"
+    },
+    "TabletPOS.dc.html": {
+      "x": 0,
+      "y": 7400,
+      "w": 1024,
+      "h": 768,
+      "title": "Tablet landscape 1024 · captain POS",
+      "page": "foundation"
+    },
+    "TabletMenu.dc.html": {
+      "x": 1104,
+      "y": 7400,
+      "w": 768,
+      "h": 1024,
+      "title": "Tablet portrait 768 · menu admin",
+      "page": "foundation"
+    },
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1180,
+      "title": "Dashboard",
+      "page": "core",
+      "expand": "fill"
+    },
+    "POS.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "POS billing · bar tablet (dark)",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Orders.dc.html": {
+      "x": 0,
+      "y": 1340,
+      "w": 1440,
+      "h": 960,
+      "title": "Orders & invoices",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Menu.dc.html": {
+      "x": 1520,
+      "y": 1340,
+      "w": 1440,
+      "h": 960,
+      "title": "Menu & products",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Users.dc.html": {
+      "x": 0,
+      "y": 2460,
+      "w": 1440,
+      "h": 960,
+      "title": "Users, personas & feature access",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Settings.dc.html": {
+      "x": 1520,
+      "y": 2460,
+      "w": 1440,
+      "h": 960,
+      "title": "Tax, invoice & payments",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Themes.dc.html": {
+      "x": 0,
+      "y": 3580,
+      "w": 1440,
+      "h": 960,
+      "title": "Themes & branding (AI theming)",
+      "page": "core",
+      "expand": "fill"
+    },
+    "ThemeSwitcher.dc.html": {
+      "x": 1520,
+      "y": 3580,
+      "w": 1440,
+      "h": 960,
+      "title": "Theme switcher: build from brand colours",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Localisation.dc.html": {
+      "x": 0,
+      "y": 4700,
+      "w": 1440,
+      "h": 960,
+      "title": "Localisation",
+      "page": "core",
+      "expand": "fill"
+    },
+    "Inventory.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1180,
+      "title": "Inventory & liquor variance",
+      "page": "bar",
+      "expand": "fill"
+    },
+    "BarTabs.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Bar tabs",
+      "page": "bar",
+      "expand": "fill"
+    },
+    "FloorPlan.dc.html": {
+      "x": 0,
+      "y": 1340,
+      "w": 1440,
+      "h": 960,
+      "title": "Floor plan & tables",
+      "page": "bar",
+      "expand": "fill"
+    },
+    "KDS.dc.html": {
+      "x": 1520,
+      "y": 1340,
+      "w": 1440,
+      "h": 960,
+      "title": "Kitchen & bar display (dark)",
+      "page": "bar",
+      "expand": "fill"
+    },
+    "Procurement.dc.html": {
+      "x": 0,
+      "y": 2460,
+      "w": 1440,
+      "h": 960,
+      "title": "Procurement: purchase orders",
+      "page": "bar",
+      "expand": "fill"
+    },
+    "GRN.dc.html": {
+      "x": 1520,
+      "y": 2460,
+      "w": 1440,
+      "h": 960,
+      "title": "Receive a delivery (GRN)",
+      "page": "bar",
+      "expand": "fill"
+    },
+    "Customers.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Customers, loyalty & reservations",
+      "page": "guests",
+      "expand": "fill"
+    },
+    "QueueHost.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Walk-in queue: host desk",
+      "page": "guests",
+      "expand": "fill"
+    },
+    "GuestBooking.dc.html": {
+      "x": 0,
+      "y": 1120,
+      "w": 1440,
+      "h": 960,
+      "title": "Guest online booking",
+      "page": "guests",
+      "expand": "fill"
+    },
+    "QueueMonitor.dc.html": {
+      "x": 0,
+      "y": 2240,
+      "w": 1920,
+      "h": 1080,
+      "title": "Waiting-area monitor (TV)",
+      "page": "guests"
+    },
+    "DisplayControl.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Display Control Center (Admin)",
+      "page": "displays",
+      "expand": "fill"
+    },
+    "Campaigns.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Sponsors, campaigns & proof of play",
+      "page": "displays",
+      "expand": "fill"
+    },
+    "SignageTV.dc.html": {
+      "x": 0,
+      "y": 1120,
+      "w": 1920,
+      "h": 1080,
+      "title": "Bar TV: signage split mode",
+      "page": "displays"
+    },
+    "Accounting.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Accounting & day close",
+      "page": "people",
+      "expand": "fill"
+    },
+    "Staff.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Staff, shifts & attendance",
+      "page": "people",
+      "expand": "fill"
+    },
+    "HRScreens.dc.html": {
+      "x": 0,
+      "y": 1120,
+      "w": 1440,
+      "h": 1300,
+      "title": "Leave, tips split & payroll export",
+      "page": "people",
+      "expand": "fill"
+    },
+    "Subscription.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Subscription & feature toggles",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "Monitoring.dc.html": {
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 960,
+      "title": "Monitoring & support consent",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "AIAssistant.dc.html": {
+      "x": 0,
+      "y": 1120,
+      "w": 1440,
+      "h": 960,
+      "title": "AI Assistant: import & configure",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "PlatformSignin.dc.html": {
+      "x": 1520,
+      "y": 1120,
+      "w": 1440,
+      "h": 960,
+      "title": "Platform · Sign-in with 2FA",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "PlatformTenants.dc.html": {
+      "x": 0,
+      "y": 2240,
+      "w": 1440,
+      "h": 960,
+      "title": "Platform · Tenants & overrides",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "PlatformPlans.dc.html": {
+      "x": 1520,
+      "y": 2240,
+      "w": 1440,
+      "h": 960,
+      "title": "Platform · Plans, pricing & feature rollout",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "PlatformRevenue.dc.html": {
+      "x": 0,
+      "y": 3360,
+      "w": 1440,
+      "h": 960,
+      "title": "Platform · Usage & revenue",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "SupportConsole.dc.html": {
+      "x": 1520,
+      "y": 3360,
+      "w": 1440,
+      "h": 960,
+      "title": "Support · Tenant health & live logs",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "SupportSession.dc.html": {
+      "x": 0,
+      "y": 4480,
+      "w": 1440,
+      "h": 960,
+      "title": "Support · Live session, remote fix & close ticket",
+      "page": "platform",
+      "expand": "fill"
+    },
+    "MobileLogin.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "iOS · Staff PIN login (error state)",
+      "page": "mobile"
+    },
+    "MobileCaptain.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Android · Captain order taking",
+      "page": "mobile"
+    },
+    "MobileTab.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "iOS · Bar tab & pay sheet",
+      "page": "mobile"
+    },
+    "MobileOwner.dc.html": {
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "iOS · Owner dashboard",
+      "page": "mobile"
+    },
+    "MobileStock.dc.html": {
+      "x": 1880,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Android · Stock count (offline)",
+      "page": "mobile"
+    },
+    "MobileQueue.dc.html": {
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Android · New token (validation errors)",
+      "page": "mobile"
+    },
+    "Kiosk.dc.html": {
+      "x": 0,
+      "y": 1004,
+      "w": 768,
+      "h": 1024,
+      "title": "Kiosk · Self-order (portrait)",
+      "page": "mobile"
+    },
+    "GuestMobile.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 2710,
+      "h": 1020,
+      "title": "Guest phone · QR order, queue, WhatsApp, pay, feedback",
+      "page": "gaps"
+    },
+    "MobileStaff.dc.html": {
+      "x": 0,
+      "y": 1180,
+      "w": 2270,
+      "h": 1020,
+      "title": "Android · Wastage, reorder, my shifts, tables, ready alerts",
+      "page": "gaps"
+    },
+    "MobileSummaries.dc.html": {
+      "x": 0,
+      "y": 2360,
+      "w": 2270,
+      "h": 1020,
+      "title": "iOS · Owner, manager, accountant & marketing summaries",
+      "page": "gaps"
+    },
+    "MobileAlerts.dc.html": {
+      "x": 0,
+      "y": 3540,
+      "w": 1400,
+      "h": 1020,
+      "title": "Android · Screen alerts, remote restart, on-call",
+      "page": "gaps"
+    },
+    "TabletOps.dc.html": {
+      "x": 0,
+      "y": 4720,
+      "w": 3296,
+      "h": 940,
+      "title": "Tablet · Device setup, receive with photo, kitchen 86",
+      "page": "gaps"
+    },
+    "TabletPIN.dc.html": {
+      "x": 0,
+      "y": 5820,
+      "w": 2224,
+      "h": 940,
+      "title": "Tablet · Shared PIN sign-in & clock-in kiosk",
+      "page": "gaps"
+    },
+    "Flows.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1400,
+      "title": "Persona flows overview",
+      "page": "flows"
+    }
+  },
+  "order": [
+    "Foundations.dc.html",
+    "Sidebar.dc.html",
+    "Topbar.dc.html",
+    "Login.dc.html",
+    "OutletPicker.dc.html",
+    "Shell.dc.html",
+    "Permissions.dc.html",
+    "POSPay.dc.html",
+    "POSApprove.dc.html",
+    "MenuEditors.dc.html",
+    "Hardware.dc.html",
+    "States.dc.html",
+    "Errors.dc.html",
+    "TabletPOS.dc.html",
+    "TabletMenu.dc.html",
+    "Main.dc.html",
+    "POS.dc.html",
+    "Orders.dc.html",
+    "Menu.dc.html",
+    "Users.dc.html",
+    "Settings.dc.html",
+    "Themes.dc.html",
+    "ThemeSwitcher.dc.html",
+    "Localisation.dc.html",
+    "Inventory.dc.html",
+    "BarTabs.dc.html",
+    "FloorPlan.dc.html",
+    "KDS.dc.html",
+    "Procurement.dc.html",
+    "GRN.dc.html",
+    "Customers.dc.html",
+    "QueueHost.dc.html",
+    "GuestBooking.dc.html",
+    "QueueMonitor.dc.html",
+    "DisplayControl.dc.html",
+    "Campaigns.dc.html",
+    "SignageTV.dc.html",
+    "Accounting.dc.html",
+    "Staff.dc.html",
+    "HRScreens.dc.html",
+    "Subscription.dc.html",
+    "Monitoring.dc.html",
+    "AIAssistant.dc.html",
+    "PlatformSignin.dc.html",
+    "PlatformTenants.dc.html",
+    "PlatformPlans.dc.html",
+    "PlatformRevenue.dc.html",
+    "SupportConsole.dc.html",
+    "SupportSession.dc.html",
+    "MobileLogin.dc.html",
+    "MobileCaptain.dc.html",
+    "MobileTab.dc.html",
+    "MobileOwner.dc.html",
+    "MobileStock.dc.html",
+    "MobileQueue.dc.html",
+    "Kiosk.dc.html",
+    "GuestMobile.dc.html",
+    "MobileStaff.dc.html",
+    "MobileSummaries.dc.html",
+    "MobileAlerts.dc.html",
+    "TabletOps.dc.html",
+    "TabletPIN.dc.html",
+    "Flows.dc.html"
+  ],
+  "notes": {
+    "heading": {
+      "x": 0,
+      "y": -300,
+      "text": "Ink & Emerald: premium direction for the Pub ERP",
+      "kind": "title1",
+      "maxW": 3040,
+      "page": "foundation"
+    }
+  },
+  "designSystems": []
+}

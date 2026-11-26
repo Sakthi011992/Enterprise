@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plans and feature rollout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+
+  <nav aria-label="Platform" style="flex: 1 1 248px; max-width: 280px; background: #0B1220; color: #C7CED9; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <div style="width: 34px; height: 34px; border-radius: 10px; background: #0E7C66; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: Manrope, sans-serif; font-weight: 800; font-size: 14px">PE</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="color: #FFFFFF; font-family: Manrope, sans-serif; font-weight: 700; font-size: 14px">Pub ERP</span>
+        <span style="font-size: 12px; color: #8A94A6">Platform console</span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <a href="PlatformTenants.dc.html" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"></path><path d="M9 21v-6h6v6"></path></svg>Tenants</a>
+      <a href="PlatformPlans.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; background: #16213A; color: #FFFFFF; text-decoration: none; font-weight: 500">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2FB896" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M8 15h3"></path></svg>Plans &amp; pricing</a>
+      <a href="PlatformRevenue.dc.html" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"></path></svg>Usage &amp; revenue</a>
+      <a href="SupportConsole.dc.html" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0116 0v1"></path><rect x="3" y="13" width="4" height="6" rx="1.5"></rect><rect x="17" y="13" width="4" height="6" rx="1.5"></rect></svg>Support console</a>
+      <a href="SupportSession.dc.html" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>Live sessions</a>
+      <a href="#" style="display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; color: #C7CED9; text-decoration: none">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"></path></svg>Settings</a>
+    </div>
+    <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 4px 8px">
+      <div style="width: 32px; height: 32px; border-radius: 999px; background: #1F2A3D; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">RV</div>
+      <div style="display: flex; flex-direction: column"><span style="color: #FFFFFF; font-size: 13px; font-weight: 500">Ravi</span><span style="font-size: 12px; color: #8A94A6">Super Admin</span></div>
+    </div>
+  </nav>
+
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 32px; background: #FFFFFF; border-bottom: 1px solid #E4E7EC">
+      <nav aria-label="Breadcrumb" style="font-size: 13px; color: #667085; display: flex; gap: 8px"><a href="#" style="color: #667085; text-decoration: none">Platform console</a><span aria-hidden="true">/</span><span style="color: #101828; font-weight: 500">Plans &amp; pricing</span></nav>
+    </header>
+
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Plans &amp; features</h1>
+          <span style="font-size: 13px; color: #667085">Pricing, limits and staged feature rollout across all tenants</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Version history</button>
+          <button type="button" style="height: 40px; padding: 0 18px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Publish plan changes</button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <section aria-label="Plan matrix" style="flex: 2 1 600px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+              <thead>
+                <tr style="background: #F9FAFB; color: #475467; font-size: 12px">
+                  <th scope="col" style="padding: 12px 20px; font-weight: 500; text-align: left">Feature / limit</th>
+                  <th scope="col" style="padding: 12px; font-weight: 500; text-align: center">Starter</th>
+                  <th scope="col" style="padding: 12px; font-weight: 500; text-align: center">Growth</th>
+                  <th scope="col" style="padding: 12px; font-weight: 500; text-align: center">Pro</th>
+                  <th scope="col" style="padding: 12px 20px 12px 12px; font-weight: 500; text-align: center">Enterprise</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 600; white-space: nowrap">Price per month</th>
+                  <td style="padding: 12px; text-align: center"><input aria-label="Starter price" value="[PRICE]" style="width: 104px; height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: center; color: #101828; box-sizing: border-box"></td>
+                  <td style="padding: 12px; text-align: center"><input aria-label="Growth price" value="[PRICE]" style="width: 104px; height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: center; color: #101828; box-sizing: border-box"></td>
+                  <td style="padding: 12px; text-align: center"><input aria-label="Pro price" value="[PRICE]" style="width: 104px; height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: center; color: #101828; box-sizing: border-box"></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center; color: #475467">Custom</td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">POS, tables, bar tabs, KDS</th>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">Inventory &amp; liquor variance</th>
+                  <td style="padding: 12px; text-align: center; color: #667085">—</td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">Walk-in queue + WhatsApp</th>
+                  <td style="padding: 12px; text-align: center; color: #667085">—</td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">Digital signage</th>
+                  <td style="padding: 12px; text-align: center; color: #667085">—</td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #FBF3E4; color: #8A5A12; padding: 3px 9px; border-radius: 999px">Add-on</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">Brand campaigns</th>
+                  <td style="padding: 12px; text-align: center; color: #667085">—</td>
+                  <td style="padding: 12px; text-align: center; color: #667085">—</td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #FBF3E4; color: #8A5A12; padding: 3px 9px; border-radius: 999px">Add-on</span></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Included</span></td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">AI Assistant</th>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #FBF3E4; color: #8A5A12; padding: 3px 9px; border-radius: 999px">50 credits</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #FBF3E4; color: #8A5A12; padding: 3px 9px; border-radius: 999px">Add-on</span></td>
+                  <td style="padding: 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">500 credits</span></td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Custom</span></td>
+                </tr>
+                <tr style="border-top: 1px solid #F2F4F7">
+                  <th scope="row" style="padding: 12px 20px; text-align: left; font-weight: 400; white-space: nowrap">Users / screens / outlets</th>
+                  <td style="padding: 12px; text-align: center">5 / 2 / 1</td>
+                  <td style="padding: 12px; text-align: center">15 / 5 / 1</td>
+                  <td style="padding: 12px; text-align: center">50 / 20 / 3</td>
+                  <td style="padding: 12px 20px 12px 12px; text-align: center; color: #475467">Custom</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="padding: 14px 20px; border-top: 1px solid #F2F4F7; font-size: 13px; color: #667085">Price changes apply to new subscriptions and renewals only. Existing customers get 30 days' notice by email.</div>
+        </section>
+
+        <aside aria-labelledby="fr-h" style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+          <h2 id="fr-h" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Feature rollout</h2>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="fr-f" style="font-size: 13px; font-weight: 500; color: #344054">Feature</label>
+            <select id="fr-f" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; background: #FFFFFF; box-sizing: border-box; width: 100%"><option>qr_ordering.v2 · QR ordering v2</option></select>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; font-weight: 500; color: #344054">Stage</span>
+            <div role="group" aria-label="Rollout stage" style="display: flex; padding: 3px; border-radius: 10px; background: #EAECF0">
+              <span style="flex: 1; text-align: center; padding: 7px 4px; border-radius: 8px; font-size: 13px; color: #475467">Internal</span>
+              <span aria-current="true" style="flex: 1; text-align: center; padding: 7px 4px; border-radius: 8px; font-size: 13px; font-weight: 600; background: #FFFFFF; color: #0B1220; box-shadow: 0 1px 2px rgba(16,24,40,.08)">Beta</span>
+              <span style="flex: 1; text-align: center; padding: 7px 4px; border-radius: 8px; font-size: 13px; color: #475467">25%</span>
+              <span style="flex: 1; text-align: center; padding: 7px 4px; border-radius: 8px; font-size: 13px; color: #475467">All</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="fr-t" style="font-size: 13px; font-weight: 500; color: #344054">Beta tenants</label>
+            <input id="fr-t" value="The Brew Lab, Coastline Bars + 8 more" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: 12px; background: #F9FAFB; border: 1px solid #F2F4F7; font-size: 13px">
+            <b style="color: #101828">Last 24 h on beta</b>
+            <span style="color: #475467; font-variant-numeric: tabular-nums">Error rate 0.4% (normal 0.3%) · 1,240 QR orders</span>
+            <span style="color: #667085">Auto-rollback if errors go above 2%</span>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button type="button" style="flex: 1; height: 40px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Kill switch</button>
+            <button type="button" style="flex: 1; height: 40px; border: 0; border-radius: 10px; background: #0B1220; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Move to 25%</button>
+          </div>
+          <span style="font-size: 13px; color: #667085">The kill switch turns the feature off for every tenant within 1 minute. It's logged and needs a reason.</span>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
