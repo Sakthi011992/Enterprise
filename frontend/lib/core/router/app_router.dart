@@ -12,6 +12,7 @@ import '../../features/branding/presentation/branding_screen.dart';
 import '../../features/dev/component_gallery_screen.dart';
 import '../../features/floor/presentation/floor_plan_screen.dart';
 import '../../features/floor/presentation/floor_setup_screen.dart';
+import '../../features/guest/presentation/guest_screen.dart';
 import '../../features/devices/presentation/devices_screen.dart';
 import '../../features/kiosk/presentation/kiosk_admin_screen.dart';
 import '../../features/hardware/presentation/hardware_screen.dart';
@@ -67,11 +68,14 @@ const _legacyRedirects = {
   '/billing': '/pos',
 };
 
+/// The guest app's public path `/t/:qrToken`, exempt from the login redirect.
+bool isGuestPath(String path) => RegExp(r'^/t/[^/]+/?$').hasMatch(path);
+
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier<int>(0);
   ref.onDispose(refresh.dispose);
   ref.listen<SessionState>(sessionProvider, (_, __) => refresh.value++);
-
+
   bool _isForbidden(String path) {
     final session = ref.read(sessionProvider).session;
     final item = navItemForPath(path);
@@ -80,6 +84,9 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   String? redirect(BuildContext context, GoRouterState state) {
     final path = state.matchedLocation;
+
+    // Guest QR ordering (Phase 4): public, no staff login, outside the shell.
+    if (isGuestPath(path)) return null;
 
     final legacy = _legacyRedirects[path];
     if (legacy != null) return legacy;
@@ -119,6 +126,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/select-outlet', builder: (_, __) => const OutletPickerScreen()),
       GoRoute(path: '/pin', builder: (_, __) => const PinLoginScreen()),
+      // Guest QR table ordering: public, outside the shell (PLAN 2.8).
+      GoRoute(
+        path: '/t/:qrToken',
+        builder: (_, state) => GuestScreen(qrToken: state.pathParameters['qrToken']!),
+      ),
       // Kiosk display: full screen, outside the shell.
       GoRoute(path: '/kiosk', builder: (_, __) => const KioskDisplayScreen()),
       ShellRoute(

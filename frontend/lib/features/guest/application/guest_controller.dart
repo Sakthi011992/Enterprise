@@ -20,30 +20,35 @@ enum GuestPage { menu, cart, order, bill, billAsked }
 class GuestCartLine {
   const GuestCartLine({
     required this.product,
+    this.variant,
     this.optionIds = const {},
     this.quantity = 1,
   });
 
   final GuestProduct product;
+  final GuestVariant? variant;
   final Set<String> optionIds;
   final int quantity;
 
-  String get key => '${product.id}|${(optionIds.toList()..sort()).join(',')}';
+  String get key => '${product.id}|${variant?.id ?? ''}|${(optionIds.toList()..sort()).join(',')}';
 
-  double get unitPrice => product.price + modifierDelta(product.modifierGroups, optionIds).toDouble();
+  double get unitPrice => (variant?.price ?? product.price) + modifierDelta(product.modifierGroups, optionIds).toDouble();
 
   double get total => unitPrice * quantity;
 
   List<String> get optionNames => [
+        if (variant != null && product.variants.length > 1) variant!.name,
         for (final g in product.modifierGroups)
           for (final o in g.options)
             if (optionIds.contains(o.id)) o.name,
       ];
 
-  GuestCartLine withQuantity(int q) => GuestCartLine(product: product, optionIds: optionIds, quantity: q);
+  GuestCartLine withQuantity(int q) =>
+      GuestCartLine(product: product, variant: variant, optionIds: optionIds, quantity: q);
 
   GuestRoundItem toItem({String? note}) => GuestRoundItem(
         productId: product.id,
+        variantId: variant?.id,
         quantity: quantity,
         note: note,
         modifiers: [
@@ -422,9 +427,19 @@ class GuestController extends StateNotifier<GuestState> {
     }
   }
 
-  void add(GuestProduct product, {Set<String> optionIds = const {}, int quantity = 1}) {
+  void add(
+    GuestProduct product, {
+    GuestVariant? variant,
+    Set<String> optionIds = const {},
+    int quantity = 1,
+  }) {
     if (state.placing || !product.available) return;
-    final line = GuestCartLine(product: product, optionIds: optionIds, quantity: quantity);
+    final line = GuestCartLine(
+      product: product,
+      variant: variant ?? (product.variants.isEmpty ? null : product.variants.first),
+      optionIds: optionIds,
+      quantity: quantity,
+    );
     final cart = [...state.cart];
     final i = cart.indexWhere((l) => l.key == line.key);
     if (i >= 0) {
