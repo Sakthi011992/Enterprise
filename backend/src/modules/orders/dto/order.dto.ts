@@ -17,7 +17,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { OrderType } from '@prisma/client';
+import { OrderSource, OrderType } from '@prisma/client';
 import { PaginationDto } from '../../../common/dto/pagination.dto';
 
 /** One line to add (AddItem in PLAN.md 1.4). Legacy carts send only productId and quantity. */
@@ -62,6 +62,11 @@ export class AddItemDto {
   @IsArray()
   @IsUUID('all', { each: true })
   modifierOptionIds?: string[];
+
+  /** Internal only (guest ordering, not accepted over HTTP): the guest round behind the line. */
+  guestRequestId?: string | null;
+  /** Internal only: guest name shown on the KOT and bill line. */
+  guestName?: string | null;
 }
 
 /**
@@ -89,7 +94,11 @@ export class CreateOrderDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsUUID()
-  waiterId?: string;
+  waiterId?: string | null;
+
+  /** Internal only (guest ordering): order source and guest session. Not accepted over HTTP. */
+  source?: OrderSource;
+  guestSessionId?: string | null;
 
   @ApiPropertyOptional()
   @IsOptional()

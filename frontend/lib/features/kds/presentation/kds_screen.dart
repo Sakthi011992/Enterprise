@@ -13,6 +13,7 @@ import '../../../core/realtime/offline_poller.dart';
 import '../../../core/realtime/realtime_client.dart';
 import '../../../core/ui/ui.dart';
 import '../../pos/presentation/dialogs/dialog_frame.dart';
+import '../../guest_requests/presentation/kds_qr_label.dart';
 import '../data/kds_models.dart';
 import '../data/kds_repository.dart';
 import '../domain/kds_rules.dart';
@@ -136,11 +137,10 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
       };
 
   static Color _tone(BuildContext context, TicketColour colour) {
-    final t = context.tokens;
     return switch (colour) {
-      TicketColour.green => t.color.background.success,
-      TicketColour.amber => t.color.background.warning,
-      TicketColour.red => t.color.background.danger,
+      TicketColour.green => context.ext.statusGreen,
+      TicketColour.amber => context.ext.statusAmber,
+      TicketColour.red => context.ext.statusRed,
     };
   }
 
@@ -174,18 +174,21 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
             item.voided ? '${item.headline} · cancelled' : item.headline,
             style: TextStyle(
               color: color,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               decoration: item.voided ? TextDecoration.lineThrough : null,
             ),
           ),
           if (details.isNotEmpty)
-            Text(details.join(' · '), style: TextStyle(color: t.color.content.secondary)),
+            Text(details.join(' · '),
+                style: TextStyle(color: t.color.content.secondary)),
         ],
       ),
     );
   }
 
-  Widget _ticketCard(BuildContext context, KdsTicket ticket, DateTime now, bool canAct) {
+  Widget _ticketCard(
+      BuildContext context, KdsTicket ticket, DateTime now, bool canAct) {
     final t = context.tokens;
     final colour = ticketColourAt(
       createdAt: ticket.createdAt ?? now,
@@ -199,62 +202,60 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
       decoration: BoxDecoration(
         color: t.color.background.raised,
         borderRadius: BorderRadius.circular(t.radius.lg),
-        border: Border.all(color: t.color.border.subtle, width: t.borderWidth.hairline),
+        border: Border.all(
+            color: t.color.border.subtle, width: t.borderWidth.hairline),
       ),
       clipBehavior: Clip.antiAlias,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(width: 6, color: _tone(context, colour)),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(t.spacing.md),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(height: 8, color: _tone(context, colour)),
+          Padding(
+            padding: EdgeInsets.all(t.spacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${ticket.label} · $place',
-                            style: Theme.of(context).textTheme.titleSmall,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Text(
-                          _ageText(ticket, now),
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      ],
-                    ),
-                    if (ticket.isReady && waiter != null && waiter.isNotEmpty)
-                      Text(
-                        'Waiter $waiter notified',
-                        style: TextStyle(color: t.color.content.secondary),
+                    Expanded(
+                      child: Text(
+                        '${ticket.label} · $place',
+                        style: Theme.of(context).textTheme.titleMedium,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    SizedBox(height: t.spacing.sm),
-                    for (final item in ticket.items) _itemLine(context, item),
-                    SizedBox(height: t.spacing.xs),
-                    Wrap(
-                      spacing: t.spacing.sm,
-                      runSpacing: t.spacing.sm,
-                      children: [
-                        for (final action in actionsFor(ticket))
-                          AppButton(
-                            label: _actionLabel(action),
-                            variant: _actionVariant(action),
-                            size: AppControlSize.md,
-                            onPressed: canAct ? () => _act(ticket, action) : null,
-                          ),
-                      ],
+                    ),
+                    KdsQrLabel(ticket: ticket),
+                    Text(
+                      _ageText(ticket, now),
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ],
                 ),
-              ),
+                if (ticket.isReady && waiter != null && waiter.isNotEmpty)
+                  Text(
+                    'Waiter $waiter notified',
+                    style: TextStyle(color: t.color.content.secondary),
+                  ),
+                SizedBox(height: t.spacing.sm),
+                for (final item in ticket.items) _itemLine(context, item),
+                SizedBox(height: t.spacing.xs),
+                Wrap(
+                  spacing: t.spacing.sm,
+                  runSpacing: t.spacing.sm,
+                  children: [
+                    for (final action in actionsFor(ticket))
+                      AppButton(
+                        label: _actionLabel(action),
+                        variant: _actionVariant(action),
+                        size: AppControlSize.md,
+                        onPressed: canAct ? () => _act(ticket, action) : null,
+                      ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -262,7 +263,8 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
   Widget _columnHeader(BuildContext context, String title, int count) {
     final t = context.tokens;
     return Padding(
-      padding: EdgeInsets.fromLTRB(t.spacing.xs, t.spacing.xs, t.spacing.xs, t.spacing.sm),
+      padding: EdgeInsets.fromLTRB(
+          t.spacing.xs, t.spacing.xs, t.spacing.xs, t.spacing.sm),
       child: Text(
         '$title · $count',
         style: Theme.of(context).textTheme.titleMedium,
@@ -316,7 +318,8 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
                 Expanded(
                   child: ListView(
                     padding: EdgeInsets.symmetric(horizontal: t.spacing.xs),
-                    children: _columnChildren(context, title, tickets, now, canAct),
+                    children:
+                        _columnChildren(context, title, tickets, now, canAct),
                   ),
                 ),
             ],
@@ -355,7 +358,8 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
       decoration: BoxDecoration(
         color: t.color.background.raised,
         borderRadius: BorderRadius.circular(t.radius.lg),
-        border: Border.all(color: t.color.border.subtle, width: t.borderWidth.hairline),
+        border: Border.all(
+            color: t.color.border.subtle, width: t.borderWidth.hairline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -364,7 +368,8 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
           SizedBox(height: t.spacing.sm),
           Expanded(
             child: board.allDay.isEmpty
-                ? Text('Nothing sold yet', style: TextStyle(color: t.color.content.muted))
+                ? Text('Nothing sold yet',
+                    style: TextStyle(color: t.color.content.muted))
                 : ListView(
                     children: [
                       for (final row in board.allDay)
@@ -374,12 +379,15 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  row.variantName == null || row.variantName!.isEmpty
+                                  row.variantName == null ||
+                                          row.variantName!.isEmpty
                                       ? row.name
                                       : '${row.name} ${row.variantName}',
                                 ),
                               ),
-                              Text('${row.quantity}', style: const TextStyle(fontWeight: FontWeight.w600)),
+                              Text('${row.quantity}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
                             ],
                           ),
                         ),
@@ -399,8 +407,10 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    ref.listen(realtimeEventProvider(RealtimeEvents.kdsTicketCreated), (_, __) => _scheduleRefresh());
-    ref.listen(realtimeEventProvider(RealtimeEvents.kdsTicketUpdated), (_, __) => _scheduleRefresh());
+    ref.listen(realtimeEventProvider(RealtimeEvents.kdsTicketCreated),
+        (_, __) => _scheduleRefresh());
+    ref.listen(realtimeEventProvider(RealtimeEvents.kdsTicketUpdated),
+        (_, __) => _scheduleRefresh());
 
     final canView = can(ref, Perm.kdsBump, AccessLevel.view);
     final canAct = can(ref, Perm.kdsBump, AccessLevel.edit);
@@ -412,7 +422,8 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
         density: AppDensity.pos,
         child: const Scaffold(
           body: SafeArea(
-            child: EmptyState(title: "You can't open the kitchen display on this device."),
+            child: EmptyState(
+                title: "You can't open the kitchen display on this device."),
           ),
         ),
       );
@@ -433,7 +444,8 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
                     AppButton(
                       label: 'Recall last',
                       variant: AppButtonVariant.ghost,
-                      onPressed: canAct ? () => _recallLast(board.valueOrNull) : null,
+                      onPressed:
+                          canAct ? () => _recallLast(board.valueOrNull) : null,
                     ),
                   ],
                 ),
@@ -462,7 +474,9 @@ class _KdsScreenState extends ConsumerState<KdsScreen> {
                       style: TextStyle(color: t.color.content.secondary),
                     ),
                     AppIconButton(
-                      icon: _fullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                      icon: _fullScreen
+                          ? Icons.fullscreen_exit
+                          : Icons.fullscreen,
                       tooltip: _fullScreen ? 'Exit full screen' : 'Full screen',
                       onPressed: _toggleFullScreen,
                     ),

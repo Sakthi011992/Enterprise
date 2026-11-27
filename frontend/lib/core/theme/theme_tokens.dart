@@ -54,6 +54,7 @@ class BackgroundColors {
     required this.surface,
     required this.raised,
     required this.inverse,
+    required this.header,
     required this.accent,
     required this.danger,
     required this.success,
@@ -62,6 +63,9 @@ class BackgroundColors {
 
   final Color canvas, surface, raised, inverse, accent, danger, success, warning;
 
+  /// The app's top bar.
+  final Color header;
+
   factory BackgroundColors.fromJson(dynamic json, String path) {
     final m = _obj(json, path);
     return BackgroundColors(
@@ -69,6 +73,7 @@ class BackgroundColors {
       surface: _color(m, 'surface', path),
       raised: _color(m, 'raised', path),
       inverse: _color(m, 'inverse', path),
+      header: _color(m, 'header', path),
       accent: _color(m, 'accent', path),
       danger: _color(m, 'danger', path),
       success: _color(m, 'success', path),
@@ -84,10 +89,11 @@ class ContentColors {
     required this.muted,
     required this.onAccent,
     required this.onInverse,
+    required this.onHeader,
     required this.danger,
   });
 
-  final Color primary, secondary, muted, onAccent, onInverse, danger;
+  final Color primary, secondary, muted, onAccent, onInverse, onHeader, danger;
 
   factory ContentColors.fromJson(dynamic json, String path) {
     final m = _obj(json, path);
@@ -97,6 +103,7 @@ class ContentColors {
       muted: _color(m, 'muted', path),
       onAccent: _color(m, 'onAccent', path),
       onInverse: _color(m, 'onInverse', path),
+      onHeader: _color(m, 'onHeader', path),
       danger: _color(m, 'danger', path),
     );
   }
@@ -340,7 +347,7 @@ class AppThemeTokens {
   /// round-tripping through the parsed model and risking drift.
   final Map<String, dynamic> rawJson;
 
-  static const supportedSchemaVersion = 1;
+  static const supportedSchemaVersion = 2;
 
   factory AppThemeTokens.fromJson(Map<String, dynamic> json) {
     final tokens = _obj(json['tokens'], 'tokens');

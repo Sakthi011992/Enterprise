@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Walk-in queue</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="guests" sub="Walk-in queue" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Guests" page="Walk-in queue" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Walk-in queue</h1>
+          <span style="font-size: 13px; color: #667085">Host desk for tonight's waiting list</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Pause queue</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Queue settings</button>
+          <a href="QueueMonitor.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font-weight: 500; color: #344054; text-decoration: none; box-sizing: border-box">Open monitor view</a>
+        </div>
+      </div>
+
+      <section aria-label="Queue summary" style="display: flex; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+        <div style="flex: 1.4 1 160px; padding: 20px 24px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #475467">Waiting</span><span style="font-family: Manrope, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">6</span></div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #475467">Avg wait</span><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">18 min</span></div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #475467">Longest wait</span><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">34 min</span></div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #475467">Seated today</span><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">41</span></div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: #475467">No-shows</span><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">3</span></div>
+      </section>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div style="flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+          <div role="status" style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 16px 20px; background: #E7F4F0; border: 1px solid #A6E3D3; border-radius: 16px">
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 280px">
+              <span style="font-weight: 600; color: #0B1220">Table R5 (2 seats, rooftop) is free</span>
+              <span style="font-size: 13px; color: #475467">Best match: W-010 · Priya · 2 guests · prefers rooftop · waited 22 min</span>
+            </div>
+            <div style="display: flex; gap: 8px">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Pick another</button>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Call W-010</button>
+            </div>
+          </div>
+
+          <section style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 20px; border-bottom: 1px solid #F2F4F7">
+              <input aria-label="Search queue" placeholder="Search token, name or phone" style="flex: 1 1 200px; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box">
+              <select aria-label="Party size" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>All party sizes</option><option>A · 1–2</option><option>B · 3–4</option><option>C · 5+</option></select>
+              <select aria-label="Status" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Active</option><option>Called</option><option>On hold</option><option>Seated</option><option>Cancelled / no-show</option></select>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; min-width: 860px">
+                <thead><tr>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Token</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Guest</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Party</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Prefers</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Waited</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">WhatsApp</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Status</th>
+                  <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Actions</th>
+                </tr></thead>
+                <tbody>
+                  <tr style="background: #F3FAF8; box-shadow: inset 3px 0 0 #0E7C66">
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-family: Manrope, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums">W-008</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Rahul S.</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">4</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Indoor</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #FEF3F2; color: #B42318; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">34 min</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Called · read</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #EFF8FF; color: #175CD3; font-size: 12px; font-weight: 600">Called 3 min</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-size: 13px; font-weight: 600; color: #FFFFFF; cursor: pointer">Seat</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Re-call</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">No-show</button></div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-family: Manrope, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums">W-009</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Sana K. <span style="display: inline-block; margin-left: 4px; padding: 2px 8px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Tab T-08</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">6</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Any</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">26 min</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Delivered</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Waiting</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Call</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Cancel</button></div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-family: Manrope, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums">W-010</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Priya M.</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">2</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Rooftop</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">22 min</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Read</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Waiting</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Call</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Cancel</button></div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-family: Manrope, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums">W-011</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Vikram</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">3</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Outdoor</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">12 min</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Replied "5 MIN"</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">On hold</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Resume</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Cancel</button></div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-family: Manrope, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums">W-012</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Ananya</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">2</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Bar</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">6 min</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Delivered</td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Waiting</span></td>
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Call</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Cancel</button></div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 14px 16px; font-family: Manrope, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums">W-013</td>
+                    <td style="padding: 14px 16px">Group of 8</td>
+                    <td style="padding: 14px 16px; text-align: right; font-variant-numeric: tabular-nums">8</td>
+                    <td style="padding: 14px 16px; color: #475467">Indoor</td>
+                    <td style="padding: 14px 16px; text-align: right"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">2 min</span></td>
+                    <td style="padding: 14px 16px; color: #475467">SMS fallback</td>
+                    <td style="padding: 14px 16px"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Waiting</span></td>
+                    <td style="padding: 14px 16px"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Call</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Cancel</button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside style="flex: 1 1 360px; max-width: 460px; display: flex; flex-direction: column; gap: 24px">
+          <section aria-label="New token" style="box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+            <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">New walk-in token</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px">
+              <div style="display: flex; flex-direction: column; gap: 6px"><label for="q-name" style="font-size: 13px; font-weight: 500; color: #344054">Guest name</label><input id="q-name" placeholder="First name is enough" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%"></div>
+              <div style="display: flex; flex-direction: column; gap: 6px"><label for="q-phone" style="font-size: 13px; font-weight: 500; color: #344054">WhatsApp number</label><input id="q-phone" placeholder="+91" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <span id="q-party-l" style="font-size: 13px; font-weight: 500; color: #344054">Party size</span>
+              <div role="group" aria-labelledby="q-party-l" style="display: flex; padding: 3px; background: #EAECF0; border-radius: 10px">
+                <button type="button" style="flex: 1; height: 40px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">1</button>
+                <button type="button" aria-pressed="true" style="flex: 1; height: 40px; border: 0; border-radius: 8px; background: #FFFFFF; font: inherit; font-weight: 600; color: #0B1220; box-shadow: 0 1px 2px rgba(16,24,40,.08); cursor: pointer">2</button>
+                <button type="button" style="flex: 1; height: 40px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">3</button>
+                <button type="button" style="flex: 1; height: 40px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">4</button>
+                <button type="button" style="flex: 1; height: 40px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">5</button>
+                <button type="button" style="flex: 1; height: 40px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: #475467; cursor: pointer">6+</button>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="q-pref" style="font-size: 13px; font-weight: 500; color: #344054">Seating preference</label><select id="q-pref" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Any</option><option>Indoor</option><option>Rooftop</option><option>Bar counter</option><option>Smoking area</option></select></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="q-note" style="font-size: 13px; font-weight: 500; color: #344054">Notes</label><input id="q-note" placeholder="High chair, birthday, wheelchair access" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; box-sizing: border-box; width: 100%"></div>
+            <label style="display: flex; align-items: flex-start; gap: 8px"><input type="checkbox" checked style="width: 16px; height: 16px; margin-top: 2px; accent-color: #0E7C66"><span>Guest agrees to get queue updates on WhatsApp</span></label>
+            <div style="display: flex; align-items: baseline; padding: 12px 14px; border-radius: 10px; background: #F9FAFB">
+              <span style="font-size: 13px; color: #475467; font-variant-numeric: tabular-nums">Token W-014 · position 7</span>
+              <span style="margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums">About 25 min</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 16px; border-top: 1px solid #F2F4F7">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Clear</button>
+              <button type="button" style="margin-left: auto; height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0B1220; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Create &amp; send WhatsApp</button>
+            </div>
+          </section>
+
+          <section aria-label="WhatsApp replies" style="box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">WhatsApp replies</h2>
+            <div style="padding: 10px 0; border-bottom: 1px solid #F2F4F7; color: #475467"><b style="color: #101828; font-weight: 600">W-011 Vikram</b> · "5 MIN" · grace extended once</div>
+            <div style="padding: 10px 0; border-bottom: 1px solid #F2F4F7; color: #475467"><b style="color: #101828; font-weight: 600">W-006 Meena</b> · "CANCEL" · token removed</div>
+            <div style="padding: 10px 0 0; color: #475467"><b style="color: #101828; font-weight: 600">W-009 Sana</b> · "STATUS" · auto-replied position 2</div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

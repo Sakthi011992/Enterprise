@@ -3,20 +3,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/auth/api_error.dart';
 import '../../../core/ui/ui.dart';
+import '../../guest_requests/presentation/floor_guest_widgets.dart';
 import '../data/floor_repository.dart';
 
 /// Grid of cells the floor plan snaps to. posX/posY are cell indices.
 const _cols = 12;
 const _rows = 8;
-const _cell = 72.0;
-const _tileSize = 64.0;
+/// Largest and smallest cell size; the grid shrinks to fit the layout card.
+const _maxCell = 72.0;
+const _minCell = 48.0;
 const _areasWidth = 240.0;
 
+/// Must match the backend TableShape enum (SQUARE, ROUND, LONG).
 const _shapes = [
   AppSelectItem('SQUARE', 'Square'),
   AppSelectItem('ROUND', 'Round'),
-  AppSelectItem('RECT', 'Rectangle'),
+  AppSelectItem('LONG', 'Long (bar seat)'),
 ];
+
+/// First grid cell not taken by a table in [tables], row by row; (0, 0) when the grid is full.
+(int, int) _firstFreeCell(Iterable<FloorTable> tables) {
+  final taken = {for (final t in tables) (t.posX, t.posY)};
+  for (var y = 0; y < _rows; y++) {
+    for (var x = 0; x < _cols; x++) {
+      if (!taken.contains((x, y))) return (x, y);
+    }
+  }
+  return (0, 0);
+}
 
 /// Result of the table dialog: a save body, or a delete request.
 typedef _TableDialogResult = ({bool delete, Map<String, dynamic> body});
@@ -89,7 +103,10 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
     );
     if (result == null || result.delete) return;
     try {
-      await ref.read(floorRepositoryProvider).createTable({...result.body, 'posX': 0, 'posY': 0});
+      final existing = (ref.read(floorTablesProvider).valueOrNull ?? const <FloorTable>[])
+          .where((t) => t.areaId == area.id);
+      final (x, y) = _firstFreeCell(existing);
+      await ref.read(floorRepositoryProvider).createTable({...result.body, 'posX': x, 'posY': y});
       ref.invalidate(floorTablesProvider);
     } catch (e) {
       _report(e);
@@ -124,12 +141,12 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
   }
 
   /// Saves the snapped position of a dragged table.
-  Future<void> _commitDrag(FloorTable table) async {
+  Future<void> _commitDrag(FloorTable table, double cell) async {
     final at = _drag[table.id];
     if (at == null) return;
-    final x = (at.dx / _cell).round().clamp(0, _cols - 1).toInt();
-    final y = (at.dy / _cell).round().clamp(0, _rows - 1).toInt();
-    setState(() => _drag[table.id] = Offset(x * _cell, y * _cell));
+    final x = (at.dx / cell).round().clamp(0, _cols - 1).toInt();
+    final y = (at.dy / cell).round().clamp(0, _rows - 1).toInt();
+    setState(() => _drag[table.id] = Offset(x * cell + 4, y * cell + 4));
     try {
       await ref.read(floorRepositoryProvider).updateTable(table.id, {'posX': x, 'posY': y});
     } catch (e) {
@@ -190,7 +207,8 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
                     message: ApiError.from(e).message,
                     onRetry: () => ref.invalidate(floorTablesProvider),
                   ),
-                  data: (tableList) => _content(areaList, tableList),
+                  // The page scrolls when the grid is taller than the screen.
+                  data: (tableList) => SingleChildScrollView(child: _content(areaList, tableList)),
                 ),
               ),
             ),
@@ -287,12 +305,16 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 SizedBox(height: t.spacing.sm),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SingleChildScrollView(
-                    child: _canvas(inArea),
-                  ),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final cell = (constraints.maxWidth / _cols).clamp(_minCell, _maxCell).toDouble();
+                    final canvas = _canvas(inArea, cell);
+                    if (cell * _cols <= constraints.maxWidth) return canvas;
+                    return SingleChildScrollView(scrollDirection: Axis.horizontal, child: canvas);
+                  },
                 ),
+                SizedBox(height: t.spacing.md),
+                FloorQrActions(area: area, tables: inArea),
               ],
             ),
           ),
@@ -301,11 +323,11 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
     );
   }
 
-  Widget _canvas(List<FloorTable> tables) {
+  Widget _canvas(List<FloorTable> tables, double cell) {
     final t = context.tokens;
     return Container(
-      width: _cols * _cell,
-      height: _rows * _cell,
+      width: _cols * cell,
+      height: _rows * cell,
       decoration: BoxDecoration(
         color: t.color.background.surface,
         borderRadius: BorderRadius.circular(t.radius.md),
@@ -315,17 +337,20 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
         children: [
           Positioned.fill(
             child: CustomPaint(
-              painter: _GridPainter(color: t.color.border.subtle, cell: _cell),
+              painter: _GridPainter(color: t.color.border.subtle, cell: cell),
             ),
           ),
-          for (final table in tables) _positioned(table),
+          for (final table in tables) _positioned(table, cell),
         ],
       ),
     );
   }
 
-  Widget _positioned(FloorTable table) {
-    final base = Offset(table.posX * _cell + 4, table.posY * _cell + 4);
+  Widget _positioned(FloorTable table, double cell) {
+    // Clamp so a table saved outside the 12 x 8 grid still shows (and can be dragged back).
+    final col = table.posX.clamp(0, _cols - 1);
+    final row = table.posY.clamp(0, _rows - 1);
+    final base = Offset(col * cell + 4, row * cell + 4);
     final at = _drag[table.id] ?? base;
     return Positioned(
       left: at.dx,
@@ -333,8 +358,8 @@ class _FloorSetupScreenState extends ConsumerState<FloorSetupScreen> {
       child: GestureDetector(
         onTap: () => _editTable(table),
         onPanUpdate: (d) => setState(() => _drag[table.id] = (_drag[table.id] ?? base) + d.delta),
-        onPanEnd: (_) => _commitDrag(table),
-        child: _SetupTile(table: table),
+        onPanEnd: (_) => _commitDrag(table, cell),
+        child: _SetupTile(table: table, size: cell - 8),
       ),
     );
   }
@@ -349,9 +374,10 @@ FloorArea? _areaById(List<FloorArea> areas, String? id) {
 }
 
 class _SetupTile extends StatelessWidget {
-  const _SetupTile({required this.table});
+  const _SetupTile({required this.table, required this.size});
 
   final FloorTable table;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -361,8 +387,8 @@ class _SetupTile extends StatelessWidget {
       button: true,
       label: '${table.name}, ${table.seats} seats',
       child: Container(
-        width: _tileSize,
-        height: _tileSize,
+        width: size,
+        height: size,
         padding: EdgeInsets.all(t.spacing.xs),
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -371,17 +397,17 @@ class _SetupTile extends StatelessWidget {
           borderRadius: round ? null : BorderRadius.circular(t.radius.md),
           border: Border.all(color: t.color.border.strong, width: t.borderWidth.hairline),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              table.name,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            Text('${table.seats} seats', style: Theme.of(context).textTheme.labelSmall),
-          ],
+        // Scale the label down on small grids instead of overflowing the tile.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(table.name, style: Theme.of(context).textTheme.labelLarge),
+              Text('${table.seats} seats', style: Theme.of(context).textTheme.labelSmall),
+            ],
+          ),
         ),
       ),
     );

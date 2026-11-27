@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
 import '../theme/token_ext.dart';
 
 /// Meaning of a status. Always paired with a word in the UI, never colour alone.
@@ -20,11 +19,7 @@ class ToneColors {
 }
 
 /// Resolves a tone against the current brightness.
-///
-/// There is no info-subtle token in the Components board, so `info` uses the
-/// solid accent colour with on-accent text.
 ToneColors toneColorsOf(BuildContext context, StatusTone tone) {
-  final t = context.tokens;
   final ext = context.ext;
   return switch (tone) {
     StatusTone.success => ToneColors(
@@ -48,8 +43,8 @@ ToneColors toneColorsOf(BuildContext context, StatusTone tone) {
         icon: null,
       ),
     StatusTone.info => ToneColors(
-        background: t.color.background.accent,
-        foreground: t.color.content.onAccent,
+        background: ext.infoSubtle,
+        foreground: ext.onInfoSubtle,
         icon: Icons.info_outline,
       ),
   };

@@ -10,12 +10,13 @@ import '../../../core/auth/permission_keys.dart';
 import '../../../core/auth/permissions.dart';
 import '../../../core/auth/session.dart';
 import '../../../core/ui/ui.dart';
+import '../../guest_requests/presentation/floor_guest_widgets.dart';
 import '../data/floor_repository.dart';
 import '../domain/table_status.dart';
 
 const _refreshEvery = Duration(seconds: 15);
 const _tileWidth = 140.0;
-const _tileHeight = 104.0;
+const _tileHeight = 124.0;
 const _panelWidth = 300.0;
 
 const _legendStatuses = [
@@ -260,14 +261,14 @@ class _TableTile extends StatelessWidget {
       label: '${table.name}, ${style.label}${detail == null ? '' : ', $detail'}',
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(t.radius.md),
+        borderRadius: BorderRadius.circular(14),
         child: Container(
           width: _tileWidth,
           height: _tileHeight,
-          padding: EdgeInsets.all(t.spacing.sm),
+          padding: EdgeInsets.all(t.spacing.sm + 2),
           decoration: BoxDecoration(
             color: colors.background,
-            borderRadius: BorderRadius.circular(t.radius.md),
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: selected ? t.color.border.focus : colors.foreground,
               width: selected ? t.borderWidth.thick : t.borderWidth.hairline,
@@ -284,6 +285,7 @@ class _TableTile extends StatelessWidget {
               Text(style.label, style: text.bodySmall?.copyWith(color: colors.foreground)),
               if (detail != null)
                 Text(detail, style: text.bodySmall?.copyWith(color: colors.foreground)),
+              TableGuestBadges(tableId: table.id, status: table.status),
             ],
           ),
         ),

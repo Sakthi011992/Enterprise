@@ -121,16 +121,20 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: Drawer(
-        width: 440,
-        child: SafeArea(
-          child: _drawerOrderId == null
-              ? const SizedBox.shrink()
-              : _OrderDrawer(
-                  key: ValueKey(_drawerOrderId),
-                  orderId: _drawerOrderId!,
-                  onChanged: _refresh,
-                ),
+      endDrawer: DecoratedBox(
+        decoration: BoxDecoration(boxShadow: context.ext.raisedShadow),
+        child: Drawer(
+          width: 440,
+          elevation: 0,
+          child: SafeArea(
+            child: _drawerOrderId == null
+                ? const SizedBox.shrink()
+                : _OrderDrawer(
+                    key: ValueKey(_drawerOrderId),
+                    orderId: _drawerOrderId!,
+                    onChanged: _refresh,
+                  ),
+          ),
         ),
       ),
       body: Padding(

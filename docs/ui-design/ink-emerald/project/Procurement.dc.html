@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Procurement</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="stock" sub="Procurement" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Menu &amp; stock" page="Procurement" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Procurement</h1>
+          <span style="font-size: 13px; color: #667085">Purchase orders, receiving and vendor payables</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Reorder suggestions (9)</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">New purchase order</button>
+        </div>
+      </div>
+
+      <div role="tablist" aria-label="Procurement sections" style="display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #E4E7EC">
+        <button type="button" role="tab" aria-selected="true" style="height: 44px; padding: 0 16px; border: 0; background: transparent; font: inherit; font-weight: 600; color: #0B1220; box-shadow: inset 0 -2px 0 #0E7C66; cursor: pointer">Purchase orders</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Goods received (GRN)</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Vendor invoices</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Vendors</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Debit notes</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 16px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Payables ageing</button>
+      </div>
+
+      <section aria-label="Purchase order pipeline" style="display: flex; flex-wrap: wrap; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+        <div style="flex: 1 1 140px; padding: 20px 24px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; color: #475467">Draft</span>
+          <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">3</span>
+        </div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; color: #475467">Sent to vendor</span>
+          <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">5</span>
+        </div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; color: #475467">Partly received</span>
+          <span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">2</span>
+        </div>
+        <div style="flex: 1.4 1 180px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; color: #475467">Received</span>
+          <span style="font-family: Manrope, sans-serif; font-weight: 800; font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">14</span>
+        </div>
+        <div style="flex: 1 1 140px; padding: 20px 24px; border-left: 1px solid #F2F4F7; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; color: #475467">Invoice mismatch</span>
+          <span style="display: flex; align-items: center; gap: 8px; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #B42318; font-variant-numeric: tabular-nums"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D92D20"></span>1</span>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <section style="flex: 999 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 20px; border-bottom: 1px solid #F2F4F7">
+            <input aria-label="Search purchase orders" placeholder="Search PO or vendor" style="flex: 1 1 200px; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box">
+            <select aria-label="Status" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>All statuses</option><option>Draft</option><option>Sent</option><option>Received</option></select>
+            <select aria-label="Vendor" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>All vendors</option></select>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; min-width: 720px">
+              <thead><tr>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">PO</th>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Vendor</th>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Deliver to</th>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Amount</th>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Due</th>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Status</th>
+                <th scope="col" style="padding: 10px 16px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Actions</th>
+              </tr></thead>
+              <tbody>
+                <tr style="background: #F3FAF8; box-shadow: inset 3px 0 0 #0E7C66">
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-weight: 600; font-variant-numeric: tabular-nums">PO-0318</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Metro Spirits Distributors</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Main store</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">₹1,86,400</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums; color: #475467">23 Nov</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Draft</span></td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></div></td>
+                </tr>
+                <tr>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-weight: 600; font-variant-numeric: tabular-nums">PO-0317</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">City Breweries Supply</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Cellar</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">₹64,200</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums; color: #475467">22 Nov</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #EFF8FF; color: #175CD3; font-size: 12px; font-weight: 600">Sent</span></td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Receive</button><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button></div></td>
+                </tr>
+                <tr>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-weight: 600; font-variant-numeric: tabular-nums">PO-0316</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Fresh Farm Produce</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Kitchen</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">₹18,750</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums; color: #475467">21 Nov</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">Partly received</span></td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Receive rest</button></div></td>
+                </tr>
+                <tr>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; font-weight: 600; font-variant-numeric: tabular-nums">PO-0315</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7">Metro Spirits Distributors</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; color: #475467">Main store</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums">₹2,10,000</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums; color: #475467">18 Nov</td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #FEF3F2; color: #B42318; font-size: 12px; font-weight: 600">Invoice mismatch</span></td>
+                  <td style="padding: 14px 16px; border-bottom: 1px solid #F2F4F7"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Resolve</button></div></td>
+                </tr>
+                <tr>
+                  <td style="padding: 14px 16px; font-weight: 600; font-variant-numeric: tabular-nums">PO-0314</td>
+                  <td style="padding: 14px 16px">Glassware Co.</td>
+                  <td style="padding: 14px 16px; color: #475467">Bar</td>
+                  <td style="padding: 14px 16px; text-align: right; font-variant-numeric: tabular-nums">₹22,300</td>
+                  <td style="padding: 14px 16px; text-align: right; font-variant-numeric: tabular-nums; color: #475467">15 Nov</td>
+                  <td style="padding: 14px 16px"><span style="display: inline-block; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Received</span></td>
+                  <td style="padding: 14px 16px"><div style="display: flex; gap: 6px; justify-content: flex-end"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside aria-label="New purchase order" style="flex: 1 1 440px; max-width: 560px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Purchase order PO-0318</h2>
+            <span style="margin-left: auto; display: inline-block; padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Draft</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px">
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="po-v" style="font-size: 13px; font-weight: 500; color: #344054">Vendor</label><select id="po-v" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Metro Spirits Distributors</option></select></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="po-l" style="font-size: 13px; font-weight: 500; color: #344054">Deliver to</label><select id="po-l" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Main store</option></select></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="po-d" style="font-size: 13px; font-weight: 500; color: #344054">Delivery date</label><input id="po-d" value="23 Nov 2026" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%"></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="po-tp" style="font-size: 13px; font-weight: 500; color: #344054">Transport permit no.</label><input id="po-tp" placeholder="Required for liquor" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; box-sizing: border-box; width: 100%"></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+              <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Line items</h3>
+              <div style="margin-left: auto; display: flex; gap: 6px">
+                <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Add from reorder list</button>
+                <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Add line</button>
+              </div>
+            </div>
+            <div style="overflow-x: auto; border: 1px solid #E4E7EC; border-radius: 10px">
+              <table style="width: 100%; border-collapse: collapse; min-width: 520px">
+                <thead><tr>
+                  <th scope="col" style="padding: 8px 12px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: left; border-bottom: 1px solid #E4E7EC">Item</th>
+                  <th scope="col" style="padding: 8px 12px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Qty</th>
+                  <th scope="col" style="padding: 8px 12px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Rate</th>
+                  <th scope="col" style="padding: 8px 12px; background: #F9FAFB; color: #475467; font-size: 12px; font-weight: 500; text-align: right; border-bottom: 1px solid #E4E7EC">Total</th>
+                  <th scope="col" style="padding: 8px 12px; background: #F9FAFB; border-bottom: 1px solid #E4E7EC"><span style="position: absolute; left: -9999px">Remove</span></th>
+                </tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><select aria-label="Item" style="height: 36px; width: 100%; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; color: #101828"><option>Premium Vodka 750 ml</option></select></td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><input aria-label="Quantity" value="4 cases" style="height: 36px; width: 84px; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; box-sizing: border-box"></td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><input aria-label="Rate" value="17,400" style="height: 36px; width: 84px; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; box-sizing: border-box"></td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap">₹69,600</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><button type="button" style="height: 32px; padding: 0 10px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Remove</button></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><select aria-label="Item" style="height: 36px; width: 100%; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; color: #101828"><option>Single Malt 12Y 750 ml</option></select></td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><input aria-label="Quantity" value="2 cases" style="height: 36px; width: 84px; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; box-sizing: border-box"></td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><input aria-label="Rate" value="46,800" style="height: 36px; width: 84px; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; box-sizing: border-box"></td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap">₹93,600</td>
+                    <td style="padding: 10px 12px; border-bottom: 1px solid #F2F4F7"><button type="button" style="height: 32px; padding: 0 10px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Remove</button></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 12px"><select aria-label="Item" style="height: 36px; width: 100%; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; color: #101828"><option>Dark Rum 750 ml</option></select></td>
+                    <td style="padding: 10px 12px"><input aria-label="Quantity" value="2 cases" style="height: 36px; width: 84px; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; box-sizing: border-box"></td>
+                    <td style="padding: 10px 12px"><input aria-label="Rate" value="11,600" style="height: 36px; width: 84px; padding: 0 8px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; box-sizing: border-box"></td>
+                    <td style="padding: 10px 12px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap">₹23,200</td>
+                    <td style="padding: 10px 12px"><button type="button" style="height: 32px; padding: 0 10px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Remove</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div style="display: flex; align-items: baseline; padding-top: 4px">
+            <span style="font-weight: 600; color: #0B1220">Total</span>
+            <span style="margin-left: auto; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">₹1,86,400</span>
+          </div>
+          <div style="padding: 12px 14px; border-radius: 10px; background: #FBF3E4; color: #8A5A12; font-size: 13px">Brand rebate applied: Single Malt campaign gives 1 free case per 10 bought. See <a href="#" style="color: #8A5A12; font-weight: 600">Campaigns</a>.</div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 16px; border-top: 1px solid #F2F4F7">
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Delete draft</button>
+            <div style="margin-left: auto; display: flex; gap: 8px">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Save draft</button>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Send to vendor</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

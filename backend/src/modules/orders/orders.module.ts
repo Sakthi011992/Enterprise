@@ -13,6 +13,6 @@ import { OrderPricingService } from './order-pricing.service';
   imports: [TaxModule, ApprovalsModule, TabsLimitModule],
   controllers: [OrdersController],
   providers: [OrdersService, OrdersRepository, OrderLineResolver, OrderPricingService],
-  exports: [OrdersService, OrdersRepository, OrderPricingService],
+  exports: [OrdersService, OrdersRepository, OrderPricingService, OrderLineResolver],
 })
 export class OrdersModule {}

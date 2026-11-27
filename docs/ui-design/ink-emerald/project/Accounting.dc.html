@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Accounting &amp; day close</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="people" sub="Accounting" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="People &amp; money" page="Accounting" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Accounting &amp; day close</h1>
+          <span style="font-size: 13px; color: #667085">Friday 20 Nov · Main outlet</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Export to Tally / Xero</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">X-report (shift)</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Record expense</button>
+        </div>
+      </div>
+
+      <div role="tablist" aria-label="Accounting views" style="display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #E4E7EC">
+        <button type="button" role="tab" aria-selected="true" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; font-weight: 600; color: #0B1220; box-shadow: inset 0 -2px 0 #0E7C66; cursor: pointer">Day close</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Expenses</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Ledger</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Payables</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Receivables &amp; house accounts</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Bank reconciliation</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">Chart of accounts</button>
+        <button type="button" role="tab" aria-selected="false" style="height: 40px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: #475467; cursor: pointer">P&amp;L</button>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <section aria-labelledby="zr" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px">
+              <h2 id="zr" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Z-report · Fri 20 Nov</h2>
+              <span style="margin-left: auto; font-size: 12px; font-weight: 600; background: #FFFAEB; color: #B54708; padding: 3px 9px; border-radius: 999px">Not closed</span>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+                <thead>
+                  <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                    <th scope="col" style="padding: 10px 24px; font-weight: 500">Payment method</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Expected</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Counted / settled</th>
+                    <th scope="col" style="padding: 10px 24px 10px 12px; font-weight: 500; text-align: right">Difference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">Cash</td><td style="padding: 13px 12px; text-align: right">₹38,450</td><td style="padding: 13px 12px; text-align: right">₹38,120</td><td style="padding: 13px 24px 13px 12px; text-align: right; color: #B42318; font-weight: 600">−₹330</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">Card (EDC batch)</td><td style="padding: 13px 12px; text-align: right">₹92,300</td><td style="padding: 13px 12px; text-align: right">₹92,300</td><td style="padding: 13px 24px 13px 12px; text-align: right; color: #475467">₹0</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">UPI</td><td style="padding: 13px 12px; text-align: right">₹61,870</td><td style="padding: 13px 12px; text-align: right">₹61,870</td><td style="padding: 13px 24px 13px 12px; text-align: right; color: #475467">₹0</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; font-weight: 500">House accounts</td><td style="padding: 13px 12px; text-align: right">₹15,500</td><td style="padding: 13px 12px; text-align: right; color: #667085">—</td><td style="padding: 13px 24px 13px 12px; text-align: right"><span style="font-size: 12px; font-weight: 600; background: #F2F4F7; color: #344054; padding: 3px 9px; border-radius: 999px">On credit</span></td></tr>
+                  <tr style="border-top: 1px solid #E4E7EC; background: #F9FAFB; font-weight: 700"><td style="padding: 14px 24px">Total</td><td style="padding: 14px 12px; text-align: right; font-family: Manrope, sans-serif">₹2,08,120</td><td style="padding: 14px 12px; text-align: right; font-family: Manrope, sans-serif">₹1,92,290</td><td style="padding: 14px 24px 14px 12px"></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 24px; border-top: 1px solid #F2F4F7">
+              <span style="font-size: 12px; font-weight: 500; background: #F2F4F7; color: #344054; padding: 4px 10px; border-radius: 999px; font-variant-numeric: tabular-nums">Voids ₹1,840 (3)</span>
+              <span style="font-size: 12px; font-weight: 500; background: #F2F4F7; color: #344054; padding: 4px 10px; border-radius: 999px; font-variant-numeric: tabular-nums">Discounts ₹6,210 (11)</span>
+              <span style="font-size: 12px; font-weight: 500; background: #F2F4F7; color: #344054; padding: 4px 10px; border-radius: 999px; font-variant-numeric: tabular-nums">Comps ₹2,300 (4)</span>
+              <span style="font-size: 12px; font-weight: 500; background: #F2F4F7; color: #344054; padding: 4px 10px; border-radius: 999px; font-variant-numeric: tabular-nums">Refunds ₹840 (1)</span>
+            </div>
+          </section>
+
+          <section aria-labelledby="ex" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 20px 24px 16px">
+              <h2 id="ex" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Expenses this week</h2>
+              <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+                <label style="display: flex; align-items: center; gap: 8px; height: 38px; width: 200px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; color: #667085; box-sizing: border-box">
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+                  <input type="search" placeholder="Search" aria-label="Search expenses" style="flex: 1; min-width: 0; border: 0; font: inherit; color: #101828; outline: none; background: transparent">
+                </label>
+                <select aria-label="Category" style="height: 38px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #344054"><option>All categories</option><option>Utilities</option><option>Petty cash</option><option>Repairs</option></select>
+              </div>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+                <thead>
+                  <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                    <th scope="col" style="padding: 10px 24px; font-weight: 500">Date</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Category</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Paid to</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Amount</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Paid from</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Receipt</th>
+                    <th scope="col" style="padding: 10px 24px 10px 12px; font-weight: 500; text-align: right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467">20 Nov</td><td style="padding: 13px 12px">Petty cash</td><td style="padding: 13px 12px; font-weight: 500">Ice supplier</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹1,800</td><td style="padding: 13px 12px; color: #475467">Cash drawer</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Attached</span></td><td style="padding: 13px 24px 13px 12px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 8px; background: #FFFFFF; font: inherit; color: #B42318; cursor: pointer">Delete</button></td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467">19 Nov</td><td style="padding: 13px 12px">Repairs</td><td style="padding: 13px 12px; font-weight: 500">Beer line cleaning</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹4,500</td><td style="padding: 13px 12px; color: #475467">Bank</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">Attached</span></td><td style="padding: 13px 24px 13px 12px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 8px; background: #FFFFFF; font: inherit; color: #B42318; cursor: pointer">Delete</button></td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 13px 24px; color: #475467">18 Nov</td><td style="padding: 13px 12px">Utilities</td><td style="padding: 13px 12px; font-weight: 500">Electricity board</td><td style="padding: 13px 12px; text-align: right; font-weight: 500">₹62,400</td><td style="padding: 13px 12px; color: #475467">Bank</td><td style="padding: 13px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px">Missing</span></td><td style="padding: 13px 24px 13px 12px; text-align: right; white-space: nowrap"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 8px; background: #FFFFFF; font: inherit; color: #B42318; cursor: pointer">Delete</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside aria-labelledby="cc" style="flex: 1 1 340px; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h2 id="cc" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Close the day</h2>
+            <p style="margin: 0; font-size: 13px; color: #475467">Count the cash drawer, then lock the day. Locked days can't be edited.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 88px 1fr; align-items: center; gap: 8px 12px; font-size: 14px; font-variant-numeric: tabular-nums">
+            <span style="font-size: 12px; font-weight: 500; color: #475467">Note</span><span style="font-size: 12px; font-weight: 500; color: #475467">Count</span><span style="font-size: 12px; font-weight: 500; color: #475467; text-align: right">Amount</span>
+            <span style="font-weight: 500">₹500</span><input aria-label="Number of 500 notes" value="58" style="height: 36px; width: 100%; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"><span style="text-align: right">₹29,000</span>
+            <span style="font-weight: 500">₹200</span><input aria-label="Number of 200 notes" value="31" style="height: 36px; width: 100%; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"><span style="text-align: right">₹6,200</span>
+            <span style="font-weight: 500">₹100</span><input aria-label="Number of 100 notes" value="24" style="height: 36px; width: 100%; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"><span style="text-align: right">₹2,400</span>
+            <span style="font-weight: 500">₹50</span><input aria-label="Number of 50 notes" value="8" style="height: 36px; width: 100%; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"><span style="text-align: right">₹400</span>
+            <span style="font-weight: 500">Coins</span><input aria-label="Coins total" value="120" style="height: 36px; width: 100%; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"><span style="text-align: right">₹120</span>
+          </div>
+          <div style="display: flex; align-items: baseline; padding: 14px 0 0; border-top: 1px solid #F2F4F7">
+            <span style="color: #475467">Counted</span>
+            <span style="margin-left: auto; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">₹38,120</span>
+          </div>
+          <div style="display: flex; font-size: 13px"><span style="color: #475467">Opening float</span><span style="margin-left: auto; font-variant-numeric: tabular-nums">₹5,000 carried forward</span></div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="z-reason" style="font-size: 13px; font-weight: 500; color: #344054">Reason for −₹330 difference</label>
+            <select id="z-reason" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828"><option>Change given wrongly</option><option>Unrecorded payout</option><option>Other</option></select>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="z-pin" style="font-size: 13px; font-weight: 500; color: #344054">Manager PIN</label>
+            <input id="z-pin" type="password" placeholder="Required to lock" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; box-sizing: border-box; width: 100%">
+          </div>
+          <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; border-top: 1px solid #F2F4F7; padding-top: 16px">
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Save count</button>
+            <button type="button" style="height: 40px; padding: 0 18px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Lock day &amp; print Z-report</button>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

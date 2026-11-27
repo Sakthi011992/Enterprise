@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stock count offline</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #F5F6F8; color: #101828; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.45; display: flex; flex-direction: column">
+
+  <header style="display: flex; align-items: center; gap: 4px; padding: 12px 8px 8px">
+    <button type="button" aria-label="Back" style="width: 48px; height: 48px; border: 0; background: none; color: #0B1220; cursor: pointer; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div style="flex: 1; min-width: 0">
+      <h1 style="margin: 0; font-family: Manrope, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0B1220">Stock count · Bar</h1>
+      <div style="font-size: 13px; color: #475467; font-variant-numeric: tabular-nums">18 of 42 items counted</div>
+    </div>
+  </header>
+
+  <div role="status" style="margin: 0 16px 12px; background: #0B1220; color: #F2F4F7; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: 13px">
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5C46B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M2 8.8a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M12 20h.01M3 3l18 18"></path></svg>
+    <span><b>You're offline.</b> 18 counts are saved on this phone and will sync when you reconnect. Keep counting.</span>
+  </div>
+
+  <div role="img" aria-label="43% counted" style="height: 6px; margin: 0 16px 14px; border-radius: 999px; background: #E4E7EC; overflow: hidden"><span style="display: block; width: 43%; height: 100%; border-radius: 999px; background: #0E7C66"></span></div>
+
+  <div style="flex: 1; min-height: 0; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 12px">
+
+    <div style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span style="font-weight: 600; color: #101828">Premium Vodka 750 ml</span><span style="font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647">Saved offline</span></div>
+      <div style="display: flex; align-items: center; gap: 6px">
+        <button type="button" aria-label="Fewer bottles" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 20px; cursor: pointer">−</button>
+        <input aria-label="Full bottles" value="8" style="width: 48px; height: 44px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; text-align: center; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; color: #101828">
+        <button type="button" aria-label="More bottles" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 20px; cursor: pointer">+</button>
+        <span style="font-size: 12px; color: #475467; margin-right: 4px">bottles</span>
+        <input aria-label="Open bottle ml" value="410" style="width: 56px; height: 44px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; text-align: center; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; color: #101828">
+        <span style="font-size: 12px; color: #475467">ml open</span>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #F79009; box-shadow: 0 0 0 3px #FFFAEB; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span style="font-weight: 600; color: #101828">Single Malt 12Y 750 ml</span><span style="font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708">Check again</span></div>
+      <div style="display: flex; align-items: center; gap: 6px">
+        <button type="button" aria-label="Fewer bottles" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 20px; cursor: pointer">−</button>
+        <input aria-label="Full bottles" value="1" style="width: 48px; height: 44px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; text-align: center; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; color: #101828">
+        <button type="button" aria-label="More bottles" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 20px; cursor: pointer">+</button>
+        <span style="font-size: 12px; color: #475467; margin-right: 4px">bottles</span>
+        <input aria-label="Open bottle ml" value="120" style="width: 56px; height: 44px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; text-align: center; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; color: #101828">
+        <span style="font-size: 12px; color: #475467">ml open</span>
+      </div>
+      <div style="font-size: 13px; color: #B54708">Expected about 3 bottles. This count is 60% lower. Recount, or add a note.</div>
+      <div style="display: flex; gap: 8px">
+        <button type="button" style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer">Add note</button>
+        <button type="button" style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer">Count is correct</button>
+      </div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span style="font-weight: 600; color: #101828">Dark Rum 750 ml</span><span style="font-size: 12px; font-weight: 500; color: #667085">Not counted</span></div>
+      <div style="display: flex; align-items: center; gap: 6px">
+        <button type="button" aria-label="Fewer bottles" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 20px; cursor: pointer">−</button>
+        <input aria-label="Full bottles" placeholder="0" style="width: 48px; height: 44px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; text-align: center; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; color: #101828">
+        <button type="button" aria-label="More bottles" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 20px; cursor: pointer">+</button>
+        <span style="font-size: 12px; color: #475467; margin-right: 4px">bottles</span>
+        <input aria-label="Open bottle ml" placeholder="0" style="width: 56px; height: 44px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; text-align: center; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; color: #101828">
+        <span style="font-size: 12px; color: #475467">ml open</span>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" aria-label="Scan barcode" style="position: absolute; right: 16px; bottom: 104px; width: 56px; height: 56px; border-radius: 16px; border: 0; background: #0B1220; color: #FFFFFF; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); cursor: pointer; display: flex; align-items: center; justify-content: center">
+    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V4h3M21 7V4h-3M3 17v3h3M21 17v3h-3M7 8v8M11 8v8M15 8v8M18 8v8"></path></svg>
+  </button>
+
+  <div style="padding: 12px 16px 20px; display: flex; gap: 10px; background: #FFFFFF; border-top: 1px solid #E4E7EC">
+    <button type="button" style="flex: 1; height: 52px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Save &amp; exit</button>
+    <button type="button" disabled style="flex: 1; height: 52px; border-radius: 10px; border: 0; background: #F2F4F7; color: #667085; font: inherit; font-weight: 600">Submit when online</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

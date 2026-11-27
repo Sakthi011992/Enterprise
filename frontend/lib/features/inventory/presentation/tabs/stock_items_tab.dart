@@ -8,6 +8,7 @@ import '../../../pos/presentation/pos_format.dart';
 import '../../data/inventory_models.dart';
 import '../../data/inventory_repository.dart';
 import '../widgets/stock_status_badge.dart';
+import '../widgets/ink_widgets.dart';
 
 /// Inventory > Stock items: location filter, status chips, search, and the
 /// table from the Inventory board. Row tap opens the editor.
@@ -70,15 +71,15 @@ class _StockItemsTabState extends ConsumerState<StockItemsTab> {
               ),
             ),
             for (final (value, label) in _statuses)
-              ChoiceChip(
-                label: Text(label),
+              FilterPill(
+                label: label,
                 selected: _status == value,
-                onSelected: (_) => setState(() => _status = value),
+                onSelected: () => setState(() => _status = value),
               ),
-            FilterChip(
-              label: const Text('Liquor'),
+            FilterPill(
+              label: 'Liquor',
               selected: _liquor,
-              onSelected: (v) => setState(() => _liquor = v),
+              onSelected: () => setState(() => _liquor = !_liquor),
             ),
           ],
         ),
@@ -88,7 +89,19 @@ class _StockItemsTabState extends ConsumerState<StockItemsTab> {
             columns: [
               AppColumn<StockItemRow>(label: 'Item', cell: (r) => Text(r.name, overflow: TextOverflow.ellipsis)),
               AppColumn<StockItemRow>(label: 'Location', cell: (_) => Text(locationName)),
-              AppColumn<StockItemRow>(label: 'On hand', cell: (r) => Text(r.onHandDisplay)),
+              AppColumn<StockItemRow>(
+                label: 'On hand',
+                // Quantity over a level bar, so long values ("8 btl + 410 ml") never overflow the cell.
+                cell: (r) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(r.onHandDisplay, overflow: TextOverflow.ellipsis),
+                    SizedBox(height: t.spacing.xs),
+                    LevelBar(fraction: r.parQty > 0 ? (r.onHandQty / r.parQty).toDouble() : 1),
+                  ],
+                ),
+              ),
               AppColumn<StockItemRow>(label: 'Par', cell: (r) => Text(r.parDisplay)),
               AppColumn<StockItemRow>(label: 'Unit cost', cell: (r) => Text(r.unitCostDisplay)),
               AppColumn<StockItemRow>(

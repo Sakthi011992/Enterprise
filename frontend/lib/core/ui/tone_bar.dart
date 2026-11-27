@@ -51,12 +51,19 @@ class ToneBar extends StatelessWidget {
             Icon(colors.icon ?? Icons.info_outline, size: 18, color: colors.foreground),
             SizedBox(width: t.spacing.sm),
             Expanded(
-              child: Text(message, style: kitTextStyle(t, t.typography.body, colors.foreground)),
+              child: Text(
+                message,
+                style: kitTextStyle(t, t.typography.body, colors.foreground)
+                    .copyWith(fontWeight: FontWeight.w500),
+              ),
             ),
             if (action != null)
               TextButton(
                 onPressed: onAction,
-                style: TextButton.styleFrom(foregroundColor: colors.foreground),
+                style: TextButton.styleFrom(
+                  foregroundColor: colors.foreground,
+                  textStyle: const TextStyle(fontWeight: FontWeight.w700),
+                ),
                 child: Text(action),
               ),
           ],

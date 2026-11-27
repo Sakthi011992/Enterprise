@@ -41,7 +41,7 @@ export class SocketAuthService {
 
   /** Same rule as JwtStrategy.validate: the live user and outlet assignment win over the token claims. */
   async toSession(payload: JwtPayload, stations: unknown): Promise<SocketSession> {
-    if (!payload || payload.purpose || !payload.tenantId || !payload.outletId) {
+    if (!payload || payload.purpose || (payload as { kind?: unknown }).kind || !payload.tenantId || !payload.outletId) {
       throw new UnauthorizedException('Invalid or revoked token');
     }
 

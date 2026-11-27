@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ALL_STATIONS, RealtimeEvent, outletRoom, stationRoom, userRoom } from './realtime.types';
+import { ALL_STATIONS, RealtimeEvent, outletRoom, stationRoom, tableRoom, userRoom } from './realtime.types';
 
 /** The part of a socket.io server or namespace that the service uses. */
 export interface RoomEmitter {
@@ -34,6 +34,11 @@ export class RealtimeService {
     this.send(stationRoom(outletId, ALL_STATIONS), event, payload);
   }
 
+  /** Guest screens of one table. Only guest-safe payloads go here. */
+  emitToTable(tableId: string, event: string, payload: unknown): void {
+    this.send(tableRoom(tableId), event, payload);
+  }
+
   emitToUser(userId: string, event: string, payload: unknown): void {
     this.send(userRoom(userId), event, payload);
   }
@@ -44,6 +49,7 @@ export class RealtimeService {
       if (e.scope === 'outlet' && e.outletId) this.emitToOutlet(e.outletId, e.event, e.payload);
       else if (e.scope === 'station' && e.outletId && e.station) this.emitToStation(e.outletId, e.station, e.event, e.payload);
       else if (e.scope === 'user' && e.userId) this.emitToUser(e.userId, e.event, e.payload);
+      else if (e.scope === 'table' && e.tableId) this.emitToTable(e.tableId, e.event, e.payload);
       else this.logger.debug(`Skipped realtime event ${e.event}: scope ${e.scope} is missing its id`);
     }
   }

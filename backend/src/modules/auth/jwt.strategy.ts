@@ -19,6 +19,8 @@ export interface JwtPayload {
   tokenVersion: number;
   /** Only set on the short-lived outlet selection token. Access tokens must not carry it. */
   purpose?: string;
+  /** Guest tokens carry kind 'guest' (and a separate secret); they never authenticate staff routes. */
+  kind?: string;
 }
 
 @Injectable()
@@ -40,7 +42,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * the claims in the token, so removing access takes effect at once.
    */
   async validate(payload: JwtPayload): Promise<AuthUser> {
-    if (!payload || payload.purpose || !payload.tenantId || !payload.outletId) {
+    if (!payload || payload.purpose || payload.kind || !payload.tenantId || !payload.outletId) {
       throw new UnauthorizedException('Invalid or revoked token');
     }
 

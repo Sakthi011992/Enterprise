@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
 import '../theme/theme_tokens.dart';
 import '../theme/token_ext.dart';
 
@@ -18,13 +19,16 @@ TextStyle kitTextStyle(
       : mono
           ? t.typography.monoFamily
           : t.typography.bodyFamily;
-  return TextStyle(
-    fontFamily: family,
-    fontSize: s.size,
-    fontWeight: s.fontWeight,
-    height: s.height,
-    letterSpacing: s.letterSpacing,
-    color: color,
+  return AppFonts.apply(
+    family,
+    TextStyle(
+      fontSize: s.size,
+      fontWeight: s.fontWeight,
+      height: s.height,
+      letterSpacing: s.letterSpacing,
+      color: color,
+      fontFeatures: kTabularFigures,
+    ),
   );
 }
 
@@ -45,8 +49,8 @@ InputDecoration kitInputDecoration(
       );
 
   final idle = hasError
-      ? border(t.color.background.danger, t.borderWidth.thick)
-      : border(t.color.border.standard, t.borderWidth.hairline);
+      ? border(ext.dangerBorder, t.borderWidth.thick)
+      : border(t.color.border.strong, t.borderWidth.hairline);
 
   return InputDecoration(
     hintText: hint,
@@ -61,8 +65,8 @@ InputDecoration kitInputDecoration(
     ),
     border: idle,
     enabledBorder: idle,
-    focusedBorder: border(t.color.border.focus, t.borderWidth.thick),
-    errorBorder: border(t.color.background.danger, t.borderWidth.hairline),
-    focusedErrorBorder: border(t.color.background.danger, t.borderWidth.thick),
+    focusedBorder: border(t.color.border.accent, t.borderWidth.thick),
+    errorBorder: border(ext.dangerBorder, t.borderWidth.hairline),
+    focusedErrorBorder: border(ext.dangerBorder, t.borderWidth.thick),
   );
 }

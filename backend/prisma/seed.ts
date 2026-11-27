@@ -4,6 +4,7 @@ import {
   LoginMethod,
   PaymentMethod,
   OrderType,
+  Platform,
   PrinterConnection,
   RoundingMode,
   StockLocationKind,
@@ -12,8 +13,13 @@ import {
   TicketKind,
 } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { validateTokenPayload } from '../src/themes/theme-tokens.schema';
 import { DEFAULT_PERSONAS, PERMISSION_CATALOG } from '../src/common/permissions/catalog';
 import { businessDateFor, toDateOnly } from '../src/common/pricing/business-date';
+import { newQrToken } from '../src/modules/guest-auth/guest-utils';
+import { DEFAULT_GUEST_CONFIG, DEFAULT_STATIC_OTP } from '../src/modules/guest-config/guest-config.types';
 
 // Plain client, no tenant extension: every write below passes tenantId explicitly.
 const prisma = new PrismaClient();
@@ -100,16 +106,17 @@ const AREA_DEFS = [
   { name: 'Bar counter', sortOrder: 3, priceMarkupPercent: '0.00' },
 ];
 
+// posX / posY are cells on the floor setup grid (12 columns x 8 rows), not pixels.
 function demoTables(): { name: string; area: string; seats: number; shape: TableShape; posX: number; posY: number }[] {
   const out: { name: string; area: string; seats: number; shape: TableShape; posX: number; posY: number }[] = [];
   for (let i = 1; i <= 9; i++) {
-    out.push({ name: `R${i}`, area: 'Rooftop', seats: 4, shape: TableShape.SQUARE, posX: ((i - 1) % 3) * 140, posY: Math.floor((i - 1) / 3) * 140 });
+    out.push({ name: `R${i}`, area: 'Rooftop', seats: 4, shape: TableShape.SQUARE, posX: ((i - 1) % 3) * 2, posY: Math.floor((i - 1) / 3) * 2 });
   }
   for (let i = 1; i <= 4; i++) {
-    out.push({ name: `T${i}`, area: 'Indoor', seats: 4, shape: TableShape.ROUND, posX: (i - 1) * 140, posY: 0 });
+    out.push({ name: `T${i}`, area: 'Indoor', seats: 4, shape: TableShape.ROUND, posX: (i - 1) * 2, posY: 0 });
   }
   for (let i = 1; i <= 10; i++) {
-    out.push({ name: `Bar ${i}`, area: 'Bar counter', seats: 1, shape: TableShape.LONG, posX: (i - 1) * 60, posY: 0 });
+    out.push({ name: `Bar ${i}`, area: 'Bar counter', seats: 1, shape: TableShape.LONG, posX: i - 1, posY: 0 });
   }
   return out;
 }
@@ -257,6 +264,7 @@ async function seedPosDemo(tenantId: string, outletId: string): Promise<void> {
         shape: t.shape,
         posX: t.posX,
         posY: t.posY,
+        qrToken: newQrToken(),
       },
     });
   }
@@ -585,6 +593,48 @@ async function seedStockDemo(tenantId: string, outletId: string, adminId: string
   });
 }
 
+/**
+ * Guest ordering block, idempotent. Per tenant: the inactive `qr-guest` system user that guest
+ * orders use as cashierId/createdById (it has no password, persona or outlet, so it can never log
+ * in), a qrToken for any table without one, and the GuestConfig defaults (only when absent).
+ */
+async function seedGuestOrdering(userRoleId: string): Promise<void> {
+  const tenants = await prisma.tenant.findMany({ select: { id: true, slug: true } });
+  for (const t of tenants) {
+    // usernames are unique across tenants, so other tenants get a suffix
+    const username = t.slug === DEFAULT_TENANT_SLUG ? 'qr-guest' : `qr-guest-${t.slug}`;
+    await prisma.user.upsert({
+      where: { username },
+      update: { isActive: false, passwordHash: null },
+      create: {
+        tenantId: t.id,
+        username,
+        displayName: 'QR guest',
+        passwordHash: null,
+        roleId: userRoleId,
+        isActive: false,
+      },
+    });
+
+    const tables = await prisma.diningTable.findMany({ where: { tenantId: t.id, qrToken: '' }, select: { id: true } });
+    for (const tb of tables) {
+      await prisma.diningTable.update({ where: { id: tb.id }, data: { qrToken: newQrToken() } });
+    }
+
+    const existing = await prisma.guestConfig.findUnique({ where: { tenantId: t.id } });
+    if (!existing) {
+      const config = {
+        ...DEFAULT_GUEST_CONFIG,
+        verification: {
+          ...DEFAULT_GUEST_CONFIG.verification,
+          staticOtpHash: await bcrypt.hash(DEFAULT_STATIC_OTP, 10),
+        },
+      };
+      await prisma.guestConfig.create({ data: { tenantId: t.id, config } });
+    }
+  }
+}
+
 async function main() {
   // Roles (legacy, kept until Phase 2)
   const adminRole = await prisma.role.upsert({
@@ -840,7 +890,35 @@ async function main() {
     });
   }
 
-  console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580; manager1, cashier1, captain1, waiter1, chef1, storekeeper1, kiosk1 (password <Persona>@123).`);
+  // Themes an admin can pick in Appearance. The first is the default (same values as the app's
+  // built-in fallback); it is assigned only to platforms that have no theme yet, so a chosen theme is kept.
+  const themes = [
+    { file: 'pegs-and-bottles.json', name: 'Pegs & Bottles', description: 'Default theme: bottle-green header and sidebar, lacquer-red accent; a green room with brass accents in dark mode.' },
+    { file: 'ink-emerald.json', name: 'Ink & Emerald', description: 'Ink navigation, white cards, one emerald accent.' },
+    { file: 'copper-bar.json', name: 'Copper Bar', description: 'Latte page, espresso header and sidebar, copper accent.' },
+  ];
+  const themeIds: string[] = [];
+  for (const t of themes) {
+    const tokens = JSON.parse(readFileSync(join(__dirname, 'themes', t.file), 'utf8'));
+    validateTokenPayload(tokens);
+    const row = await prisma.theme.upsert({
+      where: { name: t.name },
+      create: { name: t.name, description: t.description, tokens, schemaVersion: tokens.schemaVersion, createdById: admin.id },
+      update: {},
+    });
+    themeIds.push(row.id);
+  }
+  for (const platform of [Platform.WEB, Platform.ANDROID, Platform.IOS]) {
+    const assigned = await prisma.themeAssignment.findUnique({ where: { platform } });
+    if (!assigned) {
+      await prisma.themeAssignment.create({ data: { platform, themeId: themeIds[0], updatedById: admin.id } });
+    }
+  }
+
+  // Phase 4 guest QR ordering (docs/phase-4/PLAN.md 2.1, 2.2)
+  await seedGuestOrdering(userRole.id);
+
+  console.log(`Seed complete. Admin login: ${username} / ${password}. Demo: bartender1 / Bartender@123, PIN 2580; manager1, cashier1, captain1, waiter1, chef1, storekeeper1, kiosk1 (password <Persona>@123). Guest static OTP: ${DEFAULT_STATIC_OTP}.`);
 }
 
 main()

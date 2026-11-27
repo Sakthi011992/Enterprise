@@ -46,7 +46,7 @@ class AppSelect<T> extends StatelessWidget {
           isExpanded: true,
           dropdownColor: t.color.background.raised,
           style: kitTextStyle(t, t.typography.body, t.color.content.primary),
-          decoration: kitInputDecoration(
+          decoration: fieldDecoration(
             t,
             ext,
             hasError: err != null && err.isNotEmpty,

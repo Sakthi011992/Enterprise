@@ -1,4 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Optional } from '@nestjs/common';
+import { GuestHooks } from '../guest/guest-hooks.service';
+import { GuestRepository } from '../guest/guest.repository';
+import { GuestConfigService } from '../guest-config/guest-config.service';
 import { Prisma } from '@prisma/client';
 import { AuthUser } from '../../common/decorators/current-user.decorator';
 import { apiError } from '../../common/filters/api-error';
@@ -7,7 +10,12 @@ import { FloorRepository } from './floor.repository';
 
 @Injectable()
 export class FloorService {
-  constructor(private repo: FloorRepository) {}
+  constructor(
+    private repo: FloorRepository,
+    @Optional() private guestHooks?: GuestHooks,
+    @Optional() private guestRepo?: GuestRepository,
+    @Optional() private guestConfig?: GuestConfigService,
+  ) {}
 
   // ---- areas -------------------------------------------------------------
 
@@ -60,6 +68,11 @@ export class FloorService {
     const waiterIds = [...new Set([...firstOrder.values()].map((o) => o.waiterId).filter((w): w is string => !!w))];
     const users = await this.repo.findUsers(waiterIds);
     const names = new Map(users.map((u) => [u.id, u.displayName ?? u.username] as const));
+    // Guest ordering badges (Phase 4): PIN in TABLE_PIN mode, pending rounds, bill asked.
+    const guest = this.guestRepo ? await this.guestRepo.floorGuestInfo(tables.map((t) => t.id)) : null;
+    const pinMode = this.guestConfig
+      ? (await this.guestConfig.get(auth.tenantId)).verification.method === 'TABLE_PIN'
+      : false;
 
     return tables.map((t) => {
       const order = firstOrder.get(t.id);
@@ -73,6 +86,9 @@ export class FloorService {
         posY: t.posY,
         status: t.status,
         mergedIntoId: t.mergedIntoId,
+        guestPin: pinMode && t.status === 'OCCUPIED' ? t.guestPin ?? null : null,
+        pendingRounds: guest?.pending.get(t.id) ?? 0,
+        billAsked: guest?.bill.has(t.id) ?? false,
         order: order
           ? {
               id: order.id,
@@ -138,7 +154,9 @@ export class FloorService {
     if (dto.status !== 'CLEANING' && (await this.repo.countOpenOrdersOnTable(id)) > 0) {
       throw apiError(409, 'TABLE_HAS_OPEN_ORDER', 'This table has an open order', { status: dto.status });
     }
-    return this.repo.updateTable(id, { status: dto.status });
+    const updated = await this.repo.updateTable(id, { status: dto.status });
+    this.guestHooks?.tableChanged(id);
+    return updated;
   }
 
   private async requireArea(id: string, auth: AuthUser) {

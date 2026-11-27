@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New walk-in token</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F6F8; color: #101828; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.45; display: flex; flex-direction: column">
+
+  <header style="display: flex; align-items: center; gap: 4px; padding: 12px 8px 8px">
+    <button type="button" aria-label="Close" style="width: 48px; height: 48px; border: 0; background: none; color: #0B1220; cursor: pointer; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </button>
+    <h1 style="margin: 0; flex: 1; font-family: Manrope, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0B1220">New walk-in token</h1>
+  </header>
+
+  <div style="flex: 1; min-height: 0; overflow: hidden; padding: 4px 16px 8px; display: flex; flex-direction: column; gap: 14px">
+
+    <div role="alert" style="background: #FEF3F2; border: 1px solid #FECDCA; border-radius: 12px; padding: 12px 14px; color: #B42318; font-size: 13px; display: flex; flex-direction: column; gap: 2px">
+      <b style="font-size: 14px">Fix 3 things to create the token</b>
+      <a href="#q-name" style="color: #B42318; display: flex; align-items: center; min-height: 28px">Guest name is required</a>
+      <a href="#q-phone" style="color: #B42318; display: flex; align-items: center; min-height: 28px">Mobile number is not valid</a>
+      <a href="#q-consent" style="color: #B42318; display: flex; align-items: center; min-height: 28px">WhatsApp consent is needed to send updates</a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <label for="q-name" style="font-size: 13px; font-weight: 500; color: #B42318">Guest name *</label>
+      <input id="q-name" aria-invalid="true" aria-describedby="q-name-e" style="height: 48px; box-sizing: border-box; width: 100%; padding: 0 14px; border-radius: 10px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; background: #FFFFFF; font: inherit; font-size: 16px; color: #101828; outline: none">
+      <span id="q-name-e" style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #B42318">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg>Enter the guest's name (first name is enough)</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <label for="q-phone" style="font-size: 13px; font-weight: 500; color: #B42318">WhatsApp number *</label>
+      <input id="q-phone" value="+91 98765 432" aria-invalid="true" aria-describedby="q-phone-e" style="height: 48px; box-sizing: border-box; width: 100%; padding: 0 14px; border-radius: 10px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; background: #FFFFFF; font: inherit; font-size: 16px; color: #101828; font-variant-numeric: tabular-nums; outline: none">
+      <span id="q-phone-e" style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #B42318">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 7v6M12 17h.01"></path></svg>Enter a 10-digit mobile number (8 digits entered)</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 13px; font-weight: 500; color: #344054">Party size *</span>
+      <div role="group" aria-label="Party size" style="display: flex; gap: 8px">
+        <button type="button" style="flex: 1; height: 48px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; cursor: pointer">1</button>
+        <button type="button" aria-pressed="true" style="flex: 1; height: 48px; border-radius: 10px; border: 1px solid #0E7C66; background: #E7F4F0; color: #0A5F4E; font: inherit; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; cursor: pointer">2</button>
+        <button type="button" style="flex: 1; height: 48px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; cursor: pointer">3</button>
+        <button type="button" style="flex: 1; height: 48px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; cursor: pointer">4</button>
+        <button type="button" style="flex: 1; height: 48px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; cursor: pointer">5</button>
+        <button type="button" style="flex: 1; height: 48px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-size: 16px; font-variant-numeric: tabular-nums; cursor: pointer">6+</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <label for="q-pref" style="font-size: 13px; font-weight: 500; color: #344054">Seating preference</label>
+      <select id="q-pref" style="height: 48px; box-sizing: border-box; width: 100%; padding: 0 14px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; font: inherit; font-size: 16px; color: #101828"><option>Rooftop</option></select>
+      <span style="font-size: 12px; color: #667085">Rooftop wait is about 35 min. Indoor is about 15 min.</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <label for="q-note" style="font-size: 13px; font-weight: 500; color: #344054">Notes</label>
+      <input id="q-note" placeholder="Birthday, high chair…" style="height: 48px; box-sizing: border-box; width: 100%; padding: 0 14px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; font: inherit; font-size: 16px; color: #101828; outline: none">
+      <span style="font-size: 12px; color: #667085; text-align: right; font-variant-numeric: tabular-nums">0 / 120</span>
+    </div>
+
+    <label id="q-consent" style="display: flex; align-items: flex-start; gap: 12px; font-size: 13px; color: #B42318; background: #FEF3F2; border: 1px solid #FECDCA; border-radius: 12px; padding: 12px 14px; min-height: 44px">
+      <input type="checkbox" aria-invalid="true" style="width: 22px; height: 22px; flex: none; margin: 0; accent-color: #0E7C66">
+      <span>Guest agrees to get queue updates on WhatsApp. <b>Required to send the token.</b> Without consent, print a paper token instead.</span>
+    </label>
+  </div>
+
+  <div style="padding: 12px 16px 20px; display: flex; gap: 10px; background: #FFFFFF; border-top: 1px solid #E4E7EC">
+    <button type="button" style="flex: 1; height: 52px; border-radius: 10px; border: 1px solid #D0D5DD; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Print paper token</button>
+    <button type="button" style="flex: 1; height: 52px; border-radius: 10px; border: 0; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer">Create token</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

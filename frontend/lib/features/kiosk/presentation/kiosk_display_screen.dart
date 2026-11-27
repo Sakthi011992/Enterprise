@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/token_ext.dart';
 import '../../../core/auth/session_controller.dart';
 
 final _featuredProvider = FutureProvider<List<Map>>((ref) async {
@@ -51,27 +52,29 @@ class _KioskDisplayScreenState extends ConsumerState<KioskDisplayScreen> {
   Widget build(BuildContext context) {
     final featured = ref.watch(_featuredProvider);
     final t = context.tokens;
+    final ink = t.color.background.inverse;
+    final onInk = t.color.content.onInverse;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: ink,
       body: Stack(
         children: [
           featured.when(
-            loading: () => const Center(child: CircularProgressIndicator(color: Colors.white)),
+            loading: () => Center(child: CircularProgressIndicator(color: onInk)),
             error: (e, _) => Center(
-                child: Text('Error: $e', style: const TextStyle(color: Colors.white))),
+                child: Text('Error: $e', style: TextStyle(color: onInk))),
             data: (items) => items.isEmpty
                 ? Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.restaurant_menu, size: 80, color: Colors.white54),
+                        Icon(Icons.restaurant_menu, size: 80, color: onInk.withValues(alpha: 0.54)),
                         const SizedBox(height: 24),
                         Text("Today's Specials",
-                            style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: Colors.white)),
+                            style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: onInk)),
                         const SizedBox(height: 8),
-                        const Text('Check back soon for featured items!',
-                            style: TextStyle(color: Colors.white54)),
+                        Text('Check back soon for featured items!',
+                            style: TextStyle(color: onInk.withValues(alpha: 0.54))),
                       ],
                     ),
                   )
@@ -89,11 +92,11 @@ class _KioskDisplayScreenState extends ConsumerState<KioskDisplayScreen> {
             right: 0,
             child: Container(
               padding: const EdgeInsets.fromLTRB(32, 48, 32, 16),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.black87, Colors.transparent],
+                  colors: [ink.withValues(alpha: 0.87), Colors.transparent],
                 ),
               ),
               child: Row(
@@ -102,7 +105,7 @@ class _KioskDisplayScreenState extends ConsumerState<KioskDisplayScreen> {
                   Text(
                     "Today's Specials",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Colors.white,
+                          color: onInk,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
@@ -120,7 +123,7 @@ class _KioskDisplayScreenState extends ConsumerState<KioskDisplayScreen> {
                                 height: 8,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
-                                  color: i == _page ? Colors.white : Colors.white38,
+                                  color: i == _page ? onInk : onInk.withValues(alpha: 0.38),
                                 ),
                               ),
                             ),
@@ -137,8 +140,8 @@ class _KioskDisplayScreenState extends ConsumerState<KioskDisplayScreen> {
             right: 24,
             child: TextButton.icon(
               onPressed: _logout,
-              icon: const Icon(Icons.logout, color: Colors.white38, size: 16),
-              label: const Text('Exit', style: TextStyle(color: Colors.white38)),
+              icon: Icon(Icons.logout, color: onInk.withValues(alpha: 0.38), size: 16),
+              label: Text('Exit', style: TextStyle(color: onInk.withValues(alpha: 0.38))),
             ),
           ),
         ],
@@ -157,6 +160,9 @@ class _FeaturedSlide extends StatelessWidget {
     final imageUrl = product['imageUrl'] as String?;
     final label = item['label']?.toString() ?? product['name']?.toString() ?? '';
     final price = product['price'];
+    final t = context.tokens;
+    final ink = t.color.background.inverse;
+    final onInk = t.color.content.onInverse;
 
     return Stack(
       fit: StackFit.expand,
@@ -166,8 +172,8 @@ class _FeaturedSlide extends StatelessWidget {
           Image.network(imageUrl, fit: BoxFit.cover)
         else
           Container(
-            color: Colors.grey.shade900,
-            child: const Icon(Icons.restaurant, size: 120, color: Colors.white10),
+            color: context.ext.navBackground,
+            child: Icon(Icons.restaurant, size: 120, color: onInk.withValues(alpha: 0.1)),
           ),
         // Bottom gradient + text
         Positioned(
@@ -176,11 +182,11 @@ class _FeaturedSlide extends StatelessWidget {
           right: 0,
           child: Container(
             padding: const EdgeInsets.fromLTRB(40, 60, 40, 60),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [Colors.black87, Colors.transparent],
+                colors: [ink.withValues(alpha: 0.87), Colors.transparent],
               ),
             ),
             child: Column(
@@ -189,8 +195,8 @@ class _FeaturedSlide extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: onInk,
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
                     height: 1.1,
@@ -200,8 +206,8 @@ class _FeaturedSlide extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     '₹$price',
-                    style: const TextStyle(
-                      color: Colors.white70,
+                    style: TextStyle(
+                      color: onInk.withValues(alpha: 0.7),
                       fontSize: 32,
                     ),
                   ),
@@ -210,7 +216,7 @@ class _FeaturedSlide extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     product['description'] as String,
-                    style: const TextStyle(color: Colors.white54, fontSize: 20),
+                    style: TextStyle(color: onInk.withValues(alpha: 0.54), fontSize: 20),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

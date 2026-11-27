@@ -128,14 +128,14 @@ final themeControllerProvider =
   (ref) => ThemeController(ref.watch(themeRepositoryProvider)),
 );
 
-/// Fallback used only on a fresh install with no network. Neutral greys — enough
-/// to render a login screen legibly until real tokens arrive.
+/// Fallback used when no theme is assigned or the network is down on a fresh
+/// install: the default "Pegs & Bottles" theme.
 final _bootstrapTokens = AppThemeTokens.fromJson(const {
   'id': 'bootstrap',
   'name': 'Bootstrap',
   'revision': 0,
   'tokens': {
-    'schemaVersion': 1,
+    'schemaVersion': 2,
     'modes': {
       'light': _bootstrapLight,
       'dark': _bootstrapDark,
@@ -170,57 +170,63 @@ class ThemeScope extends ConsumerWidget {
 
 // --- bootstrap token literals -----------------------------------------------
 
+// Default theme: "Pegs & Bottles" (backend/prisma/themes/pegs-and-bottles.json), taken from the
+// pub's interior. DM Serif Display for headings and large numbers, Work Sans for everything else.
 const _typography = {
-  'fontFamily': {'display': 'Inter', 'body': 'Inter', 'mono': 'RobotoMono'},
+  'fontFamily': {'display': 'DM Serif Display', 'body': 'Work Sans', 'mono': 'JetBrains Mono'},
   'scale': {
-    'display': {'size': 32, 'weight': 700, 'height': 1.2, 'letterSpacing': -0.5},
-    'title': {'size': 22, 'weight': 600, 'height': 1.3, 'letterSpacing': 0},
-    'body': {'size': 15, 'weight': 400, 'height': 1.45, 'letterSpacing': 0},
-    'label': {'size': 13, 'weight': 500, 'height': 1.3, 'letterSpacing': 0.2},
-    'caption': {'size': 11, 'weight': 400, 'height': 1.3, 'letterSpacing': 0.4},
-    'mono': {'size': 14, 'weight': 400, 'height': 1.4, 'letterSpacing': 0},
+    'display': {'size': 30, 'weight': 400, 'height': 1.15, 'letterSpacing': -0.2},
+    'title': {'size': 17, 'weight': 600, 'height': 1.3, 'letterSpacing': -0.1},
+    'body': {'size': 14, 'weight': 400, 'height': 1.45, 'letterSpacing': 0},
+    'label': {'size': 13, 'weight': 600, 'height': 1.35, 'letterSpacing': 0},
+    'caption': {'size': 12, 'weight': 500, 'height': 1.35, 'letterSpacing': 0.1},
+    'mono': {'size': 13, 'weight': 500, 'height': 1.4, 'letterSpacing': 0},
   },
 };
 
 const _scales = {
   'spacing': {'0': 0, '1': 4, '2': 8, '3': 12, '4': 16, '5': 24, '6': 32, '7': 48, '8': 64},
-  'radius': {'none': 0, 'sm': 4, 'md': 8, 'lg': 16, 'pill': 999},
+  // 6 chips · 10 buttons and inputs · 14 cards.
+  'radius': {'none': 0, 'sm': 6, 'md': 10, 'lg': 14, 'pill': 999},
   'borderWidth': {'none': 0, 'hairline': 1, 'thick': 2},
   'elevation': {'none': 0, 'sm': 1, 'md': 4, 'lg': 12},
 };
 
+// Light: warm stone page, bottle-green header and sidebar, lacquer-red accent.
+// Every text colour passes 4.5:1 on the cards and on the page.
 const _bootstrapLight = {
   'color': {
     'background': {
-      'canvas': '#FFFFFF', 'surface': '#F4F4F5', 'raised': '#FFFFFF', 'inverse': '#18181B',
-      'accent': '#3F3F46', 'danger': '#B91C1C', 'success': '#15803D', 'warning': '#A16207',
+      'canvas': '#ECE7DE', 'surface': '#FFFDF9', 'raised': '#FFFDF9', 'inverse': '#16291F', 'header': '#1F3D2E',
+      'accent': '#B3301D', 'danger': '#B42318', 'success': '#1F6B45', 'warning': '#A35F00',
     },
     'content': {
-      'primary': '#18181B', 'secondary': '#52525B', 'muted': '#A1A1AA',
-      'onAccent': '#FFFFFF', 'onInverse': '#FAFAFA', 'danger': '#B91C1C',
+      'primary': '#1A1714', 'secondary': '#554D44', 'muted': '#675E55',
+      'onAccent': '#FFFFFF', 'onInverse': '#F4EFE6', 'onHeader': '#F4EFE6', 'danger': '#B42318',
     },
     'border': {
-      'subtle': '#E4E4E7', 'default': '#D4D4D8', 'strong': '#A1A1AA',
-      'accent': '#3F3F46', 'focus': '#3F3F46',
+      'subtle': '#EFE9DF', 'default': '#E0D8CC', 'strong': '#CCC1B2',
+      'accent': '#B3301D', 'focus': '#B3301D',
     },
   },
   ..._scales,
   'typography': _typography,
 };
 
+// Dark: a bottle-green room, green leather cards, near-black header, brass accent.
 const _bootstrapDark = {
   'color': {
     'background': {
-      'canvas': '#09090B', 'surface': '#18181B', 'raised': '#27272A', 'inverse': '#FAFAFA',
-      'accent': '#D4D4D8', 'danger': '#F87171', 'success': '#4ADE80', 'warning': '#FBBF24',
+      'canvas': '#0D1C15', 'surface': '#14271E', 'raised': '#1B3227', 'inverse': '#F3ECDD', 'header': '#08130E',
+      'accent': '#E2B055', 'danger': '#FF8A7A', 'success': '#3DD68C', 'warning': '#F0A84A',
     },
     'content': {
-      'primary': '#FAFAFA', 'secondary': '#A1A1AA', 'muted': '#71717A',
-      'onAccent': '#09090B', 'onInverse': '#18181B', 'danger': '#F87171',
+      'primary': '#F3ECDD', 'secondary': '#C3BBA8', 'muted': '#A49C8A',
+      'onAccent': '#1F1606', 'onInverse': '#1A1714', 'onHeader': '#F3ECDD', 'danger': '#FF8A7A',
     },
     'border': {
-      'subtle': '#27272A', 'default': '#3F3F46', 'strong': '#52525B',
-      'accent': '#D4D4D8', 'focus': '#D4D4D8',
+      'subtle': '#1B3227', 'default': '#244033', 'strong': '#2F5242',
+      'accent': '#E2B055', 'focus': '#E2B055',
     },
   },
   ..._scales,

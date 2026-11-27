@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tablet portrait menu admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="width: 768px; height: 1024px; box-sizing: border-box; background: #F5F6F8; color: #101828; display: flex; flex-direction: column; position: relative; overflow: hidden; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+
+  <header style="display: flex; align-items: center; gap: 12px; padding: 16px 24px; background: #FFFFFF; border-bottom: 1px solid #E4E7EC">
+    <button type="button" aria-label="Open menu" style="width: 48px; height: 48px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #344054"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+      <span style="font-size: 13px; color: #667085">Menu &amp; stock</span>
+      <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #0B1220">Menu &amp; products</h1>
+    </div>
+    <button type="button" aria-label="Notifications, 3 new" style="position: relative; width: 48px; height: 48px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #344054"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0"></path></svg><span style="position: absolute; top: 5px; right: 5px; min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box; border-radius: 999px; background: #D92D20; color: #FFFFFF; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center">3</span></button>
+  </header>
+
+  <div style="padding: 16px 24px; display: flex; flex-direction: column; gap: 12px">
+    <label for="tm-s" style="position: absolute; left: -9999px">Search items</label>
+    <input id="tm-s" placeholder="Search name, SKU or barcode" style="width: 100%; box-sizing: border-box; height: 48px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 14px; font: inherit; background: #FFFFFF; color: #101828">
+    <div role="tablist" aria-label="Filters" style="display: flex; gap: 8px; overflow: hidden">
+      <button type="button" aria-pressed="true" style="height: 44px; padding: 0 16px; border: 1px solid #A6E3D3; border-radius: 999px; background: #E7F4F0; color: #0A5F4E; font: inherit; font-weight: 600; white-space: nowrap; cursor: pointer">All 186</button>
+      <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer">Spirits</button>
+      <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer">Beer</button>
+      <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer">Cocktails</button>
+      <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer">86'd (2)</button>
+      <button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer">Filters</button>
+    </div>
+  </div>
+
+  <div style="flex: 1; overflow: hidden; padding: 0 24px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 10px; background: #F2F4F7; flex: none"></span>
+      <div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #0B1220">Single Malt 12Y</div><div style="font-size: 13px; color: #667085">Spirits · 30/60 ml, bottle · from ₹280</div></div>
+      <span style="padding: 3px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Edit</button>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 10px; background: #F2F4F7; flex: none"></span>
+      <div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #0B1220">Premium Lager 650ml</div><div style="font-size: 13px; color: #667085">Beer · bottle, bucket · from ₹300</div></div>
+      <span style="padding: 3px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Edit</button>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 10px; background: #F2F4F7; flex: none"></span>
+      <div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #0B1220">Aged Cognac</div><div style="font-size: 13px; color: #667085">Spirits · 30/60 ml · from ₹650</div></div>
+      <span style="padding: 3px 10px; border-radius: 999px; background: #FEF3F2; color: #B42318; font-size: 12px; font-weight: 600">86'd</span>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Edit</button>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 10px; background: #F2F4F7; flex: none"></span>
+      <div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #0B1220">Classic Mojito</div><div style="font-size: 13px; color: #667085">Cocktails · recipe linked · ₹350</div></div>
+      <span style="padding: 3px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Edit</button>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 10px; background: #F2F4F7; flex: none"></span>
+      <div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #0B1220">Virgin Colada</div><div style="font-size: 13px; color: #667085">Mocktails · ₹220</div></div>
+      <span style="padding: 3px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Inactive</span>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Edit</button>
+    </div>
+    <div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+      <span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 10px; background: #F2F4F7; flex: none"></span>
+      <div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #0B1220">Chicken Wings (8 pc)</div><div style="font-size: 13px; color: #667085">Bar bites · regular, large · from ₹350</div></div>
+      <span style="padding: 3px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; color: #344054; font: inherit; font-weight: 500; cursor: pointer">Edit</button>
+    </div>
+  </div>
+
+  <p style="margin: 0; padding: 12px 24px 28px; font-size: 13px; color: #667085">Below 1024 px wide, tables become cards and the edit panel opens full screen. The menu becomes a drawer.</p>
+
+  <button type="button" style="position: absolute; right: 24px; bottom: 72px; height: 56px; padding: 0 24px; border: 0; border-radius: 16px; background: #0E7C66; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 600; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); cursor: pointer">New item</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":768,"height":1024}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

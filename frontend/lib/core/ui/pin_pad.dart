@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/token_ext.dart';
 import 'ui_style.dart';
 
-/// Numeric keypad for PIN entry: a 3 by 4 grid of 52 px keys (1-9, empty, 0,
+/// Numeric keypad for PIN entry: a 3 by 4 grid of 64 px keys (1-9, empty, 0,
 /// backspace), a row of dots for the digits entered, and hardware keyboard
 /// support. When the length is reached it calls [onCompleted] and clears.
 class PinPad extends StatefulWidget {
@@ -25,7 +26,7 @@ class PinPad extends StatefulWidget {
   State<PinPad> createState() => _PinPadState();
 }
 
-const double _keySize = 52;
+const double _keySize = 64;
 const String _digitChars = '0123456789';
 
 class _PinPadState extends State<PinPad> {
@@ -165,7 +166,7 @@ class _Dots extends StatelessWidget {
   }
 }
 
-class _PinKey extends StatelessWidget {
+class _PinKey extends StatefulWidget {
   const _PinKey({required this.child, required this.onTap, required this.semanticsLabel});
 
   final Widget child;
@@ -173,26 +174,44 @@ class _PinKey extends StatelessWidget {
   final String semanticsLabel;
 
   @override
+  State<_PinKey> createState() => _PinKeyState();
+}
+
+class _PinKeyState extends State<_PinKey> {
+  bool _pressed = false;
+
+  @override
   Widget build(BuildContext context) {
     final t = context.tokens;
+    final ext = context.ext;
+    final radius = BorderRadius.circular(t.radius.md);
     return Semantics(
       button: true,
-      enabled: onTap != null,
-      label: semanticsLabel,
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(t.radius.md),
-          child: Container(
-            width: _keySize,
-            height: _keySize,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(t.radius.md),
-              border: Border.all(color: t.color.border.standard, width: t.borderWidth.hairline),
+      enabled: widget.onTap != null,
+      label: widget.semanticsLabel,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 2),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: widget.onTap,
+            borderRadius: radius,
+            onHighlightChanged: (v) => setState(() => _pressed = v),
+            child: Container(
+              width: _keySize,
+              height: _keySize,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: radius,
+                color: _pressed ? ext.selectedRow : t.color.background.raised,
+                border: Border.all(
+                  color: _pressed ? t.color.border.accent : t.color.border.strong,
+                  width: t.borderWidth.hairline,
+                ),
+                boxShadow: _pressed ? const [] : ext.cardShadow,
+              ),
+              child: widget.child,
             ),
-            child: child,
           ),
         ),
       ),

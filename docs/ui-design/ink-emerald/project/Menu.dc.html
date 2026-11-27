@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Menu and products</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="stock" sub="Menu &amp; products" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Menu &amp; stock" page="Menu &amp; products" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Menu &amp; products</h1>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Import Excel</button>
+          <a href="AIAssistant.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; box-sizing: border-box; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font-weight: 500; color: #344054; text-decoration: none">Import with AI</a>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Export</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">New item</button>
+        </div>
+      </div>
+
+      <div role="tablist" aria-label="Menu sections" style="display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid #E4E7EC">
+        <button type="button" role="tab" aria-selected="true" style="padding: 10px 14px; border: 0; background: none; font: inherit; font-weight: 600; color: #0B1220; box-shadow: inset 0 -2px 0 #0E7C66; cursor: pointer">Items</button>
+        <button type="button" role="tab" aria-selected="false" style="padding: 10px 14px; border: 0; background: none; font: inherit; color: #475467; cursor: pointer">Categories</button>
+        <button type="button" role="tab" aria-selected="false" style="padding: 10px 14px; border: 0; background: none; font: inherit; color: #475467; cursor: pointer">Modifiers</button>
+        <button type="button" role="tab" aria-selected="false" style="padding: 10px 14px; border: 0; background: none; font: inherit; color: #475467; cursor: pointer">Combos</button>
+        <button type="button" role="tab" aria-selected="false" style="padding: 10px 14px; border: 0; background: none; font: inherit; color: #475467; cursor: pointer">Recipes (BOM)</button>
+        <button type="button" role="tab" aria-selected="false" style="padding: 10px 14px; border: 0; background: none; font: inherit; color: #475467; cursor: pointer">Time &amp; channel menus</button>
+        <button type="button" role="tab" aria-selected="false" style="padding: 10px 14px; border: 0; background: none; font: inherit; color: #475467; cursor: pointer">Featured</button>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+        <section aria-label="Items" style="flex: 999 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 24px; border-bottom: 1px solid #F2F4F7">
+            <input aria-label="Search items" placeholder="Search name, SKU or barcode" style="flex: 1 1 220px; min-width: 0; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828">
+            <select aria-label="Category" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All categories</option><option>Spirits</option><option>Beer</option><option>Cocktails</option><option>Bar bites</option></select>
+            <select aria-label="Type" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All types</option><option>Alcoholic</option><option>Veg</option><option>Non-veg</option></select>
+            <select aria-label="Status" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All statuses</option><option>Active</option><option>Out of stock (86)</option><option>Inactive</option></select>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px">
+              <thead><tr>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Item</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Category</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Variants</th>
+                <th scope="col" style="text-align: right; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Price from</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Tax</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Channels</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Status</th>
+                <th scope="col" style="text-align: right; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Actions</th>
+              </tr></thead>
+              <tbody>
+                <tr style="background: #F3FAF8; box-shadow: inset 3px 0 0 #0E7C66">
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Single Malt 12Y</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Spirits</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">30 / 60 ml · bottle</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹280</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">VAT liquor</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">All</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Premium Lager 650ml</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Beer</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">Bottle · bucket of 5</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹300</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">VAT liquor</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">All</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Draught Wheat Beer</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Beer</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">Pint · pitcher · tower</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹320</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">VAT liquor</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Dine-in</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Classic Mojito</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Cocktails</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">Regular</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹350</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">VAT liquor</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">All</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Aged Cognac</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Spirits</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">30 / 60 ml</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹650</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">VAT liquor</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">All</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FEF3F2; color: #B42318; font-size: 12px; font-weight: 600">86'd</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Chicken Wings (8 pc)</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Bar bites</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">Regular · large</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹350</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">GST 5%</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">All</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 500; padding: 12px 16px; white-space: nowrap; color: #0B1220"><span aria-hidden="true" style="display: inline-block; vertical-align: middle; width: 36px; height: 36px; border-radius: 10px; background: #EAECF0; margin-right: 12px"></span>Virgin Colada</th>
+                  <td style="padding: 12px 16px; white-space: nowrap">Mocktails</td>
+                  <td style="padding: 12px 16px; white-space: nowrap; color: #475467">Regular</td>
+                  <td style="padding: 12px 16px; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums">₹220</td>
+                  <td style="padding: 12px 16px; white-space: nowrap">GST 5%</td>
+                  <td style="padding: 12px 16px; white-space: nowrap">All</td>
+                  <td style="padding: 12px 16px; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Inactive</span></td>
+                  <td style="padding: 12px 16px; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Edit</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding: 14px 24px; border-top: 1px solid #F2F4F7; font-size: 13px; color: #667085">
+            <span style="font-variant-numeric: tabular-nums">Showing 1–7 of 186 items · 2 selected</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Bulk edit price</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Mark 86</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Previous</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Next</button>
+            </div>
+          </div>
+        </section>
+
+        <aside aria-label="Edit item" style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Edit item</h2><span style="font-size: 13px; color: #667085">SKU SP-0012</span></div>
+          <div><label for="m-name" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Name</label><input id="m-name" value="Single Malt 12Y" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+            <div><label for="m-cat" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Category</label><select id="m-cat" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"><option>Spirits</option></select></div>
+            <div><label for="m-tax" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Tax category</label><select id="m-tax" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"><option>VAT liquor</option><option>GST 5%</option><option>GST 18%</option></select></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+            <div><label for="m-btl" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Bottle size (ml)</label><input id="m-btl" value="750" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828; font-variant-numeric: tabular-nums"></div>
+            <div><label for="m-yield" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Pegs per bottle (30 ml)</label><input id="m-yield" value="25" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828; font-variant-numeric: tabular-nums"></div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #0B1220">Variants &amp; prices</h3><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Add variant</button></div>
+            <table style="width: 100%; border-collapse: collapse">
+              <thead><tr>
+                <th scope="col" style="text-align: left; padding: 8px 6px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467">Variant</th>
+                <th scope="col" style="text-align: right; padding: 8px 6px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467">Price</th>
+                <th scope="col" style="text-align: right; padding: 8px 6px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467">Happy hour</th>
+                <th scope="col" style="padding: 8px 6px; background: #F9FAFB"><span style="position: absolute; left: -9999px">Remove</span></th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 8px 4px; border-bottom: 1px solid #F2F4F7"><input aria-label="Variant name" value="30 ml" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828"></td>
+                  <td style="padding: 8px 4px; border-bottom: 1px solid #F2F4F7"><input aria-label="Price" value="280" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828; text-align: right; font-variant-numeric: tabular-nums"></td>
+                  <td style="padding: 8px 4px; border-bottom: 1px solid #F2F4F7"><input aria-label="Happy hour price" value="210" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828; text-align: right; font-variant-numeric: tabular-nums"></td>
+                  <td style="padding: 8px 0 8px 4px; border-bottom: 1px solid #F2F4F7"><button type="button" aria-label="Remove 30 ml" style="height: 32px; padding: 0 10px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Remove</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 4px; border-bottom: 1px solid #F2F4F7"><input aria-label="Variant name" value="60 ml" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828"></td>
+                  <td style="padding: 8px 4px; border-bottom: 1px solid #F2F4F7"><input aria-label="Price" value="540" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828; text-align: right; font-variant-numeric: tabular-nums"></td>
+                  <td style="padding: 8px 4px; border-bottom: 1px solid #F2F4F7"><input aria-label="Happy hour price" value="400" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828; text-align: right; font-variant-numeric: tabular-nums"></td>
+                  <td style="padding: 8px 0 8px 4px; border-bottom: 1px solid #F2F4F7"><button type="button" aria-label="Remove 60 ml" style="height: 32px; padding: 0 10px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Remove</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 4px"><input aria-label="Variant name" value="Bottle" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828"></td>
+                  <td style="padding: 8px 4px"><input aria-label="Price" value="6200" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828; text-align: right; font-variant-numeric: tabular-nums"></td>
+                  <td style="padding: 8px 4px"><input aria-label="Happy hour price" value="—" style="width: 100%; min-width: 0; box-sizing: border-box; height: 36px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 8px; font: inherit; color: #101828; text-align: right"></td>
+                  <td style="padding: 8px 0 8px 4px"><button type="button" aria-label="Remove bottle" style="height: 32px; padding: 0 10px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #B42318; cursor: pointer">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #0B1220">Sell on</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px">
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #101828"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0E7C66">POS</label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #101828"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0E7C66">QR menu</label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #101828"><input type="checkbox" checked style="width: 16px; height: 16px; accent-color: #0E7C66">Kiosk</label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #101828"><input type="checkbox" style="width: 16px; height: 16px; accent-color: #0E7C66">Delivery apps</label>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Images (3)</button>
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Modifiers (4)</button>
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Recipe</button>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid #F2F4F7; padding-top: 16px">
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Delete item</button>
+            <div style="display: flex; gap: 8px">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Cancel</button>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Save changes</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

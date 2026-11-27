@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Assistant</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="settings" sub="" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Admin · AI credits 410 / 500" page="AI Assistant" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">AI Assistant</h1>
+          <span style="font-size: 13px; color: #667085">Import and configure from your own files · 410 of 500 AI credits left</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Setup checklist 4 / 7</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Change history</button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+        <section aria-label="Conversation" style="flex: 1 1 380px; max-width: 480px; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-sizing: border-box; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+          <div style="align-self: flex-end; max-width: 88%; padding: 12px 14px; border-radius: 16px 16px 4px 16px; background: #0B1220; color: #FFFFFF; font-size: 14px">Here's our menu and staff list. Set everything up. Happy hour is 5–8 pm, 30% off cocktails.</div>
+          <div style="align-self: flex-end; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px">
+            <span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid #E4E7EC; border-radius: 6px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #344054"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg>menu-2026.xlsx · 3 sheets</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid #E4E7EC; border-radius: 6px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #344054"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg>staff.csv · 18 rows</span>
+          </div>
+          <div style="max-width: 94%; padding: 14px 16px; border-radius: 16px 16px 16px 4px; background: #F9FAFB; border: 1px solid #E4E7EC; display: flex; flex-direction: column; gap: 8px; font-size: 14px">
+            <span style="font-weight: 600; color: #0B1220">I read both files. Here's what I propose:</span>
+            <span style="color: #344054">• 186 menu items in 14 categories, with 412 variants (30/60 ml, bottle, pitcher)</span>
+            <span style="color: #344054">• Liquor tax category for spirits, beer and wine. GST 5% for food</span>
+            <span style="color: #344054">• 18 staff accounts with personas. They'll get invite links. No passwords imported</span>
+            <span style="color: #344054">• Happy hour rule: Mon–Sun 5–8 pm, 30% off the Cocktails category</span>
+            <span style="color: #B42318; font-weight: 500">4 rows need your input before I can apply them.</span>
+          </div>
+          <div style="padding: 12px 14px; border-radius: 12px; background: #FBF3E4; border: 1px solid #F0DDB5; color: #8A5A12; font-size: 13px">Your plan allows 15 users, so 3 staff can't be added yet. Upgrade to Pro, or pick which 15 to add now.</div>
+
+          <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 8px">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 13px; color: #344054; cursor: pointer">Create floor plan</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 13px; color: #344054; cursor: pointer">Theme from logo</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 13px; color: #344054; cursor: pointer">Translate menu to Tamil</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 999px; background: #FFFFFF; font: inherit; font-size: 13px; color: #344054; cursor: pointer">Set up queue display</button>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; height: 56px; border: 1px dashed #D0D5DD; border-radius: 12px; background: #F9FAFB; color: #667085; font-size: 13px">Drop Excel, CSV, PDF or photos of menus here</div>
+            <label for="ai-in" style="position: absolute; left: -9999px">Message the assistant</label>
+            <textarea id="ai-in" rows="3" placeholder="Ask or instruct, e.g. 'Put bar TVs on queue mode after 8 pm on weekends'" style="width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; color: #101828; resize: none"></textarea>
+            <div style="display: flex; align-items: center">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Attach file</button>
+              <button type="button" style="margin-left: auto; height: 40px; padding: 0 20px; border: 0; border-radius: 10px; background: #0B1220; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer">Send</button>
+            </div>
+          </div>
+        </section>
+
+        <div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <section aria-labelledby="cm" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 20px 20px 16px">
+              <h2 id="cm" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Column mapping · menu-2026.xlsx</h2>
+              <button type="button" style="margin-left: auto; height: 36px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Save mapping for next time</button>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse">
+                <thead>
+                  <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                    <th scope="col" style="padding: 10px 20px; font-weight: 500">Column in your file</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Maps to</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Confidence</th>
+                    <th scope="col" style="padding: 10px 20px 10px 12px; font-weight: 500">Sample</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 10px 20px; font-weight: 500">Item Name</td><td style="padding: 10px 12px"><select aria-label="Maps to for Item Name" style="height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; min-width: 190px"><option>Item name</option></select></td><td style="padding: 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">High</span></td><td style="padding: 10px 20px 10px 12px; color: #475467">Single Malt 12Y</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 10px 20px; font-weight: 500">Rate (30)</td><td style="padding: 10px 12px"><select aria-label="Maps to for Rate 30" style="height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; min-width: 190px"><option>Variant price · 30 ml</option></select></td><td style="padding: 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px">High</span></td><td style="padding: 10px 20px 10px 12px; color: #475467; font-variant-numeric: tabular-nums">280</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 10px 20px; font-weight: 500">Btl Rate</td><td style="padding: 10px 12px"><select aria-label="Maps to for Btl Rate" style="height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; min-width: 190px"><option>Variant price · bottle</option></select></td><td style="padding: 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #FFFAEB; color: #B54708; padding: 3px 9px; border-radius: 999px">Check</span></td><td style="padding: 10px 20px 10px 12px; color: #475467; font-variant-numeric: tabular-nums">6200</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 10px 20px; font-weight: 500">Grp</td><td style="padding: 10px 12px"><select aria-label="Maps to for Grp" style="height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; min-width: 190px"><option>Category</option></select></td><td style="padding: 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #FFFAEB; color: #B54708; padding: 3px 9px; border-radius: 999px">Check</span></td><td style="padding: 10px 20px 10px 12px; color: #475467">SPRT</td></tr>
+                  <tr style="border-top: 1px solid #F2F4F7"><td style="padding: 10px 20px; font-weight: 500">Remarks</td><td style="padding: 10px 12px"><select aria-label="Maps to for Remarks" style="height: 36px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; color: #101828; min-width: 190px"><option>Ignore</option><option>Description</option></select></td><td style="padding: 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #F2F4F7; color: #344054; padding: 3px 9px; border-radius: 999px">Skipped</span></td><td style="padding: 10px 20px 10px 12px; color: #475467">new stock</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section aria-labelledby="pv" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 20px 20px 16px">
+              <h2 id="pv" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Preview changes</h2>
+              <div style="margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+                <span style="font-size: 12px; font-weight: 600; background: #ECFDF3; color: #067647; padding: 3px 9px; border-radius: 999px; font-variant-numeric: tabular-nums">New 172</span>
+                <span style="font-size: 12px; font-weight: 600; background: #EFF8FF; color: #175CD3; padding: 3px 9px; border-radius: 999px; font-variant-numeric: tabular-nums">Update 10</span>
+                <span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; font-variant-numeric: tabular-nums">Needs input 4</span>
+                <select aria-label="Filter rows" style="height: 32px; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 8px; background: #FFFFFF; font: inherit; font-size: 13px; color: #344054"><option>Show needs input</option><option>Show all</option></select>
+              </div>
+            </div>
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+                <thead>
+                  <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                    <th scope="col" style="padding: 10px 20px; font-weight: 500; text-align: right; width: 48px">Row</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Item</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Category</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">30 ml</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Bottle</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Tax</th>
+                    <th scope="col" style="padding: 10px 20px 10px 12px; font-weight: 500">Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 10px 20px; text-align: right; color: #475467">12</td>
+                    <td style="padding: 10px 12px"><input aria-label="Item" value="Aged Cognac" style="height: 36px; width: 150px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px"><input aria-label="Category" value="Spirits" style="height: 36px; width: 110px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px"><input aria-label="30 ml price, missing" aria-invalid="true" placeholder="Required" style="height: 36px; width: 86px; box-sizing: border-box; padding: 0 10px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; border-radius: 10px; font: inherit; text-align: right"></td>
+                    <td style="padding: 10px 12px"><input aria-label="Bottle price" value="9800" style="height: 36px; width: 86px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right"></td>
+                    <td style="padding: 10px 12px; color: #475467; white-space: nowrap">VAT liquor</td>
+                    <td style="padding: 10px 20px 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Price missing</span></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 10px 20px; text-align: right; color: #475467">48</td>
+                    <td style="padding: 10px 12px"><input aria-label="Item, duplicate" value="Premium Lager 650ml" style="height: 36px; width: 150px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px"><input aria-label="Category" value="Beer" style="height: 36px; width: 110px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px; text-align: right; color: #667085">—</td>
+                    <td style="padding: 10px 12px"><input aria-label="Bottle price" value="300" style="height: 36px; width: 86px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right"></td>
+                    <td style="padding: 10px 12px; color: #475467; white-space: nowrap">VAT liquor</td>
+                    <td style="padding: 10px 20px 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #FFFAEB; color: #B54708; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Duplicate: update or skip?</span></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 10px 20px; text-align: right; color: #475467">91</td>
+                    <td style="padding: 10px 12px"><input aria-label="Item" value="Paneer Tikka" style="height: 36px; width: 150px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px"><input aria-label="Category, unknown" aria-invalid="true" value="STRTR" style="height: 36px; width: 110px; box-sizing: border-box; padding: 0 10px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px; text-align: right; color: #667085">—</td>
+                    <td style="padding: 10px 12px; text-align: right; color: #667085">—</td>
+                    <td style="padding: 10px 12px; color: #475467; white-space: nowrap">GST 5%</td>
+                    <td style="padding: 10px 20px 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Unknown category</span></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 10px 20px; text-align: right; color: #475467">132</td>
+                    <td style="padding: 10px 12px"><input aria-label="Item" value="Sangria Pitcher" style="height: 36px; width: 150px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px"><input aria-label="Category" value="Wine" style="height: 36px; width: 110px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 10px 12px; text-align: right; color: #667085">—</td>
+                    <td style="padding: 10px 12px"><input aria-label="Bottle price, invalid" aria-invalid="true" value="1,2OO" style="height: 36px; width: 86px; box-sizing: border-box; padding: 0 10px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; border-radius: 10px; font: inherit; text-align: right"></td>
+                    <td style="padding: 10px 12px; color: #475467; white-space: nowrap">VAT liquor</td>
+                    <td style="padding: 10px 20px 10px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Not a number</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px 20px; border-top: 1px solid #F2F4F7">
+              <span style="font-size: 13px; color: #475467">Nothing changes until you apply. You can undo the whole import afterwards.</span>
+              <div style="margin-left: auto; display: flex; gap: 8px">
+                <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Skip rows with issues</button>
+                <button type="button" style="height: 40px; padding: 0 18px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Apply 182 changes</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

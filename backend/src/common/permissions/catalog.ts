@@ -27,6 +27,7 @@ export type PermissionKey =
   | 'stock.purchaseOrders'
   | 'guests.queue'
   | 'displays.control'
+  | 'guests.orders.confirm'
   | 'reports.view'
   | 'admin.users'
   | 'admin.settings'
@@ -53,10 +54,11 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   { key: 'stock.purchaseOrders', group: 'Menu & stock', label: 'Purchase orders', limitUnit: null, sortOrder: 10 },
   { key: 'guests.queue', group: 'Guests & displays', label: 'Walk-in queue', limitUnit: null, sortOrder: 11 },
   { key: 'displays.control', group: 'Guests & displays', label: 'Display Control Center', limitUnit: null, sortOrder: 12 },
-  { key: 'reports.view', group: 'Reports', label: 'Reports & day close', limitUnit: null, sortOrder: 13 },
-  { key: 'admin.users', group: 'Admin', label: 'Users, personas & permissions', limitUnit: null, sortOrder: 14 },
-  { key: 'admin.settings', group: 'Admin', label: 'Outlets, tax, devices & settings', limitUnit: null, sortOrder: 15 },
-  { key: 'admin.themes', group: 'Admin', label: 'Themes & branding', limitUnit: null, sortOrder: 16 },
+  { key: 'guests.orders.confirm', group: 'Guests & displays', label: 'Confirm guest QR orders', limitUnit: null, sortOrder: 13 },
+  { key: 'reports.view', group: 'Reports', label: 'Reports & day close', limitUnit: null, sortOrder: 14 },
+  { key: 'admin.users', group: 'Admin', label: 'Users, personas & permissions', limitUnit: null, sortOrder: 15 },
+  { key: 'admin.settings', group: 'Admin', label: 'Outlets, tax, devices & settings', limitUnit: null, sortOrder: 16 },
+  { key: 'admin.themes', group: 'Admin', label: 'Themes & branding', limitUnit: null, sortOrder: 17 },
 ];
 
 export type LoginMethodName = 'PASSWORD' | 'PIN';
@@ -97,6 +99,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'stock.purchaseOrders': { level: 'EDIT' },
       'guests.queue': { level: 'EDIT' },
       'displays.control': { level: 'EDIT' },
+      'guests.orders.confirm': { level: 'EDIT' },
       'reports.view': { level: 'EDIT' },
       'admin.users': { level: 'EDIT' },
       'admin.settings': { level: 'EDIT' },
@@ -122,6 +125,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'stock.purchaseOrders': { level: 'APPROVE' },
       'guests.queue': { level: 'EDIT' },
       'displays.control': { level: 'LIMITED' },
+      'guests.orders.confirm': { level: 'EDIT' },
       'reports.view': { level: 'EDIT' },
       'admin.settings': { level: 'VIEW' },
       'admin.themes': { level: 'VIEW' },
@@ -142,6 +146,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'kds.bump': { level: 'VIEW' },
       'menu.edit': { level: 'VIEW' },
       'guests.queue': { level: 'EDIT' },
+      'guests.orders.confirm': { level: 'VIEW' },
       'reports.view': { level: 'LIMITED' },
     },
   },
@@ -161,6 +166,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'menu.edit': { level: 'VIEW' },
       'menu.mark86': { level: 'EDIT' },
       'guests.queue': { level: 'EDIT' },
+      'guests.orders.confirm': { level: 'EDIT' },
     },
   },
   {
@@ -175,6 +181,7 @@ export const DEFAULT_PERSONAS: readonly DefaultPersona[] = [
       'sales.void': { level: 'REQUEST' },
       'menu.edit': { level: 'VIEW' },
       'guests.queue': { level: 'VIEW' },
+      'guests.orders.confirm': { level: 'EDIT' },
     },
   },
   {

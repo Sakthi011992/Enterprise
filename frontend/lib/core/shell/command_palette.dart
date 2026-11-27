@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-import '../theme/app_theme.dart';
 import '../ui/ui.dart';
 import 'nav_registry.dart';
 
@@ -39,7 +38,9 @@ class _CommandPaletteState extends State<CommandPalette> {
     final q = _controller.text.trim().toLowerCase();
     if (q.isEmpty) return widget.items;
     return widget.items
-        .where((i) => i.label.toLowerCase().contains(q) || i.group.toLowerCase().contains(q))
+        .where((i) =>
+            i.label.toLowerCase().contains(q) ||
+            i.group.toLowerCase().contains(q))
         .toList();
   }
 
@@ -67,52 +68,71 @@ class _CommandPaletteState extends State<CommandPalette> {
   Widget build(BuildContext context) {
     final t = context.tokens;
     final matches = _matches;
-    final highlighted = matches.isEmpty ? 0 : _index.clamp(0, matches.length - 1);
+    final highlighted =
+        matches.isEmpty ? 0 : _index.clamp(0, matches.length - 1);
 
     return Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520, maxHeight: 480),
-        child: Focus(
-          onKeyEvent: _onKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(t.spacing.md),
-                child: AppTextField(
-                  label: 'Search or jump to',
-                  hint: 'Type a page name',
-                  controller: _controller,
-                  autofocus: true,
-                  onChanged: (_) => setState(() => _index = 0),
-                  onSubmitted: (_) {
-                    if (matches.isNotEmpty) _open(matches[highlighted]);
-                  },
-                ),
-              ),
-              Flexible(
-                child: matches.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.all(t.spacing.lg),
-                        child: EmptyState(title: 'No matching pages'),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: matches.length,
-                        itemBuilder: (context, i) {
-                          final item = matches[i];
-                          return ListTile(
-                            selected: i == highlighted,
-                            leading: Icon(item.icon),
-                            title: Text(item.label),
-                            subtitle: Text(item.group),
-                            onTap: () => _open(item),
-                          );
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: t.color.background.raised,
+            borderRadius: BorderRadius.circular(t.radius.lg),
+            border: Border.all(color: t.color.border.standard),
+            boxShadow: context.ext.raisedShadow,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(t.radius.lg),
+            child: Material(
+              color: Colors.transparent,
+              child: Focus(
+                onKeyEvent: _onKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(t.spacing.md),
+                      child: AppTextField(
+                        label: 'Search or jump to',
+                        hint: 'Type a page name',
+                        controller: _controller,
+                        autofocus: true,
+                        onChanged: (_) => setState(() => _index = 0),
+                        onSubmitted: (_) {
+                          if (matches.isNotEmpty) _open(matches[highlighted]);
                         },
                       ),
+                    ),
+                    Flexible(
+                      child: matches.isEmpty
+                          ? Padding(
+                              padding: EdgeInsets.all(t.spacing.lg),
+                              child: EmptyState(title: 'No matching pages'),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: matches.length,
+                              itemBuilder: (context, i) {
+                                final item = matches[i];
+                                return ListTile(
+                                  selected: i == highlighted,
+                                  selectedTileColor: context.ext.selectedRow,
+                                  selectedColor: t.color.background.accent,
+                                  leading: Icon(item.icon),
+                                  title: Text(item.label),
+                                  subtitle: Text(item.group),
+                                  onTap: () => _open(item),
+                                );
+                              },
+                            ),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -19,6 +19,17 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Some plugins pin an old compileSdk while their dependencies need 36+.
+subprojects {
+    val raiseCompileSdk = {
+        extensions.findByType(com.android.build.gradle.BaseExtension::class.java)?.let { android ->
+            val current = android.compileSdkVersion?.removePrefix("android-")?.toIntOrNull() ?: 0
+            if (current < 36) android.compileSdkVersion(36)
+        }
+    }
+    if (state.executed) raiseCompileSdk() else afterEvaluate { raiseCompileSdk() }
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

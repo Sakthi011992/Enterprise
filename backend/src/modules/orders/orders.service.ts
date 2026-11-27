@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Optional } from '@nestjs/common';
 import { Order, OrderItem, Prisma, Ticket, TicketKind } from '@prisma/client';
 import { AuthUser } from '../../common/decorators/current-user.decorator';
 import { apiError } from '../../common/filters/api-error';
@@ -42,6 +42,7 @@ import { RealtimeService } from '../realtime/realtime.service';
 import { RealtimeEvent, outletEvent, stationEvent } from '../realtime/realtime.types';
 import { TabsLimitService } from '../tabs/tabs-limit.service';
 import { contextFromView, readTicketItems, toKdsTicket } from '../kds/kds-view';
+import { GuestHooks } from '../guest/guest-hooks.service';
 
 const json = (v: unknown) => v as Prisma.InputJsonValue;
 
@@ -73,6 +74,7 @@ export class OrdersService {
     private stock: StockLedgerService,
     private realtime: RealtimeService,
     private tabs: TabsLimitService,
+    @Optional() private guestHooks?: GuestHooks,
   ) {}
 
   // ===========================================================================
@@ -116,7 +118,9 @@ export class OrdersService {
       if (type === 'DINE_IN') {
         const table = await this.repo.findTable(tx, dto.tableId!, auth.outletId);
         if (!table) throw apiError(404, 'TABLE_NOT_FOUND', 'Table not found');
-        const claimed = await this.repo.claimTable(tx, table.id, auth.outletId, ['FREE', 'RESERVED'], 'OCCUPIED');
+        // A guest round may open the order on a table staff already seated (OCCUPIED with no order).
+        const claimFrom = dto.source === 'GUEST_QR' ? ['FREE', 'RESERVED', 'OCCUPIED'] : ['FREE', 'RESERVED'];
+        const claimed = await this.repo.claimTable(tx, table.id, auth.outletId, claimFrom as any, 'OCCUPIED');
         if (claimed === 0) throw apiError(409, 'TABLE_OCCUPIED', 'This table is already in use', { tableId: table.id });
       }
 
@@ -129,8 +133,10 @@ export class OrdersService {
         status: 'OPEN',
         tableId: dto.tableId ?? null,
         covers: dto.covers ?? 1,
-        waiterId: dto.waiterId ?? auth.userId,
+        waiterId: dto.waiterId !== undefined ? dto.waiterId : auth.userId,
         cashierId: auth.userId,
+        source: dto.source ?? 'POS',
+        guestSessionId: dto.guestSessionId ?? null,
         note: dto.note ?? null,
         offlineId: dto.offlineId ?? null,
         subtotal: ZERO,
@@ -144,6 +150,7 @@ export class OrdersService {
       return this.viewOf(tx, await this.load(tx, order.id, auth));
     });
 
+    this.guestHooks?.orderChanged(view.id);
     if (!legacy) return view;
     return {
       ...view,
@@ -191,6 +198,7 @@ export class OrdersService {
       box.events.push(...(await this.tabs.enforce(tx, b.order.id, spentBefore, now)));
     });
     await after();
+    this.guestHooks?.orderChanged(id);
     return view;
   }
 
@@ -269,6 +277,7 @@ export class OrdersService {
       box.orderChanged = true;
     });
     await after();
+    this.guestHooks?.orderChanged(orderId);
     return {
       order: view,
       tickets: box.created.map((t) => ({ id: t.id, kind: t.kind, station: t.station, seq: t.seq })),
@@ -300,6 +309,7 @@ export class OrdersService {
     });
     await this.print.queueBill(orderId, { copies: dto.copies ?? 1 });
     await after();
+    this.guestHooks?.orderChanged(orderId);
     return view;
   }
 
@@ -425,6 +435,7 @@ export class OrdersService {
       box.orderChanged = true;
     });
     await after();
+    this.guestHooks?.orderChanged(orderId);
     return view;
   }
 
@@ -457,6 +468,7 @@ export class OrdersService {
       box.orderChanged = true;
     });
     await after();
+    this.guestHooks?.orderChanged(orderId);
     return view;
   }
 
@@ -492,6 +504,7 @@ export class OrdersService {
         metadata: { fromTableId: from, toTableId: target.id, force: dto.force ?? false },
       });
     });
+    this.guestHooks?.orderChanged(orderId);
     return view;
   }
 
@@ -529,6 +542,7 @@ export class OrdersService {
         metadata: { fromOrderId: source.order.id, fromOrderNumber: source.order.orderNumber },
       });
     });
+    this.guestHooks?.orderMerged(dto.fromOrderId, orderId);
     return view;
   }
 
@@ -590,6 +604,8 @@ export class OrdersService {
         metadata: { itemIds: movedIds, toOrderId: dst.order.id },
       });
     });
+    this.guestHooks?.orderChanged(orderId);
+    this.guestHooks?.orderChanged(dto.toOrderId);
     return view;
   }
 
@@ -701,10 +717,12 @@ export class OrdersService {
     const resolved: ResolvedLine[] = [];
     for (const dto of items) resolved.push(await this.lines.resolve(tx, dto, ctx));
 
-    for (const line of resolved) {
+    for (const [k, line] of resolved.entries()) {
       await this.repo.createItem(tx, {
         orderId: order.id,
         ...this.lineFields(line),
+        guestRequestId: items[k].guestRequestId ?? null,
+        guestName: items[k].guestName ?? null,
         quantity: line.quantity,
         seat: line.seat,
         note: line.note,
@@ -815,6 +833,7 @@ export class OrdersService {
               modifiers: readModifiers(i.modifiers).map((m) => m.name),
               note: i.note,
               seat: i.seat,
+              guestName: i.guestName ?? null,
             })),
           ),
           createdById: auth.userId,

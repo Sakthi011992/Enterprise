@@ -82,8 +82,8 @@ class PosChoiceChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.tokens;
     final enabled = onTap != null;
-    final background = selected ? t.color.background.inverse : t.color.background.surface;
-    final foreground = selected ? t.color.content.onInverse : t.color.content.primary;
+    final background = selected ? context.ext.accentSubtle : t.color.background.surface;
+    final foreground = selected ? context.ext.onAccentSubtle : t.color.content.primary;
     return Semantics(
       button: true,
       selected: selected,
@@ -105,7 +105,7 @@ class PosChoiceChip extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(t.radius.pill),
                 border: Border.all(
-                  color: selected ? t.color.border.accent : t.color.border.standard,
+                  color: selected ? context.ext.accentSubtleBorder : t.color.border.standard,
                   width: t.borderWidth.hairline,
                 ),
               ),
@@ -116,6 +116,30 @@ class PosChoiceChip extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Soft brass pill used for happy-hour indicators.
+class BrassBadge extends StatelessWidget {
+  const BrassBadge({super.key, required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+    final ext = context.ext;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: t.spacing.sm, vertical: 3),
+      decoration: BoxDecoration(
+        color: ext.brassSubtle,
+        borderRadius: BorderRadius.circular(t.radius.pill),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: ext.onBrassSubtle),
       ),
     );
   }

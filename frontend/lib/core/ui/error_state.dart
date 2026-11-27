@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../theme/token_ext.dart';
 import 'app_button.dart';
 import 'ui_style.dart';
 
@@ -20,8 +21,12 @@ class ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline, size: 40, color: t.color.content.danger),
-            SizedBox(height: t.spacing.sm),
+            _IconWell(
+              icon: Icons.error_outline,
+              background: context.ext.dangerSubtle,
+              color: context.ext.onDangerSubtle,
+            ),
+            SizedBox(height: t.spacing.md),
             Text(
               "Couldn't load this",
               textAlign: TextAlign.center,
@@ -46,4 +51,21 @@ class ErrorState extends StatelessWidget {
       ),
     );
   }
+}
+
+class _IconWell extends StatelessWidget {
+  const _IconWell({required this.icon, required this.background, required this.color});
+
+  final IconData icon;
+  final Color background;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: background),
+        alignment: Alignment.center,
+        child: Icon(icon, size: 28, color: color),
+      );
 }

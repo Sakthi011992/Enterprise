@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Goods received</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="stock" sub="Procurement" user-name="Meena S." role="Storekeeper" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Procurement" page="Goods received" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; color: #667085"><a href="Procurement.dc.html" style="text-decoration: none">Procurement</a> / Goods received</span>
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Receive PO-0317 · City Breweries Supply</h1>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Save draft</button>
+          <button type="button" style="height: 40px; padding: 0 18px; border: 0; border-radius: 10px; background: #0E7C66; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(16,24,40,.12)">Post GRN</button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <section aria-label="Lines" style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+          <div style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,24,40,.04)">
+            <div style="overflow-x: auto">
+              <table style="width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums">
+                <thead>
+                  <tr style="background: #F9FAFB; color: #475467; font-size: 12px; text-align: left">
+                    <th scope="col" style="padding: 10px 20px; font-weight: 500">Item</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Ordered</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500; text-align: right">Invoiced</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Received</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Damaged</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Batch</th>
+                    <th scope="col" style="padding: 10px 12px; font-weight: 500">Expiry</th>
+                    <th scope="col" style="padding: 10px 20px 10px 12px; font-weight: 500">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 12px 20px; font-weight: 600">Premium Lager 650 ml</td>
+                    <td style="padding: 12px; text-align: right">10 cs</td>
+                    <td style="padding: 12px; text-align: right">10 cs</td>
+                    <td style="padding: 12px"><input aria-label="Received" value="10" style="width: 64px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px"><input aria-label="Damaged" value="1" style="width: 64px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px"><input aria-label="Batch" value="PL-2611" style="width: 96px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 12px"><input aria-label="Expiry" value="05/27" style="width: 76px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px 20px 12px 12px"><span style="font-size: 12px; font-weight: 600; background: #FFFAEB; color: #B54708; padding: 3px 9px; border-radius: 999px; white-space: nowrap">1 damaged</span></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 12px 20px; font-weight: 600">Wheat beer keg 30 L</td>
+                    <td style="padding: 12px; text-align: right">4</td>
+                    <td style="padding: 12px; text-align: right">5</td>
+                    <td style="padding: 12px"><input aria-label="Received" value="4" style="width: 64px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px"><input aria-label="Damaged" value="0" style="width: 64px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px"><input aria-label="Batch" value="WB-88" style="width: 96px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 12px"><input aria-label="Expiry" value="01/27" style="width: 76px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px 20px 12px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Invoice +1</span></td>
+                  </tr>
+                  <tr style="border-top: 1px solid #F2F4F7">
+                    <td style="padding: 12px 20px; font-weight: 600">Stout 500 ml</td>
+                    <td style="padding: 12px; text-align: right">4 cs</td>
+                    <td style="padding: 12px; text-align: right">4 cs</td>
+                    <td style="padding: 12px"><input aria-label="Received, invalid" aria-invalid="true" value="-4" style="width: 64px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #FDA29B; box-shadow: 0 0 0 4px #FEE4E2; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px"><input aria-label="Damaged" value="0" style="width: 64px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; text-align: right; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px"><input aria-label="Batch" value="ST-12" style="width: 96px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit"></td>
+                    <td style="padding: 12px"><input aria-label="Expiry" value="03/27" style="width: 76px; height: 36px; box-sizing: border-box; padding: 0 10px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; font-variant-numeric: tabular-nums"></td>
+                    <td style="padding: 12px 20px 12px 12px"><span style="font-size: 12px; font-weight: 600; background: #FEF3F2; color: #B42318; padding: 3px 9px; border-radius: 999px; white-space: nowrap">Must be 0 or more</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div style="background: #FFFAEB; border: 1px solid #FEDF89; color: #93370D; border-radius: 12px; padding: 14px 16px; font-size: 13px">Posting creates: stock +13 cases +4 kegs in Cellar, a debit note of ₹7,800 for the missing keg, and ₹950 wastage for the damaged case.</div>
+        </section>
+
+        <aside aria-labelledby="dd" style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)">
+          <h2 id="dd" style="margin: 0; font-family: Manrope, sans-serif; font-size: 16px; font-weight: 700; color: #0B1220">Delivery details</h2>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="gr-inv" style="font-size: 13px; font-weight: 500; color: #344054">Vendor invoice no. *</label><input id="gr-inv" value="INV 88412" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; box-sizing: border-box; width: 100%"></div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="gr-d" style="font-size: 13px; font-weight: 500; color: #344054">Received on</label><input id="gr-d" value="21 Nov 2026" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; box-sizing: border-box; width: 100%"></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="gr-l" style="font-size: 13px; font-weight: 500; color: #344054">Into</label><select id="gr-l" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; box-sizing: border-box; width: 100%"><option>Cellar</option></select></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><label for="gr-tp" style="font-size: 13px; font-weight: 500; color: #344054">Transport permit *</label><input id="gr-tp" value="TP/KA/2026/55120" style="height: 40px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; font: inherit; box-sizing: border-box; width: 100%"></div>
+          <button type="button" style="height: 40px; border: 1px dashed #D0D5DD; border-radius: 10px; background: #F9FAFB; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Attach invoice photo or PDF</button>
+          <div style="border-top: 1px solid #F2F4F7; padding-top: 14px; display: flex; flex-direction: column; gap: 8px; font-variant-numeric: tabular-nums">
+            <div style="display: flex"><span style="color: #475467">PO value</span><span style="margin-left: auto">₹64,200</span></div>
+            <div style="display: flex"><span style="color: #475467">Invoice value</span><span style="margin-left: auto">₹66,900</span></div>
+            <div style="display: flex; align-items: baseline; padding-top: 10px; border-top: 1px solid #F2F4F7"><span style="font-weight: 600">Payable after GRN</span><span style="margin-left: auto; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em">₹59,100</span></div>
+          </div>
+          <span style="font-size: 13px; color: #667085">Goes to the Accountant for the 3-way match: PO vs GRN vs invoice.</span>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Orders and invoices</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 960px; background: #F5F6F8; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="flex: 1 1 248px; max-width: 280px; display: flex">
+    <dc-import name="Sidebar" section="sales" sub="Orders &amp; invoices" user-name="Admin" role="Owner" hint-size="100%,960px"></dc-import>
+  </div>
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" trail="Sales" page="Orders &amp; invoices" hint-size="100%,69px"></dc-import>
+    <main style="padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1240px">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px">
+        <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Orders &amp; invoices</h1>
+        <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Export</button>
+          <a href="POS.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; box-sizing: border-box; border-radius: 10px; background: #0E7C66; font-weight: 600; color: #FFFFFF; text-decoration: none">New order</a>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+        <section aria-label="Orders" style="flex: 999 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 24px; border-bottom: 1px solid #F2F4F7">
+            <input aria-label="Search orders" placeholder="Search order, invoice, table or customer" style="flex: 1 1 240px; min-width: 0; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828">
+            <select aria-label="Status" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All statuses</option><option>Open</option><option>Paid</option><option>Voided</option><option>Refunded</option></select>
+            <select aria-label="Order type" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All types</option><option>Dine-in</option><option>Bar counter</option><option>Takeaway</option><option>Delivery</option></select>
+            <select aria-label="Payment" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>All payments</option><option>Cash</option><option>Card</option><option>UPI</option><option>Split</option></select>
+            <select aria-label="Date" style="height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #344054"><option>Today</option><option>Yesterday</option><option>Custom range</option></select>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px">
+              <thead><tr>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Order</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Invoice</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Table / type</th>
+                <th scope="col" style="text-align: right; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Total</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Payment</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Status</th>
+                <th scope="col" style="text-align: left; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Staff</th>
+                <th scope="col" style="text-align: right; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Time</th>
+                <th scope="col" style="text-align: right; padding: 10px 16px; background: #F9FAFB; font-size: 12px; font-weight: 500; color: #475467; white-space: nowrap; border-bottom: 1px solid #E4E7EC">Actions</th>
+              </tr></thead>
+              <tbody>
+                <tr style="background: #F3FAF8; box-shadow: inset 3px 0 0 #0E7C66">
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220">A-1043</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467; font-variant-numeric: tabular-nums">INV/25-26/08812</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">R4 · Dine-in</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹2,034</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">UPI</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Paid</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Arun</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">9:42 pm</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Reprint</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220">A-1042</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467; font-variant-numeric: tabular-nums">INV/25-26/08811</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Bar · Tab 07</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹3,480</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Card</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Paid</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Meera</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">9:38 pm</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Reprint</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220">A-1041</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">—</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">T7 · Dine-in</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹1,260</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">—</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600">Open</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Arun</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">9:20 pm</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Open in POS</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220">A-1040</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467; font-variant-numeric: tabular-nums">INV/25-26/08810</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Takeaway</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹840</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Cash</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600">Refunded</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Ravi</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">9:02 pm</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220">A-1039</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467">—</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">T2 · Dine-in</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹0</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">—</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #FEF3F2; color: #B42318; font-size: 12px; font-weight: 600">Voided</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Meera</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">8:51 pm</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #0B1220">A-1038</th>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; color: #475467; font-variant-numeric: tabular-nums">INV/25-26/08809</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Delivery · App</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹1,120</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">Online</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Paid</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap">System</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">8:44 pm</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F2F4F7; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Reprint</button></td>
+                </tr>
+                <tr>
+                  <th scope="row" style="text-align: left; font-weight: 600; padding: 12px 16px; white-space: nowrap; color: #0B1220">A-1037</th>
+                  <td style="padding: 12px 16px; white-space: nowrap; color: #475467; font-variant-numeric: tabular-nums">INV/25-26/08808</td>
+                  <td style="padding: 12px 16px; white-space: nowrap">R1 · Dine-in</td>
+                  <td style="padding: 12px 16px; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500">₹5,920</td>
+                  <td style="padding: 12px 16px; white-space: nowrap">Split</td>
+                  <td style="padding: 12px 16px; white-space: nowrap"><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Paid</span></td>
+                  <td style="padding: 12px 16px; white-space: nowrap">Arun</td>
+                  <td style="padding: 12px 16px; white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; color: #475467">8:30 pm</td>
+                  <td style="padding: 12px 16px; white-space: nowrap; text-align: right"><button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">View</button> <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Reprint</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding: 14px 24px; border-top: 1px solid #F2F4F7; font-size: 13px; color: #667085">
+            <span style="font-variant-numeric: tabular-nums">Showing 1–7 of 214 orders</span>
+            <div style="display: flex; gap: 8px">
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Previous</button>
+              <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Next</button>
+            </div>
+          </div>
+        </section>
+
+        <aside aria-label="Order detail" style="flex: 1 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08); padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Order A-1043</h2><span style="padding: 2px 10px; border-radius: 999px; background: #ECFDF3; color: #067647; font-size: 12px; font-weight: 600">Paid</span></div>
+          <div style="font-size: 13px; color: #667085; font-variant-numeric: tabular-nums">Table R4 · 4 covers · Arun · 7:12–9:42 pm</div>
+          <div style="display: flex; flex-direction: column">
+            <div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span>Premium Lager 650ml × 2</span><span style="font-variant-numeric: tabular-nums">₹600</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span>Chicken Wings (8 pc)</span><span style="font-variant-numeric: tabular-nums">₹350</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span>Classic Mojito (happy hour)</span><span style="font-variant-numeric: tabular-nums">₹245</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F2F4F7"><span>Single Malt 12Y · 60 ml</span><span style="font-variant-numeric: tabular-nums">₹540</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0 0"><span style="font-weight: 600; color: #0B1220">Total incl. tax &amp; service</span><span style="font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #0B1220; font-variant-numeric: tabular-nums">₹2,034</span></div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Download A4 PDF</button>
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Thermal reprint</button>
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; color: #344054; cursor: pointer">Send on WhatsApp</button>
+          </div>
+          <div style="border-top: 1px solid #F2F4F7; padding-top: 16px; display: flex; flex-direction: column; gap: 14px">
+            <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #0B1220">Refund or void</h3>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+              <div><label for="o-type" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Action</label><select id="o-type" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"><option>Partial refund</option><option>Full refund</option><option>Void order</option></select></div>
+              <div><label for="o-amt" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Amount</label><input id="o-amt" value="₹540" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828; font-variant-numeric: tabular-nums"></div>
+            </div>
+            <div><label for="o-reason" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Reason (required)</label><select id="o-reason" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"><option>Wrong item served</option><option>Guest complaint</option><option>Billing error</option></select></div>
+            <div><label for="o-pin" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Manager PIN</label><input id="o-pin" type="password" placeholder="4–6 digits" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Confirm refund</button>
+              <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Cancel</button>
+            </div>
+          </div>
+          <div style="font-size: 13px; color: #667085; font-variant-numeric: tabular-nums">Audit: created by Arun 7:12 pm · discount approved by Priya 9:30 pm · paid UPI 9:42 pm</div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

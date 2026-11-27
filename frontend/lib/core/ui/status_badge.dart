@@ -22,7 +22,7 @@ class StatusBadge extends StatelessWidget {
     final colors = toneColorsOf(context, tone);
     final icon = colors.icon;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: t.spacing.sm, vertical: t.spacing.xs),
+      padding: EdgeInsets.symmetric(horizontal: t.spacing.sm + 2, vertical: 3),
       decoration: BoxDecoration(
         color: colors.background,
         borderRadius: BorderRadius.circular(t.radius.pill),
@@ -34,7 +34,11 @@ class StatusBadge extends StatelessWidget {
             Icon(icon, size: 14, color: colors.foreground),
             SizedBox(width: t.spacing.xs),
           ],
-          Text(label, style: kitTextStyle(t, t.typography.label, colors.foreground)),
+          Text(
+            label,
+            style: kitTextStyle(t, t.typography.caption, colors.foreground)
+                .copyWith(fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );

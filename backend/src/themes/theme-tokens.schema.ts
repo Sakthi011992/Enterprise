@@ -8,15 +8,15 @@
  * a half-defined theme reaching a till screen is worse than a rejected save.
  */
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export type TokenMode = 'light' | 'dark';
 export const TOKEN_MODES: TokenMode[] = ['light', 'dark'];
 
 /** group -> required keys */
 const COLOR_GROUPS = {
-  background: ['canvas', 'surface', 'raised', 'inverse', 'accent', 'danger', 'success', 'warning'],
-  content: ['primary', 'secondary', 'muted', 'onAccent', 'onInverse', 'danger'],
+  background: ['canvas', 'surface', 'raised', 'inverse', 'header', 'accent', 'danger', 'success', 'warning'],
+  content: ['primary', 'secondary', 'muted', 'onAccent', 'onInverse', 'onHeader', 'danger'],
   border: ['subtle', 'default', 'strong', 'accent', 'focus'],
 } as const;
 

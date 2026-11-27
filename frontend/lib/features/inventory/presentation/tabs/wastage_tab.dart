@@ -7,6 +7,7 @@ import '../../../pos/presentation/pos_format.dart';
 import '../../data/inventory_models.dart';
 import '../../data/inventory_repository.dart';
 import '../../domain/periods.dart';
+import '../widgets/ink_widgets.dart';
 
 typedef WastageQuery = ({String from, String to, String? locationId});
 
@@ -65,15 +66,15 @@ class _WastageTabState extends ConsumerState<WastageTab> {
                 onChanged: (v) => setState(() => _locationId = (v == null || v.isEmpty) ? null : v),
               ),
             ),
-            ChoiceChip(
-              label: const Text('Today'),
+            FilterPill(
+              label: 'Today',
               selected: _days == 0,
-              onSelected: (_) => setState(() => _days = 0),
+              onSelected: () => setState(() => _days = 0),
             ),
-            ChoiceChip(
-              label: const Text('Last 7 days'),
+            FilterPill(
+              label: 'Last 7 days',
               selected: _days == 6,
-              onSelected: (_) => setState(() => _days = 6),
+              onSelected: () => setState(() => _days = 6),
             ),
             if (list != null)
               Text(

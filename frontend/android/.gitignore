@@ -12,3 +12,6 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# Build output written by the Gradle wrapper script in build.gradle.kts
+/build/

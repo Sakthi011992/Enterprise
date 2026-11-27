@@ -14,6 +14,7 @@ import '../data/procurement_models.dart';
 import '../data/procurement_repository.dart';
 import 'tabs/debit_notes_tab.dart';
 import 'tabs/vendors_tab.dart';
+import '../../inventory/presentation/widgets/ink_widgets.dart';
 
 /// Menu & stock > Procurement (Procurement board). Purchase orders, goods
 /// received, vendors and debit notes.
@@ -123,10 +124,10 @@ class _PurchaseOrdersTabState extends ConsumerState<_PurchaseOrdersTab> {
           spacing: t.spacing.sm,
           runSpacing: t.spacing.sm,
           children: [
-            ChoiceChip(
-              label: const Text('All statuses'),
+            FilterPill(
+              label: 'All statuses',
               selected: _status == null,
-              onSelected: (_) => setState(() => _status = null),
+              onSelected: () => setState(() => _status = null),
             ),
             for (final s in const [
               PoStatus.draft,
@@ -135,10 +136,10 @@ class _PurchaseOrdersTabState extends ConsumerState<_PurchaseOrdersTab> {
               PoStatus.invoiceMismatch,
               PoStatus.received,
             ])
-              ChoiceChip(
-                label: Text('${PoStatus.label(s)} ${counts[s] ?? 0}'),
+              FilterPill(
+                label: '${PoStatus.label(s)} ${counts[s] ?? 0}',
                 selected: _status == s,
-                onSelected: (_) => setState(() => _status = s),
+                onSelected: () => setState(() => _status = s),
               ),
           ],
         ),

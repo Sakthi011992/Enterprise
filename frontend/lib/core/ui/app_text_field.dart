@@ -60,7 +60,7 @@ class AppTextField extends StatelessWidget {
           autofocus: autofocus,
           autofillHints: autofillHints,
           style: kitTextStyle(t, t.typography.body, t.color.content.primary),
-          decoration: kitInputDecoration(
+          decoration: fieldDecoration(
             t,
             ext,
             hint: hint,

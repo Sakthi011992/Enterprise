@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tablet captain POS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#0A0F1A}a{color:#2FB896}a:hover{color:#5FD0B2}</style>
+</helmet>
+<div style="width: 1024px; height: 768px; box-sizing: border-box; background: #0A0F1A; color: #F2F4F7; display: flex; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.4; overflow: hidden">
+
+  <nav aria-label="Main" style="width: 80px; flex: none; background: #0E1524; border-right: 1px solid #1C263A; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 0; box-sizing: border-box">
+    <button type="button" style="width: 64px; height: 56px; border: 0; border-radius: 12px; background: transparent; color: #A3ADC2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font: inherit; font-size: 12px; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>Tables</button>
+    <button type="button" aria-current="page" style="width: 64px; height: 56px; border: 1px solid #2B3A57; border-radius: 12px; background: #1A2438; color: #2FB896; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"></path><path d="M9 8h6M9 12h6"></path></svg>Order</button>
+    <button type="button" style="width: 64px; height: 56px; border: 0; border-radius: 12px; background: transparent; color: #A3ADC2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font: inherit; font-size: 12px; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 7a3 3 0 01-6 0zM12 13v8M8 21h8"></path></svg>Tabs</button>
+    <button type="button" style="width: 64px; height: 56px; border: 0; border-radius: 12px; background: transparent; color: #A3ADC2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font: inherit; font-size: 12px; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path></svg>Queue</button>
+    <span aria-label="Arun, Captain" style="margin-top: auto; width: 44px; height: 44px; border-radius: 999px; background: #233049; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">AK</span>
+  </nav>
+
+  <section aria-label="Menu" style="flex: 1; min-width: 0; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; box-sizing: border-box">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; color: #F2F4F7">Table R4 · Seat 2</h1>
+        <span style="font-size: 13px; color: #A3ADC2">4 covers · Rooftop</span>
+      </div>
+      <span style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 999px; background: #2A2213; border: 1px solid #5C4512; color: #F5C46B; font-size: 13px; font-weight: 600; white-space: nowrap"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Happy hour · 14 min</span>
+    </div>
+
+    <div role="group" aria-label="Categories" style="display: flex; gap: 8px; overflow: hidden">
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #233049; border-radius: 999px; background: #151E30; color: #C7CED9; font: inherit; white-space: nowrap; cursor: pointer">Favourites</button>
+      <button type="button" aria-pressed="true" style="height: 44px; padding: 0 18px; border: 1px solid #2B3A57; border-radius: 999px; background: #F2F4F7; color: #0A0F1A; font: inherit; font-weight: 600; white-space: nowrap; cursor: pointer">Spirits</button>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #233049; border-radius: 999px; background: #151E30; color: #C7CED9; font: inherit; white-space: nowrap; cursor: pointer">Beer</button>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #233049; border-radius: 999px; background: #151E30; color: #C7CED9; font: inherit; white-space: nowrap; cursor: pointer">Cocktails</button>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #233049; border-radius: 999px; background: #151E30; color: #C7CED9; font: inherit; white-space: nowrap; cursor: pointer">Bites</button>
+      <button type="button" style="height: 44px; padding: 0 18px; border: 1px solid #233049; border-radius: 999px; background: #151E30; color: #C7CED9; font: inherit; white-space: nowrap; cursor: pointer">Mains</button>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">House Whisky</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">30 ml ₹180 · 60 ml ₹340</span></button>
+      <button type="button" aria-pressed="true" style="min-height: 96px; padding: 14px; border: 1px solid #2FB896; box-shadow: 0 0 0 3px rgba(47,184,150,.18); border-radius: 14px; background: #1A2438; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">Single Malt 12Y</span><span style="font-size: 12px; color: #F5C46B; font-variant-numeric: tabular-nums">60 ml ₹400 happy hour</span></button>
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">Premium Vodka</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">30 ml ₹220</span></button>
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">Dark Rum</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">30 ml ₹160</span></button>
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">London Dry Gin</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">30 ml ₹240</span></button>
+      <button type="button" disabled style="min-height: 96px; padding: 14px; border: 1px dashed #2B3A57; border-radius: 14px; background: #0E1524; color: #8A94A6; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px"><span style="font-weight: 600; font-size: 14px">Aged Cognac</span><span style="font-size: 12px; color: #8A94A6">Out of stock</span></button>
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">Blanco Tequila</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">Shot ₹260</span></button>
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">Bottle service</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">750 ml ₹5,400</span></button>
+      <button type="button" style="min-height: 96px; padding: 14px; border: 1px solid #233049; border-radius: 14px; background: #151E30; color: #F2F4F7; font: inherit; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer"><span style="font-weight: 600; font-size: 14px">Irish Whiskey</span><span style="font-size: 12px; color: #A3ADC2; font-variant-numeric: tabular-nums">30 ml ₹260</span></button>
+    </div>
+  </section>
+
+  <aside aria-label="Order" style="width: 320px; flex: none; background: #0E1524; border-left: 1px solid #1C263A; padding: 16px 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #F2F4F7">Order A-1043</h2>
+      <span style="font-size: 12px; color: #A3ADC2">3 sent · 1 new</span>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column">
+      <div style="display: flex; justify-content: space-between; gap: 8px; padding: 12px 0; border-bottom: 1px solid #1C263A"><span>Premium Lager × 2</span><span style="font-variant-numeric: tabular-nums">₹600</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 8px; padding: 12px 0; border-bottom: 1px solid #1C263A"><span>Chicken Wings</span><span style="font-variant-numeric: tabular-nums">₹350</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 8px; padding: 12px 0; border-bottom: 1px solid #1C263A"><span>Classic Mojito</span><span style="font-variant-numeric: tabular-nums">₹245</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 8px; padding: 12px 10px; margin: 4px -10px 0; border-radius: 10px; background: #151E30; color: #F5C46B"><span style="display: flex; flex-direction: column">Single Malt 12Y 60 ml · new<span style="font-size: 12px; color: #A3ADC2">On the rocks · Seat 2</span></span><span style="font-variant-numeric: tabular-nums">₹400</span></div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0"><span style="font-size: 16px; color: #A3ADC2">Total</span><span style="font-family: Manrope, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">₹1,894</span></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <button type="button" style="height: 48px; border: 1px solid #2B3A57; border-radius: 12px; background: #151E30; color: #F2F4F7; font: inherit; font-weight: 500; cursor: pointer">More actions</button>
+      <button type="button" style="height: 48px; border: 1px solid #2B3A57; border-radius: 12px; background: #151E30; color: #F2F4F7; font: inherit; font-weight: 500; cursor: pointer">Print bill</button>
+    </div>
+    <button type="button" style="height: 56px; border: 0; border-radius: 12px; background: #2FB896; color: #04231C; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Send to bar</button>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1024,"height":768}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

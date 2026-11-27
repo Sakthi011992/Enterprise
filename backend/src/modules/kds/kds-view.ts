@@ -26,6 +26,8 @@ export interface KdsOrderContext {
   waiterName: string | null;
   /** orderItemId to line status (NEW, SENT, SERVED, VOIDED). */
   itemStatus: Map<string, string>;
+  /** POS, KIOSK or GUEST_QR (Phase 4: KDS shows "QR · R4 · Deepa"). */
+  source?: string;
 }
 
 /** The part of an OrderView that the KDS reads. */
@@ -38,6 +40,7 @@ export interface KdsOrderSource {
   tab: { number: string } | null;
   waiter: { id: string; name: string } | null;
   items: { id: string; status: string }[];
+  source?: string;
 }
 
 export interface TicketItemLine {
@@ -48,6 +51,7 @@ export interface TicketItemLine {
   modifiers: string[];
   note: string | null;
   seat: number | null;
+  guestName?: string | null;
 }
 
 export function contextFromView(v: KdsOrderSource): KdsOrderContext {
@@ -61,6 +65,7 @@ export function contextFromView(v: KdsOrderSource): KdsOrderContext {
     waiterId: v.waiter?.id ?? null,
     waiterName: v.waiter?.name ?? null,
     itemStatus: new Map(v.items.map((i) => [i.id, i.status])),
+    source: v.source ?? 'POS',
   };
 }
 
@@ -77,6 +82,7 @@ export function readTicketItems(json: unknown): TicketItemLine[] {
       modifiers: Array.isArray(r.modifiers) ? r.modifiers.map(String) : [],
       note: typeof r.note === 'string' ? r.note : null,
       seat: typeof r.seat === 'number' ? r.seat : null,
+      guestName: typeof r.guestName === 'string' ? r.guestName : null,
     };
   });
 }
@@ -86,6 +92,7 @@ const iso = (d: Date | null | undefined): string | null => (d ? d.toISOString() 
 /** KdsTicket (PLAN 1.7). `colour` runs from creation to now, or to readyAt once bumped. */
 export function toKdsTicket(row: KdsTicketRow, ctx: KdsOrderContext, now: Date) {
   const end = row.readyAt ?? now;
+  const lines = readTicketItems(row.items);
   return {
     id: row.id,
     kind: row.kind,
@@ -101,8 +108,10 @@ export function toKdsTicket(row: KdsTicketRow, ctx: KdsOrderContext, now: Date) 
       tabNumber: ctx.tabNumber,
       waiterName: ctx.waiterName,
       covers: ctx.covers,
+      source: ctx.source ?? 'POS',
+      guestName: lines.find((l) => l.guestName)?.guestName ?? null,
     },
-    items: readTicketItems(row.items).map((i) => ({
+    items: lines.map((i) => ({
       ...i,
       voided: ctx.itemStatus.get(i.orderItemId) === 'VOIDED',
     })),

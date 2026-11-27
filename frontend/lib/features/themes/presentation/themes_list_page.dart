@@ -188,7 +188,7 @@ class ThemesListPage extends ConsumerWidget {
 
   Map<String, dynamic> _defaultTokens() {
     return {
-      'schemaVersion': 1,
+      'schemaVersion': 2,
       'modes': {
         'light': {
           'color': {
@@ -197,6 +197,7 @@ class ThemesListPage extends ConsumerWidget {
               'surface': '#F7F7F8',
               'raised': '#FFFFFF',
               'inverse': '#15161A',
+              'header': '#F7F7F8',
               'accent': '#3A7BFF',
               'danger': '#D64545',
               'success': '#2F9E44',
@@ -208,6 +209,7 @@ class ThemesListPage extends ConsumerWidget {
               'muted': '#6B7280',
               'onAccent': '#FFFFFF',
               'onInverse': '#FFFFFF',
+              'onHeader': '#111111',
               'danger': '#D64545',
             },
             'border': {
@@ -285,6 +287,7 @@ class ThemesListPage extends ConsumerWidget {
               'surface': '#171A21',
               'raised': '#1F232B',
               'inverse': '#FFFFFF',
+              'header': '#171A21',
               'accent': '#5B8CFF',
               'danger': '#FF6B6B',
               'success': '#4AD991',
@@ -296,6 +299,7 @@ class ThemesListPage extends ConsumerWidget {
               'muted': '#8C94A3',
               'onAccent': '#FFFFFF',
               'onInverse': '#111111',
+              'onHeader': '#F5F7FA',
               'danger': '#FF6B6B',
             },
             'border': {

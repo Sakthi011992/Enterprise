@@ -36,13 +36,13 @@ class PageHeader extends StatelessWidget {
               if (crumb != null)
                 Text(
                   crumb,
-                  style: kitTextStyle(t, t.typography.caption, t.color.content.muted),
+                  style: kitTextStyle(t, t.typography.label, t.color.content.secondary),
                 ),
               Semantics(
                 header: true,
                 child: Text(
                   title,
-                  style: kitTextStyle(t, t.typography.title, t.color.content.primary, display: true),
+                  style: kitTextStyle(t, t.typography.display, t.color.content.primary, display: true),
                 ),
               ),
             ],

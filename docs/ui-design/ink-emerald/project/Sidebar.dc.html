@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sidebar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<nav aria-label="Main" style="width: 100%; min-height: 100%; height: 100%; box-sizing: border-box; background: #0B1220; color: #C7CED9; padding: 20px 14px; display: flex; flex-direction: column; gap: 22px; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.45">
+  <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+    <div style="width: 34px; height: 34px; border-radius: 10px; background: #0E7C66; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-family: Manrope, sans-serif; font-weight: 800; font-size: 14px">YV</div>
+    <div style="display: flex; flex-direction: column">
+      <span style="color: #FFFFFF; font-family: Manrope, sans-serif; font-weight: 700; font-size: 15px">Your Venue</span>
+      <span style="font-size: 12px; color: #8A94A6">Pub &amp; kitchen ERP</span>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 2px">
+    <sc-for list="{{ sections }}" as="s" hint-placeholder-count="7">
+      <a href="#" style="{{ s.style }}">
+        <span style="{{ s.dotStyle }}"></span>{{ s.label }}<span style="margin-left: auto; font-size: 12px; color: #8A94A6">{{ s.count }}</span>
+      </a>
+      <sc-if value="{{ s.open }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 1px; margin: 2px 0 6px 22px; padding-left: 12px; border-left: 1px solid #1F2A3D">
+          <sc-for list="{{ s.subs }}" as="sub" hint-placeholder-count="4">
+            <a href="#" style="{{ sub.style }}">{{ sub.label }}</a>
+          </sc-for>
+        </div>
+      </sc-if>
+    </sc-for>
+  </div>
+  <div style="margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 4px 8px">
+    <div style="width: 32px; height: 32px; border-radius: 999px; background: #1F2A3D; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">{{ initials }}</div>
+    <div style="display: flex; flex-direction: column">
+      <span style="color: #FFFFFF; font-size: 13px; font-weight: 500">{{ userName }}</span>
+      <span style="font-size: 12px; color: #8A94A6">{{ role }}</span>
+    </div>
+  </div>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"section":{"editor":"enum","default":"sales","options":["dashboard","sales","stock","guests","displays","people","settings"]},"sub":{"editor":"text","default":"POS billing"},"userName":{"editor":"text","default":"Arun D."},"role":{"editor":"text","default":"Owner"},"$preview":{"width":260,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const section = this.props.section ?? 'sales';
+    const sub = this.props.sub ?? '';
+    const defs = [
+      { key: 'dashboard', label: 'Dashboard', subs: [] },
+      { key: 'sales', label: 'Sales', subs: ['POS billing', 'Orders & invoices', 'Bar tabs', 'Floor plan', 'Kitchen display'] },
+      { key: 'stock', label: 'Menu & stock', subs: ['Menu & products', 'Inventory', 'Recipes & costing', 'Procurement'] },
+      { key: 'guests', label: 'Guests & queue', subs: ['Customers & bookings', 'Walk-in queue'], count: '6' },
+      { key: 'displays', label: 'Displays & campaigns', subs: ['Display control', 'Campaigns'] },
+      { key: 'people', label: 'People & finance', subs: ['Users & roles', 'Staff & shifts', 'Accounting'] },
+      { key: 'settings', label: 'Settings', subs: ['Outlets & devices', 'Tax, invoice & payments', 'Hardware', 'Permissions', 'Themes & branding', 'Localisation', 'Subscription', 'Monitoring'] },
+    ];
+    const name = this.props.userName ?? 'Arun D.';
+    return {
+      userName: name,
+      role: this.props.role ?? 'Owner',
+      initials: name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase(),
+      sections: defs.map((d) => {
+        const on = d.key === section;
+        return {
+          label: d.label,
+          count: d.count ?? '',
+          open: on && d.subs.length > 0,
+          style: 'display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 10px; border-radius: 8px; text-decoration: none; ' +
+            (on ? 'background: #16213A; color: #FFFFFF; font-weight: 500' : 'color: #C7CED9'),
+          dotStyle: 'width: 8px; height: 8px; border-radius: 3px; flex: none; background: ' + (on ? '#2FB896' : '#3A465E'),
+          subs: d.subs.map((label) => ({
+            label,
+            style: 'padding: 6px 10px; border-radius: 6px; text-decoration: none; font-size: 13px; ' +
+              (label === sub ? 'background: #111A2B; color: #FFFFFF; font-weight: 500; box-shadow: inset 2px 0 0 #2FB896' : 'color: #C7CED9'),
+          })),
+        };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>

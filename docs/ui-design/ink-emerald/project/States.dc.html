@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Create, edit, view and loading states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
+<style>body{margin:0;background:#F5F6F8}a{color:#0E7C66}a:hover{color:#0A5F4E}</style>
+</helmet>
+<div style="width: 1440px; height: 1100px; box-sizing: border-box; background: #F5F6F8; padding: 48px; display: flex; flex-direction: column; gap: 28px; font-family: Inter, system-ui, sans-serif; color: #101828; font-size: 14px; line-height: 1.45">
+  <div style="display: flex; flex-direction: column; gap: 6px">
+    <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: #0B1220">Create, edit, view &amp; loading</h1>
+    <p style="margin: 0; font-size: 14px; color: #475467">Every side panel has these four states. Example: a menu item.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; flex: 1; min-height: 0">
+
+    <section aria-label="Create state" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); display: flex; flex-direction: column; min-width: 0; overflow: hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #F2F4F7">
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #667085">Create</span><h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">New menu item</h2></div>
+      </div>
+      <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; flex: 1">
+        <div><label for="n1" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Name *</label><input id="n1" placeholder="e.g. Single Malt 12Y" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+        <div><label for="n2" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Category *</label><select id="n2" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #475467"><option>Choose…</option></select></div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div><label for="n3" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Price *</label><input id="n3" placeholder="₹" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+          <div><label for="n4" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Tax *</label><select id="n4" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #475467"><option>Choose…</option></select></div>
+        </div>
+        <p style="margin: 0; font-size: 13px; color: #667085">* Required. Variants, images and recipe can be added after the first save.</p>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 16px 24px; border-top: 1px solid #F2F4F7; background: #F9FAFB">
+        <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Cancel</button>
+        <div style="display: flex; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 14px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer; white-space: nowrap">Save &amp; add another</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Create</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Edit state" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); display: flex; flex-direction: column; min-width: 0; overflow: hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 20px 24px; border-bottom: 1px solid #F2F4F7">
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #667085">Edit</span><h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Single Malt 12Y</h2></div>
+        <span style="padding: 3px 10px; border-radius: 999px; background: #FFFAEB; color: #B54708; font-size: 12px; font-weight: 600; white-space: nowrap">Unsaved changes</span>
+      </div>
+      <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; flex: 1">
+        <div><label for="e1" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Name *</label><input id="e1" value="Single Malt 12Y" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"></div>
+        <div><label for="e2" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Category *</label><select id="e2" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"><option>Spirits</option></select></div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div><label for="e3" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Price *</label><input id="e3" value="₹ 560" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #0E7C66; box-shadow: 0 0 0 4px #E7F4F0; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828; font-variant-numeric: tabular-nums"></div>
+          <div><label for="e4" style="display: block; font-size: 13px; font-weight: 500; color: #344054; margin-bottom: 6px">Tax *</label><select id="e4" style="width: 100%; box-sizing: border-box; height: 40px; border: 1px solid #D0D5DD; border-radius: 10px; padding: 0 12px; font: inherit; background: #FFFFFF; color: #101828"><option>VAT liquor</option></select></div>
+        </div>
+        <p style="margin: 0; font-size: 13px; color: #667085">Last changed by Priya, today 9:12 pm · <a href="#">History</a></p>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 16px 24px; border-top: 1px solid #F2F4F7; background: #F9FAFB">
+        <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #FDA29B; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #B42318; cursor: pointer">Delete</button>
+        <div style="display: flex; gap: 8px">
+          <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Discard</button>
+          <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #0E7C66; font: inherit; font-weight: 600; color: #FFFFFF; cursor: pointer">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="View state" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); display: flex; flex-direction: column; min-width: 0; overflow: hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 20px 24px; border-bottom: 1px solid #F2F4F7">
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #667085">View only</span><h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">Single Malt 12Y</h2></div>
+        <span style="padding: 3px 10px; border-radius: 999px; background: #F2F4F7; color: #344054; font-size: 12px; font-weight: 600; white-space: nowrap">Read-only</span>
+      </div>
+      <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; flex: 1">
+        <dl style="margin: 0; display: flex; flex-direction: column; gap: 14px">
+          <div><dt style="font-size: 12px; color: #667085; margin: 0">Category</dt><dd style="margin: 2px 0 0; color: #101828">Spirits</dd></div>
+          <div><dt style="font-size: 12px; color: #667085; margin: 0">Prices</dt><dd style="margin: 2px 0 0; color: #101828; font-variant-numeric: tabular-nums">30 ml ₹280 · 60 ml ₹540 · Bottle ₹6,200</dd></div>
+          <div><dt style="font-size: 12px; color: #667085; margin: 0">Tax</dt><dd style="margin: 2px 0 0; color: #101828">VAT liquor (20%)</dd></div>
+          <div><dt style="font-size: 12px; color: #667085; margin: 0">Sold on</dt><dd style="margin: 2px 0 0; color: #101828">POS, QR menu, kiosk</dd></div>
+        </dl>
+        <p style="margin: 0; font-size: 13px; color: #667085">You can view this item. Your persona (Bartender) can't edit prices.</p>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 16px 24px; border-top: 1px solid #F2F4F7; background: #F9FAFB">
+        <span></span>
+        <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #D0D5DD; border-radius: 10px; background: #FFFFFF; font: inherit; font-weight: 500; color: #344054; cursor: pointer">Request edit access</button>
+      </div>
+    </section>
+
+    <section aria-label="Loading state" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); display: flex; flex-direction: column; min-width: 0; overflow: hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 20px 24px; border-bottom: 1px solid #F2F4F7">
+        <div style="display: flex; flex-direction: column; gap: 8px"><span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #667085">Loading</span><span aria-hidden="true" style="display: block; width: 160px; height: 20px; border-radius: 6px; background: #EAECF0"></span></div>
+        <span role="status" style="font-size: 13px; color: #667085">Loading…</span>
+      </div>
+      <div aria-hidden="true" style="padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; flex: 1">
+        <span style="display: block; width: 40%; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="display: block; height: 40px; border-radius: 10px; background: #F2F4F7"></span>
+        <span style="display: block; width: 30%; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="display: block; height: 40px; border-radius: 10px; background: #F2F4F7"></span>
+        <span style="display: block; width: 50%; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="display: block; height: 40px; border-radius: 10px; background: #F2F4F7"></span>
+      </div>
+      <div style="padding: 16px 24px; border-top: 1px solid #F2F4F7; background: #F9FAFB"><span style="font-size: 13px; color: #667085">After 10 s: "Still loading. Check your connection." with Retry</span></div>
+    </section>
+  </div>
+
+  <section aria-label="List loading and stale data" style="background: #FFFFFF; border: 1px solid #E4E7EC; border-radius: 16px; box-shadow: 0 1px 2px rgba(16,24,40,.04); overflow: hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 24px; border-bottom: 1px solid #F2F4F7">
+      <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.02em; color: #0B1220">List: first load vs. refresh</h2>
+      <span style="font-size: 13px; color: #667085">Cached data shows immediately; a thin bar shows it's updating</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding: 20px 24px 24px">
+      <div aria-hidden="true" style="display: flex; flex-direction: column; gap: 14px">
+        <span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #667085">First load</span>
+        <div style="display: flex; gap: 12px; align-items: center"><span style="width: 36px; height: 36px; border-radius: 10px; background: #EAECF0"></span><span style="flex: 1; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="width: 70px; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="width: 60px; height: 24px; border-radius: 999px; background: #F2F4F7"></span></div>
+        <div style="display: flex; gap: 12px; align-items: center"><span style="width: 36px; height: 36px; border-radius: 10px; background: #EAECF0"></span><span style="flex: 1; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="width: 70px; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="width: 60px; height: 24px; border-radius: 999px; background: #F2F4F7"></span></div>
+        <div style="display: flex; gap: 12px; align-items: center"><span style="width: 36px; height: 36px; border-radius: 10px; background: #EAECF0"></span><span style="flex: 1; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="width: 70px; height: 14px; border-radius: 6px; background: #EAECF0"></span><span style="width: 60px; height: 24px; border-radius: 999px; background: #F2F4F7"></span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #667085">Refreshing cached list</span>
+        <div role="progressbar" aria-label="Updating" style="height: 3px; border-radius: 999px; background: #EAECF0; overflow: hidden"><span style="display: block; width: 45%; height: 100%; background: #0E7C66"></span></div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #F2F4F7"><span>Single Malt 12Y</span><span style="font-variant-numeric: tabular-nums">₹540</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #F2F4F7"><span>Premium Lager 650ml</span><span style="font-variant-numeric: tabular-nums">₹300</span></div>
+        <span style="font-size: 13px; color: #667085">Updated 2 min ago · Updating…</span>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
